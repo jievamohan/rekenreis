@@ -424,7 +424,7 @@ Acceptance:
 ---
 
 ## Epic 19.4 — Page Unification
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-19.md
 - archive: artifacts/archive/epic-19.0/latest
