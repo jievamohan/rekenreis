@@ -178,6 +178,7 @@ jobs:
         with:
           path: /tmp/docker-cache/mysql
           key: docker-mysql-8.0
+          restore-keys: docker-mysql-
 
       - name: Pull mysql image
         if: steps.mysql-cache.outputs.cache-hit != 'true'
@@ -193,6 +194,7 @@ jobs:
         with:
           path: /tmp/docker-cache/zap
           key: docker-zaproxy-stable
+          restore-keys: docker-zaproxy-
 
       - name: Pull ZAP image
         if: steps.zap-cache.outputs.cache-hit != 'true'
@@ -205,27 +207,18 @@ jobs:
         if: steps.zap-cache.outputs.cache-hit == 'true'
         run: docker load -i /tmp/docker-cache/zap/zap.tar
 
-      - name: Build web image
-        uses: docker/build-push-action@v6
+      - name: Build images (parallel)
+        uses: docker/bake-action@v6
         with:
-          context: ./apps/web
-          file: ./apps/web/Dockerfile
+          source: .
+          files: docker-bake.hcl
           load: true
-          tags: rekenreis-web:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          scope: web
-
-      - name: Build api image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./apps/api
-          file: ./apps/api/Dockerfile
-          load: true
-          tags: rekenreis-api:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          scope: api
+          targets: web,api
+          set: |
+            web.cache-from=type=gha,scope=web
+            web.cache-to=type=gha,mode=max,scope=web
+            api.cache-from=type=gha,scope=api
+            api.cache-to=type=gha,mode=max,scope=api
 
       - name: Start stack
         run: |
@@ -236,10 +229,10 @@ jobs:
 
       - name: Wait for health
         run: |
-          for i in $(seq 1 40); do
+          for i in $(seq 1 12); do
             curl -sf http://localhost:3000/start >/dev/null && curl -sf http://localhost:8001/api/health >/dev/null && echo "Stack ready" && exit 0
-            echo "Waiting for stack ($i/40)..."
-            sleep 3
+            echo "Waiting for stack ($i/12)..."
+            sleep 2
           done
           echo "Stack failed to become healthy"
           docker compose -f docker-compose.yml -f docker-compose.ci.yml ps -a
@@ -250,25 +243,22 @@ jobs:
       - name: Security headers check
         run: bash scripts/ci/security-headers-check.sh
 
-      - name: ZAP baseline (web)
+      - name: ZAP baseline (parallel)
         run: |
-          mkdir -p artifacts/current/zap && chmod 777 artifacts/current/zap
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/current/zap:/zap/wrk:rw" \
-            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/start -I -m 2 \
-            -J web-start-report.json -r web-start-report.html || true
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/current/zap:/zap/wrk:rw" \
-            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/play -I -m 2 \
-            -J web-play-report.json -r web-play-report.html || true
-
-      - name: ZAP baseline (api)
-        run: |
-          chmod 777 artifacts/current/zap
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/current/zap:/zap/wrk:rw" \
-            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/health -I -m 2 \
-            -J api-health-report.json -r api-health-report.html || true
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/current/zap:/zap/wrk:rw" \
-            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/session-stats -I -m 2 \
-            -J api-session-stats-report.json -r api-session-stats-report.html || true
+          mkdir -p artifacts/zap && chmod 777 artifacts/zap
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/start -I -m 1 \
+            -J web-start-report.json -r web-start-report.html || true &
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/play -I -m 1 \
+            -J web-play-report.json -r web-play-report.html || true &
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/health -I -m 1 \
+            -J api-health-report.json -r api-health-report.html || true &
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/session-stats -I -m 1 \
+            -J api-session-stats-report.json -r api-session-stats-report.html || true &
+          wait
 
       - name: Teardown
         if: always()

@@ -278,3 +278,25 @@ Requirements:
 
 Non-goals:
 - new modes/skins
+
+---
+
+## Epic 16 — Release Prep (UX Pass, Copy Pass, Bug Bash Automation)
+- [x]
+/feature --ci --max-tasks=5  
+Build Epic 16: Prepare for release-quality UX and stability.
+
+Requirements:
+- UX pass:
+  - tap target sizing audit
+  - color/contrast audit
+  - reduced reading mode
+- Copy pass:
+  - friendly microcopy
+- Bug bash:
+  - add a "test checklist" doc + quick scripts
+- Performance:
+  - verify budgets and optimize
+
+Non-goals:
+- new modes/skins
