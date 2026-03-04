@@ -1,10 +1,9 @@
-# Epic 4 Architecture
+# Epic 5 Architecture
 
 ## Web
-- **Schema**: rekenreis_progress v1 = { version: 1, bestScore, ... }; migrations for future v2+
-- **Storage**: localStorage; migrate on load
-- **Telemetry**: Optional call to POST /api/session-stats when opt-in
-- **Privacy**: usePreferences(telemetryOptOut) in localStorage
+- a11y: enhance existing /play focus/keyboard
+- Error: useApi/start page error handling; play page resilient to API down
 
-## API
-- POST /api/session-stats: body { score?, rounds? }; anonymous; no auth; log or store minimally
+## Docs
+- Quick start in README or docs
+- Runbooks commands.md updated

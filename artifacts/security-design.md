@@ -1,5 +1,3 @@
-# Epic 4 Security
+# Epic 5 Security
 
-- Session stats: no PII; anonymous only
-- No auth on telemetry endpoint
-- Rate limit recommended for public endpoint
+No security changes. Docs and a11y only.

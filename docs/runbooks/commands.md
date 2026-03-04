@@ -2,6 +2,8 @@
 
 Commands used by CI gates and local development. All paths relative to repo root.
 
+**Quick start:** See [docs/quick-start.md](../quick-start.md).
+
 ## Gate C (Type-safety)
 
 | App | Command | Notes |
@@ -50,7 +52,7 @@ docker compose up --build
 2. Visit http://localhost:3000/start — should show API health JSON
 3. Visit http://localhost:3000/play — should show math game (infinite mode), question, answer buttons
 4. Visit http://localhost:3000/play?mode=pack — should show math game with content pack levels
-5. Visit http://localhost:3000/play?skin=monster-feed — should show Monster Feed skin
+5. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
 6. Select an answer — feedback appears; click Next — new question loads (both modes)
 
 ## Install (prerequisites)

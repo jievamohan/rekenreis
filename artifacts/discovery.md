@@ -1,14 +1,14 @@
-# Epic 4 Discovery
+# Epic 5 Discovery
 
 ## Summary
-Persist progress locally (localStorage) with versioning/migration; optional API telemetry for anonymous session stats; privacy notes and opt-out.
+Polish: a11y pass for /play, reduce flakiness/improve error states, perf within budget, docs updated.
 
 ## Current State
-- useRewards: stores best_score in localStorage (single key, no versioning)
-- No migration path; no structured progress schema
-- API: GET /api/health only
-- No privacy UI
+- /play has keyboard/focus on buttons (choices, Next)
+- Smoke verification: docker compose, manual steps
+- No formal e2e (Playwright); "e2e" = smoke/manual
+- docs/runbooks/commands.md exists
 
 ## Scope
-- **In**: Versioned persistence schema, migration, API session-stats (anonymous), privacy UI, tests
-- **Out**: Auth, PII, complex analytics
+- **In**: a11y pass (keyboard, focus), error states, perf budget check, docs
+- **Out**: Full Playwright suite; major refactors

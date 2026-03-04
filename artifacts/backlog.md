@@ -1,23 +1,16 @@
-# Epic 4 Backlog
+# Epic 5 Backlog
 
 ## Epic Summary
-Persistence (localStorage, versioned) + optional API telemetry + privacy UI.
+Polish, a11y, error states, perf, docs.
 
 ## Scope_in
-- Versioned persistence schema + migration
-- API POST /api/session-stats (anonymous)
-- Privacy notes + opt-out switch
-- Tests for schema/versioning
-
-## Scope_out
-- Auth; PII; complex analytics
-
-## Risks
-- privacy: telemetry must be opt-out clear
-- db: session-stats may need migration if stored
+- a11y pass /play (keyboard/focus)
+- Error states (API down, etc)
+- Perf within budget; remove unnecessary deps
+- docs: quick start + runbooks
 
 ## Task List
-1. **0021-persistence-schema** — Versioned schema + migration [W2]
-2. **0022-api-session-stats** — POST /api/session-stats [A1, A2]
-3. **0023-privacy-optout** — Privacy notes + opt-out switch [W1]
-4. **0024-persistence-tests** — Schema/versioning tests [T]
+1. **0028-a11y-play** — a11y pass for /play [W1]
+2. **0029-error-states** — Improve error states [W1, W2]
+3. **0030-perf-deps** — Perf budget; prune deps [I]
+4. **0031-docs-runbooks** — Quick start + runbooks [I]

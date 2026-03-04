@@ -1,6 +1,5 @@
-# Epic 4 QA
+# Epic 5 QA
 
-- Unit: migration v0->v1
-- Unit: schema validation
-- API: session-stats endpoint
-- Manual: opt-out prevents telemetry call
+- Manual: tab through /play; confirm focus order
+- Manual: stop API; verify error state on /start
+- Bundle size within budget
