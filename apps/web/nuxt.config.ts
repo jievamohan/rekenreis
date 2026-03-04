@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    '/play': { ssr: false },
     '/**': {
       headers: {
         'X-Frame-Options': 'SAMEORIGIN',
