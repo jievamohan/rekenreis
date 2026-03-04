@@ -1,57 +1,48 @@
-# Epic 17 — Graphics v1: Solution Design
+# Epic 18 — Solution
 
-## Implementation Order
+## 1. Design Tokens
 
-### Phase 1: Design Artifacts (no code)
+Create `apps/web/assets/css/tokens.css` (or merge into graphics.css):
 
-- `artifacts/art-direction.md`
-- `artifacts/game-feel.md`
-- `artifacts/motion-audio.md`
-- `artifacts/assets.md`
+- `--app-bg`: gradient or soft pattern background
+- `--app-surface`: card/surface color
+- `--app-primary`, `--app-secondary`
+- `--app-correct`, `--app-wrong`, `--app-muted`
+- `--app-font`: kid-friendly, rounded (e.g. Nunito, Quicksand, or system fallback)
+- `--app-radius`, `--app-spacing`, `--app-shadow`
+- Button/tile utility classes
 
-### Phase 2: Assets Pipeline + Scene Layout
+Import in nuxt.config or app.vue.
 
-- Create `apps/web/assets/graphics/` folder structure
-- Add SVG placeholders (background, plank, character)
-- Create `SceneLayout.vue`: slots for background, foreground, character, content
+## 2. AppShell Component
 
-### Phase 3: Graphical Build-Bridge Mode
+- `apps/web/components/AppShell.vue` or `layouts/default.vue`
+- Props/slots: default slot for page content
+- Structure: background div, top bar, main area, nav tabs
+- Top bar: profile pill, Choose game button
+- Nav: Sticker book, Progress, Settings (icon + label)
 
-- Refactor ModeBuildBridge to use SceneLayout
-- Replace button planks with DraggablePlank (game objects)
-- Implement wrong-drop: wobble + return + hint integration (useAssistance already provides hintToShow)
-- Ensure keyboard: select plank → focus drop zone → place
+## 3. Shared Components
 
-### Phase 4: Mode Selector + Tests
+- `NavTabs.vue`: Icon + label tabs, min 44×44px
+- `PrimaryButton.vue`, `SecondaryButton.vue`
+- `StatPill.vue`: score/streak/rounds
+- `GameStageCard.vue`: Wraps minigame/content with rounded corners, shadow
 
-- Mode selector already supports build-bridge; ensure kid-friendly (icons, labels)
-- Unit tests: mode contract, drag/drop state transitions (fake timers)
-- Smoke: switch to build-bridge → complete one round
+## 4. Layout Integration
 
-## Wrong-Drop Behavior
+- Create `layouts/default.vue` with AppShell
+- Set as default layout for all pages
+- Wrap page content in GameStageCard where appropriate
 
-1. User drops wrong plank in gap
-2. `onAnswer(wrongChoice)` called → usePlayGame sets feedback
-3. Mode: show wobble (CSS animation), then return plank to pool
-4. **Key**: Do NOT advance to next question on wrong; feedback shows "Try another"
-5. After 2 wrong: useAssistance sets hintToShow → mode displays hint
-6. User tries again until correct
+## 5. Page Migration
 
-**Clarification**: Current usePlayGame already handles wrong answer (feedback, no score). Mode must:
-- On wrong: animate wobble, keep plank in pool (don't "consume" it)
-- Plank returns because we don't call onNext; user picks another
+- index, start, play, stickers, summary, settings: use default layout
+- Replace ad-hoc styles with token-based classes
+- Ensure no plain white backgrounds
 
-Actually: current flow calls `onAnswer(choice)` for both correct and wrong. usePlayGame sets feedback. The plank is not "consumed" — it's just that feedback is shown. So we need:
-- On wrong: wobble the drop zone or the plank that was dropped, then... the plank was "dropped" so it's in the gap. We need to "return" it — i.e., clear the drop and put plank back in pool. That means we need local state: "plank in gap" vs "plank in pool". On wrong, we animate and reset that state.
+## 6. Minigame Integration
 
-**Revised flow**:
-- Planks are in pool. User drags one to gap.
-- On drop: if correct → onAnswer(correct), celebrate, onNext
-- On drop: if wrong → wobble, return plank to pool (local state), onAnswer(wrong) for assistance tracking. No onNext.
-- Keyboard: same logic.
-
-## Drag/Drop State
-
-- `selectedPlank: number | null` (keyboard selection)
-- `draggedPlank: number | null` (during drag)
-- On wrong drop: animate, then reset; do not call onNext.
+- Play page: game area inside GameStageCard
+- SceneLayout (build-bridge) remains; fits inside stage card
+- No "styled island" — visual continuity with shell

@@ -73,35 +73,47 @@ onMounted(() => {
 
 <style scoped>
 .settings-page {
-  padding: 1rem;
+  padding: var(--app-space-md);
   max-width: 24rem;
   margin: 0 auto;
+  font-family: var(--app-font);
 }
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: var(--app-font-size-xl);
+  margin-bottom: var(--app-space-md);
 }
 .settings-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin: 1rem 0;
+  gap: var(--app-space-md);
+  margin: var(--app-space-md) 0;
 }
 .field {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-height: 44px;
+  gap: var(--app-space-sm);
+  min-height: var(--app-tap-min);
 }
 .field select {
-  min-height: 44px;
-  padding: 0.5rem;
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-sm);
+  font-family: var(--app-font);
+  border-radius: var(--app-radius-sm);
 }
 .back {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
-  margin-top: 1rem;
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  margin-top: var(--app-space-md);
+  margin-right: var(--app-space-sm);
+  font-family: var(--app-font);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  text-decoration: none;
+}
+.back:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 </style>

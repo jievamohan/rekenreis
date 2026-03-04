@@ -4,6 +4,16 @@ Commands used by CI gates and local development. All paths relative to repo root
 
 **Quick start:** See [docs/quick-start.md](../quick-start.md).
 
+## Local development: pnpm in container
+
+**pnpm and npm commands MUST run inside the Docker container, never locally.** Use:
+
+```bash
+docker compose exec web pnpm <command>
+```
+
+Example: `docker compose exec web pnpm run typecheck`
+
 ## Gate C (Type-safety)
 
 | App | Command | Notes |
@@ -62,22 +72,28 @@ docker compose up --build
 ## Smoke verification
 
 1. `docker compose up --build`
-2. Visit http://localhost:3000/start — should show API health JSON
-3. Visit http://localhost:3000/play — should show math game (classic mode, infinite content), question, answer buttons
-4. Visit http://localhost:3000/play?mode=classic — same as above (explicit classic)
-5. Visit http://localhost:3000/play?mode=timed-pop — should show math game with countdown timer
-6. For timed-pop: wait ~15s for timeout → "Time's up! The answer was X" → click Next → new question loads
-7. Visit http://localhost:3000/play?mode=pack or /play?source=pack — should show math game with content pack levels
-8. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
-9. Select an answer — feedback appears; click Next — new question loads (classic and timed-pop)
-10. Click "Choose game" — mode selector opens with Classic, Timed Pop, Build Bridge; select Build Bridge — game switches to build-bridge mode
-11. Visit http://localhost:3000/play?mode=build-bridge — graphical scene (background, bridge, character); planks as game objects; drag correct plank to gap or click plank then gap — feedback; wrong drop shows wobble; after 2 wrong, hint appears; click Next — score increments, new question loads
+2. **UI regression (Epic 18):** On any page, verify AppShell renders:
+   - Top bar with profile pill and "Choose game" button
+   - Nav tabs (Sticker book, Progress, Settings) with icons
+   - Centered stage card wrapping page content
+   - No plain white document background (gradient/playful background visible)
+3. Visit http://localhost:3000/start — should show API health JSON inside stage card
+4. Visit http://localhost:3000/play — should show math game (classic mode, infinite content), question, answer buttons
+5. Visit http://localhost:3000/play?mode=classic — same as above (explicit classic)
+6. Visit http://localhost:3000/play?mode=timed-pop — should show math game with countdown timer
+7. For timed-pop: wait ~15s for timeout → "Time's up! The answer was X" → click Next → new question loads
+8. Visit http://localhost:3000/play?mode=pack or /play?source=pack — should show math game with content pack levels
+9. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
+10. Select an answer — feedback appears; click Next — new question loads (classic and timed-pop)
+11. Click "Choose game" — mode selector opens with Classic, Timed Pop, Build Bridge; select Build Bridge — game switches to build-bridge mode
+12. Visit http://localhost:3000/play?mode=build-bridge — graphical scene (background, bridge, character); planks as game objects; drag correct plank to gap or click plank then gap — feedback; wrong drop shows wobble; after 2 wrong, hint appears; click Next — score increments, new question loads
+13. Visit http://localhost:3000/stickers, /summary, /settings — each loads correctly with AppShell
 
 ## Install (prerequisites)
 
 ```bash
-# Web
-cd apps/web && pnpm install
+# Web (in container)
+docker compose exec web pnpm install
 
 # API
 cd apps/api && composer install

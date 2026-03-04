@@ -56,65 +56,72 @@ watch(bestScore, (score, oldScore) => {
 
 <style scoped>
 .stickers-page {
-  padding: 1rem;
+  padding: var(--app-space-md);
   max-width: 28rem;
   margin: 0 auto;
-  font-family: system-ui, sans-serif;
+  font-family: var(--app-font);
 }
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--app-font-size-xl);
+  margin-bottom: var(--app-space-sm);
 }
 .intro {
-  color: #666;
-  margin-bottom: 1rem;
+  color: var(--app-text-muted);
+  margin-bottom: var(--app-space-md);
 }
 .back {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1.5rem;
-  color: #06c;
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  margin-bottom: var(--app-space-lg);
+  font-family: var(--app-font);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  text-decoration: none;
+}
+.back:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 .category {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--app-space-lg);
 }
 .category h2 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
+  font-size: var(--app-font-size-lg);
+  margin-bottom: var(--app-space-sm);
 }
 .stickers {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--app-space-md);
 }
 .sticker {
   position: relative;
   width: 5rem;
-  padding: 0.75rem;
-  border: 2px solid #333;
-  border-radius: 0.5rem;
-  background: #fff;
+  padding: var(--app-space-md);
+  border: 2px solid var(--app-text);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
   text-align: center;
 }
 .sticker.locked {
   opacity: 0.6;
-  border-color: #999;
+  border-color: var(--app-muted);
 }
 .sticker.new {
-  border-color: #06c;
-  box-shadow: 0 0 0 2px #06c;
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 2px var(--app-primary);
 }
 .sticker-icon {
   font-size: 2rem;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--app-space-xs);
 }
 .sticker-lock {
   font-size: 1.5rem;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--app-space-xs);
 }
 .sticker-label {
   font-size: 0.8rem;
@@ -125,9 +132,9 @@ h1 {
   top: -0.5rem;
   right: -0.5rem;
   font-size: 0.65rem;
-  background: #06c;
-  color: #fff;
+  background: var(--app-primary);
+  color: white;
   padding: 0.15rem 0.35rem;
-  border-radius: 0.25rem;
+  border-radius: var(--app-radius-sm);
 }
 </style>

@@ -52,12 +52,12 @@ function onDownload() {
     </div>
 
     <div class="export-actions">
-      <button type="button" class="btn" @click="onCopy">
+      <PrimaryButton @click="onCopy">
         {{ copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Copy failed' : 'Copy to clipboard' }}
-      </button>
-      <button type="button" class="btn" @click="onDownload">
+      </PrimaryButton>
+      <SecondaryButton @click="onDownload">
         Save as file
-      </button>
+      </SecondaryButton>
     </div>
 
     <p class="privacy">Exports contain no names or IDs. Safe to share with teachers or caregivers.</p>
@@ -68,72 +68,63 @@ function onDownload() {
 
 <style scoped>
 .summary-page {
-  padding: 1rem;
+  padding: var(--app-space-md);
   max-width: 28rem;
   margin: 0 auto;
-  font-family: system-ui, sans-serif;
+  font-family: var(--app-font);
 }
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--app-font-size-xl);
+  margin-bottom: var(--app-space-sm);
 }
 .intro {
-  color: #666;
-  margin-bottom: 1.5rem;
+  color: var(--app-text-muted);
+  margin-bottom: var(--app-space-lg);
   font-size: 0.95rem;
 }
 .metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: var(--app-space-md);
+  margin-bottom: var(--app-space-lg);
 }
 .metric {
-  padding: 1rem;
-  background: #f5f5f5;
-  border-radius: 0.5rem;
+  padding: var(--app-space-md);
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: var(--app-radius-md);
 }
 .metric .label {
   display: block;
   font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.25rem;
+  color: var(--app-text-muted);
+  margin-bottom: var(--app-space-xs);
 }
 .metric .value {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
 }
 .export-actions {
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-.btn {
-  padding: 0.5rem 1rem;
-  min-height: 44px;
-  min-width: 44px;
-  font-size: 1rem;
-  border: 2px solid #06c;
-  border-radius: 0.5rem;
-  background: #e6f2ff;
-  cursor: pointer;
-}
-.btn:hover {
-  background: #cce5ff;
-}
-.btn:focus-visible {
-  outline: 2px solid #06c;
-  outline-offset: 2px;
+  gap: var(--app-space-md);
+  margin-bottom: var(--app-space-md);
 }
 .privacy {
   font-size: 0.8rem;
-  color: #666;
-  margin-bottom: 1rem;
+  color: var(--app-text-muted);
+  margin-bottom: var(--app-space-md);
 }
 .back {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  text-decoration: none;
+}
+.back:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 </style>

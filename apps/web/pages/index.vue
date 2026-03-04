@@ -2,28 +2,64 @@
   <div class="home">
     <h1>Welcome!</h1>
     <p class="intro">Ready to practice math? Pick a game and have fun!</p>
-    <nav>
-      <NuxtLink to="/start" class="nav-link">Check connection</NuxtLink>
-      <NuxtLink to="/play" class="nav-link">Play math game</NuxtLink>
+    <nav class="home-nav">
+      <NuxtLink to="/start" class="nav-link nav-link-secondary">Check connection</NuxtLink>
+      <NuxtLink to="/play" class="nav-link nav-link-primary">Play math game</NuxtLink>
     </nav>
   </div>
 </template>
 
 <style scoped>
 .home {
-  padding: 1rem;
-  font-family: system-ui, sans-serif;
+  padding: var(--app-space-md);
+  font-family: var(--app-font);
+}
+h1 {
+  font-size: var(--app-font-size-2xl);
+  margin-bottom: var(--app-space-sm);
 }
 .intro {
-  margin: 0.5rem 0 1rem;
-  color: #555;
+  margin: var(--app-space-sm) 0 var(--app-space-md);
+  color: var(--app-text-muted);
+  font-size: var(--app-font-size-lg);
+}
+.home-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--app-space-md);
 }
 .nav-link {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  color: #06c;
+  justify-content: center;
+  min-height: var(--app-tap-min);
+  min-width: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  text-decoration: none;
+  border-radius: var(--app-radius-md);
+  transition: background var(--app-transition), color var(--app-transition);
+}
+.nav-link-primary {
+  color: white;
+  background: var(--app-primary);
+  border: none;
+}
+.nav-link-primary:hover {
+  background: var(--app-primary-hover);
+}
+.nav-link-secondary {
+  color: var(--app-primary);
+  background: transparent;
+  border: 2px solid var(--app-primary);
+}
+.nav-link-secondary:hover {
+  background: rgba(46, 125, 50, 0.08);
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 </style>

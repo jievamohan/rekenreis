@@ -1,25 +1,20 @@
-# Epic 17 — Graphics v1: Security Design
+# Epic 18 — Security Design
 
-## Scope
+## Risk Assessment
 
-- Frontend-only: assets, Vue components, CSS
-- No new API endpoints, auth, or data handling
+- **No auth changes**: Profile/parent gate unchanged
+- **No new data flows**: Frontend-only styling
+- **No new dependencies**: CSS/tokens only; optional icon font (e.g. inline SVG)
+- **No secrets**: Design tokens are public styling
 
-## Risks
+## Mitigations
 
-| Area | Risk | Mitigation |
-|------|------|------------|
-| Assets | Malicious SVG | SVG placeholders from trusted source; no user-uploaded SVGs |
-| XSS | Dynamic content in scene | No innerHTML; use Vue bindings only |
-| CSP | Inline scripts/styles | Use existing Nuxt/Vue patterns; no eval |
+- Use only CSS variables and existing assets
+- No external CDN for fonts unless already in use (prefer system or bundled)
+- SAST/semgrep: no new patterns; existing rules apply
+- Gitleaks: no secrets in new files
 
-## No Changes to
+## Compliance
 
-- Auth, permissions, sessions
-- API, database, storage
-- Cookies, headers
-
-## Gate D
-
-- Gitleaks, Semgrep, policy-check: no new secrets or patterns
-- pnpm audit, composer audit: no new deps (or minimal; audit if added)
+- Contrast: maintain WCAG AA where applicable
+- Reduced motion: respect `prefers-reduced-motion` (already in use for graphics)

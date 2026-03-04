@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  css: ['~/assets/css/graphics.css'],
+  css: ['~/assets/css/graphics.css', '~/assets/css/tokens.css'],
   typescript: {
     strict: true,
   },

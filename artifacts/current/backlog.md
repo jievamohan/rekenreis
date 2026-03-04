@@ -1,43 +1,76 @@
-# Epic 17 — Graphics v1: Backlog
+# Epic 18 — Backlog
 
 ## Epic Summary
 
-Build a truly kid-friendly **graphical** minigame. Transform build-bridge from form-like (buttons, gradients) to a game scene with background, character/objects, and answer choices as game objects (planks).
+**Global Kid-Friendly Look & Feel v2**: Transform the entire app into a playful kindergarten-friendly look. Remove white document look; unify layout, typography, navigation, and feedback.
 
 ## Scope In
 
-- Planning: art-direction.md, game-feel.md, motion-audio.md, assets.md ✓
-- Assets pipeline: `apps/web/assets/graphics/`, SceneLayout component
-- Graphical build-bridge: scene, draggable planks as objects, wrong-drop (wobble + return + hint after 2 wrong)
-- Keyboard alternative, reduced motion
-- Unit tests + smoke update
+- App shell (global layout): playful background, centered stage card, top bar (profile pill, Choose game), nav as big icon-tabs
+- Design tokens: colors, typography, radii, spacing, shadows, button/tile styles
+- Shared components: AppShell, NavTabs, PrimaryButton, SecondaryButton, StatPill, GameStageCard
+- Migrate all pages (play, stickers, progress, settings, start, index) to use shell + tokens
+- Visual criteria: no plain white, big buttons, 44×44px tap targets, consistent typography, contrast + reduced-motion
+- Minigame integrates into shell (no styled island)
+- E2E smoke updated; UI regression assertion for AppShell/nav/stage
 
 ## Scope Out
 
-- Multiple new graphical modes
-- High-fidelity art packs
-- Heavy canvas/game engine libs
+- New game modes or logic changes
+- High-fidelity artwork packs
+- Backend changes
 
 ## Risks + Mitigations
 
-| Tag | Risk | Mitigation |
-|-----|------|------------|
-| perf | Bundle bloat | CSS/SVG only; no heavy deps |
-| a11y | Drag-only blocks keyboard | Keyboard path: select → place |
-| perf | Animation jank | prefers-reduced-motion disables non-essential |
+| Risk | Tag | Mitigation |
+|------|-----|------------|
+| Bundle size | perf | Tokens + CSS only; no heavy art |
+| A11y regression | security | Audit contrast, reduced-motion |
+| Layout breakage | - | Smoke + manual verification |
+
+No high-risk tags: auth, payments, crypto, data-loss, privacy.
 
 ## NFRs
 
-- **Perf**: Bundle within budget; no new heavy deps
-- **Security**: No new attack surface; frontend-only
-- **A11y**: Keyboard playable; big tap targets
+- **Perf**: Bundle budget must pass
+- **Security**: No new secrets; semgrep clean
+- **A11y**: Contrast, reduced-motion, tap targets
 
 ## Task List
 
-| # | Task | Lanes | Gates |
-|---|------|-------|-------|
-| 1 | 0092-graphics-assets-scene | W1 | C, D, F |
-| 2 | 0093-graphics-build-bridge-visual | W1 | C, D, F |
-| 3 | 0094-graphics-wrong-drop-hint | W1 | C, D, F |
-| 4 | 0095-graphics-reduced-motion | W1 | C, D, F |
-| 5 | 0096-graphics-tests-smoke | T, I | C, D, F |
+| # | Title | Lanes | Gates | Risk |
+|---|-------|-------|-------|------|
+| 1 | design-tokens | W1 | C,D,F | perf |
+| 2 | app-shell-layout | W1 | C,D,F | - |
+| 3 | shared-components | W1 | C,D,F | - |
+| 4 | page-migration | W1 | C,D,F | - |
+| 5 | smoke-ui-regression | T | C,D,F | - |
+
+## Task Details
+
+### Task 1: design-tokens
+- Define CSS variables (colors, typography, radii, spacing, shadows)
+- Replace ad-hoc styles with tokens
+- Lanes: W1 (apps/web/assets/css/*, nuxt.config)
+- Gates: C, D, F
+
+### Task 2: app-shell-layout
+- Create AppShell / default layout
+- Playful background, stage card, top bar, nav
+- Lanes: W1 (layouts, components)
+- Gates: C, D, F
+
+### Task 3: shared-components
+- NavTabs, PrimaryButton, SecondaryButton, StatPill, GameStageCard
+- Lanes: W1 (components)
+- Gates: C, D, F
+
+### Task 4: page-migration
+- Migrate index, start, play, stickers, summary, settings to shell + tokens
+- Lanes: W1 (pages)
+- Gates: C, D, F
+
+### Task 5: smoke-ui-regression
+- E2E smoke updated; UI regression: AppShell renders nav tabs and stage
+- Lanes: T (tests, docs/runbooks)
+- Gates: C, D, F
