@@ -9,7 +9,6 @@ SLEEP="${SLEEP:-30}"
 
 ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}"
 mkdir -p "$ARTIFACTS_DIR"
-STATUS_FILE="$ARTIFACTS_DIR/ci-status.md"
 
 run_gh() {
   if [[ "$MODE" == "container" ]]; then
@@ -18,9 +17,6 @@ run_gh() {
     gh "$@"
   fi
 }
-
-# Resolve repo context
-REPO="$(run_gh repo view --json nameWithOwner -q .nameWithOwner)"
 
 # Resolve PR if not provided
 if [[ -z "$PR" ]]; then
@@ -34,19 +30,12 @@ if [[ -z "$PR" ]]; then
 fi
 
 if [[ -z "$PR" || "$PR" == "null" ]]; then
-  echo "CI-WATCH: Could not resolve PR number. Provide PR number explicitly." | tee "$STATUS_FILE"
+  echo "CI-WATCH: Could not resolve PR number. Provide PR number explicitly." >&2
   exit 2
 fi
 
 # Get the latest run id for the PR's head sha
 HEAD_SHA="$(run_gh pr view "$PR" --json headRefOid -q .headRefOid)"
-
-echo "# CI Status" > "$STATUS_FILE"
-echo "- Repo: $REPO" >> "$STATUS_FILE"
-echo "- PR: #$PR" >> "$STATUS_FILE"
-echo "- Head SHA: $HEAD_SHA" >> "$STATUS_FILE"
-echo "- Mode: $MODE" >> "$STATUS_FILE"
-echo "" >> "$STATUS_FILE"
 
 # Poll latest run for the workflow(s) associated with this SHA
 for ((i=1; i<=RETRIES; i++)); do
@@ -55,7 +44,6 @@ for ((i=1; i<=RETRIES; i++)); do
     -q ".[] | select(.headSha==\"$HEAD_SHA\") | .databaseId" | head -n 1 || true)"
 
   if [[ -z "$RUN_ID" ]]; then
-    echo "- Poll $i/$RETRIES: No run found yet (queued?)" >> "$STATUS_FILE"
     sleep "$SLEEP"
     continue
   fi
@@ -63,17 +51,10 @@ for ((i=1; i<=RETRIES; i++)); do
   STATUS="$(run_gh run view "$RUN_ID" --json status -q .status)"
   CONCLUSION="$(run_gh run view "$RUN_ID" --json conclusion -q .conclusion)"
 
-  TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-  echo "- Poll $i/$RETRIES @ $TS: run_id=$RUN_ID status=$STATUS conclusion=${CONCLUSION:-null}" >> "$STATUS_FILE"
-
   if [[ "$STATUS" == "completed" ]]; then
     if [[ "$CONCLUSION" == "success" ]]; then
-      echo "" >> "$STATUS_FILE"
-      echo "✅ CI SUCCESS (run $RUN_ID)" >> "$STATUS_FILE"
       exit 0
     else
-      echo "" >> "$STATUS_FILE"
-      echo "❌ CI FAILED (run $RUN_ID, conclusion=$CONCLUSION)" >> "$STATUS_FILE"
       echo "$RUN_ID" > "$ARTIFACTS_DIR/ci-last-run-id.txt"
       # Auto-fetch logs per /ci-watch protocol
       SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -85,6 +66,5 @@ for ((i=1; i<=RETRIES; i++)); do
   sleep "$SLEEP"
 done
 
-echo "" >> "$STATUS_FILE"
-echo "⏱️ CI still pending after ${RETRIES} polls. Marking BLOCKED." >> "$STATUS_FILE"
+echo "CI-WATCH: Still pending after ${RETRIES} polls. Marking BLOCKED." >&2
 exit 3
