@@ -17,7 +17,11 @@ if [[ -z "${PR_NUM}" || "${PR_NUM}" == "null" ]]; then
 Auto-generated PR bootstrap for branch: $BRANCH
 EOF
   fi
-
+  
+  if ! grep -q '^## Tasks' "$BODY_FILE"; then
+    echo "artifacts/pr.md missing required '## Tasks' checklist section."
+    exit 4
+  fi
   # Title: keep it simple + deterministic
   gh pr create \
     --base "$BASE" \

@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import { usePlayGame } from '../composables/usePlayGame'
+import levelsV1 from '../content/levels.v1.json'
+
+const levelPack = levelsV1 as Array<{
+  operator: 'addition'
+  operandMin: number
+  operandMax: number
+  choiceCount: number
+  hintMode: string
+  difficultyTag: string
+}>
 
 describe('usePlayGame', () => {
   it('returns reactive state and actions', () => {
@@ -59,5 +69,42 @@ describe('usePlayGame', () => {
     const scoreBefore = game.score.value
     game.selectAnswer(q.choices[0])
     expect(game.score.value).toBe(scoreBefore)
+  })
+
+  it('source: "infinite" behaves as default', () => {
+    const game = usePlayGame('upTo10', { source: 'infinite' })
+    expect(game.question.value).not.toBeNull()
+    expect(game.question.value!.a + game.question.value!.b).toBe(
+      game.question.value!.correctAnswer
+    )
+  })
+
+  describe('pack mode', () => {
+    it('serves questions from level pack', () => {
+      const game = usePlayGame('upTo10', {
+        source: 'pack',
+        levelPack: levelPack.slice(0, 5),
+      })
+      const q = game.question.value!
+      expect(q.a + q.b).toBe(q.correctAnswer)
+      expect(q.choices).toContain(q.correctAnswer)
+      expect(new Set(q.choices).size).toBe(q.choices.length)
+    })
+
+    it('cycles through pack on nextQuestion', () => {
+      const pack = levelPack.slice(0, 3)
+      const game = usePlayGame('upTo10', { source: 'pack', levelPack: pack })
+      const q1 = game.question.value!
+      game.nextQuestion()
+      const q2 = game.question.value!
+      game.nextQuestion()
+      const q3 = game.question.value!
+      game.nextQuestion()
+      const q4 = game.question.value!
+      expect(q1).not.toEqual(q2)
+      expect(q2).not.toEqual(q3)
+      expect(q3).not.toEqual(q4)
+      expect(q4.a + q4.b).toBe(q4.correctAnswer)
+    })
   })
 })

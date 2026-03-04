@@ -30,6 +30,7 @@ When using /feature:
 - /feature MUST bootstrap the PR once via:
   - scripts/ci/gh_pr_bootstrap.sh
 - Delivery must stack commits onto the same PR branch (no PR per task).
+- The PR body MUST include a "## Tasks" checklist seeded from the generated task files (all unchecked initially).
 
 4) Default delivery mode
 - Default behavior of /feature is FORCE autopilot (bounded).
@@ -50,3 +51,9 @@ When using /feature:
 6) Delivery handoff rule
 - Delivery execution (FORCE/SAFE) must run tasks via /orchestrate-task.
 - /orchestrate-task remains the single authority for CI watch, CI autofix, artifacts commit, and merge-ready claims.
+- After successful delivery (no BLOCKED tasks and CI green), /feature MUST run /finalize-feature unless --no-finalize was provided.
+- /finalize-feature is responsible for:
+  - syncing PR task checklist
+  - squashing the feature branch
+  - force-pushing
+  - re-running CI watch and requiring CI SUCCESS

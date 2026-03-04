@@ -1,31 +1,33 @@
-# Task 0004: game-types-generator — Plan
+# Epic 1: Level Contract + Content Pack — Plan
 
-## Task summary
+## Feature summary
 
-Define `AdditionQuestion` and `GameMode` types; implement pure `generateAdditionQuestion(mode)` with 3–4 unique choices; unit tests for sum bounds, choice uniqueness, correct answer in choices.
-
-## Acceptance criteria mapping
-
-| AC | Implementation |
-|----|-----------------|
-| types/game.ts exports AdditionQuestion, GameMode | `apps/web/types/game.ts` |
-| generateAdditionQuestion('upTo10') returns a+b≤10, 3-4 unique choices | `apps/web/utils/questionGenerator.ts` |
-| generateAdditionQuestion('upTo20') returns a+b≤20 | Same |
-| Unit tests pass | `apps/web/test/questionGenerator.test.ts` |
-| Gates C, D, F; existing tests green | CI |
-
-## Wave plan
-
-- **Wave 0**: Types (`types/game.ts`)
-- **Wave 1**: Generator (`utils/questionGenerator.ts`)
-- **Wave 2**: Unit tests
-- **Wave 3**: Verify gates
-
-## Lane assignments
-
-- W2: types, utils
-- T: test file
+Make the kids math game data-driven via a Level schema (addition only). Provide starter content pack (~50 levels), deterministic level generator, wire /play for infinite and content pack modes. Mode switch via query param.
 
 ## Branch
 
-`feat/epic0-game-core-mvp`
+- **Feature branch**: `feat/epic1-level-contract-content-pack`
+- **Base**: `main`
+
+## Task execution order (max 5)
+
+| # | Task ID | Title |
+|---|---------|-------|
+| 1 | 0008 | level-schema-validator |
+| 2 | 0009 | level-generator-content-pack |
+| 3 | 0010 | play-game-dual-mode |
+| 4 | 0011 | play-page-mode-switch |
+| 5 | 0012 | smoke-e2e-verification |
+
+## Wave plan
+
+- **Wave 0**: Level schema + validator (0008)
+- **Wave 1**: Generator + content pack (0009)
+- **Wave 2**: usePlayGame dual-mode (0010), play.vue mode switch (0011)
+- **Wave 3**: Smoke verification (0012)
+
+## Lane ownership
+
+- W2: types/, utils/, composables/
+- W1: pages/, components/
+- T: test/, docs/runbooks/

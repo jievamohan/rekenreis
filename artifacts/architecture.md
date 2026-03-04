@@ -1,54 +1,57 @@
-# Epic 0: Game Core MVP — Architecture
+# Epic 1: Level Contract + Content Pack — Architecture
 
-## Proposed module boundaries
+## Module boundaries
 
-| Lane | Scope | Files |
-|------|-------|-------|
-| W1 | Pages, components | `apps/web/pages/**`, `apps/web/components/**` |
-| W2 | Composables, services, types | `apps/web/composables/**`, `apps/web/utils/**`, `apps/web/types/**` |
-| T | Tests | `apps/web/test/**`, `apps/web/**/__tests__/**` |
-| A1, A2, I, D | N/A | No changes |
+- **W2 (logic)**: `apps/web/types/level.ts`, `apps/web/utils/levelGenerator.ts`, `apps/web/utils/levelValidator.ts`, `apps/web/composables/usePlayGame.ts` (extended).
+- **W1 (UI)**: `apps/web/pages/play.vue` (minimal: mode from route/config).
+- **T**: `apps/web/test/levelValidator.test.ts`, `apps/web/test/levelGenerator.test.ts`, `apps/web/test/usePlayGame.test.ts` (extended).
+- **Content**: `apps/web/content/levels.v1.json` (static, versioned).
 
-## Data flow and interfaces
+## Data flow
 
 ```
-[Page /play]
-    ↓ usePlayGame()
-[Composable: usePlayGame]
-    ↓ generateQuestion(mode), checkAnswer, nextQuestion
-[Service/Util: questionGenerator]
-    ↓ AdditionQuestion type, generateAdditionQuestion(mode)
-[Types: game types]
-    AdditionQuestion { a, b, correctAnswer, choices }
-    GameMode 'upTo10' | 'upTo20'
+levels.v1.json (static)
+        │
+        ├─► levelValidator.validate(level) → Level | throw
+        │
+levelGenerator.generateLevelPack(seed, config) → Level[]
+        │
+        ▼
+usePlayGame(mode, source: 'infinite' | 'pack')
+        │
+        ├─► infinite: generateAdditionQuestion(mode) [existing]
+        └─► pack: levelSource.getNextQuestion() from preloaded pack
+        │
+        ▼
+play.vue (unchanged UI surface, mode from route)
 ```
 
-- **Types**: `AdditionQuestion`, `GameMode` — future-proof for skins/levels (mode can extend).
-- **Generator**: Pure function `generateAdditionQuestion(mode: GameMode): AdditionQuestion`.
-- **Composable**: `usePlayGame()` — state (question, score, streak, feedback), actions (selectAnswer, nextQuestion).
+## Level schema (ADR-lite)
+
+- **Level**: `operator`, `operandMin`, `operandMax`, `choiceCount`, `hintMode`, `difficultyTag`, `masteryRules?`.
+- **Operator**: `"addition"` only (extensible for future).
+- **Runtime validation**: Zod or valibot for TypeScript-first validation; no backend dependency.
+- **Content versioning**: `levels.v1.json`; future versions as `levels.v2.json` with migration path.
 
 ## Testing strategy
 
-| Layer | Approach |
-|-------|----------|
-| Generator | Unit tests: sum bounds, choice uniqueness, correct answer in choices. |
-| Composable | Unit tests: score/streak logic, state transitions. |
-| Page | Component test or smoke: render, interaction (if Vitest supports Vue). |
-| Regression | Existing api.test.ts, HealthTest, smoke (docker) must pass. |
+- **Unit**: Schema validation, generator determinism, sanity checks (ranges, correct answer, unique choices).
+- **Integration**: usePlayGame with pack source returns valid questions.
+- **Smoke**: /play loads and plays in both modes; existing e2e unchanged.
 
-## Performance considerations
+## Performance
 
-- Generator runs in-memory; negligible.
-- No new heavy deps; bundle size impact minimal.
-- Perf budget: gate F (build + size) must pass.
+- Content pack: ~50 levels ≈ small JSON (< 10KB); static import acceptable.
+- Bundle: validator + generator minimal; Gate F (size) must pass.
 
-## Security considerations
+## Security
 
-- No auth, no persistence, no PII.
-- Client-only logic; no new attack surface beyond existing web app.
+- No user input into level generation beyond mode param; low risk.
+- Content pack is static, not user-uploaded.
 
-## ADR-lite
+## Risks + mitigations
 
-- **Pure generator**: Question generation is a pure function for easy testing and determinism.
-- **Composable-owned state**: Game state lives in `usePlayGame` so it can be reused and tested.
-- **Types first**: `AdditionQuestion` and `GameMode` defined upfront for extensibility (levels, skins later).
+| Risk | Mitigation |
+|------|------------|
+| Bundle bloat | Use small validator (Zod is ~12KB; valibot smaller); Gate F |
+| Regressions | Extend existing tests; smoke verification |

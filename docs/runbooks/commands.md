@@ -41,15 +41,16 @@ docker compose up --build
 
 # Web: http://localhost:3000/start
 # Web game: http://localhost:3000/play
-# API: http://localhost:8000/api/health
+# API: http://localhost:8001/api/health
 ```
 
 ## Smoke verification
 
 1. `docker compose up --build`
 2. Visit http://localhost:3000/start — should show API health JSON
-3. Visit http://localhost:3000/play — should show math game, question, answer buttons
-4. Select an answer — feedback appears; click Next — new question loads
+3. Visit http://localhost:3000/play — should show math game (infinite mode), question, answer buttons
+4. Visit http://localhost:3000/play?mode=pack — should show math game with content pack levels
+5. Select an answer — feedback appears; click Next — new question loads (both modes)
 
 ## Install (prerequisites)
 

@@ -1,34 +1,28 @@
-# Epic 0: Game Core MVP — Solution Design
+# Epic 1: Level Contract + Content Pack — Solution
 
-## Environment/config needs
+## Environment/config
 
-- None. No new env vars; existing `apiUrl` unaffected.
-- Game logic is client-only; no new Docker or env wiring.
+- No new env vars required.
+- Mode: query param `?mode=infinite|pack`; default `infinite` for backward compatibility.
+- Optional: `nuxt.config` runtime config for default mode if needed.
 
 ## Integration points
 
-- None. No API calls for game logic.
-- `/play` is a new route; no changes to `/start` or API.
+- **usePlayGame**: Accept `source: 'infinite' | 'pack'` and optional `levelPack?: Level[]`.
+- **play.vue**: Read `route.query.mode` or config; pass to usePlayGame.
+- **Content**: `import levelsV1 from '~/content/levels.v1.json'` (Nuxt auto-import) or `fetch('/content/levels.v1.json')` at runtime.
 
 ## Operational concerns
 
-- N/A for MVP—client-only, no logging/observability needed for game loop.
-
-## Deployment considerations
-
-- CI: New tests in `lint-test` job; no workflow changes.
-- No migrations, no infra changes.
+- Logging: none required for Epic 1.
+- Error handling: Invalid pack → fallback to infinite; log to console in dev.
 
 ## NFRs checklist
 
-| NFR | Approach |
-|-----|----------|
-| Perf | Generator is sync; gate F passes. |
-| Security | No new surface. |
-| Reliability | Deterministic logic; no flaky network. |
-| A11y | Keyboard + focus as per ux.md. |
+- **Perf**: Gate F; content pack < 10KB.
+- **Security**: Gate D; no new surface.
+- **Reliability**: Fallback on pack load failure.
 
-## Rollback approach
+## Rollback
 
-- Feature is additive: new route, new utils/composables.
-- Removing `/play` and related files reverts the feature; no DB or API rollback needed.
+- Revert branch; content pack and schema are additive; no DB/API changes.

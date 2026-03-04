@@ -1,34 +1,19 @@
-# Epic 0: Game Core MVP — Security Design
+# Epic 1: Level Contract + Content Pack — Security Design
 
-## Trust boundaries + data flow risks
+## Attack surface
 
-- **Boundary**: Browser only. No server-side game logic.
-- **Data flow**: User input (answer selection) → local state → UI feedback.
-- **Risk**: Low—no auth, no persistence, no PII, no payment.
+- **Content pack**: Static file; not user-uploaded. Low risk.
+- **Query param**: `mode` is read-only; no injection into level generation.
+- **Validator**: Validates structure only; no eval or dynamic code.
 
-## Threat model light
+## Secrets
 
-- **Assets**: None (no stored data, no credentials).
-- **Attackers**: N/A for MVP.
-- **Entry points**: /play page; same origin as rest of web app.
+- None. No API keys, no auth.
 
-## Auth/permissions implications
+## Auth implications
 
-- None. No auth required; game is anonymous, client-only.
+- None. Game remains unauthenticated.
 
-## Privacy considerations
+## SAST / dependency audit
 
-- No PII; no logging of answers or scores to server.
-- Client state only; cleared on page leave.
-
-## Secure defaults + no-go patterns
-
-- No eval, no dynamic code execution.
-- No storage of user data.
-- Generator is pure; no injection surface.
-
-## Risk tags + mitigations
-
-- **security**: None.
-- **auth**: None.
-- **privacy**: None.
+- Gate D: gitleaks, semgrep, pnpm audit, composer audit—unchanged.

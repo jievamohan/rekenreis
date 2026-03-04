@@ -1,43 +1,31 @@
-# Epic 0: Game Core MVP — QA Strategy
+# Epic 1: Level Contract + Content Pack — QA
 
-## Test pyramid
+## Unit tests
 
-| Level | Coverage | Tools |
-|-------|----------|-------|
-| Unit | Generator correctness, choice uniqueness, composable logic | Vitest |
-| Component | Page render, basic interaction (optional) | Vitest + @vue/test-utils if needed |
-| Smoke | Docker compose, /start, /play load | Manual or E2E (future) |
+1. **levelValidator.test.ts**
+   - Valid Level passes validation.
+   - Invalid (missing operator, bad operand ranges, wrong types) fails.
 
-## Per-task test requirements
+2. **levelGenerator.test.ts**
+   - Same seed + config → identical level pack output.
+   - Generated levels: operands in range, correct answer in choices, choices unique.
+   - choiceCount respected.
 
-| Task | Unit | Regression |
-|------|------|------------|
-| Types + Generator | Generator: sum bounds, uniqueness, correct in choices | — |
-| Composable | Score, streak, state transitions | — |
-| Page + UI | Optional: render, keyboard | — |
-| Integration | — | api.test.ts, HealthTest, smoke pass |
+3. **usePlayGame.test.ts**
+   - Pack mode: questions come from provided pack.
+   - Infinite mode: behavior unchanged (existing tests).
 
-## Mocking/stubbing strategy
+## Smoke/e2e
 
-- Generator: none—pure function.
-- Composable: none for MVP.
-- No API mocks for game logic.
+- /play loads in both modes (no regression).
+- Answer → feedback → Next works.
+- Existing api.test.ts, HealthTest, smoke runbook pass.
 
-## Deterministic data / seed strategy
+## Test matrix
 
-- Generator can accept optional seed for reproducibility in tests.
-- For MVP: deterministic by mode; no flaky RNG if we use fixed seed in tests.
-
-## Regression risks + smoke coverage
-
-- **Risk**: Breaking `/start` or api.test.ts.
-- **Mitigation**: No edits to start.vue, api.ts, useApi; run full test suite.
-- **Smoke**: `docker compose up`, visit /start and /play, verify both render.
-
-## Definition of Done
-
-- All new unit tests pass.
-- api.test.ts and HealthTest pass.
-- Gate C (typecheck), D (security), F (build) pass.
-- Lint-test job green.
-- /play is playable with keyboard.
+| Scenario | Mode | Expected |
+|----------|------|----------|
+| /play | infinite (default) | Generated questions |
+| /play?mode=pack | pack | Pack questions |
+| /play?mode=invalid | infinite | Fallback |
+| Empty pack | pack | Fallback to infinite |

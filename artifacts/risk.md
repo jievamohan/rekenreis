@@ -1,10 +1,12 @@
-# Task 0004: game-types-generator — Risk
+# Task 0008: Level Schema Validator — Risk
 
 ## Risk areas
 
-- **perf**: Generator is sync, in-memory; negligible impact.
-- **deps**: No new dependencies.
+| Area | Level | Mitigation |
+|------|-------|------------|
+| deps | Low | Add Zod; Gate F enforces bundle budget |
+| perf | Negligible | Validation runs on load; small JSON |
 
 ## High-risk changes
 
-None.
+- None. No auth, crypto, payments, or data-loss.
