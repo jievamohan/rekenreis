@@ -1,29 +1,29 @@
-# Epic 9 — Adaptive Assistance (Hints, Anti-Guessing, Confidence Gate)
+# Epic 10 — Child Profiles (Local) + Parent Gate
 
-Add adaptive assistance so kids don't get stuck or spam-guess.
+Add local child profiles so multiple kids can use the same device.
 
 **Requirements:**
-- Confidence gate: after 2 wrong answers, reveal hint (dots / number line)
-- Hint modes: dots, number-line visuals
-- Gentle pacing: if child struggles (3+ wrong), auto-switch to easier tag for a few rounds
-- Persist assistance state locally (session-only for Epic 9)
-- Tests: deterministic triggers, no infinite loops
-- UX: feedback stays positive; no negative scoring
+- Local profiles: name/avatar, per-profile progress, rewards, last mode/skin
+- Parent gate: hold 3s or arithmetic for settings access
+- Settings per profile: difficulty ceiling (10/20), hints on/off
+- Migration from single-user to default profile
+- Tests: storage versioning, parent gate behavior
+- UX: large tap targets, minimal reading
 
 **Non-goals:**
-- Full personalization ML
-- Parental dashboards
+- Accounts/login
+- Cloud sync
 
 ## Tasks
 
-- [ ] 0050-assistance-state
-- [ ] 0051-hint-components
-- [ ] 0052-play-integration-assistance
-- [ ] 0053-pacing-intervention
-- [ ] 0054-tests-assistance
+- [ ] 0055-profile-schema
+- [ ] 0056-useProfile-composable
+- [ ] 0057-profile-selector-ui
+- [ ] 0058-parent-gate
+- [ ] 0059-play-integration-profiles
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic9-adaptive-assistance
-- PR: #25
-- URL: https://github.com/jievamohan/rekenreis/pull/25
+- Branch: feat/epic10-child-profiles
+- PR: #26
+- URL: https://github.com/jievamohan/rekenreis/pull/26

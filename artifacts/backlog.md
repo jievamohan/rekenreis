@@ -1,42 +1,42 @@
-# Epic 9 — Adaptive Assistance: Backlog
+# Epic 10 — Child Profiles (Local) + Parent Gate: Backlog
 
 ## Epic Summary
 
-Add adaptive assistance so kids don't get stuck or spam-guess. Confidence gate reveals hints after 2 wrong answers. Gentle pacing intervention switches to easier levels when child struggles. Hint visuals: dots, number line.
+Add local child profiles so multiple kids can use the same device. Per-profile progress, rewards, preferences. Parent gate for settings. Large tap targets.
 
 ## Scope In
 
-- useAssistance composable: wrong-answer count, hint-reveal at 2 wrong
-- Hint components: dots, number-line (grouping deferred)
-- Wire assistance into play.vue and skin props
-- Pacing intervention: 3+ wrong in recent 5 → next 2 rounds easier (pack mode)
-- Tests: deterministic triggers, no infinite loops, E2E smoke
+- Profile schema: profiles list, activeProfileId, per-profile progress/prefs
+- useProfile composable: create, switch, active profile
+- Profile selector UI: list, create, avatar picker
+- Parent gate: hold 3s or arithmetic check
+- Play integration: use profile data; settings page (difficulty, hints) behind gate
+- Migration from single-user to default profile
 
 ## Scope Out
 
-- Choice reduction (defer)
-- Per-profile persistence (Epic 10)
-- Grouping hint variant (simplify to dots + number-line only)
-- Full personalization ML, parental dashboards
+- Accounts/login
+- Cloud sync
+- Rich avatar customization
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| perf | Hint components add DOM | Keep lightweight; no heavy deps |
+| data-loss | Migration drops data | Test migration; preserve legacy until confirmed |
 
 ## NFRs
 
-- Perf: bundle budget unchanged
-- Security: no new surface
-- A11y: hints must be keyboard accessible, aria-describedby
+- Perf: bundle budget
+- A11y: large tap targets, keyboard support for gate
+- Security: parent gate is UX only; document limitation
 
 ## Task List
 
 | # | Title | Lanes | Gates |
 |---|-------|-------|-------|
-| 0050 | assistance-state | W2 | C, D, F |
-| 0051 | hint-components | W1 | C, D, F |
-| 0052 | play-integration-assistance | W1, W2 | C, D, F |
-| 0053 | pacing-intervention | W2 | C, D, F |
-| 0054 | tests-assistance | T | C, D, F |
+| 0055 | profile-schema | W2 | C, D, F |
+| 0056 | useProfile-composable | W2 | C, D, F |
+| 0057 | profile-selector-ui | W1 | C, D, F |
+| 0058 | parent-gate | W1 | C, D, F |
+| 0059 | play-integration-profiles | W1, W2 | C, D, F |

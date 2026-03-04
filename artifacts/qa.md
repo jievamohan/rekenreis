@@ -1,20 +1,19 @@
-# Epic 9 — Adaptive Assistance: QA
+# Epic 10 — Child Profiles: QA
 
-## Acceptance Criteria (summary)
+## Acceptance
 
-- After 2 wrong on same question: hint (dots or number line) is revealed
-- Hint visuals render correctly and are accessible
-- Pacing intervention: 3+ wrong in 5 → next 2 rounds use easier levels (pack mode)
-- No infinite loops; no hard fail state
-- Feedback stays positive
-- Typecheck, security scan, bundle budget pass
+- Create profile with name/avatar
+- Switch between profiles; each retains own progress, prefs
+- Parent gate: hold 3s or arithmetic unlocks settings
+- Settings: difficulty ceiling, hints on/off per profile
+- Migration: existing single-user data becomes default profile
+- Typecheck, security, bundle budget pass
 
 ## Test Plan
 
-| Area | Test Type | Coverage |
-|------|-----------|----------|
-| useAssistance | Unit | wrongCount increment, hint at 2, reset on next |
-| Hint components | Unit | render with a,b, correctAnswer |
-| Pacing intervention | Unit | mock pack; verify easier level selection |
-| E2E | Smoke | play 1 wrong, 2 wrong, see hint; continue |
-| Determinism | Unit | same inputs → same hint state |
+| Area | Type | Coverage |
+|------|------|----------|
+| profileSchema | Unit | load, save, migration, validation |
+| useProfile | Unit | create, switch, active profile |
+| ParentGate | Unit | hold timing, arithmetic |
+| Integration | Unit | play uses profile data |

@@ -16,8 +16,13 @@ export function getUnlockedSkinIds(score: number): SkinId[] {
  * Rewards composable: unlock skins by score threshold.
  * Uses usePersistence for versioned best score storage.
  */
-export function useRewards(currentScore: Ref<number>) {
-  const { bestScore } = usePersistence(currentScore)
+type ProfileApi = {
+  activeProfile: { value: { id: string; progress: { bestScore: number } } | null }
+  updateProfile: (id: string, u: Record<string, unknown>) => void
+}
+
+export function useRewards(currentScore: Ref<number>, profile?: ProfileApi) {
+  const { bestScore } = usePersistence(currentScore, profile)
 
   const unlockedIds = computed(() => getUnlockedSkinIds(bestScore.value))
 

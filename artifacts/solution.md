@@ -1,21 +1,15 @@
-# Epic 9 — Adaptive Assistance: Solution
+# Epic 10 — Child Profiles: Solution
 
-## Task Breakdown
+## Task Breakdown (5 tasks)
 
-1. **assistance-state** (W2): Create useAssistance composable; wrong-answer counter; hint-reveal trigger (2 wrong → show hint)
-2. **hint-components** (W1): HintDots, HintNumberLine, HintGrouping components; plug into SkinRoundProps
-3. **play-integration-assistance** (W1,W2): Wire useAssistance into play.vue; pass hintToShow to skins; integrate hint components
-4. **pacing-intervention** (W2): When wrongStreak >= 3, prefer easier levels for next 2 rounds (pack mode only)
-5. **tests-assistance** (T): Unit tests for assistance triggers; deterministic; no infinite loops; E2E smoke
+1. **profile-schema** (W2): ProfileSchemaV1, profiles + activeProfileId, load/save, migration from single-user
+2. **useProfile-composable** (W2): useProfile() — activeProfile, switchProfile, createProfile
+3. **profile-selector-ui** (W1): ProfileSelector component, profile creation, avatar picker
+4. **parent-gate** (W1): ParentGate component — hold 3s or arithmetic
+5. **play-integration-profiles** (W1,W2): Wire play to useProfile; per-profile prefs; settings page with gate
 
-## Scope Reduction for 5 Tasks
+## Scope Reduction
 
-- **Choice reduction**: Defer to later (simplify)
-- **Persistence**: Session-only for Epic 9; full per-profile in Epic 10
-- **Hint types**: Implement dots + number-line; grouping as "dots with grouping" variant
-
-## Determinism
-
-- Assistance triggers are pure functions of (wrongCount, threshold)
-- No randomness in hint reveal
-- Tests use fake feedback sequence
+- Avatar: 4 simple options (emoji or CSS shapes)
+- Parent gate: both options (hold + arithmetic) — user chooses
+- Settings: difficulty ceiling + hints toggle only
