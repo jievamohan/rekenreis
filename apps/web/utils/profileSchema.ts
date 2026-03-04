@@ -11,6 +11,11 @@ const LEGACY_TELEMETRY_KEY = 'rekenreis_telemetry_opt_out'
 export type AvatarId = 'default' | 'star' | 'heart' | 'circle' | 'square'
 export type GameMode = 'upTo10' | 'upTo20'
 
+export interface ProfileProgress {
+  bestScore: number
+  dailyGoal?: { date: string; roundsPlayed: number }
+}
+
 export interface ProfilePrefs {
   lastMode: InteractionModeId
   lastSkin: SkinId
@@ -23,7 +28,7 @@ export interface ProfileData {
   id: string
   name: string
   avatarId: AvatarId
-  progress: { bestScore: number }
+  progress: ProfileProgress
   prefs: ProfilePrefs
   telemetryOptOut: boolean
 }
@@ -141,6 +146,9 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
       VALID_AVATARS.includes(p.avatarId as AvatarId) &&
       p.progress &&
       typeof p.progress.bestScore === 'number' &&
+      (p.progress.dailyGoal === undefined ||
+        (typeof p.progress.dailyGoal?.date === 'string' &&
+          typeof p.progress.dailyGoal?.roundsPlayed === 'number')) &&
       p.prefs &&
       VALID_MODES.includes(p.prefs.lastMode as InteractionModeId) &&
       VALID_SKINS.includes(p.prefs.lastSkin as SkinId) &&

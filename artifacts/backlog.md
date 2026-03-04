@@ -1,39 +1,39 @@
-# Epic 11 — Audio & Micro-Animations: Backlog
+# Epic 12 — Rewards Expansion: Backlog
 
 ## Epic Summary
 
-Add optional sound effects and micro-animations. Per-profile toggle. Never block gameplay. Respect reduced-motion.
+Expand rewards into sticker book and optional daily goal. Per-profile. Celebratory, never blocks play.
 
 ## Scope In
 
-- ProfilePrefs.soundOn; settings toggle
-- useSound composable: correct/wrong/celebrate; lazy-load; never block
-- SFX assets in public/sfx
-- Feedback micro-animations (correct: subtle scale; wrong: gentle shake)
-- prefers-reduced-motion support
+- Profile progress: dailyGoal { date, roundsPlayed }
+- useDailyGoal composable: timezone-safe today, increment, reset
+- Sticker book page: categories, locked/unlocked, "new" highlight
+- Daily goal widget on play: rounds/goal, celebrate when reached
+- Wire incrementRound when round completes
 
 ## Scope Out
 
-- Background music
-- Heavy animation libraries
+- Monetization
+- Leaderboards
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| perf | Bundle growth | Lazy-load audio; small SFX files |
+| perf | Bundle growth | No new heavy deps; use native Date |
 
 ## NFRs
 
-- Perf: lazy-load audio; bundle budget
-- A11y: prefers-reduced-motion: reduce disables animations
+- Perf: minimal bundle impact
+- A11y: sticker book keyboard nav
 
 ## Task List
 
 | # | Title | Lanes | Gates |
 |---|-------|-------|-------|
-| 0060 | sound-prefs-schema | W2 | C, D, F |
-| 0061 | useSound-composable | W2 | C, D, F |
-| 0062 | sfx-assets-settings-toggle | I, W1 | C, D, F |
-| 0063 | feedback-micro-animations | W1 | C, D, F |
-| 0064 | audio-animations-tests | T | C, D, F |
+| 0065 | daily-goal-schema | W2 | C, D, F |
+| 0066 | useDailyGoal-composable | W2 | C, D, F |
+| 0067 | sticker-book-config-page | W2, W1 | C, D, F |
+| 0068 | daily-goal-play-integration | W1, W2 | C, D, F |
+| 0069 | rewards-expansion-tests | T | C, D, F |

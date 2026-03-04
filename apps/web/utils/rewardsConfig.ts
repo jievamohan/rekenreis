@@ -13,3 +13,14 @@ export const UNLOCK_THRESHOLDS: Record<SkinId, number> = {
 export const SKIN_ORDER: SkinId[] = [...SKIN_IDS].sort(
   (a, b) => UNLOCK_THRESHOLDS[a] - UNLOCK_THRESHOLDS[b]
 )
+
+/** Sticker categories for sticker book. v1: stickers = skins. */
+export interface StickerCategory {
+  id: string
+  label: string
+  stickerIds: readonly SkinId[]
+}
+
+export const STICKER_CATEGORIES: StickerCategory[] = [
+  { id: 'skins', label: 'Skins', stickerIds: SKIN_ORDER },
+]

@@ -28,7 +28,7 @@ export function usePersistence(currentScore: Ref<number>, profile?: ProfileApi) 
       if (v <= current) return
       if (profile?.activeProfile.value) {
         profile.updateProfile(profile.activeProfile.value.id, {
-          progress: { bestScore: v },
+          progress: { ...profile.activeProfile.value.progress, bestScore: v },
         })
       } else {
         const next: ProgressSchemaV1 = { version: 1, bestScore: v }

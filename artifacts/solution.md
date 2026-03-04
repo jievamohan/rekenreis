@@ -1,35 +1,36 @@
-# Epic 11 — Audio & Micro-Animations: Solution
+# Epic 12 — Rewards Expansion: Solution
 
 ## 1. Profile Schema
 
-Extend ProfilePrefs in profileSchema.ts:
+Extend `ProfileData.progress`:
 ```ts
-soundOn: boolean  // default true
+progress: {
+  bestScore: number
+  dailyGoal?: { date: string; roundsPlayed: number }
+}
 ```
-Update defaultPrefs() and migration (new profiles get soundOn: true).
+Migration: existing profiles get dailyGoal undefined; init on first use.
 
-## 2. useSound Composable
+## 2. useDailyGoal Composable
 
-- `useSound(profile?: Ref<ProfileData | null>)`
-- `playCorrect()`, `playWrong()`, `playCelebrate()`
-- Lazy-load: create new Audio() on first play; store in module-level cache
-- Check profile?.prefs?.soundOn ?? true before playing
-- Try/catch around play(); never throw
+- `useDailyGoal(profile?)`
+- `getTodayLocal()`: `new Date().toLocaleDateString('en-CA', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })` or simpler: `toLocaleDateString('en-CA')` uses local TZ
+- `roundsPlayed`, `goalRounds = 5`
+- `incrementRound()`: if date changed, reset to 0; else +1; persist
+- `isGoalReached`
 
-## 3. Integration
+## 3. Sticker Config
 
-- play.vue (or wherever usePlayGame is used): watch feedback, call useSound methods
-- useRewards: when bestScore unlocks new reward, call playCelebrate()
-- settings.vue: add "Sound effects" checkbox bound to profile prefs
+- `STICKER_CATEGORIES`: [{ id: 'skins', label: 'Skins', stickerIds: SKIN_IDS }]
+- Stickers = skins for v1; reuse UNLOCK_THRESHOLDS
 
-## 4. SFX Assets
+## 4. Sticker Book Page
 
-- Add 3 short MP3 files to public/sfx/ (or use data URIs / inline base64 if we want zero extra requests; prefer public for clarity)
-- Name: correct.mp3, wrong.mp3, celebrate.mp3
+- Route: /stickers
+- List stickers by category; show locked/unlocked; "new" if unlocked this session (track in ref)
 
-## 5. Micro-Animations
+## 5. Daily Goal Widget
 
-- Create FeedbackTransition.vue or shared CSS for feedback states
-- Skin components: add transition wrappers; classes feedback-correct, feedback-incorrect
-- CSS keyframes: scale 1.02 for correct; translateX shake for wrong
-- prefers-reduced-motion: reduce → animation: none
+- On play.vue: small "3/5 rounds today" when daily goal enabled
+- Call incrementRound in play flow when round completes (nextQuestion)
+- Celebrate when goal reached

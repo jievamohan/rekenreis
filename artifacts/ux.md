@@ -1,24 +1,22 @@
-# Epic 11 — Audio & Micro-Animations: UX
+# Epic 12 — Rewards Expansion: UX
 
 ## Principles
 
-- Optional; defaults on, easy to turn off
-- Never block gameplay if audio fails (muted, unsupported)
-- Animations subtle and non-punitive
+- Celebratory but short; never blocks play
+- Kid-friendly: big tap targets, simple visuals
 
-## Sound
+## Sticker Book
 
-- Toggle in settings: "Sound effects" (default on)
-- SFX: correct (short positive), wrong (gentle neutral), celebrate (best-score unlock)
-- If AudioContext/Audio fails: fail silently; game continues
+- Page/route: /stickers (reachable from play or nav)
+- Pages: group stickers by category (e.g. Skins)
+- Categories: map existing skins to sticker entries
+- "New" highlight: recently unlocked (e.g. this session)
+- Each sticker: icon/label, locked or unlocked state
 
-## Animations
+## Daily Goal
 
-- **Correct**: brief scale or subtle bounce (0.2–0.3s)
-- **Wrong**: gentle horizontal shake (non-punitive; ~0.2s)
-- **Reduced motion**: if prefers-reduced-motion: reduce, disable animations
-
-## Settings
-
-- Add "Sound effects" checkbox next to hints toggle
-- Per profile (soundOn in ProfilePrefs)
+- Optional widget on play: "3/5 rounds today" or similar
+- Goal: play 5 rounds (complete 5 questions)
+- Timezone-safe: use local date for "today"
+- Reset: at local midnight
+- Reward: brief celebration when goal reached (reuse playCelebrate or similar)

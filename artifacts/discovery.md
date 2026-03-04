@@ -1,35 +1,34 @@
-# Epic 11 — Audio & Micro-Animations: Discovery
+# Epic 12 — Rewards Expansion: Discovery
 
 ## Feature Summary
 
-Add optional sound effects (correct, wrong, celebrate) and micro-animations (subtle motion on correct, gentle shake on wrong). Global toggle per profile. Never block gameplay. Respect reduced-motion preference.
+Expand rewards into a sticker book (pages, categories, "new" highlight) and optional daily goal ("play 5 rounds"). Persist per profile. Celebratory but short; never blocks play.
 
 ## Current State
 
-- **Audio**: None; no audio/Sound/AudioContext usage
-- **Animations**: Minimal — ParentGate hold-fill transition; no feedback animations
-- **Feedback flow**: usePlayGame sets `feedback` (correct/incorrect/timeout); skin components render it
-- **Profile prefs**: ProfilePrefs has lastMode, lastSkin, difficultyCeiling, hintsOn; no soundOn
-- **Settings**: settings.vue behind ParentGate; difficulty + hints toggles
+- **Rewards**: useRewards derives unlocked skins from bestScore; UNLOCK_THRESHOLDS per skin
+- **Profile**: progress.bestScore only; no daily or sticker data
+- **UI**: Skin picker inline + in PlayModeSelector; no sticker book
+- **Date**: Date.now() only; no timezone-safe local date
 
 ## Requirements (from Epic)
 
-1. **Sound**: tiny SFX pack (correct, wrong, celebrate); global toggle per profile; never block if audio fails
-2. **Animations**: subtle motion on correct; gentle shake on wrong (non-punitive)
-3. **Performance**: lazy-load audio; bundle within budget
-4. **Accessibility**: respect prefers-reduced-motion
-5. **Tests**: settings persistence; reduced-motion behavior
+1. **Sticker book**: pages, categories, "new sticker" highlight
+2. **Daily goal** (optional): "play 5 rounds" reward; timezone-safe local calculation
+3. **Persist rewards per profile**
+4. **Tests**: daily reset logic, reward unlocking rules
+5. **UX**: celebratory but short; never blocks play
 
 ## Non-goals
 
-- Background music
-- Heavy animation libraries
+- Monetization
+- Leaderboards
 
 ## Key Files
 
-- `apps/web/utils/profileSchema.ts` — add soundOn to ProfilePrefs
-- `apps/web/composables/useSound.ts` — new: play SFX, lazy-load, never block
-- `apps/web/composables/usePlayGame.ts` — feedback triggers; wire to useSound
-- `apps/web/pages/settings.vue` — add sound toggle
-- `apps/web/public/` — SFX files (correct, wrong, celebrate)
-- Skin/mode components — add transition/animation wrappers; prefers-reduced-motion
+- `apps/web/utils/profileSchema.ts` — extend progress with dailyGoal
+- `apps/web/utils/rewardsConfig.ts` — sticker categories, map skins to stickers
+- `apps/web/composables/useDailyGoal.ts` — new: today (local), rounds, reset
+- `apps/web/composables/useRewards.ts` — already profile-aware
+- `apps/web/pages/stickers.vue` — new: sticker book UI
+- `apps/web/pages/play.vue` — optional daily goal widget

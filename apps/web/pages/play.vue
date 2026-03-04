@@ -15,6 +15,7 @@ import { useTelemetry } from '~/composables/useTelemetry'
 import { usePlayPreferences } from '~/composables/usePlayPreferences'
 import { useProfile } from '~/composables/useProfile'
 import { useSound } from '~/composables/useSound'
+import { useDailyGoal } from '~/composables/useDailyGoal'
 import ProfileSelector from '~/components/ProfileSelector.vue'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
@@ -91,6 +92,13 @@ watch(
 
 const { isUnlocked, unlockedIds } = useRewards(game.score, profile)
 const sound = useSound(profile)
+const dailyGoal = useDailyGoal(profile)
+
+const prevGoalReached = ref(false)
+watch(dailyGoal.isGoalReached, (reached) => {
+  if (reached && !prevGoalReached.value) sound.playCelebrate()
+  prevGoalReached.value = reached
+}, { immediate: true })
 
 watch(game.feedback, (fb) => {
   if (!fb) return
@@ -121,7 +129,10 @@ const skinProps = computed(() => ({
   streak: game.streak.value,
   mode: mode.value,
   onAnswer: game.selectAnswer,
-  onNext: game.nextQuestion,
+  onNext: () => {
+    if (game.feedback.value) dailyGoal.incrementRound()
+    game.nextQuestion()
+  },
   onModeChange: (m: GameMode) => {
     mode.value = m
   },
@@ -205,6 +216,7 @@ onMounted(() => {
       />
       <button type="button" class="close-btn" @click="showProfileSelector = false">Close</button>
     </div>
+    <NuxtLink to="/stickers" class="rewards-link">Sticker book</NuxtLink>
     <NuxtLink to="/settings" class="settings-link">Settings</NuxtLink>
     <PlayModeSelector
       v-model="showModeSelector"
@@ -230,6 +242,9 @@ onMounted(() => {
         <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
       </button>
     </nav>
+    <p v-if="profile.activeProfile.value" class="daily-goal" role="status" aria-live="polite">
+      {{ dailyGoal.roundsPlayed }}/{{ dailyGoal.goalRounds }} rounds today
+    </p>
     <div id="game-main" tabindex="-1">
       <component :is="gameMode.component" v-bind="modeProps" />
     </div>
@@ -306,6 +321,11 @@ onMounted(() => {
 .skin-btn .lock {
   margin-left: 0.25rem;
 }
+.daily-goal {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.25rem 0;
+}
 .privacy-footer {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -354,6 +374,7 @@ onMounted(() => {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
 }
+.rewards-link,
 .settings-link {
   margin-left: 0.5rem;
   font-size: 0.9rem;
