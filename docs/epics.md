@@ -260,7 +260,7 @@ Non-goals:
 ---
 
 ## Epic 15 — Release Prep (UX pass, Copy pass, Bug bash automation)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 15: Prepare for release-quality UX and stability.
 
