@@ -73,6 +73,7 @@ function selectSkin(id: SkinId) {
 
 <template>
   <div class="play-page">
+    <a href="#game-main" class="skip-link">Skip to game</a>
     <nav class="skin-picker" role="navigation" aria-label="Skin selector">
       <button
         v-for="id in SKIN_ORDER"
@@ -89,7 +90,9 @@ function selectSkin(id: SkinId) {
         <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
       </button>
     </nav>
-    <component :is="skin.component" v-bind="skinProps" />
+    <div id="game-main" tabindex="-1">
+      <component :is="skin.component" v-bind="skinProps" />
+    </div>
     <footer class="privacy-footer">
       <p class="privacy-note">
         Anonymous gameplay stats may be shared to improve the game. No personal data is collected.
@@ -109,6 +112,7 @@ function selectSkin(id: SkinId) {
 
 <style scoped>
 .play-page {
+  position: relative;
   padding: 0.5rem;
 }
 .skin-picker {
@@ -128,6 +132,10 @@ function selectSkin(id: SkinId) {
 }
 .skin-btn:hover:not(:disabled) {
   background: #f0f0f0;
+}
+.skin-btn:focus-visible {
+  outline: 2px solid #06c;
+  outline-offset: 2px;
 }
 .skin-btn.active {
   border-color: #06c;
@@ -155,5 +163,23 @@ function selectSkin(id: SkinId) {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+}
+.opt-out input:focus-visible {
+  outline: 2px solid #06c;
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0.5rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: #06c;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0.25rem;
+}
+.skip-link:focus {
+  left: 0.5rem;
 }
 </style>

@@ -1,10 +1,11 @@
-# Epic 4 UX
+# Epic 5 UX
 
-## Persistence
-- Progress stored locally; transparent to user
-- On schema upgrade: migrate silently
+## a11y
+- Tab order logical
+- Focus visible on interactive elements
+- Skip link or landmark for long pages
+- ARIA where needed
 
-## Privacy
-- Short privacy note (footer or settings)
-- Opt-out switch for telemetry (session stats)
-- Default: telemetry opt-in (or off by default for privacy-first)
+## Error states
+- API unreachable: friendly message
+- Loading states clear
