@@ -44,6 +44,15 @@ Otherwise (standalone task execution):
     - Risk areas (deps/infra/db/auth/security/perf) + mitigations
     - Explicitly flag high-risk changes (auth/crypto/payments)
 
+2.1) PR_BODY_SEED (no code changes)
+- Ensure `artifacts/pr.md` exists and includes a task checklist for this feature run.
+- Generate the checklist from the task files created in /tasks for this feature (ordered):
+  - Format:
+    ## Tasks
+    - [ ] <task-id>-<task-slug>
+- Append (or create) this section in artifacts/pr.md BEFORE PR bootstrap so the PR body contains it.
+- Do not mark any task as done here; all start unchecked.
+
 3) Split into lane subtasks + dispatch subagents (parallel)
 - Dispatch based on lanes in the task:
   - W1/W2 -> implementer-web
@@ -148,7 +157,20 @@ If CI FAILED:
       - Explain which files are dirty and why this violates merge-ready
       - Require either committing them properly (if intended) or reverting them
 
-11) Output (merge-ready criteria)
+11) TASK_CLOSE + PR_CHECKLIST_SYNC
+- Mark the current task as completed in its task file:
+  - Update the task frontmatter field:
+    - `status: "done"`
+  - Do this only if all gates are PASS and CI is SUCCESS.
+- Commit the task status change on the current PR branch:
+  - `git add tasks/<this-task-file>.md`
+  - `git commit -m "chore(task): mark {task.id} done" || true`
+  - `git push`
+- Sync PR body checkboxes (if present):
+  - Run: `scripts/ci/gh_pr_tasks_sync.sh`
+  - If it changes PR body, no git commit is needed (PR body is remote).
+
+12) Output (merge-ready criteria)
 Output:
 - Branch involved (PR branch; lane branches if used; integration notes)
 - PR number + URL

@@ -1,7 +1,6 @@
-# Typecheck — PASS
+# Gate C: Type-safety — PASS
 
 ```
-cd apps/web && pnpm run typecheck
+> nuxt typecheck
+(no errors)
 ```
-
-Result: PASS (strict TypeScript, no errors).

@@ -1,79 +1,80 @@
-# Epic 0: Game Core MVP — Discovery
+# Epic 1: Level Contract + Content Pack — Discovery
 
 ## User goal(s) and success metrics
 
-- **Primary**: Kids (age ~6) can practice addition in a playable loop at `/play`.
+- **Primary**: Make the kids math game data-driven via a level schema (addition only for now).
 - **Success metrics**:
-  - Playable: generate questions, select answers, get immediate feedback, advance to next question.
-  - Score/streak visible; progression feels continuous.
-  - Accessible via keyboard and focus.
-  - No regression: vertical-slice (`/start` + API health) and smoke test remain green.
+  - Game consumes level definitions (operator, operand ranges, choiceCount, hintMode, difficultyTag, masteryRules optional).
+  - Starter content pack (~50 levels) available and wired into /play.
+  - /play can run in "infinite generator mode" AND "content pack mode".
+  - Mode switch via config or query param (minimal UX).
+  - Same seed → same output (deterministic generator).
+  - Existing smoke/e2e tests remain green.
 
 ## Scope_in
 
-- `/play` route in apps/web (Nuxt 3 + Vue 3 + TS).
-- Addition-only core loop with two modes: **up to 10** (sums ≤ 10), **up to 20** (sums ≤ 20).
-- Question generator: a + b = ? with 3–4 multiple choice answers (one correct, rest plausible distractors).
-- Immediate feedback per answer (correct/incorrect), then next question.
-- Streak and score display.
-- Minimal UI, production-grade data models for future skins/levels.
-- Unit tests for generator correctness and choice uniqueness.
-- Keyboard navigation and focus management (accessible).
-- No minigame skins; no backend persistence/auth.
+- **Level schema**: TypeScript type + JSON schema or runtime validator.
+  - Fields: operator (addition only), operand ranges (min/max), choiceCount, hintMode, difficultyTag, masteryRules (optional).
+- **Deterministic level generator**: Create starter pack from seed/config.
+- **Content storage**: Versioned file at `apps/web/content/levels.v1.json`.
+- **/play updates**:
+  - Infinite generator mode (current behavior, seeded).
+  - Content pack mode (load from levels.v1.json).
+  - Switch mode via config or query param (minimal).
+- **Unit tests**: Schema validation, generator determinism, ranges, correct answer present, choices unique.
+- No backend persistence/auth. No new operators. No minigame skins.
+- Smoke/e2e tests must not break; update if needed.
 
 ## Scope_out
 
-- Subtraction, multiplication, division, or other operations.
-- Minigame skins or thematic layers.
-- Backend persistence, auth, user accounts.
-- High scores stored server-side.
-- DB migrations, API changes for game logic.
-- CI/infra changes beyond what’s required for new tests.
+- New operators (subtraction, etc.).
+- Minigame skins.
+- Backend storage/auth.
+- High scores or progress persistence.
 
 ## Functional requirements (bulleted, testable)
 
-1. **Question generation**
-   - Produce `{ a, b, correctAnswer, choices }` where `a + b = correctAnswer`, `choices` is 3–4 unique numbers including `correctAnswer`.
-2. **Modes**
-   - “Up to 10”: `a + b ≤ 10`; “Up to 20”: `a + b ≤ 20`.
-3. **UI**
-   - Show question, 3–4 answer buttons, score, streak.
-   - On answer: show feedback, then next question.
-4. **Accessibility**
-   - Tab order, focus visible, keyboard-selectable answers.
-5. **Regression**
-   - `/start` still renders API health; existing api.test.ts and HealthTest pass.
+1. **Level schema**
+   - TypeScript type `Level` with: operator, operandMin, operandMax, choiceCount, hintMode, difficultyTag, masteryRules (optional).
+   - Runtime validator (e.g. Zod, valibot) or JSON schema that rejects invalid data.
+2. **Deterministic generator**
+   - `generateLevelPack(seed, config)` produces identical output for same seed/config.
+   - Output conforms to Level schema.
+3. **Content pack**
+   - File `apps/web/content/levels.v1.json` contains ~50 levels.
+   - Levels loadable at runtime.
+4. **/play modes**
+   - Infinite mode: generate questions on-the-fly using seeded generator.
+   - Content pack mode: serve questions from loaded pack in order (or shuffled deterministically).
+   - Mode switch: config or query param (e.g. `?mode=pack` vs `?mode=infinite`).
+5. **Tests**
+   - Schema validation passes for valid levels; rejects invalid.
+   - Same seed → same level pack output.
+   - Sanity: operand ranges respected, correct answer in choices, choices unique.
 
 ## Acceptance criteria templates (Given/When/Then)
 
-- **AC-1**: Given mode “up to 10”, When a question is generated, Then `a + b ≤ 10` and `choices` contains exactly one correct value.
-- **AC-2**: Given mode “up to 20”, When a question is generated, Then `a + b ≤ 20`.
-- **AC-3**: Given any question, When inspecting `choices`, Then all values are unique.
-- **AC-4**: Given the play page, When user selects an answer, Then immediate feedback appears; When user proceeds, Then next question loads.
-- **AC-5**: Given the play page, When user answers correctly, Then streak increments; When incorrect, Then streak resets.
-- **AC-6**: Given the play page, When using keyboard only, Then user can navigate and select answers.
-- **AC-7**: Given the repo, When running existing tests and smoke, Then all pass (no regression).
+- **AC-1**: Given a valid Level object, When validated, Then it passes.
+- **AC-2**: Given invalid Level (missing operator, bad ranges), When validated, Then it fails.
+- **AC-3**: Given seed X and config C, When generateLevelPack(X, C) runs twice, Then output is identical.
+- **AC-4**: Given a generated level, When inspecting operands and choices, Then operands in range, correct answer present, choices unique.
+- **AC-5**: Given /play?mode=infinite, When playing, Then questions are generated on-the-fly.
+- **AC-6**: Given /play?mode=pack (or default from config), When playing, Then questions come from content pack.
+- **AC-7**: Given repo, When running existing smoke/e2e tests, Then all pass.
 
 ## Edge cases + failure modes
 
-- Mode switch mid-game: undefined; acceptable to require page reload.
-- Empty/zero operands: allow `0 + 0` in “up to 10”.
-- Extremely large number of questions: not bounded; acceptable for MVP.
+- Empty content pack: fallback to infinite mode.
+- Corrupt JSON: graceful error, fallback or clear message.
+- Mode param typo: default to safe mode (infinite).
 
 ## Dependencies and constraints
 
-- Nuxt 3, Vue 3, TypeScript (strict).
-- Vitest for unit tests.
-- No new npm deps unless justified.
-- Docker compose + vertical slice must stay green.
+- Extends existing `questionGenerator.ts`, `usePlayGame.ts`, `play.vue`.
+- No new heavy deps; prefer lightweight validator (Zod/valibot) if needed.
+- Content loaded at build or runtime (static import or fetch).
 
 ## Risk tags
 
-- **perf**: Minor—generator runs client-side; negligible.
-- **deps**: Low—no new deps planned.
-
-## Assumptions + open questions
-
-- Assumed: age ~6 implies simple UI, large touch targets.
-- Assumed: “up to 10/20” refers to sum (result), not operand bounds.
-- Open: exact number of choices (3 or 4)—default to 4, configurable via data model for extensibility.
+- **perf**: Low—content pack is static; bundle impact minimal.
+- **deps**: Low—one validator lib if not using native JSON parsing + manual checks.

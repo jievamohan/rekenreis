@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import type { GameMode } from '~/types/game'
+import type { Level } from '~/types/level'
 import { usePlayGame } from '~/composables/usePlayGame'
+import levelsV1 from '~/content/levels.v1.json'
+
+const route = useRoute()
+const playSource = computed(() =>
+  route.query.mode === 'pack' ? 'pack' : 'infinite'
+)
+const levelPack = computed(() =>
+  playSource.value === 'pack' ? (levelsV1 as Level[]) : []
+)
 
 const mode = ref<GameMode>('upTo10')
-const game = usePlayGame(mode)
+const game = usePlayGame(mode, {
+  source: playSource.value,
+  levelPack: levelPack.value,
+})
 
 function handleAnswer(choice: number) {
   game.selectAnswer(choice)

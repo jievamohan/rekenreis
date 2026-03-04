@@ -1,9 +1,12 @@
 # Tests — PASS
 
 ```
-cd apps/web && pnpm run test
-```
+ ✓ test/example.test.ts
+ ✓ test/questionGenerator.test.ts
+ ✓ test/levelValidator.test.ts
+ ✓ test/api.test.ts
+ ✓ test/usePlayGame.test.ts
 
-- test/example.test.ts: pass
-- test/api.test.ts: pass (vertical slice intact)
-- test/questionGenerator.test.ts: 8 tests pass (correctness, uniqueness, determinism)
+ Test Files  5 passed (5)
+      Tests  27 passed (27)
+```

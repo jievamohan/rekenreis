@@ -33,6 +33,8 @@ Protocol:
   - FORCE: MAX_TASKS = min(N, MAX_TASKS_FORCE)
 - CI behavior:
   - CI is ON by default; treat as required unless explicitly running PLAN_ONLY.
+- If --no-finalize: FINALIZE=false
+- Else: FINALIZE=true (default)
 
 1) Discovery (no code changes)
 Dispatch planning subagents and produce:
@@ -93,7 +95,21 @@ FORCE safety floor (always enforced):
 - high-risk areas must be explicitly flagged in task risks + artifacts/risk.md
 - keep diffs minimal and reversible
 
-6) Output
+6) FINALIZE (automatic by default)
+- If MODE is FORCE or SAFE AND at least one task was executed:
+  - If any executed task ended BLOCKED: do NOT finalize; stop and summarize.
+  - If all executed tasks completed successfully and CI is green:
+    - Run /finalize-feature to:
+      - sync PR task checklist
+      - squash branch
+      - force-push
+      - re-run CI watch and require CI SUCCESS
+- If finalize fails (CI red, auth blocked, dirty tree): mark BLOCKED and stop.
+
+Optional flags:
+- If user passed --no-finalize: skip this step.
+
+7) Output
 - Always output:
   - artifacts/backlog.md location
   - list of generated task files

@@ -1,42 +1,38 @@
-# Epic 0: Game Core MVP — PR
+# Epic 1: Level Contract + Content Pack
 
 ## Summary
 
-Playable `/play` route for kids math game (age ~6): addition-only core loop, up to 10/20 modes, 3-4 multiple choice answers, immediate feedback, score/streak, keyboard a11y.
+Make the kids math game data-driven via a Level schema (addition only). Provide a starter content pack (~50 levels) and wire /play to support both "infinite generator mode" and "content pack mode" with minimal mode switch (query param).
 
-## Tasks completed
+## Scope
 
-1. **0004** Types + question generator
-2. **0005** usePlayGame composable
-3. **0006** /play page with minimal UI
-4. **0007** Regression + smoke verification
+- **Level schema**: TypeScript type + runtime validator (operator, operand ranges, choiceCount, hintMode, difficultyTag, masteryRules optional)
+- **Deterministic level generator**: Same seed → same output
+- **Content pack**: `apps/web/content/levels.v1.json` (~50 levels)
+- **/play dual-mode**: `?mode=infinite` (default) | `?mode=pack`
+- **Tests**: Schema validation, generator determinism, sanity checks (ranges, correct answer, unique choices)
 
-## Acceptance criteria
+## Non-goals
 
-- [x] /play renders and is playable
-- [x] Question generator: upTo10, upTo20 modes; 3-4 unique choices
-- [x] Immediate feedback, score, streak
-- [x] Keyboard navigation (Tab, Enter/Space)
-- [x] Unit tests: generator correctness, choice uniqueness, composable logic
-- [x] Vertical slice (/start, api.test.ts, HealthTest) unchanged
+- New operators
+- Minigame skins
+- Backend storage/auth
 
-## Commands run
+## Tasks
 
-- `pnpm run typecheck` — PASS
-- `pnpm run test` — PASS (17 tests)
-- `pnpm run lint` — PASS
-- `pnpm run build` — PASS
+- [x] 0008: Level schema + validator
+- [x] 0009: Deterministic generator + content pack
+- [x] 0010: usePlayGame dual-mode
+- [x] 0011: play.vue mode switch
+- [x] 0012: Smoke/e2e verification
 
 ## Risks
 
-- perf: negligible (client-only, sync generator)
-
-## Rollback
-
-Revert commits; no migrations or API changes.
+- Low: May add lightweight validator (Zod/valibot); Gate F enforces bundle budget.
 
 ## PR Metadata
+
 - Base: main
-- Branch: feat/epic0-game-core-mvp
-- PR: #9
-- URL: https://github.com/jievamohan/rekenreis/pull/9
+- Branch: feat/epic1-level-contract-content-pack
+- PR: #10
+- URL: https://github.com/jievamohan/rekenreis/pull/10

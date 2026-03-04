@@ -1,47 +1,37 @@
-# Epic 0: Game Core MVP — UX Design
+# Epic 1: Level Contract + Content Pack — UX
 
 ## Primary user flow(s)
 
-1. User navigates to `/play`.
-2. User sees: question (e.g. “3 + 5 = ?”), 3–4 answer buttons, score, streak.
-3. User clicks or keys to select an answer.
-4. Immediate feedback: correct (e.g. “Correct!”) or incorrect (e.g. “Not quite. It was X.”).
-5. After a short delay or explicit “Next” action, next question loads.
-6. Repeat; score and streak update.
+1. **Infinite mode (unchanged)**  
+   - User visits /play (or /play?mode=infinite).  
+   - Questions generated on-the-fly.  
+   - Answer → feedback → Next → repeat.
 
-## Screen/page list and purpose
+2. **Content pack mode**  
+   - User visits /play?mode=pack (or configured default).  
+   - Questions served from levels.v1.json in order (or deterministic shuffle).  
+   - Same flow: answer → feedback → Next → repeat.
 
-| Screen | Purpose |
-|--------|---------|
-| `/play` | Main game screen: question, choices, feedback, score, streak. |
+## Screen/page list
 
-## Interaction model (states)
+- **/play** (unchanged visually). Same UI: question, choices, score, streak, feedback, Next.  
+- Optional: minimal mode indicator (e.g. "Practice" vs "Levels")—out of scope for Epic 1 if not required; keep minimal.
 
-| State | Description |
-|-------|-------------|
-| loading | Initial load (minimal; generator is sync for MVP). |
-| ready | Question displayed, choices enabled. |
-| answered | Feedback shown; choices disabled; “Next” or auto-progress available. |
-| (no error state for MVP) | Generator is deterministic; no network calls for game logic. |
+## Interaction model
+
+- **Loading**: Same as today; no spinner needed if pack loads instantly (static import).  
+- **Success**: Questions render; user answers, gets feedback.  
+- **Error**: If pack fails to load in pack mode → fallback to infinite mode silently, or show brief message.
 
 ## A11y notes
 
-- **Keyboard**: Tab through choices; Enter/Space to select.
-- **Focus**: Visible focus ring on buttons; focus moves logically after answer.
-- **ARIA**: `role="group"` for question; `aria-live="polite"` for feedback.
-- **Labels**: Clear labels for answer buttons (the number value).
-- **Contrast**: Sufficient contrast for text and controls.
+- No change: existing keyboard, focus, ARIA from Epic 0 remain.
 
 ## Minimal microcopy
 
-- Question: “3 + 5 = ?”
-- Correct: “Correct!”
-- Incorrect: “Not quite. The answer was 8.”
-- Score: “Score: 12”
-- Streak: “Streak: 3”
-- Next: “Next” (or auto-advance after ~1s)
+- No new labels required. If mode toggle added later: "Practice" / "Levels".
 
 ## UI edge cases
 
-- Empty states: N/A—game always has a question.
-- Retries: N/A—no network for game logic.
+- Empty pack: fallback to infinite mode.  
+- Invalid mode param: treat as infinite (safe default).

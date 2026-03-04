@@ -13,9 +13,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist
+RUN composer install --no-interaction --prefer-dist --no-scripts
 
 COPY . .
+RUN composer dump-autoload
 EXPOSE 8000
 
 CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0"]
