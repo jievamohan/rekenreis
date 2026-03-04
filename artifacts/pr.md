@@ -1,16 +1,19 @@
-# Artifact Lifecycle Hardening
+# ZAP Workflow Speed
 
-Introduce `artifacts/current` and `artifacts/archive/<epic-id>/<timestamp>`; update all scripts to read/write only `artifacts/current`; add archive step after finalize.
+Reduce OWASP ZAP Baseline job from ~6 min to ≤90s via parallelization, caching, and tighter waits.
 
 **Scope:**
-- artifacts/current as working directory
-- artifacts/archive for completed runs
-- Script updates: PR bootstrap, ci-watch, ci-fetch-logs, finalize
-- Archive step after finalize
-
-**Non-goals:** Game features
+- Parallel Docker builds (buildx bake)
+- Parallel ZAP scans (4 runs)
+- Cache hardening (restore-keys)
+- Tighter health wait
 
 ## Tasks
 
-- [ ] 0090-artifacts-current-and-scripts
-- [ ] 0091-archive-and-finalize
+- [ ] 0091-zap-workflow-speed
+
+## PR Metadata
+- Base: main
+- Branch: feat/zap-workflow-speed
+- PR: #37
+- URL: https://github.com/jievamohan/rekenreis/pull/37
