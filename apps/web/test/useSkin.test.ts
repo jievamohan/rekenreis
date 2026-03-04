@@ -29,5 +29,15 @@ describe('resolveSkinId (useSkin id resolution)', () => {
   it('SKIN_IDS includes all valid ids', () => {
     expect(SKIN_IDS).toContain('classic')
     expect(SKIN_IDS).toContain('monster-feed')
+    expect(SKIN_IDS).toContain('space')
+    expect(SKIN_IDS).toContain('pirate')
+  })
+
+  it('returns space for valid id "space"', () => {
+    expect(resolveSkinId('space')).toBe('space')
+  })
+
+  it('returns pirate for valid id "pirate"', () => {
+    expect(resolveSkinId('pirate')).toBe('pirate')
   })
 })

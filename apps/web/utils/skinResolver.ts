@@ -2,7 +2,7 @@
  * Pure skin id resolution. No Vue imports.
  * Unknown ids fall back to classic.
  */
-export const SKIN_IDS = ['classic', 'monster-feed'] as const
+export const SKIN_IDS = ['classic', 'monster-feed', 'space', 'pirate'] as const
 export type SkinId = (typeof SKIN_IDS)[number]
 
 export function resolveSkinId(skinId: string | undefined): SkinId {

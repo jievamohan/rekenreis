@@ -1,5 +1,3 @@
-# Performance — PASS
+# Performance
 
-- Gate F: build succeeds
-- No new heavy deps
-- Generator is sync, negligible impact
+PASS - Bundle within budget (no new heavy deps)

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import type { GameMode } from '~/types/game'
 import type { Level } from '~/types/level'
+import type { SkinId } from '~/utils/skinResolver'
+import { resolveSkinId } from '~/utils/skinResolver'
 import { usePlayGame } from '~/composables/usePlayGame'
+import { useRewards } from '~/composables/useRewards'
 import { useSkin } from '~/composables/useSkin'
+import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import levelsV1 from '~/content/levels.v1.json'
 
 const route = useRoute()
+const router = useRouter()
 const playSource = computed(() =>
   route.query.mode === 'pack' ? 'pack' : 'infinite'
 )
@@ -19,7 +24,12 @@ const game = usePlayGame(mode, {
   levelPack: levelPack.value,
 })
 
-const skin = useSkin(route.query.skin as string | undefined)
+const { isUnlocked, unlockedIds } = useRewards(game.score)
+const effectiveSkinId = computed(() => {
+  const resolved = resolveSkinId(route.query.skin as string | undefined)
+  return isUnlocked(resolved) ? resolved : (unlockedIds.value[0] ?? 'classic')
+})
+const skin = computed(() => useSkin(effectiveSkinId.value))
 
 const skinProps = computed(() => ({
   question: game.question.value,
@@ -33,8 +43,67 @@ const skinProps = computed(() => ({
     mode.value = m
   },
 }))
+
+function selectSkin(id: SkinId) {
+  if (isUnlocked(id)) {
+    router.push({ query: { ...route.query, skin: id } })
+  }
+}
 </script>
 
 <template>
-  <component :is="skin.component" v-bind="skinProps" />
+  <div class="play-page">
+    <nav class="skin-picker" role="navigation" aria-label="Skin selector">
+      <button
+        v-for="id in SKIN_ORDER"
+        :key="id"
+        type="button"
+        class="skin-btn"
+        :class="{ active: skin.id === id, locked: !isUnlocked(id) }"
+        :disabled="!isUnlocked(id)"
+        :aria-label="isUnlocked(id) ? `Switch to ${id} skin` : `${id} locked (score ${UNLOCK_THRESHOLDS[id]} to unlock)`"
+        :title="isUnlocked(id) ? id : `Score ${UNLOCK_THRESHOLDS[id]} to unlock`"
+        @click="selectSkin(id)"
+      >
+        <span class="skin-label">{{ id }}</span>
+        <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
+      </button>
+    </nav>
+    <component :is="skin.component" v-bind="skinProps" />
+  </div>
 </template>
+
+<style scoped>
+.play-page {
+  padding: 0.5rem;
+}
+.skin-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+.skin-btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  border: 1px solid #999;
+  border-radius: 0.375rem;
+  background: #fff;
+  cursor: pointer;
+}
+.skin-btn:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+.skin-btn.active {
+  border-color: #06c;
+  background: #e6f2ff;
+}
+.skin-btn.locked {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.skin-btn .lock {
+  margin-left: 0.25rem;
+}
+</style>

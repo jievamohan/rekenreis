@@ -1,18 +1,5 @@
-# Epic 2: Skin System + 1 Skin — Security Design
+# Epic 3 Security
 
-## Scope
-
-- Frontend-only: skin components, composable, types
-- No new API, auth, or data handling
-- No user input beyond existing (answer selection)
-
-## Threats
-
-- **XSS**: Skin components render game data (numbers); no raw HTML. Vue escaping suffices.
-- **Injection**: Skin id from query param; validate against allowlist before use. Unknown → classic.
-
-## Mitigations
-
-- Skin id allowlist in useSkin; never pass unknown id to component resolution
-- No eval or dangerouslySetInnerHTML
-- No new network calls or storage
+- No auth; no PII
+- localStorage for unlocks: low risk; no sensitive data
+- No new external deps; no network calls for rewards
