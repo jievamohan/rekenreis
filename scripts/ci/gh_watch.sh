@@ -74,6 +74,9 @@ for ((i=1; i<=RETRIES; i++)); do
       echo "" >> "$STATUS_FILE"
       echo "❌ CI FAILED (run $RUN_ID, conclusion=$CONCLUSION)" >> "$STATUS_FILE"
       echo "$RUN_ID" > artifacts/ci-last-run-id.txt
+      # Auto-fetch logs per /ci-watch protocol
+      SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+      "$SCRIPT_DIR/gh_fetch_logs.sh" "$MODE" || true
       exit 1
     fi
   fi

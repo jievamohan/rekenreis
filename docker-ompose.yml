@@ -8,7 +8,3 @@ services:
       - ${HOME}/.config/gh:/root/.config/gh:ro
     environment:
       - GH_HOST=github.com
-
-networks:
-  default:
-    external: true  

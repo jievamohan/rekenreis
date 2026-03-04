@@ -1,0 +1,1358 @@
+Gate C (Type-safety)	Set up job	﻿2026-03-04T02:27:08.5442340Z Current runner version: '2.331.0'
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5466904Z ##[group]Runner Image Provisioner
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5467808Z Hosted Compute Agent
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5468392Z Version: 20260213.493
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5468994Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5469778Z Build Date: 2026-02-13T00:28:41Z
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5470806Z Worker ID: {974b269a-f9e3-468c-be45-d912c5f97978}
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5471578Z Azure Region: northcentralus
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5472245Z ##[endgroup]
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5473713Z ##[group]Operating System
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5474383Z Ubuntu
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5474894Z 24.04.3
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5475381Z LTS
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5475848Z ##[endgroup]
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5476397Z ##[group]Runner Image
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5476936Z Image: ubuntu-24.04
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5477462Z Version: 20260224.36.1
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5478649Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5480813Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5481784Z ##[endgroup]
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5482889Z ##[group]GITHUB_TOKEN Permissions
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5484926Z Contents: read
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5485618Z Metadata: read
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5486130Z Packages: read
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5486626Z ##[endgroup]
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5488616Z Secret source: Actions
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5489704Z Prepare workflow directory
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5829821Z Prepare all required actions
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.5868408Z Getting action download info
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:08.9408220Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:09.0821872Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:09.4673635Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:09.5685891Z Download action repository 'shivammathur/setup-php@v2' (SHA:44454db4f0199b8b9685a5d763dc37cbf79108e1)
+Gate C (Type-safety)	Set up job	2026-03-04T02:27:10.0151768Z Complete job name: Gate C (Type-safety)
+Gate C (Type-safety)	Run actions/checkout@v4	﻿2026-03-04T02:27:10.0996380Z ##[group]Run actions/checkout@v4
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.0997734Z with:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.0998471Z   repository: jievamohan/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.0999656Z   token: ***
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1000542Z   ssh-strict: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1001280Z   ssh-user: git
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1002044Z   persist-credentials: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1002892Z   clean: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1003639Z   sparse-checkout-cone-mode: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1004559Z   fetch-depth: 1
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1005310Z   fetch-tags: false
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1006056Z   show-progress: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1006824Z   lfs: false
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1007512Z   submodules: false
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1008289Z   set-safe-directory: true
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.1009383Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2163014Z Syncing repository: jievamohan/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2166997Z ##[group]Getting Git version info
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2169008Z Working directory is '/home/runner/work/rekenreis/rekenreis'
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2172246Z [command]/usr/bin/git version
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2220304Z git version 2.53.0
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2248226Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2265490Z Temporarily overriding HOME='/home/runner/work/_temp/6546fbf4-ee6d-43a6-a57a-12ca512ef267' before making global git config changes
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2270431Z Adding repository directory to the temporary git global config as a safe directory
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2274367Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2313534Z Deleting the contents of '/home/runner/work/rekenreis/rekenreis'
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2317929Z ##[group]Initializing the repository
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2323566Z [command]/usr/bin/git init /home/runner/work/rekenreis/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2410013Z hint: Using 'master' as the name for the initial branch. This default branch name
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2413105Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2415737Z hint: to use in all of your new repositories, which will suppress this warning,
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2418296Z hint: call:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2419542Z hint:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2421532Z hint: 	git config --global init.defaultBranch <name>
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2423487Z hint:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2425340Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2428534Z hint: 'development'. The just-created branch can be renamed via this command:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2431166Z hint:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2432342Z hint: 	git branch -m <name>
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2433991Z hint:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2435212Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2437205Z Initialized empty Git repository in /home/runner/work/rekenreis/rekenreis/.git/
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2441539Z [command]/usr/bin/git remote add origin https://github.com/jievamohan/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2464682Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2467025Z ##[group]Disabling automatic garbage collection
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2469279Z [command]/usr/bin/git config --local gc.auto 0
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2500057Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2502567Z ##[group]Setting up auth
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2508095Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2542649Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2874674Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.2907681Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3141540Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3183193Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3421318Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3459231Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3460784Z ##[group]Fetching the repository
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.3468578Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6ca943471fd0620c1ce9bdc7022e56e1c4929947:refs/remotes/pull/1/merge
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6359336Z From https://github.com/jievamohan/rekenreis
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6361398Z  * [new ref]         6ca943471fd0620c1ce9bdc7022e56e1c4929947 -> pull/1/merge
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6394817Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6396748Z ##[group]Determining the checkout info
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6398391Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6402087Z [command]/usr/bin/git sparse-checkout disable
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6446315Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6473753Z ##[group]Checking out the ref
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6476598Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6583547Z Note: switching to 'refs/remotes/pull/1/merge'.
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6584396Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6585084Z You are in 'detached HEAD' state. You can look around, make experimental
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6586788Z changes and commit them, and you can discard any commits you make in this
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6588453Z state without impacting any branches by switching back to a branch.
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6589423Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6590255Z If you want to create a new branch to retain commits you create, you may
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6592048Z do so (now or later) by using -c with the switch command. Example:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6593249Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6593618Z   git switch -c <new-branch-name>
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6594246Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6594598Z Or undo this operation with:
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6595363Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6595765Z   git switch -
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6596305Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6597109Z Turn off this advice by setting config variable advice.detachedHead to false
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6598237Z 
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6599475Z HEAD is now at 6ca9434 Merge d589eb7984572b27e509e69374517cd231e3fed9 into 6cca4bf5493d087d7258ccb984d548819c6fb5ca
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6603320Z ##[endgroup]
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6630313Z [command]/usr/bin/git log -1 --format=%H
+Gate C (Type-safety)	Run actions/checkout@v4	2026-03-04T02:27:10.6654404Z 6ca943471fd0620c1ce9bdc7022e56e1c4929947
+Gate C (Type-safety)	Setup pnpm	﻿2026-03-04T02:27:10.6981823Z ##[group]Run pnpm/action-setup@v4
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6982809Z with:
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6983430Z   version: 9
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6984107Z   dest: ~/setup-pnpm
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6984842Z   run_install: null
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6985627Z   package_json_file: package.json
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6986518Z   standalone: false
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.6987219Z ##[endgroup]
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:10.7546216Z ##[group]Running self-installer...
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.2954764Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.3043238Z Packages: +1
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.3044551Z +
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.6887752Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7153349Z 
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7153950Z dependencies:
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7154552Z + pnpm 9.15.9 (10.30.3 is available)
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7154986Z 
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7185863Z Done in 798ms
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7409493Z ##[endgroup]
+Gate C (Type-safety)	Setup pnpm	2026-03-04T02:27:11.7415191Z Installation Completed!
+Gate C (Type-safety)	Setup Node	﻿2026-03-04T02:27:11.7592341Z ##[group]Run actions/setup-node@v4
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7592700Z with:
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7592942Z   node-version: 22
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7593192Z   cache: pnpm
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7593492Z   cache-dependency-path: apps/web/pnpm-lock.yaml
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7593869Z   always-auth: false
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7594135Z   check-latest: false
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7594531Z   token: ***
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7594764Z env:
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7595065Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.7595435Z ##[endgroup]
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.9362893Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:11.9369094Z ##[group]Environment details
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.2657085Z node: v22.22.0
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.2657780Z npm: 10.9.4
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.2658254Z yarn: 1.22.22
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.2659268Z ##[endgroup]
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.2683113Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.6922239Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:12.8427310Z Cache hit for: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:13.5168634Z Received 60732291 of 60732291 (100.0%), 102.9 MBs/sec
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:13.5169450Z Cache Size: ~58 MB (60732291 B)
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:13.5197437Z [command]/usr/bin/tar -xf /home/runner/work/_temp/8204423d-a7c2-45bd-87e9-251d151962e6/cache.tzst -P -C /home/runner/work/rekenreis/rekenreis --use-compress-program unzstd
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:14.4290589Z Cache restored successfully
+Gate C (Type-safety)	Setup Node	2026-03-04T02:27:14.4426977Z Cache restored from key: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Gate C (Type-safety)	Web typecheck	﻿2026-03-04T02:27:14.4628650Z ##[group]Run cd apps/web && pnpm install --frozen-lockfile
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4629190Z [36;1mcd apps/web && pnpm install --frozen-lockfile[0m
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4629525Z [36;1mpnpm run typecheck[0m
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4706675Z shell: /usr/bin/bash -e {0}
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4707101Z env:
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4707488Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.4708009Z ##[endgroup]
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:14.9311921Z Lockfile is up to date, resolution step is skipped
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:15.0034967Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:15.1414153Z Packages: +732
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:15.1414981Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:15.8791146Z Progress: resolved 732, reused 731, downloaded 0, added 732, done
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1319549Z 
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1320286Z dependencies:
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1320783Z + nuxt 3.13.2
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1321116Z + vue 3.5.29
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1321324Z 
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1321567Z devDependencies:
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1322087Z + @typescript-eslint/eslint-plugin 8.56.1
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1322677Z + @typescript-eslint/parser 8.56.1
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1323114Z + eslint 8.57.1
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1323520Z + eslint-plugin-vue 9.33.0
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1323965Z + typescript 5.9.3
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1324325Z + vitest 2.1.9
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1324692Z + vue-eslint-parser 9.4.3
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1325113Z + vue-tsc 2.2.12
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1325328Z 
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.1550449Z Done in 2.6s using pnpm v9.15.9
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.5794393Z 
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.5795478Z > web@ typecheck /home/runner/work/rekenreis/rekenreis/apps/web
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.5796138Z > nuxt typecheck
+Gate C (Type-safety)	Web typecheck	2026-03-04T02:27:17.5796331Z 
+Gate C (Type-safety)	Setup PHP	﻿2026-03-04T02:27:22.8640797Z ##[group]Run shivammathur/setup-php@v2
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8641100Z with:
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8641275Z   php-version: 8.4
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8641470Z   tools: composer
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8641667Z   ini-file: production
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8642030Z   github-token: ***
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8642221Z env:
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8642448Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.8642730Z ##[endgroup]
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.9370423Z [command]/usr/bin/bash /home/runner/work/_actions/shivammathur/setup-php/v2/src/scripts/run.sh
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.9812511Z 
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:22.9813834Z [90;1m==> [0m[37;1mSetup PHP[0m
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:26.8826350Z [32;1m✓ [0m[34;1mPHP [0m[90;1mInstalled PHP 8.4.18[0m
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:26.8826930Z 
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:26.8827306Z [90;1m==> [0m[37;1mSetup Tools[0m
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:27.1353123Z [32;1m✓ [0m[34;1mcomposer [0m[90;1mAdded composer 2.9.3[0m
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:27.1353794Z 
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:27.1354181Z [90;1m==> [0m[37;1mSponsor setup-php[0m
+Gate C (Type-safety)	Setup PHP	2026-03-04T02:27:27.1355223Z [32;1m✓ [0m[34;1msetup-php [0m[90;1mhttps://setup-php.com/sponsor[0m
+Gate C (Type-safety)	API PHPStan	﻿2026-03-04T02:27:27.1526754Z ##[group]Run cd apps/api && composer install --no-interaction --prefer-dist
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1527288Z [36;1mcd apps/api && composer install --no-interaction --prefer-dist[0m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1527641Z [36;1mcomposer run phpstan[0m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1579663Z shell: /usr/bin/bash -e {0}
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1579900Z env:
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1580340Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1580667Z   COMPOSER_PROCESS_TIMEOUT: 0
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1580911Z   COMPOSER_NO_INTERACTION: 1
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1581134Z   COMPOSER_NO_AUDIT: 1
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.1581349Z ##[endgroup]
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3538872Z Installing dependencies from lock file (including require-dev)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3588905Z Verifying lock file contents can be installed on current platform.
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3919388Z Package operations: 114 installs, 0 updates, 0 removals
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3936825Z   - Downloading doctrine/inflector (2.1.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3945194Z   - Downloading doctrine/lexer (3.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3948254Z   - Downloading dragonmantank/cron-expression (v3.6.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3951348Z   - Downloading symfony/deprecation-contracts (v3.6.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3954187Z   - Downloading psr/container (2.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3957144Z   - Downloading fakerphp/faker (v1.24.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3959751Z   - Downloading symfony/polyfill-mbstring (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3962564Z   - Downloading symfony/http-foundation (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3965592Z   - Downloading fruitcake/php-cors (v1.4.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3968159Z   - Downloading psr/http-message (2.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3970824Z   - Downloading psr/http-client (1.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3973802Z   - Downloading ralouphie/getallheaders (3.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3976412Z   - Downloading psr/http-factory (1.1.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3978407Z   - Downloading guzzlehttp/psr7 (2.8.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3979829Z   - Downloading guzzlehttp/promises (2.3.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3981557Z   - Downloading guzzlehttp/guzzle (7.10.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3983150Z   - Downloading symfony/polyfill-php80 (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3984641Z   - Downloading guzzlehttp/uri-template (v1.0.5)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3987919Z   - Downloading phpstan/phpstan (2.1.40)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3989879Z   - Downloading voku/portable-ascii (2.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3991617Z   - Downloading symfony/polyfill-ctype (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3993649Z   - Downloading phpoption/phpoption (1.9.5)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3995666Z   - Downloading graham-campbell/result-type (v1.1.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3997598Z   - Downloading vlucas/phpdotenv (v5.6.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.3998977Z   - Downloading symfony/css-selector (v8.0.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4001278Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.4.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4002573Z   - Downloading symfony/var-dumper (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4004080Z   - Downloading symfony/polyfill-uuid (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4005515Z   - Downloading symfony/uid (v7.4.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4006985Z   - Downloading symfony/routing (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4008437Z   - Downloading symfony/process (v7.4.5)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4009944Z   - Downloading symfony/polyfill-php85 (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4011693Z   - Downloading symfony/polyfill-php84 (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4013059Z   - Downloading symfony/polyfill-php83 (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4014625Z   - Downloading symfony/polyfill-intl-normalizer (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4016047Z   - Downloading symfony/polyfill-intl-idn (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4017431Z   - Downloading symfony/mime (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4018933Z   - Downloading symfony/service-contracts (v3.6.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4020548Z   - Downloading psr/event-dispatcher (1.0.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4022170Z   - Downloading symfony/event-dispatcher-contracts (v3.6.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4023572Z   - Downloading symfony/event-dispatcher (v8.0.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4024974Z   - Downloading psr/log (3.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4027116Z   - Downloading egulias/email-validator (4.0.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4028464Z   - Downloading symfony/mailer (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4029954Z   - Downloading symfony/error-handler (v7.4.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4031699Z   - Downloading symfony/http-kernel (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4033141Z   - Downloading symfony/finder (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4034712Z   - Downloading symfony/polyfill-intl-grapheme (v1.33.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4036089Z   - Downloading symfony/string (v8.0.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4037567Z   - Downloading symfony/console (v7.4.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4039612Z   - Downloading ramsey/collection (2.1.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4041828Z   - Downloading brick/math (0.14.8)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4043152Z   - Downloading ramsey/uuid (4.9.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4044637Z   - Downloading psr/simple-cache (3.0.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4046733Z   - Downloading nunomaduro/termwind (v2.4.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4048151Z   - Downloading symfony/translation-contracts (v3.6.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4049553Z   - Downloading symfony/translation (v8.0.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4051258Z   - Downloading psr/clock (1.0.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4052686Z   - Downloading symfony/clock (v8.0.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4054856Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4056452Z   - Downloading nesbot/carbon (3.11.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4058462Z   - Downloading monolog/monolog (3.10.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4060595Z   - Downloading league/uri-interfaces (7.8.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4062044Z   - Downloading league/uri (7.8.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4063612Z   - Downloading league/mime-type-detection (1.16.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4065088Z   - Downloading league/flysystem-local (3.31.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4066541Z   - Downloading league/flysystem (3.32.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4068635Z   - Downloading nette/utils (v4.1.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4069964Z   - Downloading nette/schema (v1.3.5)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4072437Z   - Downloading dflydev/dot-access-data (v3.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4073739Z   - Downloading league/config (v1.2.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4075239Z   - Downloading league/commonmark (2.8.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4077395Z   - Downloading laravel/serializable-closure (v2.0.10)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4078671Z   - Downloading laravel/prompts (v0.3.13)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4080288Z   - Downloading laravel/framework (v12.53.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4082427Z   - Downloading iamcal/sql-parser (v0.7)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4084413Z   - Downloading larastan/larastan (v3.9.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4085840Z   - Downloading laravel/pail (v1.2.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4087350Z   - Downloading laravel/pint (v1.27.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4088797Z   - Downloading symfony/yaml (v8.0.6)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4090425Z   - Downloading laravel/sail (v1.53.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4092502Z   - Downloading nikic/php-parser (v5.7.0)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4094469Z   - Downloading psy/psysh (v0.12.20)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4095841Z   - Downloading laravel/tinker (v2.11.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4097900Z   - Downloading hamcrest/hamcrest-php (v2.1.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4099782Z   - Downloading mockery/mockery (1.6.12)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4102007Z   - Downloading filp/whoops (2.18.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4103410Z   - Downloading nunomaduro/collision (v8.9.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4105568Z   - Downloading staabm/side-effects-detector (1.0.5)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4107445Z   - Downloading sebastian/version (5.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4108800Z   - Downloading sebastian/type (5.1.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4110489Z   - Downloading sebastian/recursion-context (6.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4112095Z   - Downloading sebastian/object-reflector (4.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4113580Z   - Downloading sebastian/object-enumerator (6.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4135359Z   - Downloading sebastian/global-state (7.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4136023Z   - Downloading sebastian/exporter (6.3.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4136595Z   - Downloading sebastian/environment (7.2.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4137037Z   - Downloading sebastian/diff (6.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4137366Z   - Downloading sebastian/comparator (6.3.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4137942Z   - Downloading sebastian/code-unit (3.0.3)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4138263Z   - Downloading sebastian/cli-parser (3.0.2)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4138576Z   - Downloading phpunit/php-timer (7.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4138934Z   - Downloading phpunit/php-text-template (4.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4139279Z   - Downloading phpunit/php-invoker (5.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4139616Z   - Downloading phpunit/php-file-iterator (5.1.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4139933Z   - Downloading theseer/tokenizer (1.3.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4140522Z   - Downloading sebastian/lines-of-code (3.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4140882Z   - Downloading sebastian/complexity (4.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4141258Z   - Downloading sebastian/code-unit-reverse-lookup (4.0.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4143162Z   - Downloading phpunit/php-code-coverage (11.0.12)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4143763Z   - Downloading phar-io/version (3.2.1)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4144253Z   - Downloading phar-io/manifest (2.0.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4144784Z   - Downloading myclabs/deep-copy (1.13.4)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:27.4145337Z   - Downloading phpunit/phpunit (11.5.55)
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4117454Z   - Installing doctrine/inflector (2.1.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4135345Z   - Installing doctrine/lexer (3.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4141652Z   - Installing dragonmantank/cron-expression (v3.6.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4148683Z   - Installing symfony/deprecation-contracts (v3.6.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4162431Z   - Installing psr/container (2.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4169134Z   - Installing fakerphp/faker (v1.24.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4175464Z   - Installing symfony/polyfill-mbstring (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4187250Z   - Installing symfony/http-foundation (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4189057Z   - Installing fruitcake/php-cors (v1.4.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4260869Z   - Installing psr/http-message (2.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4261677Z   - Installing psr/http-client (1.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4262473Z   - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4263340Z   - Installing psr/http-factory (1.1.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4279391Z   - Installing guzzlehttp/psr7 (2.8.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4280456Z   - Installing guzzlehttp/promises (2.3.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4281048Z   - Installing guzzlehttp/guzzle (7.10.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4281535Z   - Installing symfony/polyfill-php80 (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4282049Z   - Installing guzzlehttp/uri-template (v1.0.5): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4282509Z   - Installing phpstan/phpstan (2.1.40): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4282940Z   - Installing voku/portable-ascii (2.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4336875Z   - Installing symfony/polyfill-ctype (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4338095Z   - Installing phpoption/phpoption (1.9.5): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4339289Z   - Installing graham-campbell/result-type (v1.1.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4340314Z   - Installing vlucas/phpdotenv (v5.6.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4341134Z   - Installing symfony/css-selector (v8.0.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4342046Z   - Installing tijsverkoyen/css-to-inline-styles (v2.4.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4342953Z   - Installing symfony/var-dumper (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4343706Z   - Installing symfony/polyfill-uuid (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4349388Z   - Installing symfony/uid (v7.4.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4353249Z   - Installing symfony/routing (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4361537Z   - Installing symfony/process (v7.4.5): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4362683Z   - Installing symfony/polyfill-php85 (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4374449Z   - Installing symfony/polyfill-php84 (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4375220Z   - Installing symfony/polyfill-php83 (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4376120Z   - Installing symfony/polyfill-intl-normalizer (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4423020Z   - Installing symfony/polyfill-intl-idn (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4425220Z   - Installing symfony/mime (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4428063Z   - Installing symfony/service-contracts (v3.6.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4430473Z   - Installing psr/event-dispatcher (1.0.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4434240Z   - Installing symfony/event-dispatcher-contracts (v3.6.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4438196Z   - Installing symfony/event-dispatcher (v8.0.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4440405Z   - Installing psr/log (3.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4443414Z   - Installing egulias/email-validator (4.0.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4446261Z   - Installing symfony/mailer (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4448969Z   - Installing symfony/error-handler (v7.4.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4451995Z   - Installing symfony/http-kernel (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4454854Z   - Installing symfony/finder (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4457708Z   - Installing symfony/polyfill-intl-grapheme (v1.33.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4460590Z   - Installing symfony/string (v8.0.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4463801Z   - Installing symfony/console (v7.4.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4466641Z   - Installing ramsey/collection (2.1.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4469455Z   - Installing brick/math (0.14.8): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4472459Z   - Installing ramsey/uuid (4.9.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4475554Z   - Installing psr/simple-cache (3.0.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4477978Z   - Installing nunomaduro/termwind (v2.4.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4480739Z   - Installing symfony/translation-contracts (v3.6.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4483223Z   - Installing symfony/translation (v8.0.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4485651Z   - Installing psr/clock (1.0.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4488227Z   - Installing symfony/clock (v8.0.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4491075Z   - Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4493478Z   - Installing nesbot/carbon (3.11.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4496056Z   - Installing monolog/monolog (3.10.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4498638Z   - Installing league/uri-interfaces (7.8.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4501429Z   - Installing league/uri (7.8.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4504084Z   - Installing league/mime-type-detection (1.16.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4506644Z   - Installing league/flysystem-local (3.31.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4509124Z   - Installing league/flysystem (3.32.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4511888Z   - Installing nette/utils (v4.1.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4514367Z   - Installing nette/schema (v1.3.5): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4516885Z   - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4519225Z   - Installing league/config (v1.2.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4521945Z   - Installing league/commonmark (2.8.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4524439Z   - Installing laravel/serializable-closure (v2.0.10): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4526774Z   - Installing laravel/prompts (v0.3.13): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4529124Z   - Installing laravel/framework (v12.53.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4531834Z   - Installing iamcal/sql-parser (v0.7): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4534384Z   - Installing larastan/larastan (v3.9.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4536909Z   - Installing laravel/pail (v1.2.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4539406Z   - Installing laravel/pint (v1.27.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4542055Z   - Installing symfony/yaml (v8.0.6): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4544436Z   - Installing laravel/sail (v1.53.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4546837Z   - Installing nikic/php-parser (v5.7.0): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4549209Z   - Installing psy/psysh (v0.12.20): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4551912Z   - Installing laravel/tinker (v2.11.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4554523Z   - Installing hamcrest/hamcrest-php (v2.1.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4557046Z   - Installing mockery/mockery (1.6.12): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4559726Z   - Installing filp/whoops (2.18.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4562519Z   - Installing nunomaduro/collision (v8.9.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4565152Z   - Installing staabm/side-effects-detector (1.0.5): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4567687Z   - Installing sebastian/version (5.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4570435Z   - Installing sebastian/type (5.1.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4573061Z   - Installing sebastian/recursion-context (6.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4575537Z   - Installing sebastian/object-reflector (4.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4578148Z   - Installing sebastian/object-enumerator (6.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4580686Z   - Installing sebastian/global-state (7.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4583161Z   - Installing sebastian/exporter (6.3.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4585595Z   - Installing sebastian/environment (7.2.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4587920Z   - Installing sebastian/diff (6.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4590332Z   - Installing sebastian/comparator (6.3.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4592924Z   - Installing sebastian/code-unit (3.0.3): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4595280Z   - Installing sebastian/cli-parser (3.0.2): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4597528Z   - Installing phpunit/php-timer (7.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4599991Z   - Installing phpunit/php-text-template (4.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4602514Z   - Installing phpunit/php-invoker (5.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4604897Z   - Installing phpunit/php-file-iterator (5.1.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4607152Z   - Installing theseer/tokenizer (1.3.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4609518Z   - Installing sebastian/lines-of-code (3.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4612091Z   - Installing sebastian/complexity (4.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4614561Z   - Installing sebastian/code-unit-reverse-lookup (4.0.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4616789Z   - Installing phpunit/php-code-coverage (11.0.12): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4619035Z   - Installing phar-io/version (3.2.1): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4621758Z   - Installing phar-io/manifest (2.0.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4623973Z   - Installing myclabs/deep-copy (1.13.4): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:29.4626448Z   - Installing phpunit/phpunit (11.5.55): Extracting archive
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:31.0197329Z Generating optimized autoload files
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.4608610Z > Illuminate\Foundation\ComposerScripts::postAutoloadDump
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.4764373Z > @php artisan package:discover --ansi
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6363469Z 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6364358Z   [37;44m INFO [39;49m Discovering packages.  
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6364790Z 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6438403Z   laravel/pail [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6485760Z   laravel/sail [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6530879Z   laravel/tinker [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6576524Z   nesbot/carbon [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6616393Z   nunomaduro/collision [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6657054Z   nunomaduro/termwind [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6658801Z 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6769734Z 83 packages you are using are looking for funding.
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.6770743Z Use the `composer fund` command to find out more!
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:32.9046870Z > ./vendor/bin/phpstan analyse
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:33.5854378Z Note: Using configuration file /home/runner/work/rekenreis/rekenreis/apps/api/phpstan.neon.
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.1804153Z  0/3 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.2004569Z  3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.2004986Z 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.2041387Z 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.2043634Z  [OK] No errors                                                                 
+Gate C (Type-safety)	API PHPStan	2026-03-04T02:27:35.2044091Z 
+Gate C (Type-safety)	Post Setup Node	﻿2026-03-04T02:27:35.2480664Z Post job cleanup.
+Gate C (Type-safety)	Post Setup Node	2026-03-04T02:27:35.4032586Z Cache hit occurred on the primary key node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896, not saving cache.
+Gate C (Type-safety)	Post Setup pnpm	﻿2026-03-04T02:27:35.4138121Z Post job cleanup.
+Gate C (Type-safety)	Post Setup pnpm	2026-03-04T02:27:35.4685761Z Pruning is unnecessary.
+Gate C (Type-safety)	Post Run actions/checkout@v4	﻿2026-03-04T02:27:35.4783392Z Post job cleanup.
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5750033Z [command]/usr/bin/git version
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5788803Z git version 2.53.0
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5840518Z Temporarily overriding HOME='/home/runner/work/_temp/336b81e7-dd48-46e6-988c-0c0c5fb526e0' before making global git config changes
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5842099Z Adding repository directory to the temporary git global config as a safe directory
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5846929Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5882467Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.5916692Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6155148Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6178933Z http.https://github.com/.extraheader
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6196059Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6232768Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6487171Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate C (Type-safety)	Post Run actions/checkout@v4	2026-03-04T02:27:35.6521560Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate C (Type-safety)	Complete job	﻿2026-03-04T02:27:35.6902769Z Cleaning up orphan processes
+Gate D (Security)	Set up job	﻿2026-03-04T02:27:08.4454626Z Current runner version: '2.331.0'
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4482969Z ##[group]Runner Image Provisioner
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4484025Z Hosted Compute Agent
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4484594Z Version: 20260213.493
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4485293Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4486011Z Build Date: 2026-02-13T00:28:41Z
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4486622Z Worker ID: {52c0c99d-43c0-49c1-a6ce-598efcebedfd}
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4487388Z Azure Region: northcentralus
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4487958Z ##[endgroup]
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4489419Z ##[group]Operating System
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4490123Z Ubuntu
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4490772Z 24.04.3
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4491253Z LTS
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4491657Z ##[endgroup]
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4492271Z ##[group]Runner Image
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4492782Z Image: ubuntu-24.04
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4493306Z Version: 20260224.36.1
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4494600Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4496443Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4497360Z ##[endgroup]
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4498484Z ##[group]GITHUB_TOKEN Permissions
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4500706Z Contents: read
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4501239Z Metadata: read
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4501750Z Packages: read
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4502339Z ##[endgroup]
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4504849Z Secret source: Actions
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4506004Z Prepare workflow directory
+Gate D (Security)	Set up job	2026-03-04T02:27:08.4944812Z Prepare all required actions
+Gate D (Security)	Set up job	2026-03-04T02:27:08.5001042Z Getting action download info
+Gate D (Security)	Set up job	2026-03-04T02:27:08.8522247Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Gate D (Security)	Set up job	2026-03-04T02:27:08.9742086Z Download action repository 'gitleaks/gitleaks-action@v2' (SHA:ff98106e4c7b2bc287b24eaf42907196329070c7)
+Gate D (Security)	Set up job	2026-03-04T02:27:09.3454769Z Download action repository 'shivammathur/setup-php@v2' (SHA:44454db4f0199b8b9685a5d763dc37cbf79108e1)
+Gate D (Security)	Set up job	2026-03-04T02:27:09.7709105Z Complete job name: Gate D (Security)
+Gate D (Security)	Run actions/checkout@v4	﻿2026-03-04T02:27:09.8568766Z ##[group]Run actions/checkout@v4
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8570104Z with:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8570851Z   repository: jievamohan/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8572136Z   token: ***
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8572857Z   ssh-strict: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8573780Z   ssh-user: git
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8574565Z   persist-credentials: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8575427Z   clean: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8576202Z   sparse-checkout-cone-mode: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8577152Z   fetch-depth: 1
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8577909Z   fetch-tags: false
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8578747Z   show-progress: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8579522Z   lfs: false
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8580229Z   submodules: false
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8581027Z   set-safe-directory: true
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.8582168Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9711640Z Syncing repository: jievamohan/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9715373Z ##[group]Getting Git version info
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9717746Z Working directory is '/home/runner/work/rekenreis/rekenreis'
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9721041Z [command]/usr/bin/git version
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9776499Z git version 2.53.0
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9803368Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9818841Z Temporarily overriding HOME='/home/runner/work/_temp/bc06e9e1-dfe9-4634-b1b3-1097dd7a55f8' before making global git config changes
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9821932Z Adding repository directory to the temporary git global config as a safe directory
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9825124Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9866050Z Deleting the contents of '/home/runner/work/rekenreis/rekenreis'
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9870215Z ##[group]Initializing the repository
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9874322Z [command]/usr/bin/git init /home/runner/work/rekenreis/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9974885Z hint: Using 'master' as the name for the initial branch. This default branch name
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9978260Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9981817Z hint: to use in all of your new repositories, which will suppress this warning,
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9983455Z hint: call:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9984449Z hint:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9985381Z hint: 	git config --global init.defaultBranch <name>
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9987148Z hint:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9988239Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9990065Z hint: 'development'. The just-created branch can be renamed via this command:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9991538Z hint:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9992641Z hint: 	git branch -m <name>
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9994250Z hint:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9995433Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:09.9997418Z Initialized empty Git repository in /home/runner/work/rekenreis/rekenreis/.git/
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0000858Z [command]/usr/bin/git remote add origin https://github.com/jievamohan/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0034923Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0036263Z ##[group]Disabling automatic garbage collection
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0038712Z [command]/usr/bin/git config --local gc.auto 0
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0071951Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0073260Z ##[group]Setting up auth
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0078710Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0112796Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0498670Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0537819Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0785322Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.0830623Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.1079292Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.1118955Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.1120379Z ##[group]Fetching the repository
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.1128010Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6ca943471fd0620c1ce9bdc7022e56e1c4929947:refs/remotes/pull/1/merge
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3811523Z From https://github.com/jievamohan/rekenreis
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3814373Z  * [new ref]         6ca943471fd0620c1ce9bdc7022e56e1c4929947 -> pull/1/merge
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3852287Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3854428Z ##[group]Determining the checkout info
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3856162Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3859654Z [command]/usr/bin/git sparse-checkout disable
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3907433Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3938777Z ##[group]Checking out the ref
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.3943091Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4056838Z Note: switching to 'refs/remotes/pull/1/merge'.
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4058088Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4058926Z You are in 'detached HEAD' state. You can look around, make experimental
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4061845Z changes and commit them, and you can discard any commits you make in this
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4064968Z state without impacting any branches by switching back to a branch.
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4066605Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4067808Z If you want to create a new branch to retain commits you create, you may
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4070533Z do so (now or later) by using -c with the switch command. Example:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4072151Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4072839Z   git switch -c <new-branch-name>
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4074768Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4075421Z Or undo this operation with:
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4076394Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4076927Z   git switch -
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4077609Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4078790Z Turn off this advice by setting config variable advice.detachedHead to false
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4080573Z 
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4082759Z HEAD is now at 6ca9434 Merge d589eb7984572b27e509e69374517cd231e3fed9 into 6cca4bf5493d087d7258ccb984d548819c6fb5ca
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4086677Z ##[endgroup]
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4114517Z [command]/usr/bin/git log -1 --format=%H
+Gate D (Security)	Run actions/checkout@v4	2026-03-04T02:27:10.4140721Z 6ca943471fd0620c1ce9bdc7022e56e1c4929947
+Gate D (Security)	Gitleaks	﻿2026-03-04T02:27:10.4408097Z ##[group]Run gitleaks/gitleaks-action@v2
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.4409116Z env:
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.4410148Z   GITHUB_TOKEN: ***
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.4410864Z ##[endgroup]
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.8473976Z [jievamohan] is an individual user. No license key is required.
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.8476409Z gitleaks version: 8.24.3
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.8478394Z Version to install: 8.24.3 (target directory: /tmp/gitleaks-8.24.3)
+Gate D (Security)	Gitleaks	2026-03-04T02:27:10.9356537Z Cache hit for: gitleaks-cache-8.24.3-linux-x64
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.5970280Z Received 5717458 of 5717458 (100.0%), 10.4 MBs/sec
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.5972036Z Cache Size: ~5 MB (5717458 B)
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.6006715Z [command]/usr/bin/tar -xf /home/runner/work/_temp/3d3d0097-7fb0-41ff-9f50-65e70ded5f96/cache.tzst -P -C /home/runner/work/rekenreis/rekenreis --use-compress-program unzstd
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.6405417Z Cache restored successfully
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.6421200Z Gitleaks restored from cache
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.6424658Z event type: pull_request
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.8780063Z gitleaks cmd: gitleaks detect --redact -v --exit-code=2 --report-format=sarif --report-path=results.sarif --log-level=debug --log-opts=--no-merges --first-parent f60b177ddcb29ffac68956b9d2e06a2ef23fe842^..d589eb7984572b27e509e69374517cd231e3fed9
+Gate D (Security)	Gitleaks	2026-03-04T02:27:11.8798956Z [command]/tmp/gitleaks-8.24.3/gitleaks detect --redact -v --exit-code=2 --report-format=sarif --report-path=results.sarif --log-level=debug --log-opts=--no-merges --first-parent f60b177ddcb29ffac68956b9d2e06a2ef23fe842^..d589eb7984572b27e509e69374517cd231e3fed9
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1625285Z 
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1626266Z     ○
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1626854Z     │╲
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1627259Z     │ ○
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1627649Z     ○ ░
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1627938Z     ░    gitleaks
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1628111Z 
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1628515Z [90m2:27AM[0m DBG using github.com/wasilibs/go-re2 regex engine
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.1629238Z [90m2:27AM[0m DBG no gitleaks config found in path .gitleaks.toml, using default gitleaks config
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3098211Z [90m2:27AM[0m DBG executing: /usr/bin/git -C . log -p -U0 --no-merges --first-parent f60b177ddcb29ffac68956b9d2e06a2ef23fe842^..d589eb7984572b27e509e69374517cd231e3fed9
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3119753Z [90m2:27AM[0m [31mERR[0m [1m[git] fatal: ambiguous argument 'f60b177ddcb29ffac68956b9d2e06a2ef23fe842^..d589eb7984572b27e509e69374517cd231e3fed9': unknown revision or path not in the working tree.[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3121570Z [90m2:27AM[0m [31mERR[0m [1m[git] Use '--' to separate paths from revisions, like this:[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3122572Z [90m2:27AM[0m [31mERR[0m [1m[git] 'git <command> [<revision>...] -- [<file>...]'[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3139462Z [90m2:27AM[0m DBG SCM platform parsed from host [36mhost=[0mgithub.com [36mplatform=[0mgithub
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3140967Z [90m2:27AM[0m [31mERR[0m [1mfailed to scan Git repository[0m [36merror=[0m[31m[1m"stderr is not empty"[0m[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3142207Z [90m2:27AM[0m [33mWRN[0m [1mscanned ~0 bytes (0)[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3143055Z [90m2:27AM[0m [33mWRN[0m [1mpartial scan completed in 153ms[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3144125Z [90m2:27AM[0m [33mWRN[0m [1mno leaks found in partial scan[0m
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3174999Z Artifact name is valid!
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3177098Z Root directory input is valid!
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.3999927Z Beginning upload of artifact content to blob storage
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.5119924Z Uploaded bytes 6768
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.5457409Z Finished uploading artifact content to blob storage!
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.5460767Z SHA256 digest of uploaded artifact zip is ecf56ce30e8803959efcf57ca739f7cc6504a9732eac5290f1e11d1a0a2f7b35
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.5463165Z Finalizing artifact upload
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.6801912Z Artifact gitleaks-results.sarif.zip successfully finalized. Artifact ID 5752551990
+Gate D (Security)	Gitleaks	2026-03-04T02:27:12.6841532Z ##[error]ERROR: Unexpected exit code [1]
+Gate D (Security)	Post Run actions/checkout@v4	﻿2026-03-04T02:27:12.7104487Z Post job cleanup.
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8099882Z [command]/usr/bin/git version
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8139434Z git version 2.53.0
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8192667Z Temporarily overriding HOME='/home/runner/work/_temp/783a9403-3b52-4c47-8daa-b486e93cd2cd' before making global git config changes
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8194173Z Adding repository directory to the temporary git global config as a safe directory
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8198336Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8237334Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8274081Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8530223Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8554677Z http.https://github.com/.extraheader
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8568185Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8601666Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8860619Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate D (Security)	Post Run actions/checkout@v4	2026-03-04T02:27:12.8897884Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate D (Security)	Complete job	﻿2026-03-04T02:27:12.9263193Z Cleaning up orphan processes
+Lint & Test	Set up job	﻿2026-03-04T02:27:09.3291672Z Current runner version: '2.331.0'
+Lint & Test	Set up job	2026-03-04T02:27:09.3318826Z ##[group]Runner Image Provisioner
+Lint & Test	Set up job	2026-03-04T02:27:09.3319741Z Hosted Compute Agent
+Lint & Test	Set up job	2026-03-04T02:27:09.3320301Z Version: 20260213.493
+Lint & Test	Set up job	2026-03-04T02:27:09.3321618Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Lint & Test	Set up job	2026-03-04T02:27:09.3322340Z Build Date: 2026-02-13T00:28:41Z
+Lint & Test	Set up job	2026-03-04T02:27:09.3322970Z Worker ID: {b0aef56a-c2ba-4d26-bfbf-e6ba97930cb4}
+Lint & Test	Set up job	2026-03-04T02:27:09.3323772Z Azure Region: westus
+Lint & Test	Set up job	2026-03-04T02:27:09.3324287Z ##[endgroup]
+Lint & Test	Set up job	2026-03-04T02:27:09.3326779Z ##[group]Operating System
+Lint & Test	Set up job	2026-03-04T02:27:09.3327635Z Ubuntu
+Lint & Test	Set up job	2026-03-04T02:27:09.3328102Z 24.04.3
+Lint & Test	Set up job	2026-03-04T02:27:09.3328578Z LTS
+Lint & Test	Set up job	2026-03-04T02:27:09.3329059Z ##[endgroup]
+Lint & Test	Set up job	2026-03-04T02:27:09.3329598Z ##[group]Runner Image
+Lint & Test	Set up job	2026-03-04T02:27:09.3330130Z Image: ubuntu-24.04
+Lint & Test	Set up job	2026-03-04T02:27:09.3330990Z Version: 20260224.36.1
+Lint & Test	Set up job	2026-03-04T02:27:09.3332018Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+Lint & Test	Set up job	2026-03-04T02:27:09.3333831Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+Lint & Test	Set up job	2026-03-04T02:27:09.3334692Z ##[endgroup]
+Lint & Test	Set up job	2026-03-04T02:27:09.3335798Z ##[group]GITHUB_TOKEN Permissions
+Lint & Test	Set up job	2026-03-04T02:27:09.3338479Z Contents: read
+Lint & Test	Set up job	2026-03-04T02:27:09.3339040Z Metadata: read
+Lint & Test	Set up job	2026-03-04T02:27:09.3339542Z Packages: read
+Lint & Test	Set up job	2026-03-04T02:27:09.3340174Z ##[endgroup]
+Lint & Test	Set up job	2026-03-04T02:27:09.3342698Z Secret source: Actions
+Lint & Test	Set up job	2026-03-04T02:27:09.3343969Z Prepare workflow directory
+Lint & Test	Set up job	2026-03-04T02:27:09.3668554Z Prepare all required actions
+Lint & Test	Set up job	2026-03-04T02:27:09.3711972Z Getting action download info
+Lint & Test	Set up job	2026-03-04T02:27:09.8759115Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Lint & Test	Set up job	2026-03-04T02:27:10.0269595Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+Lint & Test	Set up job	2026-03-04T02:27:10.6115004Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Lint & Test	Set up job	2026-03-04T02:27:10.7636086Z Download action repository 'shivammathur/setup-php@v2' (SHA:44454db4f0199b8b9685a5d763dc37cbf79108e1)
+Lint & Test	Set up job	2026-03-04T02:27:11.3236381Z Complete job name: Lint & Test
+Lint & Test	Run actions/checkout@v4	﻿2026-03-04T02:27:11.3973459Z ##[group]Run actions/checkout@v4
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3974240Z with:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3974621Z   repository: jievamohan/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3975213Z   token: ***
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3975561Z   ssh-strict: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3975911Z   ssh-user: git
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3976285Z   persist-credentials: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3976678Z   clean: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3977043Z   sparse-checkout-cone-mode: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3977459Z   fetch-depth: 1
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3977803Z   fetch-tags: false
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3978167Z   show-progress: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3978534Z   lfs: false
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3978870Z   submodules: false
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3979226Z   set-safe-directory: true
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.3979845Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5103752Z Syncing repository: jievamohan/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5105515Z ##[group]Getting Git version info
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5106134Z Working directory is '/home/runner/work/rekenreis/rekenreis'
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5106947Z [command]/usr/bin/git version
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5174305Z git version 2.53.0
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5204124Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5219808Z Temporarily overriding HOME='/home/runner/work/_temp/c333c385-1480-4c30-83d3-c9107cd84032' before making global git config changes
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5221325Z Adding repository directory to the temporary git global config as a safe directory
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5225788Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5272502Z Deleting the contents of '/home/runner/work/rekenreis/rekenreis'
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5276813Z ##[group]Initializing the repository
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5281078Z [command]/usr/bin/git init /home/runner/work/rekenreis/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5409045Z hint: Using 'master' as the name for the initial branch. This default branch name
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5410360Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5411436Z hint: to use in all of your new repositories, which will suppress this warning,
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5412048Z hint: call:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5412378Z hint:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5412856Z hint: 	git config --global init.defaultBranch <name>
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5413329Z hint:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5413777Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5414492Z hint: 'development'. The just-created branch can be renamed via this command:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5415450Z hint:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5416101Z hint: 	git branch -m <name>
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5416600Z hint:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5417079Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5417822Z Initialized empty Git repository in /home/runner/work/rekenreis/rekenreis/.git/
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5428484Z [command]/usr/bin/git remote add origin https://github.com/jievamohan/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5465540Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5466234Z ##[group]Disabling automatic garbage collection
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5470388Z [command]/usr/bin/git config --local gc.auto 0
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5502528Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5503157Z ##[group]Setting up auth
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5510172Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5543243Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5901895Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.5935328Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6171988Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6214331Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6453346Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6494177Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6495367Z ##[group]Fetching the repository
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:11.6503793Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6ca943471fd0620c1ce9bdc7022e56e1c4929947:refs/remotes/pull/1/merge
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0800519Z From https://github.com/jievamohan/rekenreis
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0802698Z  * [new ref]         6ca943471fd0620c1ce9bdc7022e56e1c4929947 -> pull/1/merge
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0838908Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0839646Z ##[group]Determining the checkout info
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0841889Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0847569Z [command]/usr/bin/git sparse-checkout disable
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0892768Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0919838Z ##[group]Checking out the ref
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.0924771Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1032662Z Note: switching to 'refs/remotes/pull/1/merge'.
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1033174Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1033534Z You are in 'detached HEAD' state. You can look around, make experimental
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1034165Z changes and commit them, and you can discard any commits you make in this
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1034686Z state without impacting any branches by switching back to a branch.
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1035004Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1035222Z If you want to create a new branch to retain commits you create, you may
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1035717Z do so (now or later) by using -c with the switch command. Example:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1036447Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1036666Z   git switch -c <new-branch-name>
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1037030Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1037232Z Or undo this operation with:
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1037587Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1037780Z   git switch -
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1038078Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1038492Z Turn off this advice by setting config variable advice.detachedHead to false
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1039119Z 
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1039764Z HEAD is now at 6ca9434 Merge d589eb7984572b27e509e69374517cd231e3fed9 into 6cca4bf5493d087d7258ccb984d548819c6fb5ca
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1042317Z ##[endgroup]
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1078336Z [command]/usr/bin/git log -1 --format=%H
+Lint & Test	Run actions/checkout@v4	2026-03-04T02:27:12.1101626Z 6ca943471fd0620c1ce9bdc7022e56e1c4929947
+Lint & Test	Setup pnpm	﻿2026-03-04T02:27:12.1311069Z ##[group]Run pnpm/action-setup@v4
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1311450Z with:
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1311652Z   version: 9
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1311869Z   dest: ~/setup-pnpm
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1312113Z   run_install: null
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1312371Z   package_json_file: package.json
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1312647Z   standalone: false
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1312865Z ##[endgroup]
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.1865311Z ##[group]Running self-installer...
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.7188306Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.7281175Z Packages: +1
+Lint & Test	Setup pnpm	2026-03-04T02:27:12.7281710Z +
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1248912Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1554745Z 
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1555226Z dependencies:
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1555705Z + pnpm 9.15.9 (10.30.3 is available)
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1556054Z 
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1586611Z Done in 805ms
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1752956Z ##[endgroup]
+Lint & Test	Setup pnpm	2026-03-04T02:27:13.1757061Z Installation Completed!
+Lint & Test	Setup Node	﻿2026-03-04T02:27:13.1911849Z ##[group]Run actions/setup-node@v4
+Lint & Test	Setup Node	2026-03-04T02:27:13.1912194Z with:
+Lint & Test	Setup Node	2026-03-04T02:27:13.1912414Z   node-version: 22
+Lint & Test	Setup Node	2026-03-04T02:27:13.1912631Z   cache: pnpm
+Lint & Test	Setup Node	2026-03-04T02:27:13.1912903Z   cache-dependency-path: apps/web/pnpm-lock.yaml
+Lint & Test	Setup Node	2026-03-04T02:27:13.1913252Z   always-auth: false
+Lint & Test	Setup Node	2026-03-04T02:27:13.1913484Z   check-latest: false
+Lint & Test	Setup Node	2026-03-04T02:27:13.1913873Z   token: ***
+Lint & Test	Setup Node	2026-03-04T02:27:13.1914076Z env:
+Lint & Test	Setup Node	2026-03-04T02:27:13.1914341Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Lint & Test	Setup Node	2026-03-04T02:27:13.1914678Z ##[endgroup]
+Lint & Test	Setup Node	2026-03-04T02:27:13.4119465Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+Lint & Test	Setup Node	2026-03-04T02:27:13.4126093Z ##[group]Environment details
+Lint & Test	Setup Node	2026-03-04T02:27:16.2964730Z node: v22.22.0
+Lint & Test	Setup Node	2026-03-04T02:27:16.2965095Z npm: 10.9.4
+Lint & Test	Setup Node	2026-03-04T02:27:16.2965281Z yarn: 1.22.22
+Lint & Test	Setup Node	2026-03-04T02:27:16.2966607Z ##[endgroup]
+Lint & Test	Setup Node	2026-03-04T02:27:16.2995160Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+Lint & Test	Setup Node	2026-03-04T02:27:16.8505908Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+Lint & Test	Setup Node	2026-03-04T02:27:17.1402287Z Cache hit for: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Lint & Test	Setup Node	2026-03-04T02:27:18.4160468Z Received 8388608 of 60732291 (13.8%), 8.0 MBs/sec
+Lint & Test	Setup Node	2026-03-04T02:27:18.8702735Z Received 60732291 of 60732291 (100.0%), 39.8 MBs/sec
+Lint & Test	Setup Node	2026-03-04T02:27:18.8703920Z Cache Size: ~58 MB (60732291 B)
+Lint & Test	Setup Node	2026-03-04T02:27:18.8747878Z [command]/usr/bin/tar -xf /home/runner/work/_temp/1000d7d6-52ac-4fad-b63a-df212563f543/cache.tzst -P -C /home/runner/work/rekenreis/rekenreis --use-compress-program unzstd
+Lint & Test	Setup Node	2026-03-04T02:27:19.7995106Z Cache restored successfully
+Lint & Test	Setup Node	2026-03-04T02:27:19.8132570Z Cache restored from key: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Lint & Test	Web lint	﻿2026-03-04T02:27:19.8306710Z ##[group]Run cd apps/web && pnpm install --frozen-lockfile && pnpm run lint
+Lint & Test	Web lint	2026-03-04T02:27:19.8307310Z [36;1mcd apps/web && pnpm install --frozen-lockfile && pnpm run lint[0m
+Lint & Test	Web lint	2026-03-04T02:27:19.8415165Z shell: /usr/bin/bash -e {0}
+Lint & Test	Web lint	2026-03-04T02:27:19.8415433Z env:
+Lint & Test	Web lint	2026-03-04T02:27:19.8415676Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Lint & Test	Web lint	2026-03-04T02:27:19.8415981Z ##[endgroup]
+Lint & Test	Web lint	2026-03-04T02:27:20.3094423Z Lockfile is up to date, resolution step is skipped
+Lint & Test	Web lint	2026-03-04T02:27:20.3840379Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Lint & Test	Web lint	2026-03-04T02:27:20.5191473Z Packages: +732
+Lint & Test	Web lint	2026-03-04T02:27:20.5192253Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Lint & Test	Web lint	2026-03-04T02:27:21.3864327Z Progress: resolved 732, reused 731, downloaded 0, added 677
+Lint & Test	Web lint	2026-03-04T02:27:21.4718675Z Progress: resolved 732, reused 731, downloaded 0, added 732, done
+Lint & Test	Web lint	2026-03-04T02:27:22.8881481Z 
+Lint & Test	Web lint	2026-03-04T02:27:22.8882167Z dependencies:
+Lint & Test	Web lint	2026-03-04T02:27:22.8883418Z + nuxt 3.13.2
+Lint & Test	Web lint	2026-03-04T02:27:22.8883853Z + vue 3.5.29
+Lint & Test	Web lint	2026-03-04T02:27:22.8884049Z 
+Lint & Test	Web lint	2026-03-04T02:27:22.8884206Z devDependencies:
+Lint & Test	Web lint	2026-03-04T02:27:22.8884676Z + @typescript-eslint/eslint-plugin 8.56.1
+Lint & Test	Web lint	2026-03-04T02:27:22.8885297Z + @typescript-eslint/parser 8.56.1
+Lint & Test	Web lint	2026-03-04T02:27:22.8885726Z + eslint 8.57.1
+Lint & Test	Web lint	2026-03-04T02:27:22.8886114Z + eslint-plugin-vue 9.33.0
+Lint & Test	Web lint	2026-03-04T02:27:22.8886545Z + typescript 5.9.3
+Lint & Test	Web lint	2026-03-04T02:27:22.8886885Z + vitest 2.1.9
+Lint & Test	Web lint	2026-03-04T02:27:22.8887287Z + vue-eslint-parser 9.4.3
+Lint & Test	Web lint	2026-03-04T02:27:22.8887677Z + vue-tsc 2.2.12
+Lint & Test	Web lint	2026-03-04T02:27:22.8887888Z 
+Lint & Test	Web lint	2026-03-04T02:27:22.9088277Z Done in 3s using pnpm v9.15.9
+Lint & Test	Web lint	2026-03-04T02:27:23.3206345Z 
+Lint & Test	Web lint	2026-03-04T02:27:23.3207430Z > web@ lint /home/runner/work/rekenreis/rekenreis/apps/web
+Lint & Test	Web lint	2026-03-04T02:27:23.3208109Z > eslint .
+Lint & Test	Web lint	2026-03-04T02:27:23.3208324Z 
+Lint & Test	Web test	﻿2026-03-04T02:27:24.5426773Z ##[group]Run cd apps/web && pnpm run test
+Lint & Test	Web test	2026-03-04T02:27:24.5427139Z [36;1mcd apps/web && pnpm run test[0m
+Lint & Test	Web test	2026-03-04T02:27:24.5477864Z shell: /usr/bin/bash -e {0}
+Lint & Test	Web test	2026-03-04T02:27:24.5478101Z env:
+Lint & Test	Web test	2026-03-04T02:27:24.5478346Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Lint & Test	Web test	2026-03-04T02:27:24.5478650Z ##[endgroup]
+Lint & Test	Web test	2026-03-04T02:27:24.9643159Z 
+Lint & Test	Web test	2026-03-04T02:27:24.9643955Z > web@ test /home/runner/work/rekenreis/rekenreis/apps/web
+Lint & Test	Web test	2026-03-04T02:27:24.9644343Z > vitest run
+Lint & Test	Web test	2026-03-04T02:27:24.9644468Z 
+Lint & Test	Web test	2026-03-04T02:27:25.3413502Z ▲ [WARNING] Cannot find base config file "./.nuxt/tsconfig.json" [tsconfig.json]
+Lint & Test	Web test	2026-03-04T02:27:25.3414127Z 
+Lint & Test	Web test	2026-03-04T02:27:25.3414299Z     tsconfig.json:2:13:
+Lint & Test	Web test	2026-03-04T02:27:25.3414853Z       2 │   "extends": "./.nuxt/tsconfig.json"
+Lint & Test	Web test	2026-03-04T02:27:25.3415662Z         ╵              ~~~~~~~~~~~~~~~~~~~~~~~
+Lint & Test	Web test	2026-03-04T02:27:25.3415983Z 
+Lint & Test	Web test	2026-03-04T02:27:25.3698521Z 
+Lint & Test	Web test	2026-03-04T02:27:25.3701514Z [1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/home/runner/work/rekenreis/rekenreis/apps/web[39m
+Lint & Test	Web test	2026-03-04T02:27:25.3702330Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6294951Z  [31m❯[39m test/example.test.ts [2m([22m[2m0 test[22m[2m)[22m
+Lint & Test	Web test	2026-03-04T02:27:25.6413154Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6421546Z [31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6422160Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6426120Z [31m[1m[7m FAIL [27m[22m[39m test/example.test.ts[2m [ test/example.test.ts ][22m
+Lint & Test	Web test	2026-03-04T02:27:25.6447556Z [31m[1mTSConfckParseError[22m: failed to resolve "extends":"./.nuxt/tsconfig.json" in /home/runner/work/rekenreis/rekenreis/apps/web/tsconfig.json[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6449066Z   Plugin: [35mvite:esbuild[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6450076Z   File: [36m/home/runner/work/rekenreis/rekenreis/apps/web/test/example.test.ts[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6452317Z [90m [2m❯[22m resolveExtends node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18845:8[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6454687Z [90m [2m❯[22m parseExtends node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18780:24[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6457117Z [90m [2m❯[22m parse$e node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18638:23[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6459521Z [90m [2m❯[22m loadTsconfigJsonForFile node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19433:20[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6462202Z [90m [2m❯[22m transformWithEsbuild node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19194:30[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6465231Z [90m [2m❯[22m TransformPluginContext.transform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19297:24[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6467849Z [90m [2m❯[22m PluginContainer.transform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m49099:18[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6470367Z [90m [2m❯[22m loadAndTransform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51978:27[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6471708Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6472354Z [31m[1mCaused by: Error[22m: Cannot find module './.nuxt/tsconfig.json'
+Lint & Test	Web test	2026-03-04T02:27:25.6473004Z Require stack:
+Lint & Test	Web test	2026-03-04T02:27:25.6473751Z - /home/runner/work/rekenreis/rekenreis/apps/web/tsconfig.json[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6475504Z [90m [2m❯[22m resolveExtends node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18833:14[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6477676Z [90m [2m❯[22m parseExtends node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18780:24[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6479818Z [90m [2m❯[22m parse$e node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m18638:23[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6482748Z [90m [2m❯[22m loadTsconfigJsonForFile node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19433:20[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6485045Z [90m [2m❯[22m transformWithEsbuild node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19194:30[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6487436Z [90m [2m❯[22m TransformPluginContext.transform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m19297:24[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6489836Z [90m [2m❯[22m PluginContainer.transform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m49099:18[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6492415Z [90m [2m❯[22m loadAndTransform node_modules/.pnpm/vite@5.4.21_terser@5.46.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51978:27[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6493397Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6495652Z [31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6496590Z [2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+Lint & Test	Web test	2026-03-04T02:27:25.6497359Z [2m      Tests [22m [2mno tests[22m
+Lint & Test	Web test	2026-03-04T02:27:25.6497988Z [2m   Start at [22m 02:27:25
+Lint & Test	Web test	2026-03-04T02:27:25.6499186Z [2m   Duration [22m 271ms[2m (transform 19ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 68ms)[22m
+Lint & Test	Web test	2026-03-04T02:27:25.6499923Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6499944Z 
+Lint & Test	Web test	2026-03-04T02:27:25.6729005Z  ELIFECYCLE  Test failed. See above for more details.
+Lint & Test	Web test	2026-03-04T02:27:25.6938938Z ##[error]Process completed with exit code 1.
+Lint & Test	Post Setup pnpm	﻿2026-03-04T02:27:25.7016853Z Post job cleanup.
+Lint & Test	Post Setup pnpm	2026-03-04T02:27:25.7576694Z Pruning is unnecessary.
+Lint & Test	Post Run actions/checkout@v4	﻿2026-03-04T02:27:25.7702972Z Post job cleanup.
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8706881Z [command]/usr/bin/git version
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8750582Z git version 2.53.0
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8806095Z Temporarily overriding HOME='/home/runner/work/_temp/606eb8e7-a91d-4682-a8a5-ef706bf4a6cf' before making global git config changes
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8807602Z Adding repository directory to the temporary git global config as a safe directory
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8813471Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8855178Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.8897410Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9175869Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9201900Z http.https://github.com/.extraheader
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9219113Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9257788Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9518818Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint & Test	Post Run actions/checkout@v4	2026-03-04T02:27:25.9556744Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint & Test	Complete job	﻿2026-03-04T02:27:25.9982895Z Cleaning up orphan processes
+Gate F (Build)	Set up job	﻿2026-03-04T02:27:08.5742761Z Current runner version: '2.331.0'
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5767019Z ##[group]Runner Image Provisioner
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5767873Z Hosted Compute Agent
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5768432Z Version: 20260213.493
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5769141Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5769859Z Build Date: 2026-02-13T00:28:41Z
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5770548Z Worker ID: {db1672af-2922-40f7-90aa-172d5968d807}
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5771424Z Azure Region: northcentralus
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5772174Z ##[endgroup]
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5774332Z ##[group]Operating System
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5774973Z Ubuntu
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5775602Z 24.04.3
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5776062Z LTS
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5776585Z ##[endgroup]
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5777157Z ##[group]Runner Image
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5777754Z Image: ubuntu-24.04
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5778256Z Version: 20260224.36.1
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5779342Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5781404Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5782432Z ##[endgroup]
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5783690Z ##[group]GITHUB_TOKEN Permissions
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5785956Z Contents: read
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5786582Z Metadata: read
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5787077Z Packages: read
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5787695Z ##[endgroup]
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5789741Z Secret source: Actions
+Gate F (Build)	Set up job	2026-03-04T02:27:08.5791230Z Prepare workflow directory
+Gate F (Build)	Set up job	2026-03-04T02:27:08.6128381Z Prepare all required actions
+Gate F (Build)	Set up job	2026-03-04T02:27:08.6166300Z Getting action download info
+Gate F (Build)	Set up job	2026-03-04T02:27:08.9369941Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Gate F (Build)	Set up job	2026-03-04T02:27:09.0766092Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+Gate F (Build)	Set up job	2026-03-04T02:27:09.4830108Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Gate F (Build)	Set up job	2026-03-04T02:27:09.6885440Z Complete job name: Gate F (Build)
+Gate F (Build)	Run actions/checkout@v4	﻿2026-03-04T02:27:09.7612263Z ##[group]Run actions/checkout@v4
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7613134Z with:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7613584Z   repository: jievamohan/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7614330Z   token: ***
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7614758Z   ssh-strict: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7615200Z   ssh-user: git
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7615646Z   persist-credentials: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7616147Z   clean: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7616586Z   sparse-checkout-cone-mode: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7617115Z   fetch-depth: 1
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7617545Z   fetch-tags: false
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7617991Z   show-progress: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7618425Z   lfs: false
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7618828Z   submodules: false
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7619293Z   set-safe-directory: true
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.7619928Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8729860Z Syncing repository: jievamohan/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8731977Z ##[group]Getting Git version info
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8732706Z Working directory is '/home/runner/work/rekenreis/rekenreis'
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8733752Z [command]/usr/bin/git version
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8797491Z git version 2.53.0
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8821672Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8835722Z Temporarily overriding HOME='/home/runner/work/_temp/ef84bd8d-3f50-484a-bd5b-571e4533019c' before making global git config changes
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8838189Z Adding repository directory to the temporary git global config as a safe directory
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8840561Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8881346Z Deleting the contents of '/home/runner/work/rekenreis/rekenreis'
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8885244Z ##[group]Initializing the repository
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8889190Z [command]/usr/bin/git init /home/runner/work/rekenreis/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8991057Z hint: Using 'master' as the name for the initial branch. This default branch name
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8992848Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8994809Z hint: to use in all of your new repositories, which will suppress this warning,
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8996176Z hint: call:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8996804Z hint:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8997615Z hint: 	git config --global init.defaultBranch <name>
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8998637Z hint:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.8999496Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9001347Z hint: 'development'. The just-created branch can be renamed via this command:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9002606Z hint:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9003253Z hint: 	git branch -m <name>
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9004015Z hint:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9004886Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9006209Z Initialized empty Git repository in /home/runner/work/rekenreis/rekenreis/.git/
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9008973Z [command]/usr/bin/git remote add origin https://github.com/jievamohan/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9045164Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9046441Z ##[group]Disabling automatic garbage collection
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9049235Z [command]/usr/bin/git config --local gc.auto 0
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9082017Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9083168Z ##[group]Setting up auth
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9088286Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9121088Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9473138Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9505679Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9756697Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:09.9799124Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.0058770Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.0096841Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.0097782Z ##[group]Fetching the repository
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.0105951Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6ca943471fd0620c1ce9bdc7022e56e1c4929947:refs/remotes/pull/1/merge
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3126653Z From https://github.com/jievamohan/rekenreis
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3129940Z  * [new ref]         6ca943471fd0620c1ce9bdc7022e56e1c4929947 -> pull/1/merge
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3162838Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3163846Z ##[group]Determining the checkout info
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3165312Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3171447Z [command]/usr/bin/git sparse-checkout disable
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3216729Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3245684Z ##[group]Checking out the ref
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3249191Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3358899Z Note: switching to 'refs/remotes/pull/1/merge'.
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3359989Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3361051Z You are in 'detached HEAD' state. You can look around, make experimental
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3363314Z changes and commit them, and you can discard any commits you make in this
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3364933Z state without impacting any branches by switching back to a branch.
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3365848Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3366470Z If you want to create a new branch to retain commits you create, you may
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3368424Z do so (now or later) by using -c with the switch command. Example:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3369325Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3369665Z   git switch -c <new-branch-name>
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3370782Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3371143Z Or undo this operation with:
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3371814Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3372097Z   git switch -
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3372513Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3373170Z Turn off this advice by setting config variable advice.detachedHead to false
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3374209Z 
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3375423Z HEAD is now at 6ca9434 Merge d589eb7984572b27e509e69374517cd231e3fed9 into 6cca4bf5493d087d7258ccb984d548819c6fb5ca
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3379407Z ##[endgroup]
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3407642Z [command]/usr/bin/git log -1 --format=%H
+Gate F (Build)	Run actions/checkout@v4	2026-03-04T02:27:10.3432759Z 6ca943471fd0620c1ce9bdc7022e56e1c4929947
+Gate F (Build)	Setup pnpm	﻿2026-03-04T02:27:10.3712104Z ##[group]Run pnpm/action-setup@v4
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3713258Z with:
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3714041Z   version: 9
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3714889Z   dest: ~/setup-pnpm
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3715797Z   run_install: null
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3716742Z   package_json_file: package.json
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3717851Z   standalone: false
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.3718761Z ##[endgroup]
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.4282045Z ##[group]Running self-installer...
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.9446001Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.9530445Z Packages: +1
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:10.9531946Z +
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3446251Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3711161Z 
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3712102Z dependencies:
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3714149Z + pnpm 9.15.9 (10.30.3 is available)
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3715230Z 
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3742442Z Done in 772ms
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3932621Z ##[endgroup]
+Gate F (Build)	Setup pnpm	2026-03-04T02:27:11.3936154Z Installation Completed!
+Gate F (Build)	Setup Node	﻿2026-03-04T02:27:11.4170259Z ##[group]Run actions/setup-node@v4
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4171416Z with:
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4172131Z   node-version: 22
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4172914Z   cache: pnpm
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4173815Z   cache-dependency-path: apps/web/pnpm-lock.yaml
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4175034Z   always-auth: false
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4175865Z   check-latest: false
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4176979Z   token: ***
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4177699Z env:
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4178579Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.4179782Z ##[endgroup]
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.6021850Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.6027383Z ##[group]Environment details
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.9620169Z node: v22.22.0
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.9622267Z npm: 10.9.4
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.9623206Z yarn: 1.22.22
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.9624698Z ##[endgroup]
+Gate F (Build)	Setup Node	2026-03-04T02:27:11.9654804Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+Gate F (Build)	Setup Node	2026-03-04T02:27:12.3459458Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+Gate F (Build)	Setup Node	2026-03-04T02:27:12.4955481Z Cache hit for: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Gate F (Build)	Setup Node	2026-03-04T02:27:13.3321761Z Received 60732291 of 60732291 (100.0%), 78.5 MBs/sec
+Gate F (Build)	Setup Node	2026-03-04T02:27:13.3322716Z Cache Size: ~58 MB (60732291 B)
+Gate F (Build)	Setup Node	2026-03-04T02:27:13.3351737Z [command]/usr/bin/tar -xf /home/runner/work/_temp/8f7d2abf-ac4c-48b3-ae7d-716cd53ebbf3/cache.tzst -P -C /home/runner/work/rekenreis/rekenreis --use-compress-program unzstd
+Gate F (Build)	Setup Node	2026-03-04T02:27:14.2068332Z Cache restored successfully
+Gate F (Build)	Setup Node	2026-03-04T02:27:14.2190055Z Cache restored from key: node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896
+Gate F (Build)	Web build	﻿2026-03-04T02:27:14.2384822Z ##[group]Run cd apps/web && pnpm install --frozen-lockfile
+Gate F (Build)	Web build	2026-03-04T02:27:14.2385327Z [36;1mcd apps/web && pnpm install --frozen-lockfile[0m
+Gate F (Build)	Web build	2026-03-04T02:27:14.2385652Z [36;1mpnpm run build[0m
+Gate F (Build)	Web build	2026-03-04T02:27:14.2452708Z shell: /usr/bin/bash -e {0}
+Gate F (Build)	Web build	2026-03-04T02:27:14.2452993Z env:
+Gate F (Build)	Web build	2026-03-04T02:27:14.2453255Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate F (Build)	Web build	2026-03-04T02:27:14.2453571Z ##[endgroup]
+Gate F (Build)	Web build	2026-03-04T02:27:14.6832722Z Lockfile is up to date, resolution step is skipped
+Gate F (Build)	Web build	2026-03-04T02:27:14.7490494Z Progress: resolved 1, reused 0, downloaded 0, added 0
+Gate F (Build)	Web build	2026-03-04T02:27:14.8662528Z Packages: +732
+Gate F (Build)	Web build	2026-03-04T02:27:14.8665770Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Gate F (Build)	Web build	2026-03-04T02:27:15.6976610Z Progress: resolved 732, reused 731, downloaded 0, added 732, done
+Gate F (Build)	Web build	2026-03-04T02:27:16.4215721Z 
+Gate F (Build)	Web build	2026-03-04T02:27:16.4216433Z dependencies:
+Gate F (Build)	Web build	2026-03-04T02:27:16.4217020Z + nuxt 3.13.2
+Gate F (Build)	Web build	2026-03-04T02:27:16.4217327Z + vue 3.5.29
+Gate F (Build)	Web build	2026-03-04T02:27:16.4217488Z 
+Gate F (Build)	Web build	2026-03-04T02:27:16.4217720Z devDependencies:
+Gate F (Build)	Web build	2026-03-04T02:27:16.4218074Z + @typescript-eslint/eslint-plugin 8.56.1
+Gate F (Build)	Web build	2026-03-04T02:27:16.4218448Z + @typescript-eslint/parser 8.56.1
+Gate F (Build)	Web build	2026-03-04T02:27:16.4218708Z + eslint 8.57.1
+Gate F (Build)	Web build	2026-03-04T02:27:16.4218954Z + eslint-plugin-vue 9.33.0
+Gate F (Build)	Web build	2026-03-04T02:27:16.4219224Z + typescript 5.9.3
+Gate F (Build)	Web build	2026-03-04T02:27:16.4219439Z + vitest 2.1.9
+Gate F (Build)	Web build	2026-03-04T02:27:16.4219645Z + vue-eslint-parser 9.4.3
+Gate F (Build)	Web build	2026-03-04T02:27:16.4219893Z + vue-tsc 2.2.12
+Gate F (Build)	Web build	2026-03-04T02:27:16.4220022Z 
+Gate F (Build)	Web build	2026-03-04T02:27:16.4415648Z Done in 2.1s using pnpm v9.15.9
+Gate F (Build)	Web build	2026-03-04T02:27:16.8312039Z 
+Gate F (Build)	Web build	2026-03-04T02:27:16.8313053Z > web@ build /home/runner/work/rekenreis/rekenreis/apps/web
+Gate F (Build)	Web build	2026-03-04T02:27:16.8313575Z > nuxt build
+Gate F (Build)	Web build	2026-03-04T02:27:16.8313696Z 
+Gate F (Build)	Web build	2026-03-04T02:27:17.0605174Z [90m┌[39m  [36mBuilding Nuxt for production...[39m
+Gate F (Build)	Web build	2026-03-04T02:27:17.3745509Z [90m│[39m
+Gate F (Build)	Web build	2026-03-04T02:27:17.3746844Z [34m●[39m  [32mNuxt [1m3.13.2[22m[39m[90m (with [39m[90mNitro [1m2.13.1[22m[39m[90m, Vite [1m5.4.21[22m[39m[90m and Vue [1m3.5.29[22m[39m[90m)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:18.7111800Z [90m│[39m
+Gate F (Build)	Web build	2026-03-04T02:27:18.7112433Z [34m●[39m  Nitro preset: [36mnode-server[39m
+Gate F (Build)	Web build	2026-03-04T02:27:19.5738568Z [info] Building client...
+Gate F (Build)	Web build	2026-03-04T02:27:19.5810172Z [info] [36mvite v5.4.21 [32mbuilding for production...[36m[39m
+Gate F (Build)	Web build	2026-03-04T02:27:19.6017910Z [info] transforming...
+Gate F (Build)	Web build	2026-03-04T02:27:20.8966168Z [info] [32m✓[39m 112 modules transformed.
+Gate F (Build)	Web build	2026-03-04T02:27:20.9921149Z [info] rendering chunks...
+Gate F (Build)	Web build	2026-03-04T02:27:21.0455997Z [info] computing gzip size...
+Gate F (Build)	Web build	2026-03-04T02:27:21.0544637Z [info] [2m.nuxt/dist/client/[22m[32mmanifest.json                 [39m[1m[2m  3.12 kB[22m[1m[22m[2m │ gzip:  0.46 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0546517Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[35merror-500.B-Zcs2i5.css  [39m[1m[2m  1.88 kB[22m[1m[22m[2m │ gzip:  0.72 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0549893Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[35merror-404.CwYIqmCA.css  [39m[1m[2m  3.56 kB[22m[1m[22m[2m │ gzip:  1.10 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0551691Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mBa7BNKbi.js             [39m[1m[2m  0.20 kB[22m[1m[22m[2m │ gzip:  0.18 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0553227Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mB5jG18rT.js             [39m[1m[2m  0.38 kB[22m[1m[22m[2m │ gzip:  0.27 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0554750Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDLR_AWnG.js             [39m[1m[2m  3.41 kB[22m[1m[22m[2m │ gzip:  1.54 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0556265Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDi2AzNR_.js             [39m[1m[2m  9.28 kB[22m[1m[22m[2m │ gzip:  3.73 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0557804Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDY3RPKlf.js             [39m[1m[2m167.42 kB[22m[1m[22m[2m │ gzip: 63.16 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0558774Z [info] [32m✓ built in 1.47s[39m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0559231Z [success] Client built in 1482ms
+Gate F (Build)	Web build	2026-03-04T02:27:21.0608930Z [info] Building server...
+Gate F (Build)	Web build	2026-03-04T02:27:21.0627561Z [info] [36mvite v5.4.21 [32mbuilding SSR bundle for production...[36m[39m
+Gate F (Build)	Web build	2026-03-04T02:27:21.0677991Z [info] transforming...
+Gate F (Build)	Web build	2026-03-04T02:27:21.8620115Z [info] [32m✓[39m 86 modules transformed.
+Gate F (Build)	Web build	2026-03-04T02:27:21.9187279Z [info] rendering chunks...
+Gate F (Build)	Web build	2026-03-04T02:27:22.0351074Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-404-styles.DrKnx02R.mjs       [39m[1m[2m  0.08 kB[22m[1m[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0352801Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-500-styles.Be82GHoY.mjs       [39m[1m[2m  0.08 kB[22m[1m[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0354679Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-404-styles.CHpO84eO.mjs       [39m[1m[2m  0.15 kB[22m[1m[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0356214Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-500-styles.DhBT822Y.mjs       [39m[1m[2m  0.15 kB[22m[1m[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0357648Z [info] [2m.nuxt/dist/server/[22m[32mstyles.mjs                                [39m[1m[2m  1.25 kB[22m[1m[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0359336Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mvue.-sixQ7xP-DerijIML.js            [39m[1m[2m  0.82 kB[22m[1m[22m[2m │ map:   1.82 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0361364Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mindex-5ZhxiV47.js                   [39m[1m[2m  1.03 kB[22m[1m[22m[2m │ map:   0.13 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0362741Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-500-styles-1.mjs-CWt-KzwY.js  [39m[1m[2m  2.10 kB[22m[1m[22m[2m │ map:   0.12 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0363829Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-404-styles-1.mjs-DxvC80he.js  [39m[1m[2m  3.76 kB[22m[1m[22m[2m │ map:   0.12 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0364869Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-500-BSfmPH7N.js               [39m[1m[2m  4.86 kB[22m[1m[22m[2m │ map:   5.61 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0365978Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mmultipart-parser-BPTJt95l.js        [39m[1m[2m  6.90 kB[22m[1m[22m[2m │ map:  10.88 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0366993Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-404-CUPHQ4ca.js               [39m[1m[2m 15.67 kB[22m[1m[22m[2m │ map:  29.06 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0367930Z [info] [2m.nuxt/dist/server/[22m[36mserver.mjs                                [39m[1m[2m284.87 kB[22m[1m[22m[2m │ map: 551.51 kB[22m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0416625Z [info] [32m✓ built in 978ms[39m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0433585Z [success] Server built in 983ms
+Gate F (Build)	Web build	2026-03-04T02:27:22.0800475Z [success] [nitro] Generated public [36m.output/public[39m
+Gate F (Build)	Web build	2026-03-04T02:27:22.0998304Z [info] [nitro] Building Nuxt Nitro server (preset: `node-server`, compatibility date: `2024-11-01`)
+Gate F (Build)	Web build	2026-03-04T02:27:25.1170969Z [success] [nitro] Nuxt Nitro server built
+Gate F (Build)	Web build	2026-03-04T02:27:25.1961850Z [90m  ├─ .output/server/chunks/_/error-500.mjs (4.77 kB)[39m[90m (2.02 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1963213Z [90m  ├─ .output/server/chunks/_/error-500.mjs.map (308 B)[39m[90m (241 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1964494Z [90m  ├─ .output/server/chunks/build/client.manifest.mjs (3.84 kB)[39m[90m (573 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1965829Z [90m  ├─ .output/server/chunks/build/client.manifest.mjs.map (1.86 kB)[39m[90m (362 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1967377Z [90m  ├─ .output/server/chunks/build/error-404-CUPHQ4ca.mjs (16 kB)[39m[90m (4.87 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1968753Z [90m  ├─ .output/server/chunks/build/error-404-CUPHQ4ca.mjs.map (799 B)[39m[90m (324 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1970305Z [90m  ├─ .output/server/chunks/build/error-404-styles-1.mjs-DxvC80he.mjs (3.76 kB)[39m[90m (1.21 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1972011Z [90m  ├─ .output/server/chunks/build/error-404-styles-1.mjs-DxvC80he.mjs.map (100 B)[39m[90m (108 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1973489Z [90m  ├─ .output/server/chunks/build/error-404-styles.CHpO84eO.mjs (373 B)[39m[90m (205 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1975444Z [90m  ├─ .output/server/chunks/build/error-404-styles.CHpO84eO.mjs.map (216 B)[39m[90m (167 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1976908Z [90m  ├─ .output/server/chunks/build/error-404-styles.DrKnx02R.mjs (315 B)[39m[90m (202 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1978411Z [90m  ├─ .output/server/chunks/build/error-404-styles.DrKnx02R.mjs.map (194 B)[39m[90m (155 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1979818Z [90m  ├─ .output/server/chunks/build/error-500-BSfmPH7N.mjs (4.97 kB)[39m[90m (2.08 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1981324Z [90m  ├─ .output/server/chunks/build/error-500-BSfmPH7N.mjs.map (345 B)[39m[90m (270 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1983022Z [90m  ├─ .output/server/chunks/build/error-500-styles-1.mjs-CWt-KzwY.mjs (2.09 kB)[39m[90m (836 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1984582Z [90m  ├─ .output/server/chunks/build/error-500-styles-1.mjs-CWt-KzwY.mjs.map (100 B)[39m[90m (111 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1986065Z [90m  ├─ .output/server/chunks/build/error-500-styles.Be82GHoY.mjs (315 B)[39m[90m (205 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1987527Z [90m  ├─ .output/server/chunks/build/error-500-styles.Be82GHoY.mjs.map (194 B)[39m[90m (156 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1989012Z [90m  ├─ .output/server/chunks/build/error-500-styles.DhBT822Y.mjs (373 B)[39m[90m (209 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1990451Z [90m  ├─ .output/server/chunks/build/error-500-styles.DhBT822Y.mjs.map (216 B)[39m[90m (169 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1994004Z [90m  ├─ .output/server/chunks/build/index-5ZhxiV47.mjs (1.14 kB)[39m[90m (523 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1995294Z [90m  ├─ .output/server/chunks/build/index-5ZhxiV47.mjs.map (116 B)[39m[90m (95 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1996726Z [90m  ├─ .output/server/chunks/build/multipart-parser-BPTJt95l.mjs (7.01 kB)[39m[90m (2.43 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1998222Z [90m  ├─ .output/server/chunks/build/multipart-parser-BPTJt95l.mjs.map (247 B)[39m[90m (191 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.1999536Z [90m  ├─ .output/server/chunks/build/server.mjs (272 kB)[39m[90m (63.4 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2000885Z [90m  ├─ .output/server/chunks/build/server.mjs.map (7.02 kB)[39m[90m (1.26 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2002053Z [90m  ├─ .output/server/chunks/build/styles.mjs (1.3 kB)[39m[90m (415 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2003209Z [90m  ├─ .output/server/chunks/build/styles.mjs.map (467 B)[39m[90m (198 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2004486Z [90m  ├─ .output/server/chunks/build/vue.-sixQ7xP-DerijIML.mjs (818 B)[39m[90m (390 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2005929Z [90m  ├─ .output/server/chunks/build/vue.-sixQ7xP-DerijIML.mjs.map (247 B)[39m[90m (203 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2007224Z [90m  ├─ .output/server/chunks/nitro/nitro.mjs (158 kB)[39m[90m (39.1 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2008384Z [90m  ├─ .output/server/chunks/nitro/nitro.mjs.map (4.5 kB)[39m[90m (978 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2009590Z [90m  ├─ .output/server/chunks/routes/renderer.mjs (13.2 kB)[39m[90m (4.24 kB gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2010951Z [90m  ├─ .output/server/chunks/routes/renderer.mjs.map (685 B)[39m[90m (330 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2012272Z [90m  ├─ .output/server/chunks/virtual/_virtual_spa-template.mjs (94 B)[39m[90m (100 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2013660Z [90m  ├─ .output/server/chunks/virtual/_virtual_spa-template.mjs.map (90 B)[39m[90m (98 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2014812Z [90m  ├─ .output/server/index.mjs (353 B)[39m[90m (204 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2015753Z [90m  └─ .output/server/package.json (768 B)[39m[90m (316 B gzip)[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2016559Z [36mΣ Total size:[39m 1.98 MB (483 kB gzip)
+Gate F (Build)	Web build	2026-03-04T02:27:25.2017378Z [success] [nitro] You can preview this build using `node .output/server/index.mjs`
+Gate F (Build)	Web build	2026-03-04T02:27:25.2018096Z [log] [90m│[39m
+Gate F (Build)	Web build	2026-03-04T02:27:25.2018548Z [90m└[39m  ✨ Build complete!
+Gate F (Build)	Web size	﻿2026-03-04T02:27:25.4840434Z ##[group]Run cd apps/web && pnpm run size
+Gate F (Build)	Web size	2026-03-04T02:27:25.4841114Z [36;1mcd apps/web && pnpm run size[0m
+Gate F (Build)	Web size	2026-03-04T02:27:25.4912784Z shell: /usr/bin/bash -e {0}
+Gate F (Build)	Web size	2026-03-04T02:27:25.4913141Z env:
+Gate F (Build)	Web size	2026-03-04T02:27:25.4913506Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Gate F (Build)	Web size	2026-03-04T02:27:25.4913990Z ##[endgroup]
+Gate F (Build)	Web size	2026-03-04T02:27:25.9561547Z 
+Gate F (Build)	Web size	2026-03-04T02:27:25.9562169Z > web@ size /home/runner/work/rekenreis/rekenreis/apps/web
+Gate F (Build)	Web size	2026-03-04T02:27:25.9562620Z > pnpm build && du -sh .output
+Gate F (Build)	Web size	2026-03-04T02:27:25.9562793Z 
+Gate F (Build)	Web size	2026-03-04T02:27:26.3367297Z 
+Gate F (Build)	Web size	2026-03-04T02:27:26.3368140Z > web@ build /home/runner/work/rekenreis/rekenreis/apps/web
+Gate F (Build)	Web size	2026-03-04T02:27:26.3368740Z > nuxt build
+Gate F (Build)	Web size	2026-03-04T02:27:26.3369385Z 
+Gate F (Build)	Web size	2026-03-04T02:27:26.5033448Z [90m┌[39m  [36mBuilding Nuxt for production...[39m
+Gate F (Build)	Web size	2026-03-04T02:27:26.6882310Z [90m│[39m
+Gate F (Build)	Web size	2026-03-04T02:27:26.6884678Z [34m●[39m  [32mNuxt [1m3.13.2[22m[39m[90m (with [39m[90mNitro [1m2.13.1[22m[39m[90m, Vite [1m5.4.21[22m[39m[90m and Vue [1m3.5.29[22m[39m[90m)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:27.7622776Z [90m│[39m
+Gate F (Build)	Web size	2026-03-04T02:27:27.7623633Z [34m●[39m  Nitro preset: [36mnode-server[39m
+Gate F (Build)	Web size	2026-03-04T02:27:28.4220025Z [info] Building client...
+Gate F (Build)	Web size	2026-03-04T02:27:28.4290851Z [info] [36mvite v5.4.21 [32mbuilding for production...[36m[39m
+Gate F (Build)	Web size	2026-03-04T02:27:28.4612212Z [info] transforming...
+Gate F (Build)	Web size	2026-03-04T02:27:29.7184210Z [info] [32m✓[39m 112 modules transformed.
+Gate F (Build)	Web size	2026-03-04T02:27:29.8148810Z [info] rendering chunks...
+Gate F (Build)	Web size	2026-03-04T02:27:29.8711054Z [info] computing gzip size...
+Gate F (Build)	Web size	2026-03-04T02:27:29.8784399Z [info] [2m.nuxt/dist/client/[22m[32mmanifest.json                 [39m[1m[2m  3.12 kB[22m[1m[22m[2m │ gzip:  0.46 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8785509Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[35merror-500.B-Zcs2i5.css  [39m[1m[2m  1.88 kB[22m[1m[22m[2m │ gzip:  0.72 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8786677Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[35merror-404.CwYIqmCA.css  [39m[1m[2m  3.56 kB[22m[1m[22m[2m │ gzip:  1.10 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8788666Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mBa7BNKbi.js             [39m[1m[2m  0.20 kB[22m[1m[22m[2m │ gzip:  0.18 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8790436Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mB5jG18rT.js             [39m[1m[2m  0.38 kB[22m[1m[22m[2m │ gzip:  0.27 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8792314Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDLR_AWnG.js             [39m[1m[2m  3.41 kB[22m[1m[22m[2m │ gzip:  1.54 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8793925Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDi2AzNR_.js             [39m[1m[2m  9.28 kB[22m[1m[22m[2m │ gzip:  3.73 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8795551Z [info] [2m.nuxt/dist/client/[22m[2m_nuxt/[22m[36mDY3RPKlf.js             [39m[1m[2m167.42 kB[22m[1m[22m[2m │ gzip: 63.16 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8796551Z [info] [32m✓ built in 1.45s[39m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8797033Z [success] Client built in 1458ms
+Gate F (Build)	Web size	2026-03-04T02:27:29.8844696Z [info] Building server...
+Gate F (Build)	Web size	2026-03-04T02:27:29.8864426Z [info] [36mvite v5.4.21 [32mbuilding SSR bundle for production...[36m[39m
+Gate F (Build)	Web size	2026-03-04T02:27:29.8916489Z [info] transforming...
+Gate F (Build)	Web size	2026-03-04T02:27:30.6823478Z [info] [32m✓[39m 86 modules transformed.
+Gate F (Build)	Web size	2026-03-04T02:27:30.7395591Z [info] rendering chunks...
+Gate F (Build)	Web size	2026-03-04T02:27:30.8493016Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-404-styles.DrKnx02R.mjs       [39m[1m[2m  0.08 kB[22m[1m[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8494473Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-500-styles.Be82GHoY.mjs       [39m[1m[2m  0.08 kB[22m[1m[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8495960Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-404-styles.CHpO84eO.mjs       [39m[1m[2m  0.15 kB[22m[1m[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8497529Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[32merror-500-styles.DhBT822Y.mjs       [39m[1m[2m  0.15 kB[22m[1m[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8498947Z [info] [2m.nuxt/dist/server/[22m[32mstyles.mjs                                [39m[1m[2m  1.25 kB[22m[1m[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8500994Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mvue.-sixQ7xP-DerijIML.js            [39m[1m[2m  0.82 kB[22m[1m[22m[2m │ map:   1.82 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8502050Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mindex-5ZhxiV47.js                   [39m[1m[2m  1.03 kB[22m[1m[22m[2m │ map:   0.13 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8503122Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-500-styles-1.mjs-CWt-KzwY.js  [39m[1m[2m  2.10 kB[22m[1m[22m[2m │ map:   0.12 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8504338Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-404-styles-1.mjs-DxvC80he.js  [39m[1m[2m  3.76 kB[22m[1m[22m[2m │ map:   0.12 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8505558Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-500-BSfmPH7N.js               [39m[1m[2m  4.86 kB[22m[1m[22m[2m │ map:   5.61 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8506583Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36mmultipart-parser-BPTJt95l.js        [39m[1m[2m  6.90 kB[22m[1m[22m[2m │ map:  10.88 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8507597Z [info] [2m.nuxt/dist/server/[22m[2m_nuxt/[22m[36merror-404-CUPHQ4ca.js               [39m[1m[2m 15.67 kB[22m[1m[22m[2m │ map:  29.06 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8508531Z [info] [2m.nuxt/dist/server/[22m[36mserver.mjs                                [39m[1m[2m284.87 kB[22m[1m[22m[2m │ map: 551.51 kB[22m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8557616Z [info] [32m✓ built in 969ms[39m
+Gate F (Build)	Web size	2026-03-04T02:27:30.8575733Z [success] Server built in 973ms
+Gate F (Build)	Web size	2026-03-04T02:27:30.8999008Z [success] [nitro] Generated public [36m.output/public[39m
+Gate F (Build)	Web size	2026-03-04T02:27:30.9192885Z [info] [nitro] Building Nuxt Nitro server (preset: `node-server`, compatibility date: `2024-11-01`)
+Gate F (Build)	Web size	2026-03-04T02:27:33.7436878Z [success] [nitro] Nuxt Nitro server built
+Gate F (Build)	Web size	2026-03-04T02:27:33.8128662Z [90m  ├─ .output/server/chunks/_/error-500.mjs (4.77 kB)[39m[90m (2.02 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8129833Z [90m  ├─ .output/server/chunks/_/error-500.mjs.map (308 B)[39m[90m (241 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8130768Z [90m  ├─ .output/server/chunks/build/client.manifest.mjs (3.84 kB)[39m[90m (573 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8131564Z [90m  ├─ .output/server/chunks/build/client.manifest.mjs.map (1.86 kB)[39m[90m (362 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8132335Z [90m  ├─ .output/server/chunks/build/error-404-CUPHQ4ca.mjs (16 kB)[39m[90m (4.87 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8133101Z [90m  ├─ .output/server/chunks/build/error-404-CUPHQ4ca.mjs.map (799 B)[39m[90m (324 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8134386Z [90m  ├─ .output/server/chunks/build/error-404-styles-1.mjs-DxvC80he.mjs (3.76 kB)[39m[90m (1.21 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8135860Z [90m  ├─ .output/server/chunks/build/error-404-styles-1.mjs-DxvC80he.mjs.map (100 B)[39m[90m (108 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8137166Z [90m  ├─ .output/server/chunks/build/error-404-styles.CHpO84eO.mjs (373 B)[39m[90m (205 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8138506Z [90m  ├─ .output/server/chunks/build/error-404-styles.CHpO84eO.mjs.map (216 B)[39m[90m (167 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8139898Z [90m  ├─ .output/server/chunks/build/error-404-styles.DrKnx02R.mjs (315 B)[39m[90m (202 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8141462Z [90m  ├─ .output/server/chunks/build/error-404-styles.DrKnx02R.mjs.map (194 B)[39m[90m (155 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8142898Z [90m  ├─ .output/server/chunks/build/error-500-BSfmPH7N.mjs (4.97 kB)[39m[90m (2.08 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8144246Z [90m  ├─ .output/server/chunks/build/error-500-BSfmPH7N.mjs.map (345 B)[39m[90m (270 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8145507Z [90m  ├─ .output/server/chunks/build/error-500-styles-1.mjs-CWt-KzwY.mjs (2.09 kB)[39m[90m (836 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8146391Z [90m  ├─ .output/server/chunks/build/error-500-styles-1.mjs-CWt-KzwY.mjs.map (100 B)[39m[90m (111 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8147212Z [90m  ├─ .output/server/chunks/build/error-500-styles.Be82GHoY.mjs (315 B)[39m[90m (205 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8148405Z [90m  ├─ .output/server/chunks/build/error-500-styles.Be82GHoY.mjs.map (194 B)[39m[90m (156 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8149212Z [90m  ├─ .output/server/chunks/build/error-500-styles.DhBT822Y.mjs (373 B)[39m[90m (209 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8149995Z [90m  ├─ .output/server/chunks/build/error-500-styles.DhBT822Y.mjs.map (216 B)[39m[90m (169 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8150974Z [90m  ├─ .output/server/chunks/build/index-5ZhxiV47.mjs (1.14 kB)[39m[90m (523 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8151741Z [90m  ├─ .output/server/chunks/build/index-5ZhxiV47.mjs.map (116 B)[39m[90m (95 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8152723Z [90m  ├─ .output/server/chunks/build/multipart-parser-BPTJt95l.mjs (7.01 kB)[39m[90m (2.43 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8153556Z [90m  ├─ .output/server/chunks/build/multipart-parser-BPTJt95l.mjs.map (247 B)[39m[90m (191 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8154310Z [90m  ├─ .output/server/chunks/build/server.mjs (272 kB)[39m[90m (63.4 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8154987Z [90m  ├─ .output/server/chunks/build/server.mjs.map (7.02 kB)[39m[90m (1.26 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8155646Z [90m  ├─ .output/server/chunks/build/styles.mjs (1.3 kB)[39m[90m (415 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8156339Z [90m  ├─ .output/server/chunks/build/styles.mjs.map (467 B)[39m[90m (198 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8157076Z [90m  ├─ .output/server/chunks/build/vue.-sixQ7xP-DerijIML.mjs (818 B)[39m[90m (390 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8157877Z [90m  ├─ .output/server/chunks/build/vue.-sixQ7xP-DerijIML.mjs.map (247 B)[39m[90m (203 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8158594Z [90m  ├─ .output/server/chunks/nitro/nitro.mjs (158 kB)[39m[90m (39.1 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8159252Z [90m  ├─ .output/server/chunks/nitro/nitro.mjs.map (4.5 kB)[39m[90m (978 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8159936Z [90m  ├─ .output/server/chunks/routes/renderer.mjs (13.2 kB)[39m[90m (4.24 kB gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8161074Z [90m  ├─ .output/server/chunks/routes/renderer.mjs.map (685 B)[39m[90m (330 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8162060Z [90m  ├─ .output/server/chunks/virtual/_virtual_spa-template.mjs (94 B)[39m[90m (100 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8162848Z [90m  ├─ .output/server/chunks/virtual/_virtual_spa-template.mjs.map (90 B)[39m[90m (98 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8163493Z [90m  ├─ .output/server/index.mjs (353 B)[39m[90m (204 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8164031Z [90m  └─ .output/server/package.json (768 B)[39m[90m (316 B gzip)[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8164520Z [36mΣ Total size:[39m 1.98 MB (483 kB gzip)
+Gate F (Build)	Web size	2026-03-04T02:27:33.8165376Z [success] [nitro] You can preview this build using `node .output/server/index.mjs`
+Gate F (Build)	Web size	2026-03-04T02:27:33.8165954Z [log] [90m│[39m
+Gate F (Build)	Web size	2026-03-04T02:27:33.8166332Z [90m└[39m  ✨ Build complete!
+Gate F (Build)	Web size	2026-03-04T02:27:33.9118165Z 2.7M	.output
+Gate F (Build)	Post Setup Node	﻿2026-03-04T02:27:33.9286715Z Post job cleanup.
+Gate F (Build)	Post Setup Node	2026-03-04T02:27:34.0844329Z Cache hit occurred on the primary key node-cache-Linux-x64-pnpm-ac4a6f709d9753158a4e01f24260a0e30c44f3f175bf8b14cf85d16d2f0e2896, not saving cache.
+Gate F (Build)	Post Setup pnpm	﻿2026-03-04T02:27:34.0966413Z Post job cleanup.
+Gate F (Build)	Post Setup pnpm	2026-03-04T02:27:34.1516933Z Pruning is unnecessary.
+Gate F (Build)	Post Run actions/checkout@v4	﻿2026-03-04T02:27:34.1634441Z Post job cleanup.
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2608564Z [command]/usr/bin/git version
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2651030Z git version 2.53.0
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2702614Z Temporarily overriding HOME='/home/runner/work/_temp/e7e23eef-c531-4dd5-897f-f64987448060' before making global git config changes
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2704017Z Adding repository directory to the temporary git global config as a safe directory
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2709184Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rekenreis/rekenreis
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2748397Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.2786824Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3069851Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3096580Z http.https://github.com/.extraheader
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3109561Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3146505Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3425099Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Gate F (Build)	Post Run actions/checkout@v4	2026-03-04T02:27:34.3464445Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Gate F (Build)	Complete job	﻿2026-03-04T02:27:34.3877105Z Cleaning up orphan processes
