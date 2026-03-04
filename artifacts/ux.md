@@ -1,35 +1,32 @@
-# Epic 9 — Adaptive Assistance: UX
+# Epic 10 — Child Profiles: UX
 
 ## Principles
 
-- Feedback stays positive: no "Wrong!", no negative score; use "Try again", "Here's a hint"
-- Hints are supportive, not punitive
-- No hard fail state: child can always continue
-- Reduced motion: respect `prefers-reduced-motion`
+- Large tap targets (min 44px)
+- Minimal reading; icons where possible
+- Kid-friendly avatars (simple shapes or emoji)
 
-## Hint Reveal Flow
+## Profile Selector
 
-1. First wrong: "Not quite. Want a hint? [Show hint]" or auto-show after short delay
-2. Second wrong (same question or next): auto-reveal hint (dots/number line)
-3. After hint: "Next" to continue; no time limit
+- List of profiles as cards with avatar + name
+- Tap to select (switch profile)
+- "Add profile" button
+- On first visit: prompt to create profile or use default
 
-## Hint Visuals
+## Profile Creation
 
-| Type | Description |
-|------|-------------|
-| dots | Show a + b as dot groups (e.g. ●●● + ●● = ?) |
-| number-line | Horizontal line 0..20 with a, b, a+b marked |
-| grouping | Visual grouping (e.g. (a) + (b) in boxes) |
+- Name field (short, optional default "Player 1")
+- Avatar picker: 4–6 simple options (e.g. shapes: star, heart, circle, square)
+- Create button
 
-## Pacing Intervention
+## Parent Gate
 
-- "Struggling" = 3+ wrong in last 5 answers (or similar threshold)
-- Action: next 2–3 rounds use easier pacing tag (from level pack)
-- No UI announcement; seamless
-- Reset when child gets 2 correct in a row
+- Settings access: "Hold for 3 seconds" OR "Solve: 3 + 4 = ?"
+- Once passed: session cookie/sessionStorage; expires on close or 5 min
+- Must not block gameplay; only settings
 
-## Choice Reduction (optional, Phase 2)
+## Settings (behind gate)
 
-- After 3 wrong on same question: remove 1 distractor (show 3 choices instead of 4)
-- Only if question has 4 choices
-- Reset on next question
+- Difficulty: up to 10 / up to 20
+- Hints: on / off
+- Per profile

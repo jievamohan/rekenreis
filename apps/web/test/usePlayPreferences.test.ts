@@ -46,10 +46,10 @@ describe('usePlayPreferences', () => {
     expect(prefs.lastSkin.value).toBe('space')
   })
 
-  it('setLastMode updates mode only', () => {
+  it('setPreferences can update mode while keeping skin', () => {
     storage.rekenreis_last_skin = 'pirate'
     const prefs = usePlayPreferences()
-    prefs.setLastMode('build-bridge')
+    prefs.setPreferences('build-bridge', 'pirate')
     expect(storage.rekenreis_last_mode).toBe('build-bridge')
     expect(storage.rekenreis_last_skin).toBe('pirate')
   })

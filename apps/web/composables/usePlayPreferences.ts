@@ -1,4 +1,4 @@
-import { ref, readonly } from 'vue'
+import { ref, readonly, computed } from 'vue'
 import type { InteractionModeId } from '~/types/mode'
 import type { SkinId } from '~/utils/skinResolver'
 
@@ -26,34 +26,44 @@ function getStoredSkin(): SkinId {
   return VALID_SKINS.includes(normalized as SkinId) ? (normalized as SkinId) : 'classic'
 }
 
-export function usePlayPreferences() {
-  const lastMode = ref<InteractionModeId>(getStoredMode())
-  const lastSkin = ref<SkinId>(getStoredSkin())
+type ProfileApi = {
+  activeProfile: { value: { id: string; prefs: { lastMode: InteractionModeId; lastSkin: SkinId } } | null }
+  updateProfile: (id: string, u: Record<string, unknown>) => void
+}
 
-  function setLastMode(mode: InteractionModeId) {
-    lastMode.value = mode
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(LAST_MODE_KEY, mode)
-    }
-  }
+export function usePlayPreferences(profile?: ProfileApi) {
+  const legacyMode = ref<InteractionModeId>(getStoredMode())
+  const legacySkin = ref<SkinId>(getStoredSkin())
 
-  function setLastSkin(skin: SkinId) {
-    lastSkin.value = skin
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(LAST_SKIN_KEY, skin)
-    }
-  }
+  const lastMode = computed(() =>
+    profile?.activeProfile.value?.prefs?.lastMode ?? legacyMode.value
+  )
+  const lastSkin = computed(() =>
+    profile?.activeProfile.value?.prefs?.lastSkin ?? legacySkin.value
+  )
 
   function setPreferences(mode: InteractionModeId, skin: SkinId) {
-    setLastMode(mode)
-    setLastSkin(skin)
+    if (profile?.activeProfile.value) {
+      profile.updateProfile(profile.activeProfile.value.id, {
+        prefs: {
+          ...profile.activeProfile.value.prefs,
+          lastMode: mode,
+          lastSkin: skin,
+        },
+      })
+    } else {
+      legacyMode.value = mode
+      legacySkin.value = skin
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(LAST_MODE_KEY, mode)
+        localStorage.setItem(LAST_SKIN_KEY, skin)
+      }
+    }
   }
 
   return {
     lastMode: readonly(lastMode),
     lastSkin: readonly(lastSkin),
-    setLastMode,
-    setLastSkin,
     setPreferences,
   }
 }

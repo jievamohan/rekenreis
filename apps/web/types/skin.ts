@@ -22,6 +22,8 @@ export interface SkinRoundProps {
   hintToShow?: HintType | null
   /** Question data for hint (a, b, correctAnswer) */
   hintQuestion?: { a: number; b: number; correctAnswer: number } | null
+  /** If false, do not show hints even when hintToShow is set */
+  hintsOn?: boolean
 }
 
 /** Skin definition: id + Vue component */

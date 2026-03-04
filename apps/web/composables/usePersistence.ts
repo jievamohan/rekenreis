@@ -5,14 +5,32 @@ import {
   saveProgress,
 } from '../utils/persistenceSchema'
 
-export function usePersistence(currentScore: Ref<number>) {
+type ProfileApi = {
+  activeProfile: { value: { id: string; progress: { bestScore: number } } | null }
+  updateProfile: (id: string, u: Record<string, unknown>) => void
+}
+
+export function usePersistence(currentScore: Ref<number>, profile?: ProfileApi) {
   const progress = ref<ProgressSchemaV1>(loadProgress())
+
+  const bestScore = computed(() => {
+    if (profile?.activeProfile.value) {
+      return profile.activeProfile.value.progress.bestScore
+    }
+    return progress.value.bestScore
+  })
 
   watch(
     currentScore,
     (s) => {
       const v = Math.max(0, Math.floor(s))
-      if (v > progress.value.bestScore) {
+      const current = bestScore.value
+      if (v <= current) return
+      if (profile?.activeProfile.value) {
+        profile.updateProfile(profile.activeProfile.value.id, {
+          progress: { bestScore: v },
+        })
+      } else {
         const next: ProgressSchemaV1 = { version: 1, bestScore: v }
         progress.value = next
         saveProgress(next)
@@ -20,8 +38,6 @@ export function usePersistence(currentScore: Ref<number>) {
     },
     { immediate: true }
   )
-
-  const bestScore = computed(() => progress.value.bestScore)
 
   return {
     bestScore: readonly(bestScore),

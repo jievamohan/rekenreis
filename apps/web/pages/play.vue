@@ -13,6 +13,8 @@ import { useSkin } from '~/composables/useSkin'
 import { useMode } from '~/composables/useMode'
 import { useTelemetry } from '~/composables/useTelemetry'
 import { usePlayPreferences } from '~/composables/usePlayPreferences'
+import { useProfile } from '~/composables/useProfile'
+import ProfileSelector from '~/components/ProfileSelector.vue'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
 import levelsClassic from '~/content/levels.classic.v1.json'
@@ -34,9 +36,11 @@ const MODE_OPTIONS: { id: InteractionModeId; label: string }[] = [
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
-const { telemetryOptOut, setOptOut } = useTelemetry()
-const { lastMode, lastSkin, setPreferences } = usePlayPreferences()
+const profile = useProfile()
+const { telemetryOptOut, setOptOut } = useTelemetry(profile)
+const { lastMode, lastSkin, setPreferences } = usePlayPreferences(profile)
 const showModeSelector = ref(false)
+const showProfileSelector = ref(false)
 
 const playSource = computed(() =>
   route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite'
@@ -56,7 +60,10 @@ const levelPack = computed(() =>
   playSource.value === 'pack' ? PACK_BY_MODE[interactionMode.value] : []
 )
 
-const mode = ref<GameMode>('upTo10')
+const mode = ref<GameMode>(profile.activeProfile.value?.prefs.difficultyCeiling ?? 'upTo10')
+watch(() => profile.activeProfile.value?.prefs.difficultyCeiling, (m) => {
+  if (m) mode.value = m
+}, { immediate: true })
 const strugglingRoundsLeft = ref(0)
 const game = usePlayGame(mode, {
   source: playSource,
@@ -81,7 +88,7 @@ watch(
   { immediate: true }
 )
 
-const { isUnlocked, unlockedIds } = useRewards(game.score)
+const { isUnlocked, unlockedIds } = useRewards(game.score, profile)
 const effectiveSkinId = computed(() => {
   const resolved = resolveSkinId(route.query.skin as string | undefined)
   return isUnlocked(resolved) ? resolved : (unlockedIds.value[0] ?? 'classic')
@@ -99,7 +106,7 @@ const skinProps = computed(() => ({
   onModeChange: (m: GameMode) => {
     mode.value = m
   },
-  hintToShow: assistance.hintToShow.value,
+  hintToShow: (profile.activeProfile.value?.prefs.hintsOn !== false) ? assistance.hintToShow.value : null,
   hintQuestion: game.question.value
     ? {
         a: game.question.value!.a,
@@ -156,12 +163,30 @@ onMounted(() => {
       <button
         type="button"
         class="choose-game-btn"
+        aria-label="Switch profile"
+        @click="showProfileSelector = true"
+      >
+        {{ profile.activeProfile.value?.name ?? 'Player' }}
+      </button>
+      <button
+        type="button"
+        class="choose-game-btn"
         aria-label="Choose game mode"
         @click="showModeSelector = true"
       >
         Choose game
       </button>
     </nav>
+    <div v-if="showProfileSelector" class="profile-overlay">
+      <ProfileSelector
+        :profiles="profile.profiles.value"
+        :active-profile-id="profile.schema.value?.activeProfileId ?? ''"
+        @switch="profile.switchProfile($event); showProfileSelector = false"
+        @create="(name, avatarId) => { profile.createProfile(name, avatarId); showProfileSelector = false }"
+      />
+      <button type="button" class="close-btn" @click="showProfileSelector = false">Close</button>
+    </div>
+    <NuxtLink to="/settings" class="settings-link">Settings</NuxtLink>
     <PlayModeSelector
       v-model="showModeSelector"
       :current-mode="interactionMode"
@@ -295,5 +320,23 @@ onMounted(() => {
 }
 .skip-link:focus {
   left: 0.5rem;
+}
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.close-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+.settings-link {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
 }
 </style>

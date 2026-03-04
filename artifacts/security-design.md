@@ -1,13 +1,12 @@
-# Epic 9 — Adaptive Assistance: Security Design
+# Epic 10 — Child Profiles: Security Design
 
 ## Risk Assessment
 
-- **Low**: No auth, payments, or sensitive data
-- **Persistence**: localStorage only; no PII
-- **Input**: Assistance state derived from in-game feedback; no user input to assistance logic
+- **Low**: All data local (localStorage); no auth, no cloud
+- **Parent gate**: Not cryptographic; UX obstacle only. Session-scoped unlock.
 
 ## Mitigations
 
-- Persist only numeric state (wrongStreak, lastReset); no identifiers
-- Hint content comes from question data (already validated)
-- No external API calls in assistance flow
+- No PII beyond optional profile name (user-entered)
+- Parent gate state in sessionStorage (cleared on close)
+- No identifiers sent to API (telemetry remains anonymous)
