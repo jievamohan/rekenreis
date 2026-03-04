@@ -9,7 +9,7 @@
     "typecheck": "nuxt typecheck",
     "pretest": "nuxt prepare",
     "test": "vitest run",
-    "size": "pnpm build && du -sh .output"
+    "size": "nuxt build && du -sh .output"
   },
   "dependencies": {
     "nuxt": "3.13.2",

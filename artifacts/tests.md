@@ -1,28 +1,23 @@
 # Tests
 
-## Web (apps/web)
+## Web
+
+**Status**: PASS
 
 ```
-pnpm run test
+cd apps/web && pnpm run test
 ```
 
-**Result**: PASS
+- test/example.test.ts: 1 passed
+- test/api.test.ts: 2 passed (fetchHealth with mocked fetch)
 
-- Vitest: 1 test file, 1 test passed
+## API
 
-## API (apps/api)
+**Status**: PASS
 
 ```
-composer run test
+cd apps/api && composer run test
 ```
 
-**Result**: PASS
-
-- PHPUnit: 2 tests passed (Unit ExampleTest, Feature ExampleTest)
-
-## Summary
-
-| App | Framework | Result |
-|-----|-----------|--------|
-| web | Vitest | 1 passed |
-| api | PHPUnit | 2 passed |
+- Tests\Feature\HealthTest::test_health_endpoint_returns_ok_and_version: PASS
+- All 3 tests passed (4 assertions)

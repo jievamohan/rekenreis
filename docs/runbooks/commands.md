@@ -33,6 +33,16 @@ Commands used by CI gates and local development. All paths relative to repo root
 | web test | `cd apps/web && pnpm run test` |
 | api test | `cd apps/api && composer run test` |
 
+## Docker Compose (vertical slice)
+
+```bash
+# Bring up web + api + mysql
+docker compose up --build
+
+# Web: http://localhost:3000/start
+# API: http://localhost:8000/api/health
+```
+
 ## Install (prerequisites)
 
 ```bash

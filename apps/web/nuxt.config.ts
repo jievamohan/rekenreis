@@ -4,4 +4,9 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  runtimeConfig: {
+    public: {
+      apiUrl: 'http://localhost:8000',
+    },
+  },
 })
