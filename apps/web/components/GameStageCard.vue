@@ -14,6 +14,7 @@ defineOptions({ inheritAttrs: false })
   max-width: 36rem;
   flex: 1;
   background: var(--app-surface);
+  color: var(--app-text-on-surface);
   border-radius: var(--app-radius-lg);
   box-shadow: var(--app-shadow-md);
   padding: var(--app-space-md);

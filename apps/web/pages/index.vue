@@ -43,7 +43,7 @@ h1 {
   transition: background var(--app-transition), color var(--app-transition);
 }
 .nav-link-primary {
-  color: white;
+  color: var(--app-text-on-surface);
   background: var(--app-primary);
   border: none;
 }

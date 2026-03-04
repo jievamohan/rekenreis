@@ -322,7 +322,8 @@ onUnmounted(() => {
   text-decoration: none;
   border-radius: 0.25rem;
 }
-.skip-link:focus {
+.skip-link:focus,
+.skip-link:focus-visible {
   left: 0.5rem;
 }
 </style>

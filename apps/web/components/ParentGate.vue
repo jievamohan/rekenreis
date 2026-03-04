@@ -150,6 +150,10 @@ onUnmounted(() => {
   background: var(--app-surface);
   border: 2px solid var(--app-muted);
 }
+.gate-btn:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
 .hold-bar {
   height: 12px;
   background: var(--app-muted);
@@ -159,13 +163,17 @@ onUnmounted(() => {
 .hold-fill {
   height: 100%;
   background: var(--app-primary);
-  transition: width 0.05s linear;
+  transition: width var(--app-transition);
 }
 .math-area input {
   padding: 0.5rem;
   font-size: 1rem;
   margin-left: 0.5rem;
   min-width: 4rem;
+}
+.math-area input:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 .error {
   color: var(--app-wrong);

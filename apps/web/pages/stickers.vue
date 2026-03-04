@@ -133,7 +133,7 @@ h1 {
   right: -0.5rem;
   font-size: 0.65rem;
   background: var(--app-primary);
-  color: white;
+  color: var(--app-text-on-surface);
   padding: 0.15rem 0.35rem;
   border-radius: var(--app-radius-sm);
 }

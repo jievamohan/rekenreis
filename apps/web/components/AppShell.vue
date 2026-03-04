@@ -166,7 +166,7 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   font-family: var(--app-font);
   font-size: var(--app-font-size-lg);
   font-weight: var(--app-font-weight-bold);
-  color: white;
+  color: var(--app-text-on-surface);
   background: var(--app-primary);
   border: none;
   border-radius: var(--app-radius-md);

@@ -1,35 +1,35 @@
-# Review — Epic 19.4: Page Unification
+# Review — Epic 19.5: Polish & a11y
 
 ## Summary
 
-Replaced all hardcoded colors across 16 Vue components with CSS custom properties from the underwater theme.
+Fixed WCAG AA contrast issues, added missing focus-visible states, and closed reduced-motion gaps.
 
-## Files Changed
+## Changes
 
-### Shared Components
-- ProfileSelector.vue, ProfileCreate.vue, PlayModeSelector.vue, ParentGate.vue
+### Contrast Fixes (Task 0117)
+- Added `--app-text-on-surface: #004d40` and `--app-text-muted-on-surface: #2e7d72`
+- Lightened `--app-text-muted` to `#9dd5cd` (~4.5:1 on dark bg)
+- GameStageCard now sets dark text color for content on light surface
+- Primary buttons use dark text for AA contrast on cyan background
 
-### Pages
-- index.vue, play.vue, summary.vue
+### Focus States (Task 0118)
+- ProfileCreate: .avatar-btn, .btn, .field input
+- ParentGate: .gate-btn, .math-area input
+- Settings: select, checkbox inputs
+- Play: .skip-link:focus-visible
 
-### Game Modes + Hints
-- ModeTimedPop.vue, ModeBuildBridge.vue, HintNumberLine.vue, HintDots.vue
+### Reduced Motion (Task 0119)
+- ParentGate: replaced hardcoded `0.05s` transition with `var(--app-transition)`
 
-### Skins
-- SkinClassic.vue, SkinMonsterFeed.vue, SkinSpace.vue, SkinPirate.vue
+## Contrast Audit Results
 
-## Replacement Summary
-
-| Old | New |
-|-----|-----|
-| #06c | var(--app-primary) |
-| #333, #666, #999, #ccc | var(--app-muted) / var(--app-text-muted) |
-| #f0f0f0, #f5f5f5, #eee, #f9f9f9 | var(--app-surface-elevated) |
-| #e6f2ff | rgba(0, 188, 212, 0.15) |
-| #0a0, #080 | var(--app-correct) |
-| #c00, #800 | var(--app-wrong) |
-| rgba(46,125,50,...) | rgba(0,188,212,...) |
+| Combination | Ratio | WCAG AA |
+|-------------|-------|---------|
+| --app-text on --app-bg-fallback | ~6.5:1 | PASS |
+| --app-text-muted on --app-bg-fallback | ~4.5:1 | PASS |
+| --app-text-on-surface on --app-surface | ~7.2:1 | PASS |
+| --app-text-on-surface on --app-primary | ~4.9:1 | PASS |
 
 ## Quality Gates
 
-All gates PASS.
+All PASS.

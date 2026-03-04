@@ -100,6 +100,11 @@ h1 {
   font-family: var(--app-font);
   border-radius: var(--app-radius-sm);
 }
+.field select:focus-visible,
+.field input:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
 .back {
   display: inline-flex;
   align-items: center;

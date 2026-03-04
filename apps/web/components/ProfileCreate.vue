@@ -100,6 +100,10 @@ h3 {
 .avatar-btn:hover {
   background: var(--app-surface-elevated);
 }
+.avatar-btn:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
 .avatar-btn.active {
   border-color: var(--app-primary);
   background: rgba(0, 188, 212, 0.15);
@@ -115,9 +119,17 @@ h3 {
   border-radius: 0.375rem;
   cursor: pointer;
 }
+.btn:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
 .btn.primary {
   background: var(--app-primary);
-  color: var(--app-text);
+  color: var(--app-text-on-surface);
   border: none;
+}
+.field input:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 </style>

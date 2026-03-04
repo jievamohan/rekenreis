@@ -1,18 +1,17 @@
-# Plan — Epic 19.4: Page Unification
+# Plan — Epic 19.5: Polish & a11y
 
-Branch: `feat/epic-19.4-page-unification`
-PlanRef: docs/design/epic-19.md (slice 19.4)
+Branch: `feat/epic-19.5-polish-a11y`
+PlanRef: docs/design/epic-19.md (slice 19.5)
 
 ## Summary
 
-Unify all pages and components visually with the underwater theme by replacing hardcoded colors with CSS custom properties.
+Fix WCAG AA contrast issues, add missing focus-visible states, and verify reduced motion coverage.
 
 ## Tasks
 
 | # | Title | Lane | Gates |
 |---|-------|------|-------|
-| 0112 | Theme shared components (ProfileSelector, PlayModeSelector, ProfileCreate, ParentGate) | W1 | C |
-| 0113 | Theme pages (index, play, stickers, summary) | W1 | C |
-| 0114 | Theme game modes + hints (ModeTimedPop, ModeBuildBridge, HintNumberLine, HintDots) | W1 | C |
-| 0115 | Theme skins (SkinClassic, SkinMonsterFeed, SkinSpace, SkinPirate) | W1 | C |
-| 0116 | Verify typecheck + build + bundle budget | T, I | C, D, F |
+| 0117 | Fix contrast tokens + dark text on surfaces | W1/W2 | C |
+| 0118 | Add missing :focus-visible states | W1 | C |
+| 0119 | Fix reduced-motion gaps + verify | W1 | C |
+| 0120 | Verify typecheck + build + bundle budget | T, I | C, D, F |
