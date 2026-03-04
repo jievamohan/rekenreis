@@ -222,7 +222,7 @@ Non-goals:
 ---
 
 ## Epic 13 — Share/Print Progress Summary (Parent-friendly, Local)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 13: Provide a parent-friendly local summary screen (no accounts).
 
