@@ -323,3 +323,22 @@ Scope:
 Non-goals:
 - multiple new graphical modes
 - high-fidelity art packs
+
+---
+
+## Epic 18 — Global Kid-Friendly Look & Feel v2
+- [x]
+/feature --ci --max-tasks=5
+Build Epic 18: Transform the entire app (not just the minigame) into a playful kindergarten-friendly look-and-feel.
+
+Goal:
+Make every page feel like a game by removing the "white document" look and unifying layout, typography, navigation, and feedback across the whole app.
+
+Scope (implemented):
+- App shell: playful background, stage card, top bar (profile pill, Choose game), nav as big icon-tabs
+- Design tokens: colors, typography, radii, spacing, shadows
+- Shared components: AppShell, NavTabs, PrimaryButton, SecondaryButton, StatPill, GameStageCard
+- Page migration: index, start, play, stickers, summary, settings
+- Smoke UI regression: AppShell nav tabs and stage documented
+
+Merged: PR #40
