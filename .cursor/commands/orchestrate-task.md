@@ -11,7 +11,15 @@ Defaults:
 
 Protocol:
 
-0) Branch discipline (hard stop)
+0) Branch discipline (hard stop) + single-PR override
+
+Single-PR override (when invoked from /feature):
+- If `artifacts/pr-number.txt` exists:
+  - You are operating inside an existing feature PR.
+  - Do NOT create or switch branches.
+  - Stay on the current branch and continue.
+
+Otherwise (standalone task execution):
 - Check current branch: `git branch --show-current`
 - If on `main` or `master`:
   - Create/switch to feature branch: `feat/{task.id}-{slug}`

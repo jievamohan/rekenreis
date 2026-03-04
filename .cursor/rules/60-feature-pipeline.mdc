@@ -1,5 +1,5 @@
 ---
-description: "Feature pipeline: discovery -> tasks -> default autopilot (FORCE) with --safe option"
+description: "Feature pipeline: discovery -> tasks -> default autopilot (FORCE) with --safe option (single PR per feature)"
 alwaysApply: true
 ---
 
@@ -25,7 +25,13 @@ When using /feature:
   - gates (C, D, F at minimum unless explicitly justified)
   - risk tags and mitigation notes
 
-3) Default delivery mode
+3) Single PR invariant (mandatory)
+- One /feature run MUST use exactly ONE feature branch and ONE PR.
+- /feature MUST bootstrap the PR once via:
+  - scripts/ci/gh_pr_bootstrap.sh
+- Delivery must stack commits onto the same PR branch (no PR per task).
+
+4) Default delivery mode
 - Default behavior of /feature is FORCE autopilot (bounded).
 - FORCE safety floor (always enforced):
   - max tasks executed per /feature run <= 5 (or user-provided --max-tasks, capped at 5)
@@ -33,7 +39,7 @@ When using /feature:
   - any I/D/auth-related work must be explicitly flagged in task risks and artifacts/risk.md
   - no destructive DB operations; prefer reversible changes only
 
-4) --safe behavior
+5) --safe behavior
 - If --safe is used, delivery is allowed only if the SAFE Complexity Gate passes:
   - tasks_generated <= 3
   - no high-risk tags (auth/payments/crypto/data-loss/privacy)
@@ -41,6 +47,6 @@ When using /feature:
   - acceptance criteria include required tests (unit at minimum)
 - If SAFE gate fails: stop after planning and output backlog + tasks (PLAN_ONLY).
 
-5) Delivery handoff rule
+6) Delivery handoff rule
 - Delivery execution (FORCE/SAFE) must run tasks via /orchestrate-task.
-- /orchestrate-task remains the single authority for PR creation, CI watch, CI autofix, artifacts commit, and merge-ready claims.
+- /orchestrate-task remains the single authority for CI watch, CI autofix, artifacts commit, and merge-ready claims.
