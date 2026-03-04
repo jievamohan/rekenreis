@@ -1,37 +1,35 @@
-# Epic 10 — Child Profiles (Local) + Parent Gate: Discovery
+# Epic 11 — Audio & Micro-Animations: Discovery
 
 ## Feature Summary
 
-Add local child profiles so multiple kids can use the same device. Each profile has name, avatar, per-profile progress/rewards/preferences. Parent gate protects settings access. Large tap targets, minimal reading.
+Add optional sound effects (correct, wrong, celebrate) and micro-animations (subtle motion on correct, gentle shake on wrong). Global toggle per profile. Never block gameplay. Respect reduced-motion preference.
 
 ## Current State
 
-- **Progress**: persistenceSchema.ts — single bestScore (rekenreis_progress)
-- **Preferences**: usePlayPreferences — lastMode, lastSkin (global keys)
-- **Telemetry**: useTelemetry — opt-out (global)
-- **Rewards**: useRewards — unlocks derived from score; no per-profile persistence
-- **Settings UI**: None; mode/skin via PlayModeSelector; no difficulty/hints settings
-- **Profile**: No concept of profiles
+- **Audio**: None; no audio/Sound/AudioContext usage
+- **Animations**: Minimal — ParentGate hold-fill transition; no feedback animations
+- **Feedback flow**: usePlayGame sets `feedback` (correct/incorrect/timeout); skin components render it
+- **Profile prefs**: ProfilePrefs has lastMode, lastSkin, difficultyCeiling, hintsOn; no soundOn
+- **Settings**: settings.vue behind ParentGate; difficulty + hints toggles
 
 ## Requirements (from Epic)
 
-1. **Local profiles**: name, avatar; per-profile progress, unlocked rewards, last mode/skin
-2. **Parent gate**: hold 3 seconds or simple arithmetic for settings access
-3. **Settings per profile**: difficulty ceiling (10/20), hints on/off (default on)
-4. **Tests**: storage versioning/migration per profile, parent gate behavior
-5. **UX**: large tap targets, minimal reading
+1. **Sound**: tiny SFX pack (correct, wrong, celebrate); global toggle per profile; never block if audio fails
+2. **Animations**: subtle motion on correct; gentle shake on wrong (non-punitive)
+3. **Performance**: lazy-load audio; bundle within budget
+4. **Accessibility**: respect prefers-reduced-motion
+5. **Tests**: settings persistence; reduced-motion behavior
 
 ## Non-goals
 
-- Accounts/login
-- Cloud sync
+- Background music
+- Heavy animation libraries
 
 ## Key Files
 
-- `apps/web/utils/profileSchema.ts` — new: ProfileSchemaV1, profiles list, activeProfileId
-- `apps/web/utils/persistenceSchema.ts` — extend or replace with per-profile keys
-- `apps/web/composables/useProfile.ts` — new: active profile, switch, create
-- `apps/web/composables/usePlayPreferences.ts` — read/write from active profile
-- `apps/web/components/ProfileSelector.vue` — new: create/switch profiles
-- `apps/web/components/ParentGate.vue` — new: hold or arithmetic
-- `apps/web/pages/play.vue` — profile selector entry, wire to profile data
+- `apps/web/utils/profileSchema.ts` — add soundOn to ProfilePrefs
+- `apps/web/composables/useSound.ts` — new: play SFX, lazy-load, never block
+- `apps/web/composables/usePlayGame.ts` — feedback triggers; wire to useSound
+- `apps/web/pages/settings.vue` — add sound toggle
+- `apps/web/public/` — SFX files (correct, wrong, celebrate)
+- Skin/mode components — add transition/animation wrappers; prefers-reduced-motion

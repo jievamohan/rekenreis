@@ -1,13 +1,11 @@
 # CI Failures
+- Mode: host
+- Run ID: 22682977290
 
-- **Run ID**: 22672433501
-- **PR**: #19
-- **Head SHA**: 4b433ef
+- Saved: artifacts/ci-logs/run-22682977290.log
 
-## Failure: Gate D (Security) — Hadolint
+## Failing jobs
+- Lint & Test (see run log: artifacts/ci-logs/run-22682977290-Lint__Test.log not available; use run-22682977290.log search)
+- Gate C (Type-safety) (see run log: artifacts/ci-logs/run-22682977290-Gate_C_Type-safety.log not available; use run-22682977290.log search)
 
-Hadolint fails on **warnings** (exit code 1):
-- `apps/api/Dockerfile` line 3: DL3018 (pin apk versions), SC2046 (quote)
-- `apps/api/Dockerfile` line 24: DL3059 (consolidate RUN)
-
-**Fix**: Run Hadolint with `--failure-threshold error` so only error-level findings fail the step.
+Next: create a CI-fix task (Lane I) using snippets from artifacts/ci-logs/run-22682977290.log

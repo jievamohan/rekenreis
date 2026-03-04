@@ -20,6 +20,13 @@ const hintsOn = computed({
     if (id) profile.updateProfile(id, { prefs: { ...profile.activeProfile.value!.prefs, hintsOn: v } })
   },
 })
+const soundOn = computed({
+  get: () => profile.activeProfile.value?.prefs.soundOn ?? true,
+  set: (v: boolean) => {
+    const id = profile.activeProfile.value?.id
+    if (id) profile.updateProfile(id, { prefs: { ...profile.activeProfile.value!.prefs, soundOn: v } })
+  },
+})
 
 function onUnlocked() {
   unlocked.value = true
@@ -53,6 +60,10 @@ onMounted(() => {
       <label class="field">
         <input v-model="hintsOn" type="checkbox" />
         <span>Show hints when stuck</span>
+      </label>
+      <label class="field">
+        <input v-model="soundOn" type="checkbox" />
+        <span>Sound effects</span>
       </label>
     </div>
     <NuxtLink to="/play" class="back">Back to game</NuxtLink>

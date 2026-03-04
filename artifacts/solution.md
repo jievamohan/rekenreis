@@ -1,15 +1,35 @@
-# Epic 10 — Child Profiles: Solution
+# Epic 11 — Audio & Micro-Animations: Solution
 
-## Task Breakdown (5 tasks)
+## 1. Profile Schema
 
-1. **profile-schema** (W2): ProfileSchemaV1, profiles + activeProfileId, load/save, migration from single-user
-2. **useProfile-composable** (W2): useProfile() — activeProfile, switchProfile, createProfile
-3. **profile-selector-ui** (W1): ProfileSelector component, profile creation, avatar picker
-4. **parent-gate** (W1): ParentGate component — hold 3s or arithmetic
-5. **play-integration-profiles** (W1,W2): Wire play to useProfile; per-profile prefs; settings page with gate
+Extend ProfilePrefs in profileSchema.ts:
+```ts
+soundOn: boolean  // default true
+```
+Update defaultPrefs() and migration (new profiles get soundOn: true).
 
-## Scope Reduction
+## 2. useSound Composable
 
-- Avatar: 4 simple options (emoji or CSS shapes)
-- Parent gate: both options (hold + arithmetic) — user chooses
-- Settings: difficulty ceiling + hints toggle only
+- `useSound(profile?: Ref<ProfileData | null>)`
+- `playCorrect()`, `playWrong()`, `playCelebrate()`
+- Lazy-load: create new Audio() on first play; store in module-level cache
+- Check profile?.prefs?.soundOn ?? true before playing
+- Try/catch around play(); never throw
+
+## 3. Integration
+
+- play.vue (or wherever usePlayGame is used): watch feedback, call useSound methods
+- useRewards: when bestScore unlocks new reward, call playCelebrate()
+- settings.vue: add "Sound effects" checkbox bound to profile prefs
+
+## 4. SFX Assets
+
+- Add 3 short MP3 files to public/sfx/ (or use data URIs / inline base64 if we want zero extra requests; prefer public for clarity)
+- Name: correct.mp3, wrong.mp3, celebrate.mp3
+
+## 5. Micro-Animations
+
+- Create FeedbackTransition.vue or shared CSS for feedback states
+- Skin components: add transition wrappers; classes feedback-correct, feedback-incorrect
+- CSS keyframes: scale 1.02 for correct; translateX shake for wrong
+- prefers-reduced-motion: reduce → animation: none

@@ -16,6 +16,7 @@ export interface ProfilePrefs {
   lastSkin: SkinId
   difficultyCeiling: GameMode
   hintsOn: boolean
+  soundOn: boolean
 }
 
 export interface ProfileData {
@@ -47,6 +48,7 @@ function defaultPrefs(): ProfilePrefs {
     lastSkin: 'classic',
     difficultyCeiling: 'upTo10',
     hintsOn: true,
+    soundOn: true,
   }
 }
 
@@ -144,6 +146,7 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
       VALID_SKINS.includes(p.prefs.lastSkin as SkinId) &&
       typeof p.prefs.difficultyCeiling === 'string' &&
       typeof p.prefs.hintsOn === 'boolean' &&
+      (typeof p.prefs.soundOn === 'boolean' || p.prefs.soundOn === undefined) &&
       typeof p.telemetryOptOut === 'boolean'
   )
 }
@@ -156,7 +159,15 @@ export function loadProfiles(): ProfileSchemaV1 {
   if (!raw) return migrateFromLegacy()
   try {
     const data = JSON.parse(raw) as unknown
-    if (isValidV1(data)) return data
+    if (isValidV1(data)) {
+      // Ensure soundOn exists for profiles loaded before Epic 11
+      for (const p of data.profiles) {
+        if (p.prefs && p.prefs.soundOn === undefined) {
+          p.prefs.soundOn = true
+        }
+      }
+      return data
+    }
   } catch {
     // invalid
   }

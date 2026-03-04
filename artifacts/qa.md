@@ -1,19 +1,14 @@
-# Epic 10 — Child Profiles: QA
+# Epic 11 — Audio & Micro-Animations: QA
+
+## Test Cases
+
+1. **Settings persistence**: Toggle sound off → reload → still off
+2. **Per-profile**: Profile A sound off, Profile B sound on → switch → correct behavior
+3. **Reduced motion**: prefers-reduced-motion: reduce → no feedback animations
+4. **Audio fail-safe**: Mock Audio failure → gameplay continues; no errors
+5. **Bundle budget**: Build; size within baseline (lazy-load ensures minimal impact)
 
 ## Acceptance
 
-- Create profile with name/avatar
-- Switch between profiles; each retains own progress, prefs
-- Parent gate: hold 3s or arithmetic unlocks settings
-- Settings: difficulty ceiling, hints on/off per profile
-- Migration: existing single-user data becomes default profile
-- Typecheck, security, bundle budget pass
-
-## Test Plan
-
-| Area | Type | Coverage |
-|------|------|----------|
-| profileSchema | Unit | load, save, migration, validation |
-| useProfile | Unit | create, switch, active profile |
-| ParentGate | Unit | hold timing, arithmetic |
-| Integration | Unit | play uses profile data |
+- Unit tests: useSound (mocked Audio), profile prefs soundOn
+- E2E optional: settings toggle, reduced-motion (browser media query)

@@ -1,32 +1,24 @@
-# Epic 10 — Child Profiles: UX
+# Epic 11 — Audio & Micro-Animations: UX
 
 ## Principles
 
-- Large tap targets (min 44px)
-- Minimal reading; icons where possible
-- Kid-friendly avatars (simple shapes or emoji)
+- Optional; defaults on, easy to turn off
+- Never block gameplay if audio fails (muted, unsupported)
+- Animations subtle and non-punitive
 
-## Profile Selector
+## Sound
 
-- List of profiles as cards with avatar + name
-- Tap to select (switch profile)
-- "Add profile" button
-- On first visit: prompt to create profile or use default
+- Toggle in settings: "Sound effects" (default on)
+- SFX: correct (short positive), wrong (gentle neutral), celebrate (best-score unlock)
+- If AudioContext/Audio fails: fail silently; game continues
 
-## Profile Creation
+## Animations
 
-- Name field (short, optional default "Player 1")
-- Avatar picker: 4–6 simple options (e.g. shapes: star, heart, circle, square)
-- Create button
+- **Correct**: brief scale or subtle bounce (0.2–0.3s)
+- **Wrong**: gentle horizontal shake (non-punitive; ~0.2s)
+- **Reduced motion**: if prefers-reduced-motion: reduce, disable animations
 
-## Parent Gate
+## Settings
 
-- Settings access: "Hold for 3 seconds" OR "Solve: 3 + 4 = ?"
-- Once passed: session cookie/sessionStorage; expires on close or 5 min
-- Must not block gameplay; only settings
-
-## Settings (behind gate)
-
-- Difficulty: up to 10 / up to 20
-- Hints: on / off
-- Per profile
+- Add "Sound effects" checkbox next to hints toggle
+- Per profile (soundOn in ProfilePrefs)
