@@ -31,4 +31,16 @@ class SessionStatsTest extends TestCase
 
         $response->assertStatus(201);
     }
+
+    public function test_session_stats_validation_ignores_non_numeric_strings(): void
+    {
+        $response = $this->postJson('/api/session-stats', [
+            'score' => 'abc',
+            'rounds' => 'xyz',
+        ]);
+
+        // Controller filters non-numeric; empty payload still returns 201
+        $response->assertStatus(201)
+            ->assertJson(['ok' => true]);
+    }
 }

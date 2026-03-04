@@ -1,0 +1,24 @@
+# Gitleaks config: extend default rules, allow known placeholders in example/config files
+# https://github.com/gitleaks/gitleaks
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow known placeholder values (base64 zeros, secret, root) in config files"
+# Regexes: known placeholder patterns - only these values are allowed, not whole file paths
+# - base64:0000... (Laravel APP_KEY placeholder)
+# - literal "secret", "root" as standalone values in env vars
+regexes = [
+  '''^base64:0+$''',
+  '''^(?i)secret$''',
+  '''^(?i)root$''',
+  '''^(?i)null$''',
+  '''^$''',
+]
+# Stopwords: if secret contains these, allow (e.g. example.com, localhost)
+stopwords = [
+  "example.com",
+  "localhost",
+  "127.0.0.1",
+]

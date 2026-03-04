@@ -1,0 +1,12 @@
+# CI override: web uses built image directly (no volume binds, no pnpm install at runtime)
+# Override-by-target: anonymous volumes replace dev binds so we use image contents in /app.
+services:
+  web:
+    working_dir: /app
+    command: pnpm run dev --host 0.0.0.0
+    volumes:
+      - /repo
+      - /repo/apps/web/node_modules
+      - /pnpm-store
+    environment:
+      - NUXT_PUBLIC_API_URL=http://api:8000

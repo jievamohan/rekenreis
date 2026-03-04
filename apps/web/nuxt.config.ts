@@ -9,4 +9,12 @@ export default defineNuxtConfig({
       apiUrl: 'http://localhost:8000',
     },
   },
+  routeRules: {
+    '/**': {
+      headers: {
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    },
+  },
 })

@@ -1,3 +1,4 @@
 # Tests
 
-PASS - 57 tests, all passing
+- Web: apps/web/test/*.test.ts (persistenceSchema, security)
+- API: SessionStatsTest, SecurityRegressionTest

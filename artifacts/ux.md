@@ -1,11 +1,10 @@
-# Epic 5 UX
+# Hardening Epic — UX
 
-## a11y
-- Tab order logical
-- Focus visible on interactive elements
-- Skip link or landmark for long pages
-- ARIA where needed
+## Scope
 
-## Error states
-- API unreachable: friendly message
-- Loading states clear
+Non-goals exclude UI changes. This epic is infrastructure/CI/security tooling only.
+
+## UX Impact
+
+- **None** for end-users; changes are CI, config, and tests
+- Developer experience: stricter CI checks may surface new failures; docs/runbooks should be updated
