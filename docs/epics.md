@@ -171,7 +171,7 @@ Non-goals:
 ---
 
 ## Epic 11 — Audio & Micro-Animations (Optional Toggle)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 11: Add optional sound effects and micro-animations to make the game more playful.
 

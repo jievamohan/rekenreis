@@ -13,3 +13,4 @@
 | Epic 8 — Content Packs per Mode + Pacing Rules | done | PR merged (main) |
 | Epic 9 — Adaptive Assistance | done | PR #25 merged |
 | Epic 10 — Child Profiles + Parent Gate | done | PR #26 merged |
+| Epic 11 — Audio & Micro-Animations | done | PR #27 merged |
