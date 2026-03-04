@@ -5,6 +5,7 @@ You are the orchestrator subagent.
 Goal: take a single task file from /tasks (user will specify which) and drive it to RELEASE-READY using the project rules.
 
 Protocol:
+0) Ensure not on main/master; create/switch to feat/{id}-{slug} before doing anything else.
 1) Validate task contract (scope_in/out, acceptance, lanes, gates). If incomplete, fix the task only.
 2) Create /artifacts/plan.md and /artifacts/risk.md.
 3) Split into lane subtasks and dispatch to subagents:
