@@ -15,10 +15,14 @@ Commands used by CI gates and local development. All paths relative to repo root
 
 | Tool | Command | Notes |
 |------|--------|-------|
-| gitleaks | `gitleaks detect --no-git` | Secrets scan (install: https://github.com/gitleaks/gitleaks) |
-| semgrep | `semgrep scan --config auto` | SAST (install: pip install semgrep) |
+| policy-check | `bash scripts/ci/policy-check.sh` | Config-file secrets (docker-compose, workflows, .env.example) |
+| gitleaks | `gitleaks detect --no-git` | Secrets scan; uses `.gitleaks.toml` if present (install: https://github.com/gitleaks/gitleaks) |
+| semgrep | `semgrep scan --config auto --config .semgrep --error` | SAST: auto + custom rules in `.semgrep/` (install: pip install semgrep) |
 | pnpm audit | `cd apps/web && pnpm audit --prod` | Web deps |
 | composer audit | `cd apps/api && composer run audit-deps` | API deps (audit reserved by Composer) |
+| hadolint | `docker run --rm -i hadolint/hadolint < apps/web/Dockerfile` | Dockerfile lint |
+| trivy config | `docker run --rm -v "$(pwd):/app" -w /app aquasec/trivy config .` | IaC/config scan |
+| ZAP baseline | See `.github/workflows/gates.yml` zap-baseline job | DAST against compose stack |
 
 ## Gate F (Performance)
 

@@ -1,4 +1,5 @@
-# Epic 4 Risk
+# Hardening Epic — Risk
 
-- privacy: Telemetry is opt-out by default; anonymous only
-- api: Session-stats endpoint has no auth; rate limit recommended for production
+- **config**: Policy-as-code, gitleaks, semgrep config changes (low)
+- **ci**: New CI jobs (Trivy, Hadolint, ZAP) may increase build time (low)
+- **auth**: Not in scope; security tests only validate defaults (no auth implementation)

@@ -1,16 +1,32 @@
-# Epic 5 Backlog
+# Hardening Epic — Backlog
 
-## Epic Summary
-Polish, a11y, error states, perf, docs.
+## Generated Tasks (condensed for --safe, ≤3)
 
-## Scope_in
-- a11y pass /play (keyboard/focus)
-- Error states (API down, etc)
-- Perf within budget; remove unnecessary deps
-- docs: quick start + runbooks
+| Task | File | Lanes |
+|------|------|-------|
+| 0032 | tasks/0032-hardening-policy-gitleaks-semgrep.md | I |
+| 0033 | tasks/0033-hardening-trivy-hadolint-zap.md | I |
+| 0034 | tasks/0034-hardening-security-tests.md | T, W2, A2 |
 
-## Task List
-1. **0028-a11y-play** — a11y pass for /play [W1]
-2. **0029-error-states** — Improve error states [W1, W2]
-3. **0030-perf-deps** — Perf budget; prune deps [I]
-4. **0031-docs-runbooks** — Quick start + runbooks [I]
+### Task 0032: Policy-as-code + Gitleaks + Semgrep
+
+- Policy-as-code checks for compose/workflows/env
+- `.gitleaks.toml` tuned for config-file secrets
+- Semgrep custom rules (TS, PHP, YAML) and CI wiring
+
+### Task 0033: Trivy + Hadolint + ZAP Baseline
+
+- Hadolint in CI for Dockerfiles
+- Trivy config scan
+- OWASP ZAP baseline job vs docker-compose stack
+
+### Task 0034: Security Regression Tests
+
+- Headers, cookies, CORS, API validation regression tests
+- Minimal Nuxt/Laravel wiring if needed
+
+## Out of Scope (future)
+
+- Full auth implementation
+- Production hardening
+- Full pentest

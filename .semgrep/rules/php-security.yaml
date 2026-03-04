@@ -1,0 +1,29 @@
+# PHP security rules for apps/api
+rules:
+  - id: php-no-exec-user-input
+    languages: [php]
+    message: Avoid exec/shell_exec/system/passthru with user input - command injection risk.
+    pattern-either:
+      - pattern: exec($...ARGS)
+      - pattern: shell_exec($...ARGS)
+      - pattern: system($...ARGS)
+      - pattern: passthru($...ARGS)
+    severity: HIGH
+    paths:
+      include: [apps/api/**]
+
+  - id: php-no-eval
+    languages: [php]
+    message: Avoid eval() - can execute arbitrary PHP code.
+    pattern: eval($...ARGS)
+    severity: HIGH
+    paths:
+      include: [apps/api/**]
+
+  - id: php-no-unserialize-user-input
+    languages: [php]
+    message: Avoid unserialize() with user input - object injection risk.
+    pattern: unserialize($...ARGS)
+    severity: HIGH
+    paths:
+      include: [apps/api/**]

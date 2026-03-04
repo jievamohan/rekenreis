@@ -1,15 +1,25 @@
-# Epic 5 — Polish / Hardening
+# Hardening Epic: Security Hardening Pipeline and Policies
 
-a11y pass for /play; improve error states; perf within budget; docs updated.
+Implement security hardening pipeline and policies for the repo.
+
+**Requirements:**
+- Policy-as-code checks for compose/workflows/env files
+- Semgrep custom rules for TS + PHP + YAML
+- Gitleaks config tuned for config-file secrets patterns
+- Trivy config scan + Hadolint in CI
+- OWASP ZAP baseline job against docker-compose stack (web + api)
+- Minimal security regression tests: headers, cookies, CORS, API validation/authz defaults
+
+**Non-goals:** feature work, UI changes.
 
 ## Tasks
-- [x] 0028-a11y-play
-- [x] 0029-error-states
-- [x] 0030-perf-deps
-- [x] 0031-docs-runbooks
+
+- [x] 0032-hardening-policy-gitleaks-semgrep
+- [x] 0033-hardening-trivy-hadolint-zap
+- [x] 0034-hardening-security-tests
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic-5-polish-hardening
-- PR: #17
-- URL: https://github.com/jievamohan/rekenreis/pull/17
+- Branch: feat/hardening-epic
+- PR: #19
+- URL: https://github.com/jievamohan/rekenreis/pull/19

@@ -1,1 +1,4 @@
 .pnpm-store
+
+# CI-generated ZAP reports
+artifacts/zap/

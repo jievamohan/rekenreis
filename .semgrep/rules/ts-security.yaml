@@ -1,0 +1,21 @@
+# TypeScript/JavaScript security rules for apps/web
+rules:
+  - id: ts-no-eval
+    languages: [typescript, javascript]
+    message: Avoid eval() - can execute arbitrary code. Use safer alternatives.
+    pattern: eval($...ARGS)
+    severity: HIGH
+
+  - id: ts-no-function-constructor
+    languages: [typescript, javascript]
+    message: Avoid new Function() - can execute arbitrary code similar to eval.
+    pattern: new Function($...ARGS)
+    severity: HIGH
+
+  - id: ts-no-innerhtml-user-input
+    languages: [typescript, javascript]
+    message: Avoid innerHTML with user-controlled or unsanitized data (XSS risk).
+    pattern: $OBJ.innerHTML = $VAL
+    severity: HIGH
+    paths:
+      include: [apps/web/**]

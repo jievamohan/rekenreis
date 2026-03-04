@@ -1,0 +1,10 @@
+# YAML rules for workflows and docker-compose
+# Note: secrets detection is handled by gitleaks + policy-check.sh
+rules:
+  - id: yaml-checkout-pinned
+    languages: [yaml]
+    message: Use pinned action versions (e.g. actions/checkout@v4) for reproducibility.
+    pattern-regex: 'uses:\s*[\w\-/]+@(?!v\d+)[^\s]+'
+    severity: LOW
+    paths:
+      include: [.github/workflows/**]
