@@ -3,10 +3,22 @@ services:
     build:
       context: ./apps/web
       dockerfile: Dockerfile
+    working_dir: /repo/apps/web
+    command: sh -lc "pnpm install && pnpm dev --host 0.0.0.0 --port 3000"
     ports:
       - "3000:3000"
+      - "24678:24678"
+    volumes:
+      - ./:/repo
+      - web_node_modules:/repo/apps/web/node_modules
+      - web_pnpm_store:/pnpm-store
     environment:
+      - NODE_ENV=development
       - NUXT_PUBLIC_API_URL=http://api:8000
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=100
+      - PNPM_HOME=/pnpm
+      - PNPM_STORE_PATH=/pnpm-store
     depends_on:
       - api
 
@@ -47,3 +59,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+
+volumes:
+  web_node_modules:
+  web_pnpm_store:

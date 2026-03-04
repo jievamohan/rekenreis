@@ -57,3 +57,4 @@ When using /feature:
   - squashing the feature branch
   - force-pushing
   - re-running CI watch and requiring CI SUCCESS
+- TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>

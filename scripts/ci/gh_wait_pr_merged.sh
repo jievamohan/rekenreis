@@ -3,7 +3,8 @@ set -euo pipefail
 
 PR_NUM="${1:-}"
 SLEEP="${SLEEP:-20}"
-RETRIES="${RETRIES:-999999}" # effectively "wait until merged"
+TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-600}"   # 10 minutes default
+MAX_POLLS=$(( TIMEOUT_SECONDS / SLEEP ))
 
 if [[ -z "$PR_NUM" ]]; then
   # try infer PR from current branch
@@ -15,18 +16,21 @@ if [[ -z "$PR_NUM" || "$PR_NUM" == "null" ]]; then
   exit 2
 fi
 
-for ((i=1; i<=RETRIES; i++)); do
+for ((i=1; i<=MAX_POLLS; i++)); do
+  MERGED="$(gh pr view "$PR_NUM" --json merged -q .merged)"
   STATE="$(gh pr view "$PR_NUM" --json state -q .state)"
-  MERGED_AT="$(gh pr view "$PR_NUM" --json mergedAt -q .mergedAt)"
   URL="$(gh pr view "$PR_NUM" --json url -q .url)"
 
   TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-  echo "[$TS] PR #$PR_NUM state=$STATE mergedAt=$MERGED_AT url=$URL"
+  echo "[$TS] PR #$PR_NUM state=$STATE merged=$MERGED url=$URL (poll $i/$MAX_POLLS)"
 
-  if [[ "$STATE" == "MERGED" || "$MERGED_AT" != "null" ]]; then
+  if [[ "$MERGED" == "true" ]]; then
     echo "PR #$PR_NUM merged."
     exit 0
   fi
 
   sleep "$SLEEP"
 done
+
+echo "Timeout reached (${TIMEOUT_SECONDS}s). PR #$PR_NUM not merged."
+exit 3
