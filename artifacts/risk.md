@@ -1,4 +1,4 @@
-# Epic 3 Risk
+# Epic 4 Risk
 
-- perf: 2 new skin components; bundle remains within budget
-- privacy: localStorage for best score only; no PII
+- privacy: Telemetry is opt-out by default; anonymous only
+- api: Session-stats endpoint has no auth; rate limit recommended for production

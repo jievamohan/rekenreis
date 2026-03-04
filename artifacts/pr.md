@@ -1,14 +1,15 @@
-# Epic 3 — More Skins + Rewards
+# Epic 4 — Persistence (Local) + Optional API Telemetry
 
-Add 2 additional skins + simple rewards/unlocks. Local-only; a11y preserved; bundle within budget.
+Versioned localStorage persistence; optional anonymous session-stats API; privacy notes + opt-out.
 
 ## Tasks
-- [x] 0018-two-new-skins
-- [x] 0019-rewards-unlocks
-- [x] 0020-skin-rewards-tests
+- [x] 0021-persistence-schema
+- [x] 0022-api-session-stats
+- [x] 0023-privacy-optout
+- [x] 0024-persistence-tests
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic-3-more-skins-rewards
-- PR: #13
-- URL: https://github.com/jievamohan/rekenreis/pull/13
+- Branch: feat/epic-4-persistence-telemetry
+- PR: #14
+- URL: https://github.com/jievamohan/rekenreis/pull/14

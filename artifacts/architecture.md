@@ -1,10 +1,10 @@
-# Epic 3 Architecture
+# Epic 4 Architecture
 
 ## Web
-- **Skins**: Add SkinSpace.vue, SkinPirate.vue (or similar); register in useSkin + skinResolver
-- **Rewards**: Composable `useRewards` with unlock state (localStorage or in-memory)
-- **Data**: Unlock thresholds (e.g. score 5 → skin A, score 10 → skin B) stored in config
+- **Schema**: rekenreis_progress v1 = { version: 1, bestScore, ... }; migrations for future v2+
+- **Storage**: localStorage; migrate on load
+- **Telemetry**: Optional call to POST /api/session-stats when opt-in
+- **Privacy**: usePreferences(telemetryOptOut) in localStorage
 
-## No Backend
-- All persistence local (session or localStorage)
-- No API endpoints
+## API
+- POST /api/session-stats: body { score?, rounds? }; anonymous; no auth; log or store minimally
