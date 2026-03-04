@@ -1,4 +1,5 @@
-import { fetchHealth } from '~/utils/api'
+import { fetchHealth, postSessionStats } from '~/utils/api'
+import type { SessionStatsPayload } from '~/utils/api'
 
 export function useApi() {
   const config = useRuntimeConfig()
@@ -6,5 +7,7 @@ export function useApi() {
 
   return {
     fetchHealth: () => fetchHealth(apiUrl),
+    postSessionStats: (payload: SessionStatsPayload) =>
+      postSessionStats(apiUrl, payload),
   }
 }

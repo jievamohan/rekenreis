@@ -3,14 +3,18 @@ import type { GameMode } from '~/types/game'
 import type { Level } from '~/types/level'
 import type { SkinId } from '~/utils/skinResolver'
 import { resolveSkinId } from '~/utils/skinResolver'
+import { useApi } from '~/composables/useApi'
 import { usePlayGame } from '~/composables/usePlayGame'
 import { useRewards } from '~/composables/useRewards'
 import { useSkin } from '~/composables/useSkin'
+import { useTelemetry } from '~/composables/useTelemetry'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import levelsV1 from '~/content/levels.v1.json'
 
 const route = useRoute()
 const router = useRouter()
+const api = useApi()
+const { telemetryOptOut, setOptOut } = useTelemetry()
 const playSource = computed(() =>
   route.query.mode === 'pack' ? 'pack' : 'infinite'
 )
@@ -23,6 +27,22 @@ const game = usePlayGame(mode, {
   source: playSource.value,
   levelPack: levelPack.value,
 })
+
+const sessionStatsSent = ref(false)
+watch(
+  () => game.score.value,
+  (score) => {
+    if (
+      !telemetryOptOut.value &&
+      !sessionStatsSent.value &&
+      score >= 1
+    ) {
+      sessionStatsSent.value = true
+      api.postSessionStats({ score }).catch(() => {})
+    }
+  },
+  { immediate: true }
+)
 
 const { isUnlocked, unlockedIds } = useRewards(game.score)
 const effectiveSkinId = computed(() => {
@@ -70,6 +90,20 @@ function selectSkin(id: SkinId) {
       </button>
     </nav>
     <component :is="skin.component" v-bind="skinProps" />
+    <footer class="privacy-footer">
+      <p class="privacy-note">
+        Anonymous gameplay stats may be shared to improve the game. No personal data is collected.
+      </p>
+      <label class="opt-out">
+        <input
+          type="checkbox"
+          :checked="telemetryOptOut"
+          aria-label="Opt out of anonymous stats"
+          @change="setOptOut(($event.target as HTMLInputElement).checked)"
+        />
+        Opt out of anonymous stats
+      </label>
+    </footer>
   </div>
 </template>
 
@@ -105,5 +139,21 @@ function selectSkin(id: SkinId) {
 }
 .skin-btn .lock {
   margin-left: 0.25rem;
+}
+.privacy-footer {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  color: #666;
+  border-top: 1px solid #eee;
+}
+.privacy-note {
+  margin: 0 0 0.5rem;
+}
+.opt-out {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 </style>

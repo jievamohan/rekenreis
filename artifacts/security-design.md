@@ -1,5 +1,5 @@
-# Epic 3 Security
+# Epic 4 Security
 
-- No auth; no PII
-- localStorage for unlocks: low risk; no sensitive data
-- No new external deps; no network calls for rewards
+- Session stats: no PII; anonymous only
+- No auth on telemetry endpoint
+- Rate limit recommended for public endpoint

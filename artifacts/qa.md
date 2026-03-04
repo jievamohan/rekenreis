@@ -1,7 +1,6 @@
-# Epic 3 QA
+# Epic 4 QA
 
-- Unit: `useRewards` unlock thresholds
-- Unit: `resolveSkinId` for new skin ids
-- Integration: skin switching via ?skin=X
-- Manual: a11y (keyboard, focus, screen reader)
-- Bundle: verify budget not exceeded
+- Unit: migration v0->v1
+- Unit: schema validation
+- API: session-stats endpoint
+- Manual: opt-out prevents telemetry call

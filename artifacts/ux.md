@@ -1,12 +1,10 @@
-# Epic 3 UX
+# Epic 4 UX
 
-## New Skins
-- Two additional thematic skins reusing existing contract
-- Same interaction model: choices, feedback, Next button
-- Suggested themes: space (e.g. rocket/planet), pirate (e.g. treasure/coins)
+## Persistence
+- Progress stored locally; transparent to user
+- On schema upgrade: migrate silently
 
-## Rewards / Unlocks
-- Minimal UI: show unlocked skins; lock icon for locked
-- Unlock via score thresholds (local-only, no server)
-- Simple list or grid in play area or settings
-- No gamification overlay; keep UI lightweight
+## Privacy
+- Short privacy note (footer or settings)
+- Opt-out switch for telemetry (session stats)
+- Default: telemetry opt-in (or off by default for privacy-first)

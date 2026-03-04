@@ -13,3 +13,23 @@ export async function fetchHealth(
   }
   return res.json() as Promise<HealthResponse>
 }
+
+export interface SessionStatsPayload {
+  score?: number
+  rounds?: number
+}
+
+export async function postSessionStats(
+  baseUrl: string,
+  payload: SessionStatsPayload,
+  fetcher: typeof fetch = fetch
+): Promise<void> {
+  const res = await fetcher(`${baseUrl}/api/session-stats`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`)
+  }
+}

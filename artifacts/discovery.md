@@ -1,15 +1,14 @@
-# Epic 3 Discovery
+# Epic 4 Discovery
 
 ## Summary
-Add 2 additional skins and simple rewards/unlocks to the rekenreis math game. All changes stay in web app; no API changes. Local-only rewards; a11y preserved; bundle within budget.
+Persist progress locally (localStorage) with versioning/migration; optional API telemetry for anonymous session stats; privacy notes and opt-out.
 
 ## Current State
-- Skin contract exists: `SkinRoundProps`, `SkinDefinition` in `types/skin.ts`
-- Existing skins: `classic`, `monster-feed`
-- Skin resolution: `skinResolver.ts`, `useSkin.ts`
-- Play page: `route.query.skin` drives skin selection
-- No rewards/unlocks; no persistence
+- useRewards: stores best_score in localStorage (single key, no versioning)
+- No migration path; no structured progress schema
+- API: GET /api/health only
+- No privacy UI
 
 ## Scope
-- **In**: 2 new skins (reuse contract), rewards/unlocks (local-only), tests, a11y preserved
-- **Out**: API, auth, payments, heavy assets, complex animations
+- **In**: Versioned persistence schema, migration, API session-stats (anonymous), privacy UI, tests
+- **Out**: Auth, PII, complex analytics

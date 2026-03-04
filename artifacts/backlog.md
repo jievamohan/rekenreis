@@ -1,29 +1,23 @@
-# Epic 3 Backlog
+# Epic 4 Backlog
 
 ## Epic Summary
-Add 2 additional skins + simple rewards/unlocks. Local-only; a11y preserved; bundle within budget.
+Persistence (localStorage, versioned) + optional API telemetry + privacy UI.
 
 ## Scope_in
-- 2 new skins reusing Skin contract (SkinRoundProps)
-- Simple rewards/unlocks (local-only; minimal UI)
-- Tests for unlock logic and skin switching
-- a11y stays correct; bundle stays within budget
+- Versioned persistence schema + migration
+- API POST /api/session-stats (anonymous)
+- Privacy notes + opt-out switch
+- Tests for schema/versioning
 
 ## Scope_out
-- API changes; auth; payments
-- Heavy assets; complex animations
-- Server-side persistence
+- Auth; PII; complex analytics
 
-## Risks + Mitigations
-- perf: New components may add bundle size → verify budget
-- privacy: localStorage for unlocks only; no PII
-
-## NFRs
-- Perf: bundle budget
-- Security: none (local only)
-- a11y: keyboard, focus, ARIA
+## Risks
+- privacy: telemetry must be opt-out clear
+- db: session-stats may need migration if stored
 
 ## Task List
-1. **0018-two-new-skins** — Add 2 skins (space, pirate) reusing contract [W1, W2]
-2. **0019-rewards-unlocks** — Rewards composable + minimal unlock UI [W2, W1]
-3. **0020-skin-rewards-tests** — Tests for unlock logic and skin switching [T]
+1. **0021-persistence-schema** — Versioned schema + migration [W2]
+2. **0022-api-session-stats** — POST /api/session-stats [A1, A2]
+3. **0023-privacy-optout** — Privacy notes + opt-out switch [W1]
+4. **0024-persistence-tests** — Schema/versioning tests [T]
