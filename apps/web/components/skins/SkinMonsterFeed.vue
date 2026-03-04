@@ -39,7 +39,13 @@ defineProps<SkinRoundProps>()
       </div>
     </div>
 
-    <div v-if="feedback" class="feedback" role="status" aria-live="polite">
+    <div
+      v-if="feedback"
+      class="feedback"
+      :class="isCorrectFeedback(feedback) && feedback.correct ? 'feedback-correct' : 'feedback-incorrect'"
+      role="status"
+      aria-live="polite"
+    >
       <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Yum! The monster is happy! 🎉</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
         Time's up! The answer was {{ feedback.correctAnswer }}. Try again!
@@ -150,6 +156,33 @@ h1 {
   margin: 1rem 0;
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+.feedback-correct {
+  animation: feedback-bounce 0.25s ease-out;
+}
+
+.feedback-incorrect {
+  animation: feedback-shake 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback-correct,
+  .feedback-incorrect {
+    animation: none;
+  }
+}
+
+@keyframes feedback-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes feedback-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
 
 .feedback .correct {

@@ -9,6 +9,7 @@
     "typecheck": "nuxt typecheck",
     "pretest": "nuxt prepare",
     "test": "vitest run",
+    "generate:sfx": "node scripts/generate-sfx.mjs",
     "size": "nuxt build && du -sh .output"
   },
   "dependencies": {

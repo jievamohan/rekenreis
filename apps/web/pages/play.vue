@@ -14,6 +14,7 @@ import { useMode } from '~/composables/useMode'
 import { useTelemetry } from '~/composables/useTelemetry'
 import { usePlayPreferences } from '~/composables/usePlayPreferences'
 import { useProfile } from '~/composables/useProfile'
+import { useSound } from '~/composables/useSound'
 import ProfileSelector from '~/components/ProfileSelector.vue'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
@@ -89,6 +90,24 @@ watch(
 )
 
 const { isUnlocked, unlockedIds } = useRewards(game.score, profile)
+const sound = useSound(profile)
+
+watch(game.feedback, (fb) => {
+  if (!fb) return
+  if ('correct' in fb) {
+    if (fb.correct) sound.playCorrect()
+    else sound.playWrong()
+  }
+})
+
+const prevUnlockedCount = ref(-1)
+watch(unlockedIds, (ids) => {
+  const n = ids.length
+  if (prevUnlockedCount.value >= 0 && n > prevUnlockedCount.value) {
+    sound.playCelebrate()
+  }
+  prevUnlockedCount.value = n
+}, { immediate: true })
 const effectiveSkinId = computed(() => {
   const resolved = resolveSkinId(route.query.skin as string | undefined)
   return isUnlocked(resolved) ? resolved : (unlockedIds.value[0] ?? 'classic')

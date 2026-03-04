@@ -1,42 +1,39 @@
-# Epic 10 — Child Profiles (Local) + Parent Gate: Backlog
+# Epic 11 — Audio & Micro-Animations: Backlog
 
 ## Epic Summary
 
-Add local child profiles so multiple kids can use the same device. Per-profile progress, rewards, preferences. Parent gate for settings. Large tap targets.
+Add optional sound effects and micro-animations. Per-profile toggle. Never block gameplay. Respect reduced-motion.
 
 ## Scope In
 
-- Profile schema: profiles list, activeProfileId, per-profile progress/prefs
-- useProfile composable: create, switch, active profile
-- Profile selector UI: list, create, avatar picker
-- Parent gate: hold 3s or arithmetic check
-- Play integration: use profile data; settings page (difficulty, hints) behind gate
-- Migration from single-user to default profile
+- ProfilePrefs.soundOn; settings toggle
+- useSound composable: correct/wrong/celebrate; lazy-load; never block
+- SFX assets in public/sfx
+- Feedback micro-animations (correct: subtle scale; wrong: gentle shake)
+- prefers-reduced-motion support
 
 ## Scope Out
 
-- Accounts/login
-- Cloud sync
-- Rich avatar customization
+- Background music
+- Heavy animation libraries
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| data-loss | Migration drops data | Test migration; preserve legacy until confirmed |
+| perf | Bundle growth | Lazy-load audio; small SFX files |
 
 ## NFRs
 
-- Perf: bundle budget
-- A11y: large tap targets, keyboard support for gate
-- Security: parent gate is UX only; document limitation
+- Perf: lazy-load audio; bundle budget
+- A11y: prefers-reduced-motion: reduce disables animations
 
 ## Task List
 
 | # | Title | Lanes | Gates |
 |---|-------|-------|-------|
-| 0055 | profile-schema | W2 | C, D, F |
-| 0056 | useProfile-composable | W2 | C, D, F |
-| 0057 | profile-selector-ui | W1 | C, D, F |
-| 0058 | parent-gate | W1 | C, D, F |
-| 0059 | play-integration-profiles | W1, W2 | C, D, F |
+| 0060 | sound-prefs-schema | W2 | C, D, F |
+| 0061 | useSound-composable | W2 | C, D, F |
+| 0062 | sfx-assets-settings-toggle | I, W1 | C, D, F |
+| 0063 | feedback-micro-animations | W1 | C, D, F |
+| 0064 | audio-animations-tests | T | C, D, F |

@@ -1,12 +1,16 @@
-# Epic 10 — Child Profiles: Security Design
+# Epic 11 — Audio & Micro-Animations: Security Design
 
-## Risk Assessment
+## Scope
 
-- **Low**: All data local (localStorage); no auth, no cloud
-- **Parent gate**: Not cryptographic; UX obstacle only. Session-scoped unlock.
+- Sound: local files only (public/sfx); no external URLs
+- Animations: CSS/Vue only; no user-controlled input
+
+## Risks
+
+- **Low**: No auth, payments, or sensitive data
+- Audio: same-origin assets only
 
 ## Mitigations
 
-- No PII beyond optional profile name (user-entered)
-- Parent gate state in sessionStorage (cleared on close)
-- No identifiers sent to API (telemetry remains anonymous)
+- Use only bundled/public assets for SFX
+- No eval or dynamic script from user input

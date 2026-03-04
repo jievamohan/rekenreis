@@ -78,6 +78,24 @@ describe('profileSchema', () => {
     expect(p.progress.bestScore).toBe(0)
     expect(p.prefs.lastMode).toBe('classic')
     expect(p.prefs.hintsOn).toBe(true)
+    expect(p.prefs.soundOn).toBe(true)
+  })
+
+  it('adds soundOn to v1 profiles missing it (Epic 11 migration)', () => {
+    const profile = createDefaultProfile()
+    const prefsWithoutSound = { ...profile.prefs }
+    delete (prefsWithoutSound as Record<string, unknown>).soundOn
+    const legacyProfile = { ...profile, prefs: prefsWithoutSound } as ProfileSchemaV1['profiles'][number]
+    const data: ProfileSchemaV1 = {
+      version: 1,
+      activeProfileId: legacyProfile.id,
+      profiles: [legacyProfile],
+    }
+    getItem.mockImplementation((key: string) =>
+      key === STORAGE_KEY ? JSON.stringify(data) : null
+    )
+    const result = loadProfiles()
+    expect(result.profiles[0].prefs.soundOn).toBe(true)
   })
 
   it('falls back to migration on invalid JSON', () => {

@@ -1,29 +1,28 @@
-# Epic 10 — Child Profiles (Local) + Parent Gate
+# Epic 11 — Audio & Micro-Animations
 
-Add local child profiles so multiple kids can use the same device.
+Add optional sound effects and micro-animations to make the game more playful.
 
 **Requirements:**
-- Local profiles: name/avatar, per-profile progress, rewards, last mode/skin
-- Parent gate: hold 3s or arithmetic for settings access
-- Settings per profile: difficulty ceiling (10/20), hints on/off
-- Migration from single-user to default profile
-- Tests: storage versioning, parent gate behavior
-- UX: large tap targets, minimal reading
+- Sound: tiny SFX pack (correct/wrong/celebrate), global toggle per profile
+- Never block gameplay if audio fails
+- Animations: subtle motion on correct, gentle shake on wrong
+- Respect prefers-reduced-motion
+- Tests: settings persistence, reduced-motion behavior
 
 **Non-goals:**
-- Accounts/login
-- Cloud sync
+- Background music
+- Heavy animation libraries
 
 ## Tasks
 
-- [ ] 0055-profile-schema
-- [ ] 0056-useProfile-composable
-- [ ] 0057-profile-selector-ui
-- [ ] 0058-parent-gate
-- [ ] 0059-play-integration-profiles
+- [ ] 0060-sound-prefs-schema
+- [ ] 0061-useSound-composable
+- [ ] 0062-sfx-assets-settings-toggle
+- [ ] 0063-feedback-micro-animations
+- [ ] 0064-audio-animations-tests
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic10-child-profiles
-- PR: #26
-- URL: https://github.com/jievamohan/rekenreis/pull/26
+- Branch: feat/epic11-audio-animations
+- PR: #27
+- URL: https://github.com/jievamohan/rekenreis/pull/27
