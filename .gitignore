@@ -2,4 +2,4 @@
 
 # CI-generated ZAP reports
 artifacts/zap/
-artifacts
+artifacts/*.md
