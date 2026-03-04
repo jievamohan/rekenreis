@@ -1,48 +1,33 @@
-# Epic 15 — Release Prep: Backlog
+# CI Speed Optimization: Backlog
 
 ## scope_in
 
-- **UX pass**
-  - Tap target sizing audit: ensure all interactive elements meet 44×44px minimum (WCAG 2.5.5)
-  - Color/contrast audit: verify 4.5:1 (normal) / 3:1 (large) where applicable
-  - Reduced motion: honor `prefers-reduced-motion` for all animations
-- **Copy pass**
-  - Friendly microcopy across index, play, stickers, summary, settings
-  - Parent-facing and kid-facing wording improvements
-- **Bug bash**
-  - Test checklist doc (manual verification steps)
-  - Quick scripts to start stack and open key URLs
-- **Performance**
-  - Verify bundle size within baseline
-  - Document budget; optimize if over
+- **Docker build cache (zap-baseline)**
+  - setup-buildx-action
+  - Build web + api met build-push-action (load: true, cache-from/to: type=gha)
+  - docker compose up --no-build
+- **Pip cache (gate-d)**
+  - Cache pip packages voor semgrep
+- **Documentatie**
+  - docs/runbooks: cache-strategie bijwerken
 
 ## scope_out
 
-- New game modes or skins
-- Full WCAG audit (beyond tap/contrast/reduced-motion)
-- Automated E2E expansion
-- Major refactors
+- CI job restructuring
+- ZAP job verwijderen
+- Registry push (images blijven lokaal)
 
 ## Risks
 
-| Area | Risk | Mitigation |
-|------|------|------------|
-| UX | Tap target changes may alter layout | Use min-height/min-width, padding; test on small viewport |
-| Copy | Subjective tone | Align with kid-friendly, parent-friendly voice; keep changes small |
-| Perf | Optimization could regress | Measure before/after; keep budget documented |
+| Tag | Risk | Mitigation |
+|-----|------|------------|
+| ci | Cache key mismatch → stale build | Key op hash(Dockerfile, lockfiles) |
+| ci | GHA cache size limit | mode=max; scope per service |
 
 ## Task List (max 5)
 
 | ID | Title | Lane | Description |
-|----|-------|------|-------------|
-| 0080 | ux-tap-targets | W1 | Audit and fix tap target sizing (44×44px) across play, stickers, summary, settings, components |
-| 0081 | ux-contrast-reduced-motion | W1 | Color/contrast audit + add `prefers-reduced-motion` where animations exist |
-| 0082 | copy-pass | W1 | Friendly microcopy pass across pages and key components |
-| 0083 | bug-bash-checklist | T, I | Test checklist doc + quick scripts (start stack, open URLs) |
-| 0084 | perf-budget-verify | I | Verify bundle budget, document baseline, optimize if over |
-
-## Wave Plan
-
-- **Wave 0**: No shared contracts needed
-- **Wave 1**: 0080, 0081, 0082 (W1) in parallel
-- **Wave 2**: 0083 (T/I), 0084 (I) in parallel
+|----|-------|------|--------------|
+| 0085 | docker-buildx-cache-zap | I | Buildx + GHA cache voor web/api in zap-baseline |
+| 0086 | pip-cache-gate-d | I | Pip cache voor semgrep in gate-d |
+| 0087 | docs-runbooks-ci-cache | I | Documenteer cache-strategie in runbooks |

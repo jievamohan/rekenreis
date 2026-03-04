@@ -1,26 +1,24 @@
-# Epic 15 — Release Prep (UX pass, Copy pass, Bug bash automation)
+# CI Speed: Docker Build Cache + Optimalisaties
 
-Prepare for release-quality UX and stability.
+Versnel GitHub Actions door Docker image cache en andere optimalisaties.
 
-**Requirements:**
-- UX pass: tap target sizing audit, color/contrast audit, reduced reading mode
-- Copy pass: friendly microcopy
-- Bug bash: add "test checklist" doc + quick scripts
-- Performance: verify budgets and optimize
+**Scope:**
+- Docker Buildx + GHA cache voor zap-baseline (web + api images)
+- Pip cache voor semgrep in gate-d
+- Documentatie cache-strategie
 
 **Non-goals:**
-- new modes/skins
+- Registry push
+- CI job restructuring
 
 ## Tasks
 
-- [x] 0080-ux-tap-targets
-- [x] 0081-ux-contrast-reduced-motion
-- [x] 0082-copy-pass
-- [x] 0083-bug-bash-checklist
-- [x] 0084-perf-budget-verify
+- [x] 0085-docker-buildx-cache-zap
+- [x] 0086-pip-cache-gate-d
+- [x] 0087-docs-runbooks-ci-cache
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic15-release-prep
-- PR: #33
-- URL: https://github.com/jievamohan/rekenreis/pull/33
+- Branch: feat/ci-speed-docker-cache
+- PR: #34
+- URL: https://github.com/jievamohan/rekenreis/pull/34
