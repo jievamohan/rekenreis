@@ -447,7 +447,7 @@ Acceptance:
 ---
 
 ## Epic 19.5 — Polish & a11y
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-19.md
 - archive: artifacts/archive/epic-19.0/latest
