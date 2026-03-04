@@ -16,7 +16,7 @@ scope_out:
 acceptance:
   - "All scripts use artifacts/current for artifact reads/writes"
   - "PR bootstrap creates artifacts/current/pr-number.txt, pr-url.txt, pr.md"
-  - "ci-watch writes artifacts/current/ci-status.md, artifacts/current/ci-last-run-id.txt"
+  - "ci-watch uses exit code (0/1/3); writes artifacts/current/ci-last-run-id.txt on failure"
   - "gh_fetch_logs writes to artifacts/current/ci-logs, artifacts/current/ci-failures.md"
   - "CI workflow uses artifacts/current/zap for ZAP reports"
   - "Grep audit: no remaining hardcoded artifacts/ (except artifacts/current, artifacts/archive)"

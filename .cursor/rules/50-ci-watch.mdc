@@ -4,7 +4,7 @@ alwaysApply: true
 ---
 
 MERGE-READY is forbidden unless:
-- artifacts/current/ci-status.md exists AND indicates CI SUCCESS for the PR head SHA.
+- ci-watch has been run and exited 0 (CI SUCCESS for the PR head SHA).
 
 If CI fails:
 - Run /ci-fetch-logs

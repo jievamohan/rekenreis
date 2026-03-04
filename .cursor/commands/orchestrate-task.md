@@ -105,14 +105,13 @@ Otherwise (standalone task execution):
     - `PR_NUM="$(gh pr view --json number -q .number)"`
 - Record PR number + URL in:
   - `artifacts/current/pr.md` (append a short PR metadata block)
-  - `artifacts/current/ci-status.md` (create if missing)
 
 Hard stop:
 - If PR cannot be created (auth/permissions), mark task BLOCKED and stop.
 
 8) CI_VERIFY (remote, bounded)
 - Run `/ci-watch` (bounded) for PR_NUM (host mode; fallback to container).
-- Record outcome in `artifacts/current/ci-status.md`.
+- If exit code 0: CI SUCCESS. If exit code 1 or 3: CI failed or pending; do not proceed.
 
 9) CI auto-fix loop (bounded, immediate execution)
 If CI SUCCESS:
@@ -176,6 +175,6 @@ Output:
 - PR number + URL
 - Explicit statement “MERGE-READY” ONLY if:
   - merge-ready checklist satisfied
-  - AND `artifacts/current/ci-status.md` shows CI SUCCESS for current head SHA
+  - AND ci-watch was run and exited 0 (CI SUCCESS for current head SHA)
   - AND working tree is clean
 - Otherwise output “BLOCKED” with pointers to relevant artifacts.
