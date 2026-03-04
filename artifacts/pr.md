@@ -29,3 +29,10 @@ Minimal end-to-end slice: Nuxt `/start` page calls Laravel `GET /api/health` and
 ## Rollback
 
 Revert commit; remove docker-compose.yml, Dockerfiles if needed.
+
+---
+
+## PR Metadata
+
+- **PR**: #4
+- **URL**: https://github.com/jievamohan/rekenreis/pull/4

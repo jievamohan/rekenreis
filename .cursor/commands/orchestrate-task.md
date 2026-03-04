@@ -2,7 +2,7 @@
 
 You are the orchestrator subagent.
 
-Goal: take a single task file from /tasks (user will specify which) and drive it to MERGE-READY using the project rules, including remote CI verification and automatic CI remediation.
+Goal: take a single task file from /tasks (user will specify which) and drive it to MERGE-READY using the project rules, including remote CI verification, automatic CI remediation, and committing CI/PR artifacts so the working tree stays clean.
 
 Defaults:
 - CI_WATCH_MODE: host (fallback to container)
@@ -125,11 +125,27 @@ If CI FAILED:
   - Summarize remaining failures in `artifacts/review.md` + `artifacts/pr.md`
   - Do NOT claim MERGE-READY.
 
-10) Output (merge-ready criteria)
+10) ARTIFACTS_COMMIT (keep working tree clean)
+- Check working tree status:
+  - `git status --porcelain`
+- If clean: continue.
+- If dirty:
+  - If ALL changed files are under `artifacts/**` only:
+    - `git add artifacts`
+    - `git commit -m "chore(artifacts): update ci/pr metadata [{task.id}]" || true`
+    - `git push`
+    - Re-run `/ci-watch` once (bounded) to ensure CI is still green after artifact commit.
+  - Else (non-artifacts changes present):
+    - Mark task BLOCKED:
+      - Explain which files are dirty and why this violates merge-ready
+      - Require either committing them properly (if intended) or reverting them
+
+11) Output (merge-ready criteria)
 Output:
 - Branch involved (PR branch; lane branches if used; integration notes)
 - PR number + URL
 - Explicit statement “MERGE-READY” ONLY if:
   - merge-ready checklist satisfied
   - AND `artifacts/ci-status.md` shows CI SUCCESS for current head SHA
+  - AND working tree is clean
 - Otherwise output “BLOCKED” with pointers to relevant artifacts.
