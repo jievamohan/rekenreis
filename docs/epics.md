@@ -346,7 +346,7 @@ Merged: PR #40
 ---
 
 ## Epic 19.1 — Tokens & No-White
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-19.md
 - archive: artifacts/archive/epic-19.0/latest
