@@ -2,6 +2,7 @@
 # Override-by-target: anonymous volumes replace dev binds so we use image contents in /app.
 services:
   web:
+    user: "1000:1000"  # node user (override base root for CI least-privilege)
     working_dir: /app
     command: pnpm run dev --host 0.0.0.0
     volumes:
