@@ -17,14 +17,14 @@ if [[ -z "$PR_NUM" || "$PR_NUM" == "null" ]]; then
 fi
 
 for ((i=1; i<=MAX_POLLS; i++)); do
-  MERGED="$(gh pr view "$PR_NUM" --json merged -q .merged)"
   STATE="$(gh pr view "$PR_NUM" --json state -q .state)"
+  MERGED_AT="$(gh pr view "$PR_NUM" --json mergedAt -q .mergedAt)"
   URL="$(gh pr view "$PR_NUM" --json url -q .url)"
 
   TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-  echo "[$TS] PR #$PR_NUM state=$STATE merged=$MERGED url=$URL (poll $i/$MAX_POLLS)"
+  echo "[$TS] PR #$PR_NUM state=$STATE mergedAt=$MERGED_AT url=$URL (poll $i/$MAX_POLLS)"
 
-  if [[ "$MERGED" == "true" ]]; then
+  if [[ -n "$MERGED_AT" && "$MERGED_AT" != "null" ]]; then
     echo "PR #$PR_NUM merged."
     exit 0
   fi

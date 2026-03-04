@@ -45,3 +45,15 @@ Requirements:
 - reduce flakiness in e2e; improve error states
 - perf: keep within budgets; remove unnecessary deps
 - docs: quick start + runbooks updated
+
+## Epic 6 — Game Modes Framework + 1 New Mode
+- [x]
+/feature --ci --max-tasks=5
+Build Epic 6: Game Modes framework + timed-pop mode.
+Requirements:
+- GameMode contract (InteractionModeId, ModeDefinition)
+- /play?mode=classic (default), /play?mode=timed-pop
+- Timed-pop: mild timer, friendly timeout, no fail state
+- a11y: keyboard playable, timer does not block
+- Tests: mode selection, recordTimeout, timer (fake)
+- Smoke extended for mode switch
