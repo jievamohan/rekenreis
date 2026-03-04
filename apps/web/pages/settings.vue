@@ -91,13 +91,17 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-height: 44px;
 }
 .field select {
   min-height: 44px;
   padding: 0.5rem;
 }
 .back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
   margin-top: 1rem;
 }
 </style>

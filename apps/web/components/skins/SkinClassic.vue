@@ -134,7 +134,8 @@ h1 {
 }
 
 .choice {
-  min-width: 3.5rem;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
   border: 2px solid #333;
@@ -203,6 +204,7 @@ h1 {
   display: block;
   margin-top: 0.75rem;
   padding: 0.5rem 1rem;
+  min-height: 44px;
   font-size: 1rem;
   border: 1px solid #333;
   border-radius: 0.375rem;
@@ -232,6 +234,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.25rem 0;
   cursor: pointer;
 }
 </style>

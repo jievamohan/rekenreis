@@ -53,14 +53,14 @@ function onDownload() {
 
     <div class="export-actions">
       <button type="button" class="btn" @click="onCopy">
-        {{ copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Copy failed' : 'Copy summary' }}
+        {{ copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Copy failed' : 'Copy to clipboard' }}
       </button>
       <button type="button" class="btn" @click="onDownload">
-        Download JSON
+        Save as file
       </button>
     </div>
 
-    <p class="privacy">Export contains no personal identifiers. Safe to share with teachers or caregivers.</p>
+    <p class="privacy">Exports contain no names or IDs. Safe to share with teachers or caregivers.</p>
 
     <NuxtLink to="/play" class="back">Back to game</NuxtLink>
   </div>
@@ -110,6 +110,8 @@ h1 {
 }
 .btn {
   padding: 0.5rem 1rem;
+  min-height: 44px;
+  min-width: 44px;
   font-size: 1rem;
   border: 2px solid #06c;
   border-radius: 0.5rem;
@@ -129,6 +131,9 @@ h1 {
   margin-bottom: 1rem;
 }
 .back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
 }
 </style>

@@ -259,16 +259,16 @@ onMounted(() => {
     </div>
     <footer class="privacy-footer">
       <p class="privacy-note">
-        Anonymous gameplay stats may be shared to improve the game. No personal data is collected.
+        We may use anonymous play stats to improve the game. No personal data is collected.
       </p>
       <label class="opt-out">
         <input
           type="checkbox"
           :checked="telemetryOptOut"
-          aria-label="Opt out of anonymous stats"
+          aria-label="Don't share anonymous stats"
           @change="setOptOut(($event.target as HTMLInputElement).checked)"
         />
-        Opt out of anonymous stats
+        Don't share anonymous stats
       </label>
     </footer>
   </div>
@@ -284,6 +284,8 @@ onMounted(() => {
 }
 .choose-game-btn {
   padding: 0.5rem 1rem;
+  min-height: 44px;
+  min-width: 44px;
   font-size: 1rem;
   border: 2px solid #06c;
   border-radius: 0.5rem;
@@ -305,7 +307,9 @@ onMounted(() => {
   justify-content: center;
 }
 .skin-btn {
-  padding: 0.35rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  min-width: 44px;
   font-size: 0.85rem;
   border: 1px solid #999;
   border-radius: 0.375rem;
@@ -382,10 +386,16 @@ onMounted(() => {
 .close-btn {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
+  min-height: 44px;
+  min-width: 44px;
 }
 .rewards-link,
 .settings-link {
   margin-left: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   font-size: 0.9rem;
 }
 </style>

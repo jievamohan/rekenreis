@@ -30,7 +30,7 @@ watch(bestScore, (score, oldScore) => {
 <template>
   <div class="stickers-page">
     <h1>Sticker Book</h1>
-    <p class="intro">Collect stickers by playing! Score {{ bestScore }} so far.</p>
+    <p class="intro">Play to collect stickers! Your best score so far: {{ bestScore }}.</p>
     <NuxtLink to="/play" class="back">Back to game</NuxtLink>
 
     <div v-for="cat in STICKER_CATEGORIES" :key="cat.id" class="category">
@@ -70,7 +70,10 @@ h1 {
   margin-bottom: 1rem;
 }
 .back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
   margin-bottom: 1.5rem;
   color: #06c;
 }

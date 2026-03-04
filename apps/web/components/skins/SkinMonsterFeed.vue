@@ -128,7 +128,8 @@ h1 {
 }
 
 .choice {
-  min-width: 3.5rem;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
   border: 2px solid #2e7d32;
