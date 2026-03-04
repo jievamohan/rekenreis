@@ -1,15 +1,35 @@
-# Epic 12 — Rewards Expansion: QA
+# Epic 13 — Share/Print Progress Summary: QA
 
-## Test Cases
+## Test Strategy
 
-1. **Daily reset**: Mock date change; rounds reset to 0
-2. **Daily goal**: Play 5 rounds; goal reached; celebration
-3. **Sticker book**: Unlocked stickers visible; locked show lock
-4. **Per-profile**: Profile A has progress; Profile B separate
-5. **Timezone**: Use local date (manual test or mock Intl)
+### Unit Tests (T lane)
 
-## Acceptance
+1. **useRoundOutcome**
+   - recordRoundOutcome increments totalRounds, totalCorrect/totalWrong/totalTimeout
+   - modeCounts updated per mode
+   - Handles undefined profile gracefully
 
-- Unit tests: useDailyGoal (reset, increment, goal)
-- Unit tests: sticker display logic
-- E2E optional: play 5 rounds, see goal reached
+2. **useProgressSummary**
+   - roundsToday from dailyGoal when date matches
+   - roundsTotal from totalRounds (0 when undefined)
+   - accuracy = correct / (correct + wrong + timeout) * 100; 0 when no rounds
+   - favoriteMode: highest modeCount, else lastMode fallback
+   - copyToClipboard: returns success; payload has no id/name
+   - downloadJson: triggers download (mock or spy)
+
+3. **Summary aggregation correctness**
+   - Given mock profile with known totals, summary values match
+   - Edge: all zeros, all timeouts, single mode
+
+### Integration / E2E (optional)
+
+- Play a few rounds → open /summary → values reflect play
+- Copy to clipboard → paste → JSON valid, no identifiers
+
+## Acceptance Criteria
+
+- Unit tests for useRoundOutcome and useProgressSummary
+- Summary aggregation correctness tests pass
+- Typecheck passes (Gate C)
+- No new security findings (Gate D)
+- Bundle budget passes (Gate F)

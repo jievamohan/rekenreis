@@ -198,7 +198,7 @@ Non-goals:
 ---
 
 ## Epic 12 — Rewards Expansion (Sticker Book, Daily Goal)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 12: Expand rewards into a sticker book and optional daily goal.
 

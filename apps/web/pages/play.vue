@@ -16,6 +16,8 @@ import { usePlayPreferences } from '~/composables/usePlayPreferences'
 import { useProfile } from '~/composables/useProfile'
 import { useSound } from '~/composables/useSound'
 import { useDailyGoal } from '~/composables/useDailyGoal'
+import { useRoundOutcome } from '~/composables/useRoundOutcome'
+import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 import ProfileSelector from '~/components/ProfileSelector.vue'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
@@ -93,6 +95,7 @@ watch(
 const { isUnlocked, unlockedIds } = useRewards(game.score, profile)
 const sound = useSound(profile)
 const dailyGoal = useDailyGoal(profile)
+const roundOutcome = useRoundOutcome(profile)
 
 const prevGoalReached = ref(false)
 watch(dailyGoal.isGoalReached, (reached) => {
@@ -130,7 +133,12 @@ const skinProps = computed(() => ({
   mode: mode.value,
   onAnswer: game.selectAnswer,
   onNext: () => {
-    if (game.feedback.value) dailyGoal.incrementRound()
+    const fb = game.feedback.value
+    if (fb) {
+      const outcome = isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')
+      roundOutcome.recordRoundOutcome(outcome, interactionMode.value)
+      dailyGoal.incrementRound()
+    }
     game.nextQuestion()
   },
   onModeChange: (m: GameMode) => {
@@ -217,6 +225,7 @@ onMounted(() => {
       <button type="button" class="close-btn" @click="showProfileSelector = false">Close</button>
     </div>
     <NuxtLink to="/stickers" class="rewards-link">Sticker book</NuxtLink>
+    <NuxtLink to="/summary" class="rewards-link">Progress</NuxtLink>
     <NuxtLink to="/settings" class="settings-link">Settings</NuxtLink>
     <PlayModeSelector
       v-model="showModeSelector"

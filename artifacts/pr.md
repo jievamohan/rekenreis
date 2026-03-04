@@ -1,22 +1,27 @@
-# Epic 12 — Rewards Expansion (Sticker Book, Daily Goal)
+# Epic 13 — Share/Print Progress Summary (Parent-friendly, Local)
 
-Expand rewards into a sticker book and optional daily goal.
+Parent-friendly, local-only progress summary: rounds played, accuracy trend, favorite mode. Optional export via copy-to-clipboard or download JSON. No identifiers; no cloud sync.
 
 **Requirements:**
-- Sticker book: pages, categories, "new sticker" highlight
-- Daily goal: "play 5 rounds" reward, timezone-safe local calculation
-- Persist rewards per profile
-- Tests: daily reset logic, reward unlocking rules
-- UX: celebratory but short; never blocks play
+- Summary: rounds played, accuracy trend (simple), favorite mode
+- Export: local "copy to clipboard" or "download JSON" (optional)
+- Privacy: no identifiers, local-only by default
+- Tests: summary aggregation correctness
 
 **Non-goals:**
-- Monetization
-- Leaderboards
+- Cloud sync
+- Analytics dashboards
 
 ## Tasks
 
-- [ ] 0065-daily-goal-schema
-- [ ] 0066-useDailyGoal-composable
-- [ ] 0067-sticker-book-config-page
-- [ ] 0068-daily-goal-play-integration
-- [ ] 0069-rewards-expansion-tests
+- [x] 0070-progress-schema-aggregates
+- [x] 0071-useRoundOutcome-composable
+- [x] 0072-useProgressSummary-composable
+- [x] 0073-summary-page-export
+- [x] 0074-progress-summary-tests
+
+## PR Metadata
+- Base: main
+- Branch: feat/epic13-share-print-progress
+- PR: #30
+- URL: https://github.com/jievamohan/rekenreis/pull/30

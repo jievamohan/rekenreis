@@ -1,39 +1,44 @@
-# Epic 12 — Rewards Expansion: Backlog
+# Epic 13 — Share/Print Progress Summary: Backlog
 
 ## Epic Summary
 
-Expand rewards into sticker book and optional daily goal. Per-profile. Celebratory, never blocks play.
+Parent-friendly, local-only progress summary: rounds played, accuracy trend, favorite mode. Optional export via copy-to-clipboard or download JSON. No identifiers; no cloud sync.
 
 ## Scope In
 
-- Profile progress: dailyGoal { date, roundsPlayed }
-- useDailyGoal composable: timezone-safe today, increment, reset
-- Sticker book page: categories, locked/unlocked, "new" highlight
-- Daily goal widget on play: rounds/goal, celebrate when reached
-- Wire incrementRound when round completes
+- Profile progress: extend with totalRounds, totalCorrect, totalWrong, totalTimeout, modeCounts
+- useRoundOutcome: record per-round outcome + mode when round completes
+- useProgressSummary: aggregate summary, copyToClipboard, downloadJson
+- Summary page: /summary with metrics, export buttons
+- Play integration: call recordRoundOutcome in onNext
+- Nav link to /summary
+- Tests: summary aggregation correctness, useRoundOutcome, useProgressSummary
 
 ## Scope Out
 
-- Monetization
-- Leaderboards
+- Cloud sync
+- Analytics dashboards
+- Social sharing (Twitter, etc.)
+- Unbounded session history (use aggregates only)
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| perf | Bundle growth | No new heavy deps; use native Date |
+| privacy | Identifier leak in export | Sanitize payload; test asserts no id/name |
+| perf | Bundle growth | No new heavy deps; native clipboard/Blob |
 
 ## NFRs
 
-- Perf: minimal bundle impact
-- A11y: sticker book keyboard nav
+- Gates: C (typecheck), D (security), F (bundle budget)
+- Lanes: W1, W2, T only
 
 ## Task List
 
 | # | Title | Lanes | Gates |
 |---|-------|-------|-------|
-| 0065 | daily-goal-schema | W2 | C, D, F |
-| 0066 | useDailyGoal-composable | W2 | C, D, F |
-| 0067 | sticker-book-config-page | W2, W1 | C, D, F |
-| 0068 | daily-goal-play-integration | W1, W2 | C, D, F |
-| 0069 | rewards-expansion-tests | T | C, D, F |
+| 0070 | progress-schema-aggregates | W2 | C, D, F |
+| 0071 | useRoundOutcome-composable | W2 | C, D, F |
+| 0072 | useProgressSummary-composable | W2 | C, D, F |
+| 0073 | summary-page-export | W1 | C, D, F |
+| 0074 | progress-summary-tests | T | C, D, F |

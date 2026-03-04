@@ -66,6 +66,7 @@ onMounted(() => {
         <span>Sound effects</span>
       </label>
     </div>
+    <NuxtLink to="/summary" class="back">Progress summary</NuxtLink>
     <NuxtLink to="/play" class="back">Back to game</NuxtLink>
   </div>
 </template>
