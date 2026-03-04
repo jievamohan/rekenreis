@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import NavIconFish from '~/components/icons/NavIconFish.vue'
+import NavIconChartBubbles from '~/components/icons/NavIconChartBubbles.vue'
+import NavIconGearCoral from '~/components/icons/NavIconGearCoral.vue'
+
 defineProps<{
   items: { to: string; label: string; icon: string }[]
   activePath?: string
 }>()
+
+const iconComponents: Record<string, typeof NavIconFish> = {
+  fish: NavIconFish,
+  'chart-bubbles': NavIconChartBubbles,
+  'gear-coral': NavIconGearCoral,
+}
 </script>
 
 <template>
@@ -15,7 +25,10 @@ defineProps<{
       :class="{ active: ($props.activePath ?? '') === item.to }"
       :aria-label="item.label"
     >
-      <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
+      <span class="nav-icon" aria-hidden="true">
+        <component :is="iconComponents[item.icon] ?? null" v-if="iconComponents[item.icon]" />
+        <span v-else>{{ item.icon }}</span>
+      </span>
       <span class="nav-label">{{ item.label }}</span>
     </NuxtLink>
   </nav>
@@ -28,6 +41,8 @@ defineProps<{
   gap: var(--app-space-sm);
   flex-shrink: 0;
   padding: var(--app-space-sm) 0;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-tab {
@@ -48,12 +63,12 @@ defineProps<{
 }
 
 .nav-tab:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--app-text);
 }
 
 .nav-tab.active {
-  background: rgba(46, 125, 50, 0.12);
+  background: rgba(0, 188, 212, 0.2);
   color: var(--app-primary);
 }
 
@@ -65,7 +80,11 @@ defineProps<{
 .nav-icon {
   font-size: 1.5rem;
   margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 
 .nav-label {
   font-size: 0.8rem;

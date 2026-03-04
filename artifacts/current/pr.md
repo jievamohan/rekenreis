@@ -1,16 +1,9 @@
-# Epic 19.1 — Tokens & No-White
+# Epic 19.2 — Shell & Nav Redesign
 
-Replace white app look with underwater design tokens.
+New app shell and nav tabs with underwater theme and playful typography/iconography.
 
 ## Tasks
 
-- [ ] epic19-1-tokens: Update tokens.css with underwater palette
-- [ ] epic19-1-graphics: Update graphics.css with underwater tokens
-- [ ] epic19-1-surfaces: Remove hardcoded white; GameStageCard themed
-- [ ] epic19-1-verify: typecheck, build, smoke green
-
-## PR Metadata
-- Base: main
-- Branch: feat/epic19-1-tokens-no-white
-- PR: #43
-- URL: https://github.com/jievamohan/rekenreis/pull/43
+- [ ] epic19-2-nav-icons: Add SVG icons
+- [ ] epic19-2-shell-bg: AppShell underwater background
+- [ ] epic19-2-nav-icons-wire: NavTabs use SVG icons
