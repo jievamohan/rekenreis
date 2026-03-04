@@ -14,6 +14,12 @@ export type GameMode = 'upTo10' | 'upTo20'
 export interface ProfileProgress {
   bestScore: number
   dailyGoal?: { date: string; roundsPlayed: number }
+  /** Cumulative aggregates for progress summary (Epic 13) */
+  totalRounds?: number
+  totalCorrect?: number
+  totalWrong?: number
+  totalTimeout?: number
+  modeCounts?: Partial<Record<InteractionModeId, number>>
 }
 
 export interface ProfilePrefs {
@@ -149,6 +155,14 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
       (p.progress.dailyGoal === undefined ||
         (typeof p.progress.dailyGoal?.date === 'string' &&
           typeof p.progress.dailyGoal?.roundsPlayed === 'number')) &&
+      (p.progress.totalRounds === undefined || (typeof p.progress.totalRounds === 'number' && p.progress.totalRounds >= 0)) &&
+      (p.progress.totalCorrect === undefined || (typeof p.progress.totalCorrect === 'number' && p.progress.totalCorrect >= 0)) &&
+      (p.progress.totalWrong === undefined || (typeof p.progress.totalWrong === 'number' && p.progress.totalWrong >= 0)) &&
+      (p.progress.totalTimeout === undefined || (typeof p.progress.totalTimeout === 'number' && p.progress.totalTimeout >= 0)) &&
+      (p.progress.modeCounts === undefined ||
+        (typeof p.progress.modeCounts === 'object' &&
+          p.progress.modeCounts !== null &&
+          Object.values(p.progress.modeCounts).every((v) => typeof v === 'number' && v >= 0))) &&
       p.prefs &&
       VALID_MODES.includes(p.prefs.lastMode as InteractionModeId) &&
       VALID_SKINS.includes(p.prefs.lastSkin as SkinId) &&

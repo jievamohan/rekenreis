@@ -14,3 +14,4 @@
 | Epic 9 — Adaptive Assistance | done | PR #25 merged |
 | Epic 10 — Child Profiles + Parent Gate | done | PR #26 merged |
 | Epic 11 — Audio & Micro-Animations | done | PR #27 merged |
+| Epic 12 — Rewards Expansion | done | PR #28 merged |
