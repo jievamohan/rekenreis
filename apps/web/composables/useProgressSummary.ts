@@ -51,7 +51,6 @@ export function useProgressSummary(profile?: ProfileApi) {
     if (!p) return 0
     const correct = p.totalCorrect ?? 0
     const wrong = p.totalWrong ?? 0
-    const timeout = p.totalTimeout ?? 0
     const answered = correct + wrong
     if (answered === 0) return 0
     return Math.round((correct / answered) * 100)
