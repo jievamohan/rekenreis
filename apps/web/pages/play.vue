@@ -18,7 +18,7 @@ import { useSound } from '~/composables/useSound'
 import { useDailyGoal } from '~/composables/useDailyGoal'
 import { useRoundOutcome } from '~/composables/useRoundOutcome'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
-import ProfileSelector from '~/components/ProfileSelector.vue'
+import { useAppShell } from '~/composables/useAppShell'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
 import levelsClassic from '~/content/levels.classic.v1.json'
@@ -43,8 +43,8 @@ const api = useApi()
 const profile = useProfile()
 const { telemetryOptOut, setOptOut } = useTelemetry(profile)
 const { lastMode, lastSkin, setPreferences } = usePlayPreferences(profile)
+const { setChooseGameHandler } = useAppShell()
 const showModeSelector = ref(false)
-const showProfileSelector = ref(false)
 
 const playSource = computed(() =>
   route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite'
@@ -178,6 +178,7 @@ function onModeSelectorSelect(mode: InteractionModeId, skin: SkinId) {
 }
 
 onMounted(() => {
+  setChooseGameHandler(() => { showModeSelector.value = true })
   const qm = route.query.mode as string | undefined
   if (!qm || qm === 'pack') {
     const needsSync = lastMode.value !== 'classic' || lastSkin.value !== 'classic'
@@ -192,41 +193,15 @@ onMounted(() => {
     }
   }
 })
+
+onUnmounted(() => {
+  setChooseGameHandler(null)
+})
 </script>
 
 <template>
   <div class="play-page">
     <a href="#game-main" class="skip-link">Skip to game</a>
-    <nav class="play-nav" role="navigation" aria-label="Game options">
-      <button
-        type="button"
-        class="choose-game-btn"
-        aria-label="Switch profile"
-        @click="showProfileSelector = true"
-      >
-        {{ profile.activeProfile.value?.name ?? 'Player' }}
-      </button>
-      <button
-        type="button"
-        class="choose-game-btn"
-        aria-label="Choose game mode"
-        @click="showModeSelector = true"
-      >
-        Choose game
-      </button>
-    </nav>
-    <div v-if="showProfileSelector" class="profile-overlay">
-      <ProfileSelector
-        :profiles="profile.profiles.value"
-        :active-profile-id="profile.schema.value?.activeProfileId ?? ''"
-        @switch="profile.switchProfile($event); showProfileSelector = false"
-        @create="(name, avatarId) => { profile.createProfile(name, avatarId); showProfileSelector = false }"
-      />
-      <button type="button" class="close-btn" @click="showProfileSelector = false">Close</button>
-    </div>
-    <NuxtLink to="/stickers" class="rewards-link">Sticker book</NuxtLink>
-    <NuxtLink to="/summary" class="rewards-link">Progress</NuxtLink>
-    <NuxtLink to="/settings" class="settings-link">Settings</NuxtLink>
     <PlayModeSelector
       v-model="showModeSelector"
       :current-mode="interactionMode"
@@ -251,9 +226,11 @@ onMounted(() => {
         <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
       </button>
     </nav>
-    <p v-if="profile.activeProfile.value" class="daily-goal" role="status" aria-live="polite">
-      {{ dailyGoal.roundsPlayed }}/{{ dailyGoal.goalRounds }} rounds today
-    </p>
+    <StatPill
+      v-if="profile.activeProfile.value"
+      label="Rounds today"
+      :value="`${dailyGoal.roundsPlayed}/${dailyGoal.goalRounds}`"
+    />
     <div id="game-main" tabindex="-1">
       <component :is="gameMode.component" v-bind="modeProps" />
     </div>
@@ -278,26 +255,6 @@ onMounted(() => {
 .play-page {
   position: relative;
   padding: 0.5rem;
-}
-.play-nav {
-  margin-bottom: 0.5rem;
-}
-.choose-game-btn {
-  padding: 0.5rem 1rem;
-  min-height: 44px;
-  min-width: 44px;
-  font-size: 1rem;
-  border: 2px solid #06c;
-  border-radius: 0.5rem;
-  background: #e6f2ff;
-  cursor: pointer;
-}
-.choose-game-btn:hover {
-  background: #cce5ff;
-}
-.choose-game-btn:focus-visible {
-  outline: 2px solid #06c;
-  outline-offset: 2px;
 }
 .skin-picker {
   display: flex;
@@ -334,11 +291,6 @@ onMounted(() => {
 .skin-btn .lock {
   margin-left: 0.25rem;
 }
-.daily-goal {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0.25rem 0;
-}
 .privacy-footer {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -372,30 +324,5 @@ onMounted(() => {
 }
 .skip-link:focus {
   left: 0.5rem;
-}
-.profile-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-.close-btn {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  min-height: 44px;
-  min-width: 44px;
-}
-.rewards-link,
-.settings-link {
-  margin-left: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.9rem;
 }
 </style>

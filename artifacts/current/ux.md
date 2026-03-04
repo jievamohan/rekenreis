@@ -1,42 +1,36 @@
-# Epic 17 — Graphics v1: UX Design
+# Epic 18 — UX Design
 
-## Target Users
+## Design Principles
 
-- Kleuters (4–7 years): minimal reading, big tap targets, playful visuals
-- Parents: accessible, no fail states, gentle feedback
+1. **Playful, not document-like**: Every page feels like part of a game
+2. **Big tap targets**: ≥ 44×44px everywhere
+3. **Kid-friendly typography**: Large, rounded, readable
+4. **Consistent feedback**: Same button/tile styles across app
+5. **Accessibility preserved**: Contrast, reduced-motion, keyboard/focus
 
-## Interaction Model
+## App Shell (Global Layout)
 
-### Build-Bridge Mode (graphical)
+- **Background**: Gradient or soft pattern (no plain white)
+- **Stage card**: Centered content area with rounded corners, subtle shadow
+- **Top bar**:
+  - Active profile pill (e.g. "Player 1")
+  - "Choose game" button as primary action
+- **Nav**: Big icon-tabs — Sticker book / Progress / Settings
+- **Reduce empty white**: Consistent background and framing
 
-1. **Scene**: Bridge gap with water/ground below; character or object on one side
-2. **Question**: Visual or minimal text (e.g., "3 + 2 = ?") integrated into scene
-3. **Choices**: Planks/tiles as draggable game objects with numbers
-4. **Correct**: Drag correct plank into gap → bridge completes → celebration
-5. **Wrong**: Gentle wobble, plank returns to pool, optional hint after 2 wrong
-6. **Keyboard**: Select plank (focus) → Tab to drop zone → Enter/Space to place
+## Component Patterns
 
-## Visual Hierarchy
+- **PrimaryButton**: Big, playful, primary action
+- **SecondaryButton**: Outlined or softer
+- **StatPill**: Score, streak, rounds today
+- **GameStageCard**: Wraps minigames; integrates with shell
+- **NavTabs**: Icon + label, big tap targets
 
-- **Background**: Sky/ground or water; sets mood
-- **Foreground**: Bridge structure (left span, gap, right span)
-- **Character/object**: Small mascot or object to give context
-- **Planks**: Large, tappable, visually distinct from background
+## Visual Acceptance Criteria (Non-Negotiable)
 
-## Tap Targets
-
-- Minimum 44×44px (WCAG 2.5.5)
-- Planks: large enough for small fingers
-- Drop zone: generous hit area
-
-## Feedback Cadence
-
-- **Correct**: Short celebration (confetti/bounce), then Next
-- **Wrong**: Wobble (reduced-motion: none), plank returns, no punishment
-- **Hint (after 2 wrong)**: Dots or number line; gentle, non-blocking
-
-## Mode Selector
-
-- Big buttons with icons (🌉 for Build Bridge)
-- Kid-friendly labels; minimal text
-- Remember last selection (local)
+- No page has a "plain white document" look
+- All main actions have big, playful buttons
+- Tap targets ≥ 44×44px everywhere
+- Consistent typography (no default browser look)
+- Contrast + reduced-motion compliance
+- Minigame integrates into shell (no styled island)

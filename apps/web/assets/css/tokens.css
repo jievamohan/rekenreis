@@ -1,0 +1,121 @@
+/* Epic 18 — Global kid-friendly design tokens */
+
+:root {
+  /* Colors */
+  --app-bg: linear-gradient(135deg, #e8f4f8 0%, #f0e6fa 50%, #fff5e6 100%);
+  --app-bg-fallback: #e8f4f8;
+  --app-surface: #ffffff;
+  --app-surface-elevated: #ffffff;
+  --app-primary: #2e7d32;
+  --app-primary-hover: #1b5e20;
+  --app-secondary: #4a90d9;
+  --app-secondary-hover: #357abd;
+  --app-correct: #2e7d32;
+  --app-wrong: #c62828;
+  --app-muted: #5c5c5c;
+  --app-text: #1a1a1a;
+  --app-text-muted: #5c5c5c;
+
+  /* Typography */
+  --app-font: 'Nunito', 'Quicksand', 'Comic Sans MS', 'Chalkboard SE', system-ui, sans-serif;
+  --app-font-size-base: 1rem;
+  --app-font-size-lg: 1.25rem;
+  --app-font-size-xl: 1.5rem;
+  --app-font-size-2xl: 1.875rem;
+  --app-font-weight-normal: 600;
+  --app-font-weight-bold: 700;
+  --app-line-height: 1.5;
+
+  /* Radii */
+  --app-radius-sm: 0.5rem;
+  --app-radius-md: 0.75rem;
+  --app-radius-lg: 1rem;
+  --app-radius-xl: 1.25rem;
+  --app-radius-pill: 9999px;
+
+  /* Spacing */
+  --app-space-xs: 0.25rem;
+  --app-space-sm: 0.5rem;
+  --app-space-md: 1rem;
+  --app-space-lg: 1.5rem;
+  --app-space-xl: 2rem;
+  --app-tap-min: 44px;
+
+  /* Shadows */
+  --app-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --app-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --app-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Reduced motion */
+  --app-transition: 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --app-transition: 0s;
+  }
+}
+
+/* Base button styles (utility classes) */
+.app-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--app-tap-min);
+  min-width: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: white;
+  background: var(--app-primary);
+  border: none;
+  border-radius: var(--app-radius-md);
+  box-shadow: var(--app-shadow-sm);
+  cursor: pointer;
+  transition: background var(--app-transition), transform var(--app-transition);
+}
+
+.app-btn-primary:hover {
+  background: var(--app-primary-hover);
+}
+
+.app-btn-primary:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
+
+.app-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--app-tap-min);
+  min-width: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  background: transparent;
+  border: 2px solid var(--app-primary);
+  border-radius: var(--app-radius-md);
+  cursor: pointer;
+  transition: background var(--app-transition), border-color var(--app-transition);
+}
+
+.app-btn-secondary:hover {
+  background: rgba(46, 125, 50, 0.08);
+}
+
+.app-btn-secondary:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
+
+/* Tile base */
+.app-tile {
+  background: var(--app-surface);
+  border-radius: var(--app-radius-md);
+  box-shadow: var(--app-shadow-md);
+  padding: var(--app-space-md);
+}

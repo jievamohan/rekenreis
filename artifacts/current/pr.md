@@ -1,25 +1,18 @@
-# Epic 17 — Graphics v1
+# Epic 18 — Global Kid-Friendly Look & Feel v2
 
-Build a truly kid-friendly graphical minigame. Transform build-bridge from form-like to a game scene with background, character/objects, and answer choices as game objects.
+Transform the entire app into a playful kindergarten-friendly look. Remove white document look; unify layout, typography, navigation, and feedback.
 
-## Summary
-
-- Assets pipeline + SceneLayout
-- Graphical build-bridge: scene, game objects, drag/drop
-- Wrong drop: wobble, return, hint after 2 wrong
-- Reduced motion support
-- Unit tests + smoke update
+**Scope:**
+- App shell: playful background, stage card, top bar (profile pill, Choose game), nav as big icon-tabs
+- Design tokens: colors, typography, radii, spacing, shadows
+- Shared components: AppShell, NavTabs, PrimaryButton, SecondaryButton, StatPill, GameStageCard
+- Migrate all pages (play, stickers, progress, settings, start, index)
+- E2E smoke updated; UI regression assertion for AppShell/nav/stage
 
 ## Tasks
 
-- [x] 0092-graphics-assets-scene
-- [x] 0093-graphics-build-bridge-visual
-- [x] 0094-graphics-wrong-drop-hint
-- [x] 0095-graphics-reduced-motion
-- [x] 0096-graphics-tests-smoke
-
-## PR Metadata
-- Base: main
-- Branch: feat/17-graphics-v1
-- PR: #39
-- URL: https://github.com/jievamohan/rekenreis/pull/39
+- [ ] 0097-epic18-design-tokens
+- [ ] 0098-epic18-app-shell
+- [ ] 0099-epic18-shared-components
+- [ ] 0100-epic18-page-migration
+- [ ] 0101-epic18-smoke-ui-regression

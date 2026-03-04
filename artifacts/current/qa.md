@@ -1,29 +1,30 @@
-# Epic 17 — Graphics v1: QA Strategy
+# Epic 18 — QA Strategy
 
-## Unit Tests
+## Test Requirements
 
-| Area | Test |
-|------|------|
-| Mode contract | ModeBuildBridge receives SkinRoundProps, calls onAnswer/onNext correctly |
-| Drag/drop state | Wrong drop: wobble, plank returns, no onNext; correct: onAnswer, onNext |
-| Hint integration | After 2 wrong, hintToShow is used; hint displayed |
-| Keyboard | Select plank, focus drop zone, place; same outcome as drag |
-| Reduced motion | prefers-reduced-motion: reduce disables wobble (mock matchMedia or CSS test) |
+1. **E2E smoke**: Layout loads; play still works
+   - Visit /play, /stickers, /summary, /settings, /start
+   - Play a round (classic or build-bridge)
+   - Verify no regressions
 
-## E2E / Smoke
+2. **UI regression**: AppShell renders nav tabs and stage
+   - Assert nav tabs visible (Sticker book, Progress, Settings)
+   - Assert stage/card wrapper present
+   - Can be manual smoke step or automated if Playwright exists
 
-| Flow | Verification |
-|------|---------------|
-| Switch to build-bridge | /play → Choose game → Build Bridge → scene visible |
-| Complete one round | Drag correct plank to gap → feedback "Correct!" → Next → new question |
-| Wrong then correct | Wrong plank → wobble, try again → correct plank → success |
+3. **Unit tests** (if applicable):
+   - AppShell, NavTabs render without error
+   - Token CSS variables applied
 
-## Manual Smoke (docs/runbooks)
+## Gates
 
-- Update smoke steps 10–11 to reflect graphical build-bridge
-- Verify classic, timed-pop unchanged
+- Gate C: typecheck clean
+- Gate D: security baseline (no new secrets, semgrep clean)
+- Gate F: build succeeds, bundle budget
 
-## Performance
+## Manual Verification
 
-- Bundle size within budget (no heavy libs)
-- No layout thrash; CSS/SVG only
+- No page has plain white background
+- Tap targets ≥ 44×44px
+- Typography consistent
+- Contrast and reduced-motion preserved

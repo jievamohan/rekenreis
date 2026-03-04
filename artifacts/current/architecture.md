@@ -1,48 +1,40 @@
-# Epic 17 — Graphics v1: Architecture
+# Epic 18 — Architecture
 
 ## Layering
 
 ```
-play.vue (orchestrator)
-  └── usePlayGame, useAssistance, useMode, useSkin
-  └── <component :is="gameMode.component" v-bind="modeProps" />
-        └── ModeBuildBridge (graphical)
-              └── SceneLayout (background + foreground + character slot)
-              └── DraggablePlank (game object)
-              └── DropZone (bridge gap)
+app.vue
+  └── AppShell (new global layout)
+        ├── TopBar (profile pill, Choose game)
+        ├── Main content slot (NuxtPage wrapped in GameStageCard or equivalent)
+        └── NavTabs (Sticker book, Progress, Settings)
 ```
 
-## Data Flow (unchanged)
+## Design Tokens (Single Source of Truth)
 
-- **usePlayGame**: question, feedback, selectAnswer, nextQuestion
-- **useAssistance**: hintToShow (after 2 wrong)
-- **SkinRoundProps**: Passed to mode component; no game logic in mode
+- **Location**: `apps/web/assets/css/tokens.css` (or extend `graphics.css`)
+- **Variables**:
+  - Colors: bg, surface, primary, secondary, correct, wrong, muted
+  - Typography: font-family, scale (large, rounded)
+  - Radii, spacing, shadows
+  - Button + tile styles
 
-## New Components
+## Component Hierarchy
 
-| Component | Responsibility |
-|-----------|----------------|
-| `SceneLayout` | Wrapper: background layer + foreground layer + character slot; CSS layout |
-| `DraggablePlank` | Plank game object: SVG or styled div, draggable, keyboard focusable |
-| `DropZone` | Bridge gap: accepts drop, keyboard place |
+- **AppShell**: Wraps all pages; provides background, top bar, nav
+- **LayoutFrame / GameStageCard**: Wraps page content in "stage" card
+- **NavTabs**: Shared bottom/top nav
+- **PrimaryButton / SecondaryButton**: Shared button components
+- **StatPill**: Shared stat display
 
-## Assets Pipeline
+## Page Integration
 
-- **Location**: `apps/web/assets/graphics/`
-- **Structure**: `backgrounds/`, `objects/`, `characters/` (or placeholders)
-- **Format**: SVG preferred (scalable, small)
-- **Import**: `~/assets/graphics/...` or via Nuxt asset handling
+- Each page uses default layout (AppShell) via Nuxt layout
+- Pages opt into `GameStageCard` wrapper for content
+- Play page: game area inside stage card; existing minigame components unchanged
 
-## Mode Contract
+## Lane Ownership
 
-- ModeBuildBridge continues to implement SkinRoundProps
-- Receives same props: question, feedback, onAnswer, onNext, hintToShow, etc.
-- No changes to usePlayGame or level engine
-
-## Reduced Motion
-
-- `@media (prefers-reduced-motion: reduce)` disables:
-  - Wobble on wrong
-  - Celebration bounce (optional)
-  - Non-essential transitions
-- Keep: essential state changes (plank moves, feedback visible)
+- W1: layouts, pages, components (UI surface)
+- W2: composables if needed for layout state
+- T: tests, smoke, UI regression
