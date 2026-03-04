@@ -36,6 +36,12 @@ jobs:
           php-version: "8.4"
           tools: composer
 
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ hashFiles('apps/api/composer.lock') }}
+
       - name: API PHPStan
         run: |
           cd apps/api && composer install --no-interaction --prefer-dist
@@ -80,6 +86,12 @@ jobs:
         with:
           php-version: "8.4"
           tools: composer
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ hashFiles('apps/api/composer.lock') }}
 
       - name: pnpm audit (web)
         run: |
@@ -135,17 +147,16 @@ jobs:
       - name: Start stack
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
-          sleep 8
+          sleep 5
           docker compose logs api || true
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait
 
       - name: Wait for health
         run: |
-          sleep 15
-          for i in $(seq 1 36); do
+          for i in $(seq 1 40); do
             curl -sf http://localhost:3000/start >/dev/null && curl -sf http://localhost:8001/api/health >/dev/null && echo "Stack ready" && exit 0
-            echo "Waiting for stack ($i/36)..."
-            sleep 5
+            echo "Waiting for stack ($i/40)..."
+            sleep 3
           done
           echo "Stack failed to become healthy"
           docker compose -f docker-compose.yml -f docker-compose.ci.yml ps -a
@@ -153,19 +164,28 @@ jobs:
           docker compose logs api --tail 20
           exit 1
 
+      - name: Security headers check
+        run: bash scripts/ci/security-headers-check.sh
+
       - name: ZAP baseline (web)
         run: |
           mkdir -p artifacts/zap && chmod 777 artifacts/zap
           docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/start -I -m 2 \
-            -J web-report.json -r web-report.html || true
+            -J web-start-report.json -r web-start-report.html || true
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/play -I -m 2 \
+            -J web-play-report.json -r web-play-report.html || true
 
       - name: ZAP baseline (api)
         run: |
           chmod 777 artifacts/zap
           docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/health -I -m 2 \
-            -J api-report.json -r api-report.html || true
+            -J api-health-report.json -r api-health-report.html || true
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/session-stats -I -m 2 \
+            -J api-session-stats-report.json -r api-session-stats-report.html || true
 
       - name: Teardown
         if: always()
@@ -200,6 +220,12 @@ jobs:
         with:
           php-version: "8.4"
           tools: composer
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ hashFiles('apps/api/composer.lock') }}
 
       - name: API test
         run: |

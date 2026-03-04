@@ -1,27 +1,27 @@
-# Epic 13 — Share/Print Progress Summary (Parent-friendly, Local)
+# Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed)
 
-Parent-friendly, local-only progress summary: rounds played, accuracy trend, favorite mode. Optional export via copy-to-clipboard or download JSON. No identifiers; no cloud sync.
+Strengthen security/testing hardening and CI speed.
 
 **Requirements:**
-- Summary: rounds played, accuracy trend (simple), favorite mode
-- Export: local "copy to clipboard" or "download JSON" (optional)
-- Privacy: no identifiers, local-only by default
-- Tests: summary aggregation correctness
+- extend OWASP ZAP baseline coverage
+- add regression tests for security headers/cookies/CORS
+- add CI caching improvements (pnpm/composer) without weakening integrity
+- reduce flaky e2e further
+- docs/runbooks update
 
 **Non-goals:**
-- Cloud sync
-- Analytics dashboards
+- feature work
 
 ## Tasks
 
-- [x] 0070-progress-schema-aggregates
-- [x] 0071-useRoundOutcome-composable
-- [x] 0072-useProgressSummary-composable
-- [x] 0073-summary-page-export
-- [x] 0074-progress-summary-tests
+- [x] 0075-zap-baseline-coverage
+- [x] 0076-security-headers-regression-ci
+- [x] 0077-composer-cache-ci
+- [x] 0078-zap-job-reliability
+- [x] 0079-docs-runbooks-epic14
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic13-share-print-progress
-- PR: #30
-- URL: https://github.com/jievamohan/rekenreis/pull/30
+- Branch: feat/epic14-production-hardening-2
+- PR: #32
+- URL: https://github.com/jievamohan/rekenreis/pull/32
