@@ -1,27 +1,26 @@
-# Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed)
+# Epic 15 — Release Prep (UX pass, Copy pass, Bug bash automation)
 
-Strengthen security/testing hardening and CI speed.
+Prepare for release-quality UX and stability.
 
 **Requirements:**
-- extend OWASP ZAP baseline coverage
-- add regression tests for security headers/cookies/CORS
-- add CI caching improvements (pnpm/composer) without weakening integrity
-- reduce flaky e2e further
-- docs/runbooks update
+- UX pass: tap target sizing audit, color/contrast audit, reduced reading mode
+- Copy pass: friendly microcopy
+- Bug bash: add "test checklist" doc + quick scripts
+- Performance: verify budgets and optimize
 
 **Non-goals:**
-- feature work
+- new modes/skins
 
 ## Tasks
 
-- [x] 0075-zap-baseline-coverage
-- [x] 0076-security-headers-regression-ci
-- [x] 0077-composer-cache-ci
-- [x] 0078-zap-job-reliability
-- [x] 0079-docs-runbooks-epic14
+- [x] 0080-ux-tap-targets
+- [x] 0081-ux-contrast-reduced-motion
+- [x] 0082-copy-pass
+- [x] 0083-bug-bash-checklist
+- [x] 0084-perf-budget-verify
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic14-production-hardening-2
-- PR: #32
-- URL: https://github.com/jievamohan/rekenreis/pull/32
+- Branch: feat/epic15-release-prep
+- PR: #33
+- URL: https://github.com/jievamohan/rekenreis/pull/33

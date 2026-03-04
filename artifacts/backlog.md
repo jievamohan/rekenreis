@@ -1,45 +1,48 @@
-# Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed): Backlog
+# Epic 15 — Release Prep: Backlog
 
-## Epic Summary
+## scope_in
 
-Strengthen security/testing hardening and CI speed. Extend OWASP ZAP baseline coverage, add regression tests for security headers/cookies/CORS, add CI caching improvements (pnpm/composer) without weakening integrity, reduce flaky e2e further, and update docs/runbooks.
+- **UX pass**
+  - Tap target sizing audit: ensure all interactive elements meet 44×44px minimum (WCAG 2.5.5)
+  - Color/contrast audit: verify 4.5:1 (normal) / 3:1 (large) where applicable
+  - Reduced motion: honor `prefers-reduced-motion` for all animations
+- **Copy pass**
+  - Friendly microcopy across index, play, stickers, summary, settings
+  - Parent-facing and kid-facing wording improvements
+- **Bug bash**
+  - Test checklist doc (manual verification steps)
+  - Quick scripts to start stack and open key URLs
+- **Performance**
+  - Verify bundle size within baseline
+  - Document budget; optimize if over
 
-## Scope In
+## scope_out
 
-- Extend ZAP baseline to additional URLs (web: /play or equivalent; api: /api/session-stats or equivalent)
-- Add CI script/job step for security headers regression (X-Frame-Options, X-Content-Type-Options, CORS) against running stack
-- Add composer cache in CI (actions/cache keyed by composer.lock hash)
-- Reduce ZAP job flakiness: improve health wait, retries, or timeout tuning
-- Update docs/runbooks/commands.md for new ZAP coverage, cache behavior, security regression
+- New game modes or skins
+- Full WCAG audit (beyond tap/contrast/reduced-motion)
+- Automated E2E expansion
+- Major refactors
 
-## Scope Out
+## Risks
 
-- Feature work
-- New e2e framework (playwright/cypress)
-- ZAP active scanning
-- Trivy image scan
-- Changes to app code (W1, W2, A1, A2) except config required for tests
+| Area | Risk | Mitigation |
+|------|------|------------|
+| UX | Tap target changes may alter layout | Use min-height/min-width, padding; test on small viewport |
+| Copy | Subjective tone | Align with kid-friendly, parent-friendly voice; keep changes small |
+| Perf | Optimization could regress | Measure before/after; keep budget documented |
 
-## Risks + Mitigations
+## Task List (max 5)
 
-| Tag | Risk | Mitigation |
-|-----|------|------------|
-| ci | Cache poisoning / stale deps | Cache key includes lockfile hash; frozen-lockfile / --no-update |
-| ci | ZAP job timeout or flakiness | Tune health wait; consider fail-fast vs continue-on-error |
-| infra | Composer cache key collision | Use `composer.lock` content hash |
+| ID | Title | Lane | Description |
+|----|-------|------|-------------|
+| 0080 | ux-tap-targets | W1 | Audit and fix tap target sizing (44×44px) across play, stickers, summary, settings, components |
+| 0081 | ux-contrast-reduced-motion | W1 | Color/contrast audit + add `prefers-reduced-motion` where animations exist |
+| 0082 | copy-pass | W1 | Friendly microcopy pass across pages and key components |
+| 0083 | bug-bash-checklist | T, I | Test checklist doc + quick scripts (start stack, open URLs) |
+| 0084 | perf-budget-verify | I | Verify bundle budget, document baseline, optimize if over |
 
-## NFRs
+## Wave Plan
 
-- Gates: C (typecheck), D (security), F (bundle budget)
-- Lanes: **I only** (deps/infra/CI)
-- Max 5 tasks
-
-## Task List
-
-| # | Title | Lanes | Gates |
-|---|-------|-------|-------|
-| 0075 | zap-baseline-coverage | I | C, D, F |
-| 0076 | security-headers-regression-ci | I | C, D, F |
-| 0077 | composer-cache-ci | I | C, D, F |
-| 0078 | zap-job-reliability | I | C, D, F |
-| 0079 | docs-runbooks-epic14 | I | C, D, F |
+- **Wave 0**: No shared contracts needed
+- **Wave 1**: 0080, 0081, 0082 (W1) in parallel
+- **Wave 2**: 0083 (T/I), 0084 (I) in parallel

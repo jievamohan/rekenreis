@@ -1,78 +1,83 @@
-# Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed): Discovery
+# Epic 15 — Release Prep: Discovery
 
-## Feature Summary
+## Summary
 
-Strengthen security/testing hardening and CI speed. Extend OWASP ZAP baseline coverage, add regression tests for security headers/cookies/CORS, add CI caching improvements (pnpm/composer) without weakening integrity, reduce flaky e2e further, and update docs/runbooks.
+Epic 15 prepares the kid-friendly math game for release-quality UX and stability. Scope: UX pass (tap targets, contrast, reduced motion), copy pass (friendly microcopy), bug bash automation (test checklist + scripts), and performance verification.
 
-## Problem Statement
+## App Surface
 
-1. **ZAP coverage is minimal**: Only `/start` (web) and `/api/health` (api) are scanned. Key user-facing routes (e.g. `/play`) and API endpoints (e.g. `/api/session-stats`) are not covered.
-2. **Security regression gaps**: ZAP uses `|| true` so it never fails. No deterministic regression tests for headers (X-Frame-Options, X-Content-Type-Options), cookies, or CORS. CI logs show X-Content-Type-Options warnings on some routes.
-3. **CI speed**: pnpm has cache via setup-node; composer has no explicit cache—every job runs `composer install` from scratch.
-4. **Flakiness**: ZAP job uses fixed sleeps (8s, 15s) and a 36-retry health loop. Stack startup can be slow; no retry/backoff for ZAP itself.
-5. **Docs**: runbooks may not reflect new ZAP coverage, cache behavior, or security test expectations.
+### Pages
+| Route | Purpose |
+|-------|---------|
+| `/` | Welcome / nav to start and play |
+| `/start` | API health check (dev entry) |
+| `/play` | Main game: modes (classic, timed-pop, build-bridge), skins, profiles |
+| `/stickers` | Sticker book (rewards) |
+| `/summary` | Progress summary (parent view, export) |
+| `/settings` | Parent gate, difficulty, hints, sound |
 
-## Current State
+### Key Components
+- **Play**: `PlayModeSelector`, skin picker, `ProfileSelector`, mode components (`ModeClassic`, `ModeTimedPop`, `ModeBuildBridge`), skin components (`SkinClassic`, `SkinMonsterFeed`, `SkinSpace`, `SkinPirate`)
+- **Settings**: `ParentGate`, difficulty select, hints/sound toggles
+- **Shared**: `ProfileSelector`, `ProfileCreate`, `HintDots`, `HintNumberLine`
 
-### gates.yml
-- **gate-c-typecheck**: pnpm cache via setup-node; composer install (no cache)
-- **gate-d-security**: pnpm cache; composer install (no cache); ZAP not in this job
-- **gate-f-build**: pnpm cache
-- **zap-baseline**: compose up, sleep 8+15, health loop (36×5s), ZAP against web:3000/start and api:8000/api/health; `|| true` so never fails
-- **lint-test**: pnpm cache; composer install (no cache)
+### Tech Stack
+- **Web**: Nuxt 3, Vue 3, TypeScript, Vitest
+- **API**: Laravel 12, PHP 8.2, PHPUnit
+- **Gates**: C (typecheck/phpstan), D (security), F (build + size)
 
-### ZAP
-- Targets: `http://web:3000/start`, `http://api:8000/api/health`
-- Options: `-I` (ignore warnings), `-m 2` (2 min timeout)
-- Reports: web-report.json/html, api-report.json/html in artifacts/zap (gitignored)
+## UX Audit Findings
 
-### Security
-- **Web**: nuxt.config.ts sets X-Frame-Options, X-Content-Type-Options via routeRules
-- **API**: Laravel + fruitcake/php-cors; default CORS
-- **Tests**: apps/web/test/security.test.ts—config-only assertions, no HTTP
-- **CI logs**: X-Content-Type-Options Header Missing [10021] on some routes
+### Tap Target Sizing
+- **WCAG 2.5.5 Target Size (Level AAA)**: 44×44 CSS px minimum for touch targets.
+- **Compliant**: `PlayModeSelector` mode-btn (min-height 44px), skin-btn (44×44), `ProfileSelector` profile-btn (48×48), `ProfileCreate` buttons, `ParentGate` gate-btn, settings select (min-height 44px).
+- **Needs audit**: `play.vue` `.skin-btn` (padding 0.35rem 0.75rem ≈ 5.6×12px — likely under 44px), `.choose-game-btn` (padding 0.5rem 1rem), `.close-btn`, `.rewards-link`, `.settings-link`. Skin choice buttons use `min-width: 3.5rem` + padding — effective height may be under 44px. Mode radios in `SkinClassic` (Up to 10/20) — no explicit min-height. Build-bridge planks: `min-height: 4rem`, `min-width: 3rem` — height OK, width borderline.
 
-### E2E
-- No playwright/cypress
-- Manual smoke in docs/runbooks/commands.md
-- ZAP job is the closest automated “e2e” (stack + HTTP probes)
+### Color / Contrast
+- Primary: `#06c` (blue), `#e6f2ff` (light blue), `#cce5ff` (hover)
+- Text: `#333`, `#666`, `#999`
+- Feedback: `#0a0` (correct), `#c00` (incorrect)
+- No formal contrast audit in repo. Need to verify 4.5:1 for normal text, 3:1 for large text.
 
-## Requirements (from Epic)
+### Reduced Motion / Reading
+- `SkinClassic.vue` has `@media (prefers-reduced-motion: reduce)` for feedback animations.
+- Other skins (`SkinMonsterFeed`, `SkinSpace`, `SkinPirate`), `ModeTimedPop`, `ModeBuildBridge` — reduced-motion not audited.
+- "Reduced reading mode" — no explicit toggle; can add `prefers-reduced-motion` where animations exist and optionally honor system font scaling.
 
-1. Extend OWASP ZAP baseline coverage
-2. Add regression tests for security headers/cookies/CORS
-3. Add CI caching improvements (pnpm/composer) without weakening integrity
-4. Reduce flaky e2e further
-5. docs/runbooks update
+## Copy Audit
 
-## Non-Goals
+| Location | Current | Notes |
+|----------|---------|-------|
+| index | "Welcome", "Start (API health)", "Play — Math game" | Dev-oriented |
+| play | "Choose game", "Sticker book", "Progress", "Settings" | OK |
+| play | "Opt out of anonymous stats" | Technical |
+| stickers | "Collect stickers by playing! Score X so far." | OK |
+| summary | "Progress Summary", "A parent-friendly overview..." | OK |
+| summary | "Copy summary", "Download JSON" | Functional |
+| settings | "For grown-ups: verify to access settings." | OK |
+| ParentGate | "Hold 3 seconds", "Solve a simple sum" | OK |
+| SkinClassic | "Correct!", "Time's up! The answer was X.", "Not quite. The answer was X." | Friendly |
+| SkinClassic | "Up to 10", "Up to 20" | OK |
 
-- Feature work
-- New e2e framework (playwright/cypress)
-- ZAP active scanning
+Opportunities: index welcome copy, summary export labels, privacy note wording, error states.
 
-## Constraints
+## Bug Bash / Test Automation
 
-- Lanes: **I only** (deps/infra/CI)
-- Gates: C, D, F
-- Max 5 tasks
-- Risks: ci, infra
+- **Existing**: Smoke steps in `docs/runbooks/commands.md` (11 steps), Vitest unit tests, PHPUnit.
+- **Missing**: Structured test checklist for manual bug bash, quick scripts to spin up stack and open key URLs.
 
-## Key Files
+## Performance
 
-- `.github/workflows/gates.yml` — CI jobs, ZAP, caching
-- `scripts/ci/` — policy-check, future security-header script
-- `docs/runbooks/commands.md` — canonical commands, smoke
-- `docker-compose.yml`, `docker-compose.ci.yml` — stack for ZAP
+- **Baseline** (`artifacts/perf.md`): ~2 MB nitro total, client chunk ~170 kB. Build succeeds.
+- **CI**: `pnpm run size` reports `.output`; no explicit budget enforcement in CI (no `bundlesize` or similar).
+- **Opportunities**: Document baseline, add budget check script if desired; lazy-load audio already noted in epics.
 
-## Key URLs for ZAP Extension
+## Non-Goals (Epic 15)
 
-| App | Current | Candidates to add |
-|-----|---------|-------------------|
-| web | /start | /play, /play?mode=classic |
-| api | /api/health | /api/session-stats (POST) |
+- New modes or skins
+- Major feature work
 
-## Caching Options (integrity-preserving)
+## Dependencies
 
-- **pnpm**: Already cached via setup-node; verify cache key includes lockfile hash
-- **composer**: Use `actions/cache` with key from `composer.lock` hash; restore before `composer install`; `--prefer-dist --no-interaction` for speed
+- No blocking external deps.
+- Tasks can run in parallel where lanes don't overlap (W1 vs T vs I).

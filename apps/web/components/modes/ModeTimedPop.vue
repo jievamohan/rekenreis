@@ -158,6 +158,8 @@ const hasFeedback = computed(() => !!props.feedback)
 }
 .choice {
   padding: 0.75rem 1.25rem;
+  min-height: 44px;
+  min-width: 44px;
   font-size: 1.125rem;
   border: 2px solid #ccc;
   border-radius: 0.5rem;
@@ -215,6 +217,7 @@ const hasFeedback = computed(() => !!props.feedback)
 .next {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
+  min-height: 44px;
   font-size: 1rem;
   cursor: pointer;
 }

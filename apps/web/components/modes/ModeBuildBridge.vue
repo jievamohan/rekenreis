@@ -159,7 +159,7 @@ function handleDragOver(e: DragEvent) {
 }
 .bridge-gap {
   width: 4rem;
-  min-height: 3rem;
+  min-height: 44px;
   margin: 0 0.25rem;
   border: 2px dashed #999;
   border-radius: 0.25rem;
@@ -197,7 +197,8 @@ function handleDragOver(e: DragEvent) {
 }
 .plank {
   padding: 0.75rem 1.25rem;
-  min-width: 3rem;
+  min-width: 44px;
+  min-height: 44px;
   font-size: 1.125rem;
   font-weight: bold;
   border: 2px solid #8b4513;
