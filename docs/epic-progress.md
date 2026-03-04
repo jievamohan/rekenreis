@@ -10,4 +10,5 @@
 | Epic 5 — Polish / Hardening | done | PR merged |
 | Epic 6 — Game Modes Framework + 1 New Mode | done | PR #21 merged |
 | Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI | done | PR #23 merged |
-| Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI | done | PR #23 merged |
+| Epic 8 — Content Packs per Mode + Pacing Rules | done | PR merged (main) |
+| Epic 9 — Adaptive Assistance | done | PR #25 merged |

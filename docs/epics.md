@@ -89,7 +89,7 @@ Non-goals:
 ---
 
 ## Epic 8 — Content Packs per Mode + Pacing Rules
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 8: Introduce content packs per mode plus pacing rules to keep sessions varied and frustration-free.
 
@@ -119,7 +119,7 @@ Non-goals:
 ---
 
 ## Epic 9 — Adaptive Assistance (Hints, Anti-Guessing, Confidence Gate)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 9: Add adaptive assistance so kids don’t get stuck or spam-guess.
 
