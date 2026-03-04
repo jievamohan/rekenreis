@@ -1,0 +1,145 @@
+name: Gates
+
+on:
+  pull_request:
+    branches: [master, main]
+  push:
+    branches: [master, main]
+
+jobs:
+  gate-c-typecheck:
+    name: Gate C (Type-safety)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Web typecheck
+        run: |
+          cd apps/web && pnpm install --frozen-lockfile
+          pnpm run typecheck
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+
+      - name: API PHPStan
+        run: |
+          cd apps/api && composer install --no-interaction --prefer-dist
+          composer run phpstan
+
+  gate-d-security:
+    name: Gate D (Security)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+
+      - name: pnpm audit (web)
+        run: |
+          cd apps/web && pnpm install --frozen-lockfile
+          pnpm audit --prod || true
+
+      - name: Composer audit (api)
+        run: |
+          cd apps/api && composer install --no-interaction --prefer-dist
+          composer run audit-deps || true
+
+  gate-f-build:
+    name: Gate F (Build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Web build
+        run: |
+          cd apps/web && pnpm install --frozen-lockfile
+          pnpm run build
+
+      - name: Web size
+        run: cd apps/web && pnpm run size
+
+  lint-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Web lint
+        run: cd apps/web && pnpm install --frozen-lockfile && pnpm run lint
+
+      - name: Web test
+        run: cd apps/web && pnpm run test
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+
+      - name: API test
+        run: |
+          cd apps/api && composer install --no-interaction --prefer-dist
+          composer run test
