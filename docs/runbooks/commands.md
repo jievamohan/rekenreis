@@ -22,7 +22,8 @@ Commands used by CI gates and local development. All paths relative to repo root
 | composer audit | `cd apps/api && composer run audit-deps` | API deps (audit reserved by Composer) |
 | hadolint | `docker run --rm -i hadolint/hadolint < apps/web/Dockerfile` | Dockerfile lint |
 | trivy config | `docker run --rm -v "$(pwd):/app" -w /app aquasec/trivy config .` | IaC/config scan |
-| ZAP baseline | See `.github/workflows/gates.yml` zap-baseline job | DAST against compose stack |
+| ZAP baseline | See `.github/workflows/gates.yml` zap-baseline job | DAST: web /start, /play; api /api/health, /api/session-stats |
+| security-headers-check | `bash scripts/ci/security-headers-check.sh` | Requires stack running; asserts X-Frame-Options, X-Content-Type-Options, CORS |
 
 ## Gate F (Performance)
 
@@ -30,6 +31,11 @@ Commands used by CI gates and local development. All paths relative to repo root
 |-----|---------|-------|
 | web build | `cd apps/web && pnpm run build` | Must succeed |
 | web size | `cd apps/web && pnpm run size` | Reports .output size; baseline in perf.md |
+
+## CI Caching
+
+- **pnpm**: Cached via `setup-node` with `cache-dependency-path: apps/web/pnpm-lock.yaml`
+- **composer**: Cached via `actions/cache` with key `composer-${{ hashFiles('apps/api/composer.lock') }}`
 
 ## Lint & Test
 

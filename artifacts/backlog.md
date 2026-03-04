@@ -1,44 +1,45 @@
-# Epic 13 — Share/Print Progress Summary: Backlog
+# Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed): Backlog
 
 ## Epic Summary
 
-Parent-friendly, local-only progress summary: rounds played, accuracy trend, favorite mode. Optional export via copy-to-clipboard or download JSON. No identifiers; no cloud sync.
+Strengthen security/testing hardening and CI speed. Extend OWASP ZAP baseline coverage, add regression tests for security headers/cookies/CORS, add CI caching improvements (pnpm/composer) without weakening integrity, reduce flaky e2e further, and update docs/runbooks.
 
 ## Scope In
 
-- Profile progress: extend with totalRounds, totalCorrect, totalWrong, totalTimeout, modeCounts
-- useRoundOutcome: record per-round outcome + mode when round completes
-- useProgressSummary: aggregate summary, copyToClipboard, downloadJson
-- Summary page: /summary with metrics, export buttons
-- Play integration: call recordRoundOutcome in onNext
-- Nav link to /summary
-- Tests: summary aggregation correctness, useRoundOutcome, useProgressSummary
+- Extend ZAP baseline to additional URLs (web: /play or equivalent; api: /api/session-stats or equivalent)
+- Add CI script/job step for security headers regression (X-Frame-Options, X-Content-Type-Options, CORS) against running stack
+- Add composer cache in CI (actions/cache keyed by composer.lock hash)
+- Reduce ZAP job flakiness: improve health wait, retries, or timeout tuning
+- Update docs/runbooks/commands.md for new ZAP coverage, cache behavior, security regression
 
 ## Scope Out
 
-- Cloud sync
-- Analytics dashboards
-- Social sharing (Twitter, etc.)
-- Unbounded session history (use aggregates only)
+- Feature work
+- New e2e framework (playwright/cypress)
+- ZAP active scanning
+- Trivy image scan
+- Changes to app code (W1, W2, A1, A2) except config required for tests
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| privacy | Identifier leak in export | Sanitize payload; test asserts no id/name |
-| perf | Bundle growth | No new heavy deps; native clipboard/Blob |
+| ci | Cache poisoning / stale deps | Cache key includes lockfile hash; frozen-lockfile / --no-update |
+| ci | ZAP job timeout or flakiness | Tune health wait; consider fail-fast vs continue-on-error |
+| infra | Composer cache key collision | Use `composer.lock` content hash |
 
 ## NFRs
 
 - Gates: C (typecheck), D (security), F (bundle budget)
-- Lanes: W1, W2, T only
+- Lanes: **I only** (deps/infra/CI)
+- Max 5 tasks
 
 ## Task List
 
 | # | Title | Lanes | Gates |
 |---|-------|-------|-------|
-| 0070 | progress-schema-aggregates | W2 | C, D, F |
-| 0071 | useRoundOutcome-composable | W2 | C, D, F |
-| 0072 | useProgressSummary-composable | W2 | C, D, F |
-| 0073 | summary-page-export | W1 | C, D, F |
-| 0074 | progress-summary-tests | T | C, D, F |
+| 0075 | zap-baseline-coverage | I | C, D, F |
+| 0076 | security-headers-regression-ci | I | C, D, F |
+| 0077 | composer-cache-ci | I | C, D, F |
+| 0078 | zap-job-reliability | I | C, D, F |
+| 0079 | docs-runbooks-epic14 | I | C, D, F |
