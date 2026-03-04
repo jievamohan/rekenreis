@@ -1,9 +1,14 @@
 ---
-description: "CI-WATCH: after push/PR updates, poll CI and ingest logs on failure"
+description: "CI-WATCH is mandatory and merge-ready requires CI SUCCESS"
 alwaysApply: true
 ---
 
-When a change claims merge-ready OR after updating a PR:
-- Run /ci-watch.
-- If CI fails: run /ci-fetch-logs and create a Lane I CI-fix task based on artifacts/ci-logs.
-- Never wait indefinitely. Use bounded polling only.
+MERGE-READY is forbidden unless:
+- artifacts/ci-status.md exists AND indicates CI SUCCESS for the PR head SHA.
+
+If CI fails:
+- Run /ci-fetch-logs
+- Generate/update tasks/0002-ci-green.md (Lane I, strict scope)
+- Execute CI fix immediately (deps-infra + security + performance + reviewer)
+- Re-run /ci-watch (bounded retries; max 3 fix loops)
+- If still failing, mark task BLOCKED and stop.
