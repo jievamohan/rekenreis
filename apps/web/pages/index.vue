@@ -56,7 +56,7 @@ h1 {
   border: 2px solid var(--app-primary);
 }
 .nav-link-secondary:hover {
-  background: rgba(46, 125, 50, 0.08);
+  background: rgba(0, 188, 212, 0.12);
 }
 .nav-link:focus-visible {
   outline: 2px solid var(--app-primary);

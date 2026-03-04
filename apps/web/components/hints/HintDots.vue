@@ -38,13 +38,13 @@ defineProps<{
   gap: 0.15rem;
 }
 .hint-dots .dot {
-  color: #06c;
+  color: var(--app-primary);
 }
 .hint-dots .op {
-  color: #333;
+  color: var(--app-text);
   font-weight: 600;
 }
 .hint-dots .result {
-  color: #666;
+  color: var(--app-text-muted);
 }
 </style>

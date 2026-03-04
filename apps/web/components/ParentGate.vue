@@ -129,9 +129,9 @@ onUnmounted(() => {
 <style scoped>
 .parent-gate {
   padding: 1rem;
-  border: 2px solid #999;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
-  background: #f9f9f9;
+  background: var(--app-surface);
 }
 .prompt {
   margin: 0 0 1rem;
@@ -148,17 +148,17 @@ onUnmounted(() => {
   border-radius: 0.375rem;
   cursor: pointer;
   background: var(--app-surface);
-  border: 2px solid #333;
+  border: 2px solid var(--app-muted);
 }
 .hold-bar {
   height: 12px;
-  background: #ddd;
+  background: var(--app-muted);
   border-radius: 6px;
   overflow: hidden;
 }
 .hold-fill {
   height: 100%;
-  background: #06c;
+  background: var(--app-primary);
   transition: width 0.05s linear;
 }
 .math-area input {
@@ -168,6 +168,6 @@ onUnmounted(() => {
   min-width: 4rem;
 }
 .error {
-  color: #c00;
+  color: var(--app-wrong);
 }
 </style>

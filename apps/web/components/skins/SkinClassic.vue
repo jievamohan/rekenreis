@@ -138,18 +138,18 @@ h1 {
   min-height: 44px;
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
-  border: 2px solid #333;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 
 .choice:hover:not(.disabled) {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 
 .choice:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 
@@ -192,12 +192,12 @@ h1 {
 }
 
 .feedback .correct {
-  color: #0a0;
+  color: var(--app-correct);
   font-weight: 600;
 }
 
 .feedback .incorrect {
-  color: #c00;
+  color: var(--app-wrong);
 }
 
 .next {
@@ -206,14 +206,14 @@ h1 {
   padding: 0.5rem 1rem;
   min-height: 44px;
   font-size: 1rem;
-  border: 1px solid #333;
+  border: 1px solid var(--app-muted);
   border-radius: 0.375rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 
 .next:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 

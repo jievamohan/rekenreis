@@ -1,40 +1,35 @@
-# Backlog — Epic 19.3: Underwater Asset Pipeline
+# Backlog — Epic 19.4: Page Unification
 
 ## Epic Summary
 
-Add 10+ underwater SVG assets and background patterns to bring the underwater theme to life visually. Integrate patterns into the app shell and scene layout. Verify all quality gates.
+Replace all hardcoded colors across pages, shared components, game modes, hints, and skins with underwater theme CSS custom properties for visual consistency.
 
 ## Scope
 
 ### scope_in
-- Create 12+ underwater-themed SVG assets (fish, bubbles, seaweed, coral, shells, starfish, jellyfish, seahorse, turtle, octopus, crab, wave)
-- Create 2 background patterns (bubble-pattern, wave-overlay)
-- Organize assets in assets/graphics/backgrounds/, objects/, icons/
-- Integrate at least one background pattern into AppShell or SceneLayout
-- Each SVG < 2KB; total new assets < 50KB
-- Bundle budget must pass (Gate F)
+- Replace hardcoded colors (#06c, #333, #666, #999, #ccc, #f0f0f0, #e6f2ff, etc.) with CSS variables
+- Theme: ProfileSelector, PlayModeSelector, ProfileCreate, ParentGate
+- Theme: pages/index, pages/play, pages/stickers, pages/summary
+- Theme: ModeTimedPop, ModeBuildBridge, HintNumberLine, HintDots
+- Theme: SkinClassic, SkinMonsterFeed, SkinSpace, SkinPirate
+- Ensure visual consistency across all routes
 
 ### scope_out
-- New game modes or content packs
+- New components or pages
 - Backend changes
-- New animations or motion work
-- Page-level theme unification (that's Epic 19.4)
+- New animations or features
+- Token/variable changes (use existing tokens)
 
 ## Risks + Mitigations
 
 | Risk | Tag | Mitigation |
 |------|-----|------------|
-| Bundle size increase | perf | Keep each SVG < 2KB; verify budget after |
-| SVG injection | security | No embedded scripts or external fetches in SVGs |
-
-## NFRs
-
-- Performance: bundle budget < 3MB total, < 250KB client JS
-- Security: SVGs must not contain scripts or external references
-- Accessibility: decorative SVGs use aria-hidden="true"
+| Visual regression | perf | Verify build, typecheck; manual visual check |
 
 ## Task List
 
-1. **0109 — Create underwater SVG assets + background patterns** (W1, Gates C/F)
-2. **0110 — Integrate patterns into AppShell and SceneLayout** (W1, Gates C/F)
-3. **0111 — Verify typecheck + build + bundle budget** (T/I, Gates C/D/F)
+1. **0112** — Theme shared components (W1, Gate C)
+2. **0113** — Theme pages (W1, Gate C)
+3. **0114** — Theme game modes + hints (W1, Gate C)
+4. **0115** — Theme skins (W1, Gate C)
+5. **0116** — Verify typecheck + build + bundle budget (T/I, Gates C/D/F)

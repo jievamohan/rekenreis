@@ -148,7 +148,7 @@ const hasFeedback = computed(() => !!props.feedback)
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0.5rem 0;
-  color: #06c;
+  color: var(--app-primary);
 }
 .choices {
   display: flex;
@@ -161,16 +161,16 @@ const hasFeedback = computed(() => !!props.feedback)
   min-height: 44px;
   min-width: 44px;
   font-size: 1.125rem;
-  border: 2px solid #ccc;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 .choice:hover:not(:disabled) {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 .choice:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 .choice.disabled {
@@ -209,10 +209,10 @@ const hasFeedback = computed(() => !!props.feedback)
 }
 
 .feedback .correct {
-  color: #080;
+  color: var(--app-correct);
 }
 .feedback .incorrect {
-  color: #800;
+  color: var(--app-wrong);
 }
 .next {
   margin-top: 0.5rem;
@@ -222,12 +222,12 @@ const hasFeedback = computed(() => !!props.feedback)
   cursor: pointer;
 }
 .next:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 .stats {
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--app-text-muted);
 }
 </style>

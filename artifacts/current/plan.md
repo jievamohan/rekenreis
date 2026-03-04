@@ -1,17 +1,18 @@
-# Plan — Epic 19.3: Underwater Asset Pipeline
+# Plan — Epic 19.4: Page Unification
 
-Branch: `feat/epic-19.3-underwater-assets`
-PlanRef: docs/design/epic-19.md (slice 19.3)
-Archive: artifacts/archive/epic-19.0/latest
+Branch: `feat/epic-19.4-page-unification`
+PlanRef: docs/design/epic-19.md (slice 19.4)
 
 ## Summary
 
-Add 10+ underwater SVG assets and background patterns, integrate them into AppShell and/or SceneLayout, and verify bundle budget compliance.
+Unify all pages and components visually with the underwater theme by replacing hardcoded colors with CSS custom properties.
 
 ## Tasks
 
 | # | Title | Lane | Gates |
 |---|-------|------|-------|
-| 0109 | Create underwater SVG assets + background patterns | W1 | C, F |
-| 0110 | Integrate patterns into AppShell and SceneLayout | W1 | C, F |
-| 0111 | Verify typecheck + build + bundle budget | T, I | C, D, F |
+| 0112 | Theme shared components (ProfileSelector, PlayModeSelector, ProfileCreate, ParentGate) | W1 | C |
+| 0113 | Theme pages (index, play, stickers, summary) | W1 | C |
+| 0114 | Theme game modes + hints (ModeTimedPop, ModeBuildBridge, HintNumberLine, HintDots) | W1 | C |
+| 0115 | Theme skins (SkinClassic, SkinMonsterFeed, SkinSpace, SkinPirate) | W1 | C |
+| 0116 | Verify typecheck + build + bundle budget | T, I | C, D, F |

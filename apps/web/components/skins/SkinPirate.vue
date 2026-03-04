@@ -196,12 +196,12 @@ h1 {
 }
 
 .feedback .correct {
-  color: #aed581;
+  color: var(--app-correct);
   font-weight: 600;
 }
 
 .feedback .incorrect {
-  color: #e57373;
+  color: var(--app-wrong);
 }
 
 .next {

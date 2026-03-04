@@ -204,13 +204,13 @@ function handleDragOver(e: DragEvent) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(245, 245, 245, 0.9);
+  background: var(--app-surface);
   cursor: pointer;
 }
 
 .bridge-gap:hover,
 .bridge-gap:focus {
-  background: rgba(238, 238, 238, 0.95);
+  background: var(--app-surface-elevated);
   border-color: var(--graphics-accent);
 }
 
@@ -221,7 +221,7 @@ function handleDragOver(e: DragEvent) {
 
 .bridge-gap.has-selection {
   border-color: var(--graphics-accent);
-  background: rgba(46, 125, 50, 0.15);
+  background: rgba(0, 188, 212, 0.15);
 }
 
 .bridge-gap.wobble {
@@ -290,7 +290,7 @@ function handleDragOver(e: DragEvent) {
 }
 
 .plank:hover:not(:disabled) {
-  background: linear-gradient(to bottom, #e8d4b8 0%, #da8a4a 100%);
+  background: linear-gradient(to bottom, var(--graphics-plank-highlight) 0%, var(--graphics-plank) 100%); filter: brightness(1.1);
   transform: translateY(-1px);
 }
 
@@ -301,7 +301,7 @@ function handleDragOver(e: DragEvent) {
 
 .plank.selected {
   border-color: var(--graphics-accent);
-  background: rgba(46, 125, 50, 0.2);
+  background: rgba(0, 188, 212, 0.2);
   box-shadow: 0 0 0 2px var(--graphics-accent);
 }
 

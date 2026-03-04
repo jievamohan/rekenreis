@@ -63,7 +63,7 @@ function cancel() {
 <style scoped>
 .profile-create {
   padding: 1rem;
-  border: 2px solid #06c;
+  border: 2px solid var(--app-primary);
   border-radius: 0.5rem;
   background: var(--app-surface);
   margin-top: 0.75rem;
@@ -92,17 +92,17 @@ h3 {
   min-width: 48px;
   min-height: 48px;
   font-size: 1.5rem;
-  border: 2px solid #999;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 .avatar-btn:hover {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 .avatar-btn.active {
-  border-color: #06c;
-  background: #e6f2ff;
+  border-color: var(--app-primary);
+  background: rgba(0, 188, 212, 0.15);
 }
 .actions {
   display: flex;
@@ -116,7 +116,7 @@ h3 {
   cursor: pointer;
 }
 .btn.primary {
-  background: #06c;
+  background: var(--app-primary);
   color: var(--app-text);
   border: none;
 }

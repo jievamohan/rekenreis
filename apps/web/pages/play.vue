@@ -268,21 +268,21 @@ onUnmounted(() => {
   min-height: 44px;
   min-width: 44px;
   font-size: 0.85rem;
-  border: 1px solid #999;
+  border: 1px solid var(--app-muted);
   border-radius: 0.375rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 .skin-btn:hover:not(:disabled) {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 .skin-btn:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 .skin-btn.active {
-  border-color: #06c;
-  background: #e6f2ff;
+  border-color: var(--app-primary);
+  background: rgba(0, 188, 212, 0.15);
 }
 .skin-btn.locked {
   cursor: not-allowed;
@@ -295,8 +295,8 @@ onUnmounted(() => {
   margin-top: 1rem;
   padding: 0.75rem;
   font-size: 0.8rem;
-  color: #666;
-  border-top: 1px solid #eee;
+  color: var(--app-text-muted);
+  border-top: 1px solid var(--app-muted);
 }
 .privacy-note {
   margin: 0 0 0.5rem;
@@ -308,7 +308,7 @@ onUnmounted(() => {
   cursor: pointer;
 }
 .opt-out input:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 .skip-link {
@@ -317,7 +317,7 @@ onUnmounted(() => {
   top: 0.5rem;
   z-index: 100;
   padding: 0.5rem 1rem;
-  background: #06c;
+  background: var(--app-primary);
   color: var(--app-text);
   text-decoration: none;
   border-radius: 0.25rem;
