@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { GameMode } from '~/types/game'
 import type { Level } from '~/types/level'
+import type { InteractionModeId } from '~/types/mode'
 import type { SkinId } from '~/utils/skinResolver'
 import { resolveSkinId } from '~/utils/skinResolver'
 import { resolveInteractionMode } from '~/utils/modeResolver'
@@ -10,18 +11,35 @@ import { useRewards } from '~/composables/useRewards'
 import { useSkin } from '~/composables/useSkin'
 import { useMode } from '~/composables/useMode'
 import { useTelemetry } from '~/composables/useTelemetry'
+import { usePlayPreferences } from '~/composables/usePlayPreferences'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import levelsV1 from '~/content/levels.v1.json'
+
+const MODE_OPTIONS: { id: InteractionModeId; label: string }[] = [
+  { id: 'classic', label: 'Classic' },
+  { id: 'timed-pop', label: 'Timed Pop' },
+  { id: 'build-bridge', label: 'Build Bridge' },
+]
 
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
 const { telemetryOptOut, setOptOut } = useTelemetry()
+const { lastMode, lastSkin, setPreferences } = usePlayPreferences()
+const showModeSelector = ref(false)
+
 const playSource = computed(() =>
   route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite'
 )
+
+const effectiveModeParam = computed(() => {
+  const q = route.query.mode as string | undefined
+  if (q && q !== 'pack') return q
+  return lastMode.value
+})
+
 const interactionMode = computed(() =>
-  resolveInteractionMode(route.query.mode as string | undefined)
+  resolveInteractionMode(effectiveModeParam.value)
 )
 const gameMode = computed(() => useMode(interactionMode.value))
 const levelPack = computed(() =>
@@ -81,11 +99,56 @@ function selectSkin(id: SkinId) {
     router.push({ query: { ...route.query, skin: id } })
   }
 }
+
+function onModeSelectorSelect(mode: InteractionModeId, skin: SkinId) {
+  setPreferences(mode, skin)
+  router.push({
+    query: {
+      ...route.query,
+      mode: mode === 'classic' ? undefined : mode,
+      skin: skin === 'classic' ? undefined : skin,
+    },
+  })
+}
+
+onMounted(() => {
+  const qm = route.query.mode as string | undefined
+  if (!qm || qm === 'pack') {
+    const needsSync = lastMode.value !== 'classic' || lastSkin.value !== 'classic'
+    if (needsSync) {
+      router.replace({
+        query: {
+          ...route.query,
+          mode: lastMode.value === 'classic' ? undefined : lastMode.value,
+          skin: lastSkin.value === 'classic' ? undefined : lastSkin.value,
+        },
+      })
+    }
+  }
+})
 </script>
 
 <template>
   <div class="play-page">
     <a href="#game-main" class="skip-link">Skip to game</a>
+    <nav class="play-nav" role="navigation" aria-label="Game options">
+      <button
+        type="button"
+        class="choose-game-btn"
+        aria-label="Choose game mode"
+        @click="showModeSelector = true"
+      >
+        Choose game
+      </button>
+    </nav>
+    <PlayModeSelector
+      v-model="showModeSelector"
+      :current-mode="interactionMode"
+      :current-skin="effectiveSkinId"
+      :is-unlocked="isUnlocked"
+      :mode-options="MODE_OPTIONS"
+      @select="onModeSelectorSelect"
+    />
     <nav class="skin-picker" role="navigation" aria-label="Skin selector">
       <button
         v-for="id in SKIN_ORDER"
@@ -126,6 +189,24 @@ function selectSkin(id: SkinId) {
 .play-page {
   position: relative;
   padding: 0.5rem;
+}
+.play-nav {
+  margin-bottom: 0.5rem;
+}
+.choose-game-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #06c;
+  border-radius: 0.5rem;
+  background: #e6f2ff;
+  cursor: pointer;
+}
+.choose-game-btn:hover {
+  background: #cce5ff;
+}
+.choose-game-btn:focus-visible {
+  outline: 2px solid #06c;
+  outline-offset: 2px;
 }
 .skin-picker {
   display: flex;

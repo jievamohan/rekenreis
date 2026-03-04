@@ -1,57 +1,54 @@
-# Epic 6 — Game Modes Framework: Backlog
+# Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI: Backlog
 
 ## Epic Summary
 
-Build Game Modes framework so we can have different kinds of games without duplicating core logic. Implement ONE new mode: timed-pop.
+Add a second game mode (build-bridge) using drag-and-drop interaction and a kid-friendly mode selector UI. Mode selector is reachable from /play; chooses Mode + optionally Skin; remembers last selection locally.
 
 ## Scope In
 
-- GameMode (interaction) contract: InteractionModeId, ModeDefinition
-- Mode registry + resolution from route.query.mode
-- /play?mode=classic (default), /play?mode=timed-pop
-- Implement timed-pop: timer, friendly timeout, no fail state
-- usePlayGame.recordTimeout() for timeout handling
-- Extend PlayFeedback for timeout type
-- Query param: source=pack|infinite (with backward compat for mode=pack)
-- Tests: mode resolver, recordTimeout, timer logic (fake timers)
-- Smoke: extend runbook for mode switch
+- Mode selector UI (big buttons with icons) reachable from /play
+- Choose Mode + optionally Skin; remember last selection (localStorage)
+- build-bridge mode: drag/drop, gap/bridge, planks as answers, friendly feedback, no fail state
+- Keyboard alternative: select + place (no drag required)
+- Extend InteractionModeId, modeResolver, useMode for build-bridge
+- Tests: mode selector routing + persistence; build-bridge logic deterministic
+- E2E: smoke covers switching to build-bridge and completing one round
 
 ## Scope Out
 
-- Multiple new modes (Epic 7: build-bridge)
-- Backend persistence/auth
-- Heavy animation or new deps
+- More than 2 modes total (we have classic, timed-pop, build-bridge = 3; no more)
+- New operators
+- Backend auth/accounts
 
 ## Risks
 
-| Area   | Note                                      |
-|--------|-------------------------------------------|
-| perf   | Timer is lightweight; no new heavy deps   |
-| perf   | Mode components are code-split friendly   |
+| Area   | Note                                                |
+|--------|-----------------------------------------------------|
+| perf   | Drag library: prefer native HTML5 drag or minimal dep |
+| a11y   | Keyboard path required; test thoroughly              |
 
 ## NFRs
 
-- a11y: keyboard playable, timer does not block progress
+- a11y: keyboard playable without drag
 - perf: bundle budget unchanged
-- Backward compat: /play?mode=pack still works
+- Backward compat: /play without mode param still works (use stored or classic)
 
 ## Task List
 
-| #    | Task                      | Lanes | Gates  |
-|------|---------------------------|-------|--------|
-| 0035 | mode-contract-types       | W2    | C,D,F  |
-| 0036 | play-query-mode-routing   | W1,W2 | C,D,F  |
-| 0037 | timed-pop-mode            | W1,W2 | C,D,F  |
-| 0038 | mode-timer-tests          | T     | C,D,F  |
-| 0039 | smoke-mode-switch         | I     | C,D,F  |
+| #    | Task                       | Lanes   | Gates  |
+|------|----------------------------|---------|--------|
+| 0040 | build-bridge-mode-contract | W2      | C,D,F  |
+| 0041 | mode-selector-ui           | W1,W2   | C,D,F  |
+| 0042 | mode-build-bridge-component| W1,W2   | C,D,F  |
+| 0043 | mode-selector-tests        | T       | C,D,F  |
+| 0044 | smoke-build-bridge         | I       | C,D,F  |
 
 ## Acceptance Criteria (Epic)
 
-- [ ] GameMode contract exists; mode registry resolves classic/timed-pop
-- [ ] /play?mode=classic and /play?mode=timed-pop work
-- [ ] Timed-pop: timer, timeout shows friendly feedback, continue without fail
-- [ ] Keyboard playable; timer does not block
-- [ ] recordTimeout + PlayFeedback timeout type
-- [ ] Unit tests: mode selection, recordTimeout, timer (fake)
-- [ ] Smoke runbook extended
+- [ ] Mode selector UI exists; big buttons, reachable from /play
+- [ ] Selector persists mode/skin to localStorage
+- [ ] build-bridge mode: drag/drop + keyboard place
+- [ ] Friendly feedback; no fail state; gentle hint on wrong
+- [ ] Unit tests: mode resolver, selector persistence, build-bridge logic
+- [ ] E2E smoke: switch to build-bridge, complete one round
 - [ ] Existing smoke/e2e green

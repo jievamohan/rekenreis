@@ -61,6 +61,8 @@ docker compose up --build
 7. Visit http://localhost:3000/play?mode=pack or /play?source=pack — should show math game with content pack levels
 8. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
 9. Select an answer — feedback appears; click Next — new question loads (classic and timed-pop)
+10. Click "Choose game" — mode selector opens with Classic, Timed Pop, Build Bridge; select Build Bridge — game switches to build-bridge mode
+11. Visit http://localhost:3000/play?mode=build-bridge — bridge visual, planks as answer choices; drag correct plank to slot or click plank then slot — feedback; click Next — score increments, new question loads
 
 ## Install (prerequisites)
 

@@ -1,16 +1,17 @@
-# Epic 6 — Game Modes Framework: Security
+# Epic 7 — Security Design
 
 ## Scope
 
-- Client-side only: mode switching, timer, routing.
-- No auth, no new API, no persistence changes.
+- Mode selector: local UI only; no auth
+- Build-bridge: client-side drag/drop; no new network calls
+- localStorage: stores mode/skin preferences only; no PII
 
-## Considerations
+## Risks
 
-- Query params (mode, source) are user-controlled. Resolver whitelists allowed values; unknown → safe default (classic).
-- No injection risk: mode/source used only for routing and component selection.
-- No sensitive data in URL.
+- **Low**: localStorage could be manipulated; impact limited to UX (user's own preferences)
+- **None**: No new external deps for drag (native HTML5 or VueUse if already present); no auth/crypto changes
 
-## Conclusion
+## Mitigations
 
-No security-impacting changes. Low risk.
+- Validate mode/skin values when reading from localStorage (allowlist)
+- No secrets in localStorage

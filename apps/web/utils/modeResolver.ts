@@ -1,6 +1,6 @@
 import type { InteractionModeId } from '~/types/mode'
 
-const INTERACTION_IDS: InteractionModeId[] = ['classic', 'timed-pop']
+const INTERACTION_IDS: InteractionModeId[] = ['classic', 'timed-pop', 'build-bridge']
 
 /**
  * Resolve interaction mode from query param.
