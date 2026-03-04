@@ -1,35 +1,32 @@
-# Epic 18 — Discovery
+# Discovery: Browser Console Hydration Errors
 
-## Feature Summary
+## Summary
+Vue hydration mismatches on `/play` page cause console warnings. Server-rendered HTML differs from client-rendered HTML because of client-only state and non-deterministic data.
 
-**Global Kid-Friendly Look & Feel v2 (Remove White, Unify Whole App)**
+## Root Causes
 
-Transform the entire app (not just the minigame) into a playful kindergarten-friendly look-and-feel. Make every page feel like a game by removing the "white document" look and unifying layout, typography, navigation, and feedback across the whole app.
+### 1. Random question generation (ModeBuildBridge)
+- `generateAdditionQuestion()` uses `Math.random` (no seed)
+- Server: one random question (e.g. 4+1=?)
+- Client: different random question (e.g. 7+1=?)
+- Mismatch: prompt text, plank numbers
 
-## Current State
+### 2. Skin lock state (play.vue ~214–226)
+- `isUnlocked()` depends on `bestScore` from `usePersistence` / profile
+- Server: `loadProgress()` returns `{ bestScore: 0 }` (no localStorage)
+- Client: reads actual bestScore from localStorage
+- Mismatch: server shows locked, client expects unlocked (or vice versa)
 
-- **app.vue**: Bare wrapper, no layout; just `<NuxtPage />`
-- **Pages**: index, start, play, stickers, summary, settings — each with ad-hoc styles, `font-family: system-ui`, plain white backgrounds, inconsistent nav
-- **play.vue**: Has its own nav (Choose game, skin picker, profile, daily goal), footer; no shared shell
-- **graphics.css**: Epic 17 tokens for minigame only (sky, ground, water, plank, etc.)
-- **SceneLayout.vue**: Minigame scene wrapper; not a global layout
-- **No Tailwind** in web app; pure CSS + scoped styles
+### 3. Telemetry checkbox (play.vue ~242)
+- `telemetryOptOut` from `useTelemetry` / profile
+- Server: `getOptOut()` returns true when `window === undefined`; `createFreshSchema()` uses `telemetryOptOut: true`
+- Client: reads from localStorage (may be false)
+- Mismatch: server checked, client unchecked
 
-## Key Pages to Transform
+### 4. Suspense warning
+- Nuxt/Vue internal; not from our code
 
-| Page | Route | Current Look |
-|------|-------|--------------|
-| Home | / | White, system-ui, nav links |
-| Start | /start | White, JSON health display |
-| Play | /play | White, game area, skin picker, footer |
-| Stickers | /stickers | White, sticker grid |
-| Summary | /summary | White, metrics grid, export buttons |
-| Settings | /settings | White, form fields |
-
-## Constraints
-
-- No backend changes
-- No new game modes or logic
-- Use simple patterns/gradients/icons (no high-fidelity art packs)
-- Contrast + reduced-motion compliance must be preserved
-- Minigame styling must integrate into new shell (no "styled island")
+## Affected Files
+- `apps/web/pages/play.vue`
+- `apps/web/components/modes/ModeBuildBridge.vue`
+- Composables: `usePlayGame`, `useRewards`, `useTelemetry`, `usePersistence`, `useProfile`
