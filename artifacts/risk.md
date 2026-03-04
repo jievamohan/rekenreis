@@ -1,5 +1,9 @@
-# Hardening Epic — Risk
+# Task 0088 — Risk
 
-- **config**: Policy-as-code, gitleaks, semgrep config changes (low)
-- **ci**: New CI jobs (Trivy, Hadolint, ZAP) may increase build time (low)
-- **auth**: Not in scope; security tests only validate defaults (no auth implementation)
+## Risk Areas
+
+None. Verification-only task; no code changes beyond planning artifacts.
+
+## Mitigations
+
+N/A

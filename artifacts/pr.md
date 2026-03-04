@@ -1,24 +1,23 @@
-# CI Speed: Docker Build Cache + Optimalisaties
+# Epic 16 — Release Prep (Verification)
 
-Versnel GitHub Actions door Docker image cache en andere optimalisaties.
+Prepare for release-quality UX and stability. Epic 16 requirements match Epic 15; this PR verifies all criteria and fixes any regressions.
 
 **Scope:**
-- Docker Buildx + GHA cache voor zap-baseline (web + api images)
-- Pip cache voor semgrep in gate-d
-- Documentatie cache-strategie
+- Verify tap targets (44×44px), contrast, reduced-motion
+- Verify friendly microcopy
+- Verify bug-bash checklist + scripts
+- Verify perf budget
+- Fix any regressions
 
 **Non-goals:**
-- Registry push
-- CI job restructuring
+- New modes/skins
 
 ## Tasks
 
-- [x] 0085-docker-buildx-cache-zap
-- [x] 0086-pip-cache-gate-d
-- [x] 0087-docs-runbooks-ci-cache
+- [ ] 0088-epic16-release-prep-verification
 
 ## PR Metadata
 - Base: main
-- Branch: feat/ci-speed-docker-cache
-- PR: #34
-- URL: https://github.com/jievamohan/rekenreis/pull/34
+- Branch: feat/epic16-release-prep-verification
+- PR: #35
+- URL: https://github.com/jievamohan/rekenreis/pull/35

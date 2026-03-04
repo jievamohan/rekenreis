@@ -1,35 +1,21 @@
-# Epic 13 — Share/Print Progress Summary: QA
+# Epic 16 — Release Prep: QA
 
-## Test Strategy
+## Strategy
 
-### Unit Tests (T lane)
+Verification audit: confirm Epic 15 deliverables satisfy Epic 16 requirements.
 
-1. **useRoundOutcome**
-   - recordRoundOutcome increments totalRounds, totalCorrect/totalWrong/totalTimeout
-   - modeCounts updated per mode
-   - Handles undefined profile gracefully
+## Tests
 
-2. **useProgressSummary**
-   - roundsToday from dailyGoal when date matches
-   - roundsTotal from totalRounds (0 when undefined)
-   - accuracy = correct / (correct + wrong + timeout) * 100; 0 when no rounds
-   - favoriteMode: highest modeCount, else lastMode fallback
-   - copyToClipboard: returns success; payload has no id/name
-   - downloadJson: triggers download (mock or spy)
-
-3. **Summary aggregation correctness**
-   - Given mock profile with known totals, summary values match
-   - Edge: all zeros, all timeouts, single mode
-
-### Integration / E2E (optional)
-
-- Play a few rounds → open /summary → values reflect play
-- Copy to clipboard → paste → JSON valid, no identifiers
+- **Unit**: N/A (verification only)
+- **E2E**: Smoke already covers play flows
+- **Manual**: Bug bash checklist (docs/bug-bash-checklist.md)
+- **Gates**: C, D, F pass
 
 ## Acceptance Criteria
 
-- Unit tests for useRoundOutcome and useProgressSummary
-- Summary aggregation correctness tests pass
-- Typecheck passes (Gate C)
-- No new security findings (Gate D)
-- Bundle budget passes (Gate F)
+1. Tap targets: 44×44px minimum on all interactive elements
+2. Contrast: 4.5:1 (normal), 3:1 (large)
+3. Reduced motion: prefers-reduced-motion honored
+4. Copy: friendly microcopy across key pages
+5. Bug bash: checklist + scripts exist
+6. Perf: bundle within budget

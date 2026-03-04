@@ -1,33 +1,31 @@
-# CI Speed Optimization: Backlog
+# Epic 16 — Release Prep: Backlog
+
+## Epic Summary
+
+Epic 16 has identical requirements to Epic 15. All Epic 15 tasks (0080–0084) are done. This backlog creates a verification task to formally close Epic 16.
 
 ## scope_in
 
-- **Docker build cache (zap-baseline)**
-  - setup-buildx-action
-  - Build web + api met build-push-action (load: true, cache-from/to: type=gha)
-  - docker compose up --no-build
-- **Pip cache (gate-d)**
-  - Cache pip packages voor semgrep
-- **Documentatie**
-  - docs/runbooks: cache-strategie bijwerken
+- Verify tap target sizing (44×44px) on key interactive elements
+- Verify color/contrast (4.5:1, 3:1) and prefers-reduced-motion
+- Verify friendly microcopy across index, start, play, stickers, summary, settings
+- Verify bug-bash checklist and scripts exist
+- Verify bundle within perf budget
+- Fix any regressions found
 
 ## scope_out
 
-- CI job restructuring
-- ZAP job verwijderen
-- Registry push (images blijven lokaal)
+- Full re-implementation
+- New modes/skins
 
 ## Risks
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| ci | Cache key mismatch → stale build | Key op hash(Dockerfile, lockfiles) |
-| ci | GHA cache size limit | mode=max; scope per service |
+| - | None | Verification only; no high-risk changes |
 
 ## Task List (max 5)
 
 | ID | Title | Lane | Description |
-|----|-------|------|--------------|
-| 0085 | docker-buildx-cache-zap | I | Buildx + GHA cache voor web/api in zap-baseline |
-| 0086 | pip-cache-gate-d | I | Pip cache voor semgrep in gate-d |
-| 0087 | docs-runbooks-ci-cache | I | Documenteer cache-strategie in runbooks |
+|----|-------|------|-------------|
+| 0088 | epic16-release-prep-verification | T, W1 | Verify Epic 16 criteria; fix regressions; gates C, D, F |

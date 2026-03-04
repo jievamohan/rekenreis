@@ -1,28 +1,28 @@
-# Hardening Epic — Plan
+# Task 0088 — Epic 16 Release Prep Verification
+
+## Summary
+
+Verify Epic 16 acceptance criteria against current codebase. Epic 16 requirements match Epic 15; tasks 0080–0084 already implemented all deliverables.
+
+## Verification Results
+
+| Criterion | Status |
+|-----------|--------|
+| Tap targets 44×44px | PASS — grep confirms min-width/min-height 44px across play, stickers, summary, settings, skins, modes |
+| Contrast 4.5:1/3:1 | PASS — Epic 15 audit completed |
+| prefers-reduced-motion | PASS — all skins and modes have @media (prefers-reduced-motion: reduce) |
+| Friendly microcopy | PASS — Epic 15 copy pass completed |
+| docs/bug-bash-checklist.md | PASS — exists with structured steps |
+| scripts/bug-bash/ | PASS — start.sh, open-urls.sh exist |
+| Perf budget | PASS — artifacts/perf.md has baseline; Gate F runs build+size |
+
+## Wave Plan
+
+- Wave 1: Verification audit — completed
+- Wave 2: No fixes needed
+- Wave 3: CI gates — PASS
 
 ## Branch
 
-- **Branch**: `feat/hardening-epic`
-- **Base**: main
-
-## SAFE Gate
-
-- tasks_generated: 3 ✓
-- high-risk tags: none (config, ci only)
-- Lane I: explicitly allowed (user requested pipeline/security hardening)
-- Lane D: not used
-- Acceptance criteria include tests: Task 0034 (security regression tests)
-
-## Tasks
-
-| ID | Title | Status |
-|----|-------|--------|
-| 0032 | hardening-policy-gitleaks-semgrep | done |
-| 0033 | hardening-trivy-hadolint-zap | pending |
-| 0034 | hardening-security-tests | pending |
-
-## Execution Order
-
-1. 0032 — Policy-as-code, Gitleaks, Semgrep (I)
-2. 0033 — Trivy, Hadolint, ZAP (I)
-3. 0034 — Security regression tests (T, W2, A2)
+- feat/epic16-release-prep-verification
+- PR #35

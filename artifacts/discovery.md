@@ -1,53 +1,33 @@
-# CI Speed Optimization: Discovery
+# Epic 16 — Release Prep: Discovery
 
 ## Feature Summary
 
-Versnel GitHub Actions door Docker image cache en andere optimalisaties. Docker images worden nu elke run opnieuw gebouwd in de zap-baseline job; dat moet vanuit cache kunnen.
+Epic 16 has identical requirements to Epic 15 (Release Prep). Prepare for release-quality UX and stability: UX pass (tap targets, contrast, reduced motion), copy pass, bug bash checklist, and performance verification.
 
 ## Current State
 
-### Jobs
-| Job | Duur (schatting) | Wat doet |
-|-----|------------------|----------|
-| gate-c-typecheck | ~1–2 min | pnpm + composer (cached), typecheck, phpstan |
-| gate-d-security | ~2–3 min | policy, gitleaks, semgrep, pnpm/composer (cached), hadolint, trivy |
-| gate-f-build | ~1–2 min | pnpm (cached), build, size |
-| zap-baseline | ~4–6 min | **docker compose up** (builds web + api from scratch), health wait, ZAP, teardown |
-| lint-test | ~1–2 min | pnpm (cached), composer (cached), lint, test |
+Epic 15 was completed and merged (PR #33). Tasks 0080–0084 implemented:
+- **0080** ux-tap-targets: 44×44px minimum tap targets (done)
+- **0081** ux-contrast-reduced-motion: contrast 4.5:1, prefers-reduced-motion (done)
+- **0082** copy-pass: friendly microcopy (done)
+- **0083** bug-bash-checklist: docs/bug-bash-checklist.md + scripts (done)
+- **0084** perf-budget-verify: bundle within budget (done)
 
-### Docker Build (zap-baseline)
-- `docker compose up -d` bouwt web en api images **zonder cache**
-- Elke run: volledige rebuild van node:22-alpine (pnpm install) en php:8.4-cli-alpine (composer install)
-- Geen BuildKit cache, geen layer reuse
+## Overlap Analysis
 
-### Bestaande caches
-- pnpm: setup-node cache (gate-c, gate-d, gate-f, lint-test)
-- composer: actions/cache (gate-c, gate-d, lint-test)
+Epic 16 requirements map 1:1 to Epic 15. All acceptance criteria were satisfied in Epic 15.
 
-## Probleem
+## Recommendation
 
-1. **Docker images**: zap-baseline bouwt web + api elke run opnieuw (~2–4 min extra)
-2. **Geen Docker layer cache**: pnpm install en composer install in Dockerfile draaien elke keer
-3. **Mogelijke winst**: pip/semgrep cache in gate-d; hadolint/trivy image pull (eerste run)
+Create a single **verification task** (0088) that:
+1. Re-validates all Epic 16 acceptance criteria
+2. Runs gates C, D, F
+3. Fixes any regressions found
+4. Documents verification in artifacts
 
-## Oplossing
-
-### 1. Docker Buildx + GHA cache (zap-baseline)
-- `docker/setup-buildx-action@v3`
-- Build web en api met `docker/build-push-action` (load: true, cache-from/to: type=gha)
-- `docker compose up --no-build` i.p.v. `up --build`
-- Cache key: hash van Dockerfile + package.json/composer.lock
-
-### 2. Pip cache (gate-d)
-- Cache pip packages (semgrep): `~/.cache/pip` of `actions/cache` met pip
-- Of: `pip install --cache-dir` + actions/cache
-
-### 3. Overige
-- Hadolint/trivy: images worden gepulled; eerste run traag, daarna cached door Docker
-- fetch-depth: 0 alleen voor gate-d (gitleaks); andere jobs kunnen default gebruiken
+This ensures Epic 16 is formally closed with a clean audit trail.
 
 ## Non-Goals
 
-- CI job merging (parallel blijft sneller)
-- ZAP job verwijderen
-- Build matrix wijzigen
+- New modes/skins
+- Full re-implementation

@@ -1,49 +1,28 @@
-# Epic 13 — Share/Print Progress Summary: Solution
+# Epic 16 — Release Prep: Solution
 
-## 1. Profile Schema Extension
+## Approach
 
-Add optional aggregates to `ProfileProgress`:
+Single task: **0088-epic16-release-prep-verification**
 
-```ts
-progress: {
-  bestScore: number
-  dailyGoal?: { date: string; roundsPlayed: number }
-  totalRounds?: number
-  totalCorrect?: number
-  totalWrong?: number
-  totalTimeout?: number
-  modeCounts?: Partial<Record<InteractionModeId, number>>
-}
-```
+1. Verify Epic 16 acceptance criteria against current codebase
+2. Run gates C, D, F
+3. Fix any regressions found
 
-- Migration: existing profiles get undefined; treat as 0 in computations
-- `isValidV1`: allow new optional fields; do not require them
+## Task
 
-## 2. useRoundOutcome Composable
+| ID | Title | Lane | Description |
+|----|-------|------|-------------|
+| 0088 | epic16-release-prep-verification | T + W1 | Verify tap targets, contrast, reduced-motion, copy, bug-bash checklist, perf budget; fix regressions |
 
-- `useRoundOutcome(profile?)`
-- `recordRoundOutcome(outcome: 'correct' | 'wrong' | 'timeout', mode: InteractionModeId)`
-- Reads active profile, merges updates into progress aggregates, calls updateProfile
-- Called from play.vue in onNext, after feedback is available
+## Wave Plan
 
-## 3. useProgressSummary Composable
+- Wave 0: N/A
+- Wave 1: Verification (audit + gate runs)
+- Wave 2: Fixes if found
+- Wave 3: Re-run gates
 
-- `useProgressSummary(profile?)`
-- Computed: `roundsToday`, `roundsTotal`, `accuracy` (0–100), `favoriteMode`
-- `copyToClipboard()`: build sanitized JSON/text, `navigator.clipboard.writeText()`
-- `downloadJson()`: create Blob, trigger download via temporary anchor
-- Export format: `{ roundsToday, roundsTotal, accuracy, favoriteMode, exportedAt }` — no id, no name
+## Success Criteria
 
-## 4. Summary Page
-
-- Route: `/summary`
-- Component: `pages/summary.vue`
-- Uses useProgressSummary; displays metrics in card layout
-- Buttons: "Copy summary", "Download JSON"
-- Print-friendly CSS (optional media query)
-
-## 5. Play Integration
-
-- In play.vue onNext: after `dailyGoal.incrementRound()`, call `recordRoundOutcome(outcome, mode)`
-- Derive outcome from `game.feedback.value`: correct → 'correct', !correct → 'wrong', type 'timeout' → 'timeout'
-- Pass `interactionMode` (InteractionModeId) for mode tracking
+- All Epic 16 acceptance criteria verified
+- Gates C, D, F pass
+- No regressions
