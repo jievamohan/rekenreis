@@ -5,6 +5,7 @@
 > Pipeline: plan -> tasks -> execute -> finalize -> wait for manual merge -> next epic.
 
 ## Epic 2 — Skin System + 1 Skin
+- [x]
 /feature --ci --max-tasks=5
 Build Epic 2: Minigame Skin System (rendering layer) + implement ONE skin (Monster Feed).
 Requirements:
@@ -16,6 +17,7 @@ Requirements:
 - keep existing smoke/e2e green (update lightly if needed)
 
 ## Epic 3 — More Skins + Rewards
+- [x]
 /feature --ci --max-tasks=5
 Build Epic 3: Add 2 additional skins + simple rewards.
 Requirements:
@@ -25,6 +27,7 @@ Requirements:
 - tests for unlock logic and skin switching
 
 ## Epic 4 — Persistence (Local) + Optional API Telemetry
+- [x]
 /feature --ci --max-tasks=5
 Build Epic 4: Persistence + optional telemetry.
 Requirements:
@@ -34,6 +37,7 @@ Requirements:
 - tests for persistence schema/versioning
 
 ## Epic 5 — Polish / Hardening
+- [ ]
 /feature --ci --max-tasks=5
 Build Epic 5: Polish, accessibility, reliability, performance hardening.
 Requirements:
