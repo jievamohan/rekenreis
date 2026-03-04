@@ -1,0 +1,30 @@
+# Dependencies
+**/node_modules/
+**/.pnpm-store/
+**/vendor/
+
+# Build artifacts
+**/.nuxt/
+**/.output/
+**/dist/
+**/build/
+
+# Caches
+**/.cache/
+**/.eslintcache
+**/.phpunit.result.cache
+
+# Laravel cache/logs
+**/storage/framework/cache/**
+**/storage/framework/sessions/**
+**/storage/framework/views/**
+**/storage/logs/**
+
+# Secrets / env
+**/.env
+**/.env.*
+!.env.example
+
+# IDE
+**/.DS_Store
+**/.idea/
