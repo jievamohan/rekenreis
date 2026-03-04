@@ -28,13 +28,15 @@ const skinProps = {
 function startTimer() {
   stopTimer()
   elapsed.value = 0
-  timerId.value = setInterval(() => {
-    elapsed.value += 1
-    if (elapsed.value >= timerSeconds) {
-      stopTimer()
-      props.recordTimeout()
-    }
-  }, 1000)
+  if (import.meta.client) {
+    timerId.value = setInterval(() => {
+      elapsed.value += 1
+      if (elapsed.value >= timerSeconds) {
+        stopTimer()
+        props.recordTimeout()
+      }
+    }, 1000)
+  }
 }
 
 function stopTimer() {

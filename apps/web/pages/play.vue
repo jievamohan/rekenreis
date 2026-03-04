@@ -13,7 +13,16 @@ import { useMode } from '~/composables/useMode'
 import { useTelemetry } from '~/composables/useTelemetry'
 import { usePlayPreferences } from '~/composables/usePlayPreferences'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
-import levelsV1 from '~/content/levels.v1.json'
+import { applyPacing } from '~/utils/pacingEngine'
+import levelsClassic from '~/content/levels.classic.v1.json'
+import levelsTimedPop from '~/content/levels.timed-pop.v1.json'
+import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
+
+const PACK_BY_MODE: Record<InteractionModeId, Level[]> = {
+  classic: applyPacing(levelsClassic as Level[], 42),
+  'timed-pop': applyPacing(levelsTimedPop as Level[], 42),
+  'build-bridge': applyPacing(levelsBuildBridge as Level[], 42),
+}
 
 const MODE_OPTIONS: { id: InteractionModeId; label: string }[] = [
   { id: 'classic', label: 'Classic' },
@@ -43,13 +52,13 @@ const interactionMode = computed(() =>
 )
 const gameMode = computed(() => useMode(interactionMode.value))
 const levelPack = computed(() =>
-  playSource.value === 'pack' ? (levelsV1 as Level[]) : []
+  playSource.value === 'pack' ? PACK_BY_MODE[interactionMode.value] : []
 )
 
 const mode = ref<GameMode>('upTo10')
 const game = usePlayGame(mode, {
-  source: playSource.value,
-  levelPack: levelPack.value,
+  source: playSource,
+  levelPack,
 })
 
 const sessionStatsSent = ref(false)

@@ -1,25 +1,19 @@
-# Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI
+# Epic 8 — Content Packs per Mode + Pacing Rules
 
-Build Epic 7: Add a second game mode using drag & drop interaction and a kid-friendly mode selector UI.
+Introduce content packs per game mode (classic, timed-pop, build-bridge) with pacing rules to keep sessions varied and frustration-free.
 
 **Requirements:**
-- Implement mode selector UI (big buttons with icons) reachable from /play
-- Choose Mode + optionally Skin; remember last selection (local)
-- Add build-bridge mode: drag correct plank into gap; friendly feedback; no fail state
-- Accessibility: keyboard alternative (select + place)
-- Tests: mode selector routing + persistence; build-bridge logic deterministic
-- E2E: smoke covers switching to build-bridge and completing one round
+- Extend level schema: modeId applicability, pacing tags (easy/normal/challenge)
+- Content packs: levels.classic.v1.json, levels.timed-pop.v1.json, levels.build-bridge.v1.json
+- Pacing engine: mix easy/normal/challenge; never cluster hard back-to-back
+- Determinism: same seed => same sequence per mode
+- Tests: pacing invariants, pack schema validation
+- E2E: verify pack mode works for all modes
 
 ## Tasks
 
-- [ ] 0040-build-bridge-mode-contract
-- [ ] 0041-mode-selector-ui
-- [ ] 0042-mode-build-bridge-component
-- [ ] 0043-mode-selector-tests
-- [ ] 0044-smoke-build-bridge
-
-## PR Metadata
-- Base: main
-- Branch: feat/epic7-drag-drop-mode-selector
-- PR: #23
-- URL: https://github.com/jievamohan/rekenreis/pull/23
+- [ ] 0045-level-schema-mode-pacing
+- [ ] 0046-content-packs-per-mode
+- [ ] 0047-pacing-engine
+- [ ] 0048-play-integration-packs
+- [ ] 0049-tests-pacing-e2e

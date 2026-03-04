@@ -1,4 +1,7 @@
-import type { Level } from '~/types/level'
+import type { Level, PacingTag } from '~/types/level'
+
+const VALID_MODE_IDS = ['classic', 'timed-pop', 'build-bridge'] as const
+const VALID_PACING_TAGS: PacingTag[] = ['easy', 'normal', 'challenge']
 
 export class LevelValidationError extends Error {
   constructor(message: string) {
@@ -45,6 +48,19 @@ export function validateLevel(value: unknown): Level {
     )
   }
 
+  if (obj.modeIds !== undefined) {
+    assert(Array.isArray(obj.modeIds), 'modeIds must be an array')
+    for (const id of obj.modeIds as unknown[]) {
+      assert(typeof id === 'string', 'modeIds elements must be strings')
+      assert(VALID_MODE_IDS.includes(id as (typeof VALID_MODE_IDS)[number]), `modeIds must be one of: ${VALID_MODE_IDS.join(', ')}`)
+    }
+  }
+
+  if (obj.pacingTag !== undefined) {
+    assert(typeof obj.pacingTag === 'string', 'pacingTag must be a string')
+    assert(VALID_PACING_TAGS.includes(obj.pacingTag as PacingTag), `pacingTag must be one of: ${VALID_PACING_TAGS.join(', ')}`)
+  }
+
   return {
     operator: 'addition',
     operandMin: obj.operandMin as number,
@@ -53,6 +69,8 @@ export function validateLevel(value: unknown): Level {
     hintMode: obj.hintMode as string,
     difficultyTag: obj.difficultyTag as string,
     masteryRules: obj.masteryRules as Record<string, unknown> | undefined,
+    modeIds: obj.modeIds as Level['modeIds'],
+    pacingTag: obj.pacingTag as PacingTag | undefined,
   }
 }
 

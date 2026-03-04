@@ -1,25 +1,18 @@
-# Epic 7 — QA
+# Epic 8 — Content Packs per Mode + Pacing Rules: QA
 
-## Test Strategy
+## Unit Tests
 
-### Unit
+- **pacingEngine**: No two consecutive challenge levels; same seed => same sequence; empty/single level edge cases
+- **levelValidator**: Accept modeIds (array of valid InteractionModeId), pacingTag (easy/normal/challenge); reject invalid
+- **pack schema**: Validate each JSON file parses and validates as Level[]
 
-- `modeResolver`: 'build-bridge' resolves correctly; unknown falls back to classic
-- Mode selector: select mode → localStorage updated; on load, stored mode applied
-- ModeBuildBridge: given question with choices, placing correct plank calls onAnswer(correct); wrong calls onAnswer(wrong)
-- Deterministic: use fake timers / jsdom events for build-bridge logic
+## E2E
 
-### Integration
+- Smoke: pack mode works for classic, timed-pop, build-bridge
+- Switch mode + play one round each
+- No regressions to infinite mode
 
-- /play?mode=build-bridge renders ModeBuildBridge
-- Mode selector opens, selection updates route and localStorage
+## Manual
 
-### E2E
-
-- Smoke: visit /play, open mode selector, select build-bridge, complete one round (place correct answer), verify score increments
-- Existing smoke: classic and timed-pop still pass
-
-### Accessibility
-
-- Keyboard: build-bridge playable without mouse (select plank, place via Enter/Space)
-- Focus visible; no traps
+- Verify sessions feel varied
+- Spot-check: no obvious hard clusters
