@@ -1,0 +1,14 @@
+services:
+  gh:
+    image: ghcr.io/cli/cli:latest
+    working_dir: /repo
+    volumes:
+      - ./:/repo
+      # Optional: share host gh auth into container (recommended)
+      - ${HOME}/.config/gh:/root/.config/gh:ro
+    environment:
+      - GH_HOST=github.com
+
+networks:
+  default:
+    external: true  
