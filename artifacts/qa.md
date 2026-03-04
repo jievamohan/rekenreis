@@ -1,18 +1,20 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules: QA
+# Epic 9 — Adaptive Assistance: QA
 
-## Unit Tests
+## Acceptance Criteria (summary)
 
-- **pacingEngine**: No two consecutive challenge levels; same seed => same sequence; empty/single level edge cases
-- **levelValidator**: Accept modeIds (array of valid InteractionModeId), pacingTag (easy/normal/challenge); reject invalid
-- **pack schema**: Validate each JSON file parses and validates as Level[]
+- After 2 wrong on same question: hint (dots or number line) is revealed
+- Hint visuals render correctly and are accessible
+- Pacing intervention: 3+ wrong in 5 → next 2 rounds use easier levels (pack mode)
+- No infinite loops; no hard fail state
+- Feedback stays positive
+- Typecheck, security scan, bundle budget pass
 
-## E2E
+## Test Plan
 
-- Smoke: pack mode works for classic, timed-pop, build-bridge
-- Switch mode + play one round each
-- No regressions to infinite mode
-
-## Manual
-
-- Verify sessions feel varied
-- Spot-check: no obvious hard clusters
+| Area | Test Type | Coverage |
+|------|-----------|----------|
+| useAssistance | Unit | wrongCount increment, hint at 2, reset on next |
+| Hint components | Unit | render with a,b, correctAnswer |
+| Pacing intervention | Unit | mock pack; verify easier level selection |
+| E2E | Smoke | play 1 wrong, 2 wrong, see hint; continue |
+| Determinism | Unit | same inputs → same hint state |

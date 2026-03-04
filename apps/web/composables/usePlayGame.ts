@@ -4,6 +4,7 @@ import type { Level } from '../types/level'
 import { generateAdditionQuestion } from '../utils/questionGenerator'
 import { generateQuestionFromLevel } from '../utils/levelGenerator'
 import { createSeededRng } from '../utils/seedableRng'
+import { effectivePacingTag } from '../utils/pacingEngine'
 
 /** Normal feedback: correct/incorrect with selected answer */
 export interface PlayFeedbackCorrect {
@@ -22,6 +23,8 @@ export type PlayFeedback = PlayFeedbackCorrect | PlayFeedbackTimeout
 export interface UsePlayGameOptions {
   source?: 'infinite' | 'pack' | Ref<'infinite' | 'pack'>
   levelPack?: Level[] | Ref<Level[]>
+  /** When > 0, prefer next easy level from pack (pack mode only). Ref is decremented when easy level is served. */
+  strugglingRoundsLeft?: Ref<number>
 }
 
 export function usePlayGame(
@@ -30,6 +33,7 @@ export function usePlayGame(
 ) {
   const sourceRef = isRef(options.source) ? options.source : ref(options.source ?? 'infinite')
   const levelPackRef = isRef(options.levelPack) ? options.levelPack : ref(options.levelPack ?? [])
+  const strugglingRef = options.strugglingRoundsLeft ?? ref(0)
   const modeRef = isRef(mode) ? mode : ref(mode)
   const question = ref<AdditionQuestion | null>(null)
   const score = ref(0)
@@ -45,9 +49,24 @@ export function usePlayGame(
     const source = sourceRef.value
     const levelPack = levelPackRef.value
     if (source === 'pack' && levelPack.length > 0) {
-      const level = levelPack[packIndex.value % levelPack.length]
+      const preferEasy = strugglingRef.value > 0
+      let level = levelPack[packIndex.value % levelPack.length]
+      if (preferEasy && effectivePacingTag(level) !== 'easy') {
+        for (let i = 1; i < levelPack.length; i++) {
+          const idx = (packIndex.value + i) % levelPack.length
+          const l = levelPack[idx]
+          if (effectivePacingTag(l) === 'easy') {
+            level = l
+            packIndex.value += i
+            break
+          }
+        }
+      }
       question.value = generateQuestionFromLevel(level, packRng)
       packIndex.value += 1
+      if (preferEasy && effectivePacingTag(level) === 'easy') {
+        strugglingRef.value = Math.max(0, strugglingRef.value - 1)
+      }
     } else {
       question.value = generateAdditionQuestion(modeRef.value)
     }

@@ -1,45 +1,44 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules: Discovery
+# Epic 9 — Adaptive Assistance: Discovery
 
 ## Feature Summary
 
-Introduce content packs per game mode (classic, timed-pop, build-bridge) with pacing rules to keep sessions varied and frustration-free for young learners (kleuters).
+Add adaptive assistance so kids don't get stuck or spam-guess. Confidence gate reveals hints after wrong answers; gentle pacing interventions ease difficulty when the child struggles.
 
 ## Current State
 
-- **Level schema**: `Level` in types/level.ts has operator, operandMin/Max, choiceCount, hintMode, difficultyTag; no mode applicability
-- **Content**: Single `levels.v1.json` used for all modes when `source=pack`
-- **play.vue**: Uses same level pack regardless of interaction mode; level pack chosen by `playSource` (pack vs infinite)
-- **usePlayGame**: Accepts levelPack; cycles through by index; fixed seed 42 for packRng
-- **Pacing**: None; levels presented in pack order
-- **Modes**: classic, timed-pop, build-bridge (InteractionModeId)
+- **Feedback**: usePlayGame tracks correct/incorrect/timeout; skins display "Correct!" or "Not quite. The answer was X."
+- **Wrong-answer tracking**: None; no count of consecutive wrong answers
+- **Hints**: Level has `hintMode` (string) but it's not used for adaptive reveal; no dot/number-line visuals
+- **Choice count**: Fixed per question (typically 4); no reduction for struggling
+- **Pacing**: Epic 8 added pacing engine for pack ordering; no runtime difficulty switching
+- **Persistence**: localStorage for preferences (mode, skin, telemetry opt-out); no assistance state
 
 ## Requirements (from Epic)
 
-1. Extend level schema:
-   - `modeId` applicability (classic | timed-pop | build-bridge or array thereof)
-   - Pacing tags: easy/normal/challenge (rename or align with existing difficultyTag)
-   - Optional hint defaults
-2. Content packs per mode:
-   - `levels.classic.v1.json`
-   - `levels.timed-pop.v1.json`
-   - `levels.build-bridge.v1.json`
-3. Pacing engine:
-   - Mix easy/normal/challenge in a predictable pattern
-   - Never cluster hard items back-to-back for kleuters
-4. Determinism: same seed => same sequence per mode
-5. Tests: pacing invariants, pack schema validation
-6. E2E: verify pack mode works for all modes without regressions
+1. **Confidence gate + anti-guessing**:
+   - After 2 wrong answers in a row: reveal hint (dot visuals / number line)
+   - After repeated wrong: optionally reduce choice count temporarily
+2. **Hint modes**:
+   - Dots visual (e.g. a + b shown as dots)
+   - Number line visual
+   - Grouping visual
+3. **Gentle pacing**:
+   - If child struggles, auto-switch to easier tag for a few rounds
+4. **Persistence**: Assistance state locally (per child profile if available; Epic 10 adds profiles)
+5. **Tests**: Deterministic triggers, no infinite loops, no hard fail states
+6. **UX**: Feedback stays positive; no negative scoring
 
 ## Non-goals
 
-- Adaptive learning (later epic)
-- Backend content management
+- Full personalization ML
+- Parental dashboards
 
 ## Key Files
 
-- `apps/web/types/level.ts` — extend Level with modeIds?, pacingTag
-- `apps/web/utils/levelValidator.ts` — validate new fields
-- `apps/web/content/` — add levels.classic.v1.json, levels.timed-pop.v1.json, levels.build-bridge.v1.json
-- `apps/web/utils/pacingEngine.ts` — new: pacing logic
-- `apps/web/composables/usePlayGame.ts` — use pacing engine when source=pack
-- `apps/web/pages/play.vue` — load pack by mode
+- `apps/web/composables/usePlayGame.ts` — wrong-answer count, hint-reveal state, choice-reduction
+- `apps/web/composables/useAssistance.ts` — new: assistance rules, state machine
+- `apps/web/components/hints/` — new: HintDots, HintNumberLine, HintGrouping
+- `apps/web/types/skin.ts` — extend SkinRoundProps with `hintToShow?: ...`, `reducedChoices?: number[]`
+- `apps/web/pages/play.vue` — wire assistance into game
+- `apps/web/utils/levelGenerator.ts` — optionally accept reduced choice count
+- `apps/web/content/*.json` — levels already have hintMode; align with new hint types

@@ -1,11 +1,13 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules: Security
+# Epic 9 — Adaptive Assistance: Security Design
 
 ## Risk Assessment
 
-- **Low risk**: No auth, no user input to levels, no network. Content packs are static JSON.
-- Schema validation prevents malformed data from causing runtime errors.
+- **Low**: No auth, payments, or sensitive data
+- **Persistence**: localStorage only; no PII
+- **Input**: Assistance state derived from in-game feedback; no user input to assistance logic
 
 ## Mitigations
 
-- Validate all packed levels on load (levelValidator)
-- No user-controlled level content in this epic
+- Persist only numeric state (wrongStreak, lastReset); no identifiers
+- Hint content comes from question data (already validated)
+- No external API calls in assistance flow

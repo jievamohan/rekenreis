@@ -7,6 +7,7 @@ import { resolveSkinId } from '~/utils/skinResolver'
 import { resolveInteractionMode } from '~/utils/modeResolver'
 import { useApi } from '~/composables/useApi'
 import { usePlayGame } from '~/composables/usePlayGame'
+import { useAssistance } from '~/composables/useAssistance'
 import { useRewards } from '~/composables/useRewards'
 import { useSkin } from '~/composables/useSkin'
 import { useMode } from '~/composables/useMode'
@@ -56,10 +57,13 @@ const levelPack = computed(() =>
 )
 
 const mode = ref<GameMode>('upTo10')
+const strugglingRoundsLeft = ref(0)
 const game = usePlayGame(mode, {
   source: playSource,
   levelPack,
+  strugglingRoundsLeft,
 })
+const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
 const sessionStatsSent = ref(false)
 watch(
@@ -95,6 +99,14 @@ const skinProps = computed(() => ({
   onModeChange: (m: GameMode) => {
     mode.value = m
   },
+  hintToShow: assistance.hintToShow.value,
+  hintQuestion: game.question.value
+    ? {
+        a: game.question.value!.a,
+        b: game.question.value!.b,
+        correctAnswer: game.question.value!.correctAnswer,
+      }
+    : null,
 }))
 
 const modeProps = computed(() => ({
