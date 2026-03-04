@@ -1,5 +1,7 @@
 .pnpm-store
 
-# CI-generated ZAP reports
+# CI-generated ZAP reports and artifact lifecycle
+artifacts/current/
+artifacts/archive/
 artifacts/zap/
 artifacts/*.md

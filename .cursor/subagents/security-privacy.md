@@ -5,7 +5,7 @@ description: "Produces security & privacy design notes (threat-model light) and 
 
 PLANNING ONLY. Do not modify code.
 
-Output to artifacts/security-design.md:
+Output to artifacts/current/security-design.md:
 - Trust boundaries + data flow risks
 - Threat model light (assets, attackers, entry points)
 - Auth/permissions implications (even if 'none', state explicitly)

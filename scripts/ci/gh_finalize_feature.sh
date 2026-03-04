@@ -26,4 +26,9 @@ git push --force-with-lease origin "$BRANCH"
 
 # Run CI watch (host mode)
 scripts/ci/gh_watch.sh host "$PR_NUM"
+
+# Archive artifacts (best-effort, does not block)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$SCRIPT_DIR/gh_archive_artifacts.sh" || true
+
 echo "Finalize complete: CI green for PR #$PR_NUM."

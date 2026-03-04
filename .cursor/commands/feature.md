@@ -38,16 +38,16 @@ Protocol:
 
 1) Discovery (no code changes)
 Dispatch planning subagents and produce:
-- artifacts/discovery.md
-- artifacts/ux.md
-- artifacts/architecture.md
-- artifacts/solution.md
-- artifacts/qa.md
-- artifacts/security-design.md
+- artifacts/current/discovery.md
+- artifacts/current/ux.md
+- artifacts/current/architecture.md
+- artifacts/current/solution.md
+- artifacts/current/qa.md
+- artifacts/current/security-design.md
 
 2) Backlog synthesis (no code changes)
 Create:
-- artifacts/backlog.md:
+- artifacts/current/backlog.md:
   - Epic summary
   - Scope_in / Scope_out
   - Risks + mitigations (tags: deps/infra/db/auth/security/perf/payments/crypto/data-loss/privacy)
@@ -72,13 +72,13 @@ If SAFE gate fails:
 - Bootstrap a SINGLE PR for this feature branch by running:
   - scripts/ci/gh_pr_bootstrap.sh
 - After this step:
-  - artifacts/pr-number.txt and artifacts/pr-url.txt MUST exist.
+  - artifacts/current/pr-number.txt and artifacts/current/pr-url.txt MUST exist.
 
 Hard stop:
 - If PR cannot be created (auth/permissions or command blocked), stop and report BLOCKED.
 
 5) Delivery execution (FORCE/SAFE only, bounded)
-- Select tasks in priority order from artifacts/backlog.md.
+- Select tasks in priority order from artifacts/current/backlog.md.
 - Execute /orchestrate-task for each selected task sequentially, up to MAX_TASKS.
 
 Critical instruction to /orchestrate-task:
@@ -92,7 +92,7 @@ Critical instruction to /orchestrate-task:
 
 FORCE safety floor (always enforced):
 - no destructive DB operations; prefer reversible changes only
-- high-risk areas must be explicitly flagged in task risks + artifacts/risk.md
+- high-risk areas must be explicitly flagged in task risks + artifacts/current/risk.md
 - keep diffs minimal and reversible
 
 6) FINALIZE (automatic by default)
@@ -113,6 +113,6 @@ Optional flags:
 - Always output:
   - artifacts/backlog.md location
   - list of generated task files
-  - PR number + URL (from artifacts/pr-*.txt)
+  - PR number + URL (from artifacts/current/pr-*.txt)
 - If executed:
   - list executed tasks + final status (DONE/BLOCKED)

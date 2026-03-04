@@ -1,30 +1,15 @@
-# Epic 16 — Release Prep: UX
+# UX: Artifact Lifecycle Hardening
 
-## Principles
+## Context
 
-- Kid-friendly: large tap targets, clear feedback, no punitive states
-- Parent-friendly: settings, summary, privacy notes
-- Accessible: contrast, reduced motion, keyboard playable
+This is an infrastructure/pipeline feature. No end-user UI changes.
 
-## UX Pass (Epic 16)
+## Operator Experience
 
-### Tap targets (0080 — done)
-- All interactive elements ≥ 44×44px (WCAG 2.5.5)
-- play.vue: skin-btn, choose-game-btn, close-btn, rewards-link, settings-link
-- SkinClassic radios, stickers, summary, settings pages
-- ModeBuildBridge planks and drop zone
+- **Developers/agents**: Continue to run `/feature`, `scripts/ci/gh_pr_bootstrap.sh`, `scripts/ci/gh_watch.sh` without changing invocation
+- **Transparency**: Archive provides audit trail; operators can inspect `artifacts/archive/<epic-id>/<timestamp>/` for past runs
+- **No new commands**: Archive runs automatically after finalize; no manual step
 
-### Color/contrast (0081 — done)
-- Text/background 4.5:1 (normal), 3:1 (large)
-- prefers-reduced-motion for animations in all skins and modes
+## Accessibility / A11y
 
-### Copy pass (0082 — done)
-- Index/start: welcoming, kid-friendly
-- Summary: parent-friendly labels
-- Settings: clear labels for difficulty, hints, sound
-- Privacy note: friendly
-
-## Verification
-
-- Re-run audit on key pages
-- Confirm no regressions
+N/A (no UI).

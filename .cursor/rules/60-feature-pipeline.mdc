@@ -8,13 +8,13 @@ When using /feature:
 1) Planning is read-only
 - Planning phase must not modify code.
 - Planning must produce these artifacts:
-  - artifacts/discovery.md
-  - artifacts/ux.md
-  - artifacts/architecture.md
-  - artifacts/solution.md
-  - artifacts/qa.md
-  - artifacts/security-design.md
-  - artifacts/backlog.md
+  - artifacts/current/discovery.md
+  - artifacts/current/ux.md
+  - artifacts/current/architecture.md
+  - artifacts/current/solution.md
+  - artifacts/current/qa.md
+  - artifacts/current/security-design.md
+  - artifacts/current/backlog.md
 
 2) Task generation contract
 - Generated tasks must follow the /tasks contract format (YAML frontmatter + required sections).
@@ -37,7 +37,7 @@ When using /feature:
 - FORCE safety floor (always enforced):
   - max tasks executed per /feature run <= 5 (or user-provided --max-tasks, capped at 5)
   - stop immediately on any BLOCKED task
-  - any I/D/auth-related work must be explicitly flagged in task risks and artifacts/risk.md
+  - any I/D/auth-related work must be explicitly flagged in task risks and artifacts/current/risk.md
   - no destructive DB operations; prefer reversible changes only
 
 5) --safe behavior

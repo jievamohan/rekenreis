@@ -14,7 +14,7 @@ Protocol:
 0) Branch discipline (hard stop) + single-PR override
 
 Single-PR override (when invoked from /feature):
-- If `artifacts/pr-number.txt` exists:
+- If `artifacts/current/pr-number.txt` exists:
   - You are operating inside an existing feature PR.
   - Do NOT create or switch branches.
   - Stay on the current branch and continue.
@@ -24,7 +24,7 @@ Otherwise (standalone task execution):
 - If on `main` or `master`:
   - Create/switch to feature branch: `feat/{task.id}-{slug}`
 - Do not modify files until you are off main/master.
-- Record active branch name in `artifacts/plan.md`.
+- Record active branch name in `artifacts/current/plan.md`.
 
 1) Validate task contract (contract-first)
 - Open the task file in /tasks and validate YAML frontmatter:
@@ -35,22 +35,22 @@ Otherwise (standalone task execution):
 
 2) Plan + risk artifacts (required before implementation)
 - Create/overwrite:
-  - `artifacts/plan.md`:
+  - `artifacts/current/plan.md`:
     - Task summary + acceptance criteria mapping
     - Wave plan (0..3)
     - Lane assignments + file ownership globs
     - Branch plan (per-lane branches + integration plan if applicable)
-  - `artifacts/risk.md`:
+  - `artifacts/current/risk.md`:
     - Risk areas (deps/infra/db/auth/security/perf) + mitigations
     - Explicitly flag high-risk changes (auth/crypto/payments)
 
 2.1) PR_BODY_SEED (no code changes)
-- Ensure `artifacts/pr.md` exists and includes a task checklist for this feature run.
+- Ensure `artifacts/current/pr.md` exists and includes a task checklist for this feature run.
 - Generate the checklist from the task files created in /tasks for this feature (ordered):
   - Format:
     ## Tasks
     - [ ] <task-id>-<task-slug>
-- Append (or create) this section in artifacts/pr.md BEFORE PR bootstrap so the PR body contains it.
+- Append (or create) this section in artifacts/current/pr.md BEFORE PR bootstrap so the PR body contains it.
 - Do not mark any task as done here; all start unchecked.
 
 3) Split into lane subtasks + dispatch subagents (parallel)
@@ -65,7 +65,7 @@ Otherwise (standalone task execution):
 4) Enforce lane ownership (strict-default, soft-by-exception)
 - Each lane may only edit its owned globs by default.
 - If cross-lane edits are needed:
-  - Create `artifacts/ownership-request.md` explaining file(s), reason, impact, rollback
+  - Create `artifacts/current/ownership-request.md` explaining file(s), reason, impact, rollback
   - STOP and re-slice/serialize work or request explicit approval in the plan.
 
 5) Implement + integrate (wave-based)
@@ -77,21 +77,21 @@ Otherwise (standalone task execution):
 - Integrate in prescribed order:
   - I -> D -> A2 -> A1 -> W2 -> W1 -> T
 - Ensure required artifacts exist and indicate PASS:
-  - `artifacts/typecheck.md`
-  - `artifacts/security.md`
-  - `artifacts/perf.md`
-  - `artifacts/tests.md`
-  - `artifacts/review.md`
+  - `artifacts/current/typecheck.md`
+  - `artifacts/current/security.md`
+  - `artifacts/current/perf.md`
+  - `artifacts/current/tests.md`
+  - `artifacts/current/review.md`
 - If full-autonomy areas changed, ensure conditional artifacts exist:
-  - `artifacts/dependency-review.md` (deps)
-  - `artifacts/infra-review.md` (CI/Docker)
-  - `artifacts/db-review.md` (migrations)
-- Produce/refresh `artifacts/pr.md`:
+  - `artifacts/current/dependency-review.md` (deps)
+  - `artifacts/current/infra-review.md` (CI/Docker)
+  - `artifacts/current/db-review.md` (migrations)
+- Produce/refresh `artifacts/current/pr.md`:
   - PR-ready summary tied to acceptance criteria + commands run + risks + rollback
 
 6) Push changes (mandatory before CI)
 - Ensure branch is pushed to origin.
-- If your workflow requires force-push (rebased history), do so safely and document it in `artifacts/pr.md`.
+- If your workflow requires force-push (rebased history), do so safely and document it in `artifacts/current/pr.md`.
 
 7) PR_BOOTSTRAP (mandatory before CI watch)
 - Detect GitHub default base branch:
@@ -99,20 +99,20 @@ Otherwise (standalone task execution):
 - Determine whether a PR already exists for the current branch:
   - `PR_NUM="$(gh pr view --json number -q .number 2>/dev/null || true)"`
 - If no PR exists:
-  - Create one using artifacts/pr.md as body:
-    - `gh pr create --base "$BASE" --head "$(git branch --show-current)" --title "[{task.id}] {task.title}" --body-file artifacts/pr.md`
+  - Create one using artifacts/current/pr.md as body:
+    - `gh pr create --base "$BASE" --head "$(git branch --show-current)" --title "[{task.id}] {task.title}" --body-file artifacts/current/pr.md`
   - Then re-fetch PR number:
     - `PR_NUM="$(gh pr view --json number -q .number)"`
 - Record PR number + URL in:
-  - `artifacts/pr.md` (append a short PR metadata block)
-  - `artifacts/ci-status.md` (create if missing)
+  - `artifacts/current/pr.md` (append a short PR metadata block)
+  - `artifacts/current/ci-status.md` (create if missing)
 
 Hard stop:
 - If PR cannot be created (auth/permissions), mark task BLOCKED and stop.
 
 8) CI_VERIFY (remote, bounded)
 - Run `/ci-watch` (bounded) for PR_NUM (host mode; fallback to container).
-- Record outcome in `artifacts/ci-status.md`.
+- Record outcome in `artifacts/current/ci-status.md`.
 
 9) CI auto-fix loop (bounded, immediate execution)
 If CI SUCCESS:
@@ -120,8 +120,8 @@ If CI SUCCESS:
 
 If CI FAILED:
 - Run `/ci-fetch-logs` to create:
-  - `artifacts/ci-logs/run-<RUN_ID>.log`
-  - `artifacts/ci-failures.md`
+  - `artifacts/current/ci-logs/run-<RUN_ID>.log`
+  - `artifacts/current/ci-failures.md`
 - For up to MAX_CI_FIX_LOOPS times:
   a) Generate or overwrite `tasks/0002-ci-green.md`:
      - Lane I as primary
@@ -139,7 +139,7 @@ If CI FAILED:
   f) If CI SUCCESS: break and proceed.
 - If still failing after MAX_CI_FIX_LOOPS:
   - Mark the original task BLOCKED
-  - Summarize remaining failures in `artifacts/review.md` + `artifacts/pr.md`
+  - Summarize remaining failures in `artifacts/current/review.md` + `artifacts/current/pr.md`
   - Do NOT claim MERGE-READY.
 
 10) ARTIFACTS_COMMIT (keep working tree clean)
@@ -176,6 +176,6 @@ Output:
 - PR number + URL
 - Explicit statement “MERGE-READY” ONLY if:
   - merge-ready checklist satisfied
-  - AND `artifacts/ci-status.md` shows CI SUCCESS for current head SHA
+  - AND `artifacts/current/ci-status.md` shows CI SUCCESS for current head SHA
   - AND working tree is clean
 - Otherwise output “BLOCKED” with pointers to relevant artifacts.

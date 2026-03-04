@@ -1,28 +1,35 @@
-# Epic 16 — Release Prep: Solution
+# Solution: Artifact Lifecycle Hardening
 
-## Approach
+## Implementation Approach
 
-Single task: **0088-epic16-release-prep-verification**
+1. **Introduce `artifacts/current`**
+   - Add `mkdir -p artifacts/current` at start of scripts that need it
+   - Replace all `artifacts/` references with `artifacts/current/` in:
+     - scripts/ci/gh_pr_bootstrap.sh
+     - scripts/ci/gh_watch.sh
+     - scripts/ci/gh_fetch_logs.sh
+     - .github/workflows/gates.yml (artifacts/zap → artifacts/current/zap)
 
-1. Verify Epic 16 acceptance criteria against current codebase
-2. Run gates C, D, F
-3. Fix any regressions found
+2. **Orchestrate-task / feature pipeline**
+   - Update .cursor/commands/orchestrate-task.md, .cursor/commands/feature.md, .cursor/commands/ci-watch.md, .cursor/commands/ci-fetch-logs.md, .cursor/commands/finalize-feature.md to reference `artifacts/current`
+   - Update .cursor/rules (00-agentic-core, 50-ci-watch, etc.) and subagents that mention `artifacts/`
 
-## Task
+3. **Archive script**
+   - Create `scripts/ci/gh_archive_artifacts.sh`:
+     - Derive epic-id from branch
+     - Timestamp: `date -u +%Y%m%dT%H%M%SZ`
+     - `cp -r artifacts/current artifacts/archive/<epic-id>/<timestamp>`
+   - Call from `gh_finalize_feature.sh` after CI watch succeeds
 
-| ID | Title | Lane | Description |
-|----|-------|------|-------------|
-| 0088 | epic16-release-prep-verification | T + W1 | Verify tap targets, contrast, reduced-motion, copy, bug-bash checklist, perf budget; fix regressions |
+4. **.gitignore**
+   - Add `artifacts/current/` and `artifacts/archive/` if we want them ignored (optional; current behavior ignores `artifacts/*.md` and `artifacts/zap/`)
 
-## Wave Plan
+## Environment / Config
 
-- Wave 0: N/A
-- Wave 1: Verification (audit + gate runs)
-- Wave 2: Fixes if found
-- Wave 3: Re-run gates
+- Optional: `ARTIFACTS_ROOT` env var for override (default: `artifacts/current`)
+- Optional: `EPIC_ID` env var to override branch-derived epic-id
 
-## Success Criteria
+## Rollback
 
-- All Epic 16 acceptance criteria verified
-- Gates C, D, F pass
-- No regressions
+- Revert script changes; restore `artifacts/` paths
+- No DB or app code changes; low rollback risk

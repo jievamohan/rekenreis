@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mkdir -p artifacts
+ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}"
+mkdir -p "$ARTIFACTS_DIR"
+
+# One-time migration: if legacy artifacts/pr.md exists and current doesn't, copy it
+if [[ -f artifacts/pr.md && ! -f "$ARTIFACTS_DIR/pr.md" ]]; then
+  cp artifacts/pr.md "$ARTIFACTS_DIR/pr.md"
+fi
 
 BASE="$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)"
 BRANCH="$(git branch --show-current)"
@@ -10,7 +16,7 @@ BRANCH="$(git branch --show-current)"
 PR_NUM="$(gh pr view --json number -q .number 2>/dev/null || true)"
 
 if [[ -z "${PR_NUM}" || "${PR_NUM}" == "null" ]]; then
-  BODY_FILE="artifacts/pr.md"
+  BODY_FILE="$ARTIFACTS_DIR/pr.md"
   if [[ ! -f "$BODY_FILE" ]]; then
     cat > "$BODY_FILE" <<EOF
 # PR Summary
@@ -19,7 +25,7 @@ EOF
   fi
   
   if ! grep -q '^## Tasks' "$BODY_FILE"; then
-    echo "artifacts/pr.md missing required '## Tasks' checklist section."
+    echo "$ARTIFACTS_DIR/pr.md missing required '## Tasks' checklist section."
     exit 4
   fi
   # Title: keep it simple + deterministic
@@ -35,10 +41,10 @@ fi
 PR_URL="$(gh pr view --json url -q .url)"
 
 # Persist metadata for downstream scripts/agents
-echo "$PR_NUM" > artifacts/pr-number.txt
-echo "$PR_URL" > artifacts/pr-url.txt
+echo "$PR_NUM" > "$ARTIFACTS_DIR/pr-number.txt"
+echo "$PR_URL" > "$ARTIFACTS_DIR/pr-url.txt"
 
-# Append PR metadata to artifacts/pr.md (idempotency not required; it's an audit trail)
+# Append PR metadata to artifacts/current/pr.md (idempotency not required; it's an audit trail)
 {
   echo ""
   echo "## PR Metadata"
@@ -46,4 +52,4 @@ echo "$PR_URL" > artifacts/pr-url.txt
   echo "- Branch: $BRANCH"
   echo "- PR: #$PR_NUM"
   echo "- URL: $PR_URL"
-} >> artifacts/pr.md
+} >> "$ARTIFACTS_DIR/pr.md"

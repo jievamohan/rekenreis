@@ -5,7 +5,7 @@ description: "Translates architecture into an implementable solution: configs, i
 
 PLANNING ONLY. Do not modify code.
 
-Output to artifacts/solution.md:
+Output to artifacts/current/solution.md:
 - Environment/config needs (env vars, docker compose wiring)
 - Integration points (if any) and contracts
 - Operational concerns (logging, error handling, observability baseline)
