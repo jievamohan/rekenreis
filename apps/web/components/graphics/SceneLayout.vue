@@ -4,6 +4,7 @@
  * Provides: background layer, foreground layer, character slot, default content slot.
  */
 import bgScene from '~/assets/graphics/backgrounds/bridge-scene.svg'
+import bubblePattern from '~/assets/graphics/backgrounds/bubble-pattern.svg'
 </script>
 
 <template>
@@ -13,6 +14,11 @@ import bgScene from '~/assets/graphics/backgrounds/bridge-scene.svg'
         :src="bgScene"
         alt=""
         class="scene-bg-img"
+      >
+      <img
+        :src="bubblePattern"
+        alt=""
+        class="scene-bubble-overlay"
       >
     </div>
     <div class="scene-foreground" aria-hidden="true">
@@ -47,6 +53,16 @@ import bgScene from '~/assets/graphics/backgrounds/bridge-scene.svg'
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.scene-bubble-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .scene-foreground {

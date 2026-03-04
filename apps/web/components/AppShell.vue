@@ -3,6 +3,8 @@ import type { AvatarId } from '~/utils/profileSchema'
 import { useProfile } from '~/composables/useProfile'
 import { useAppShell } from '~/composables/useAppShell'
 import ProfileSelector from '~/components/ProfileSelector.vue'
+import bubblePattern from '~/assets/graphics/backgrounds/bubble-pattern.svg'
+import waveOverlay from '~/assets/graphics/backgrounds/wave-overlay.svg'
 const profile = useProfile()
 const { getChooseGameHandler } = useAppShell()
 const router = useRouter()
@@ -37,6 +39,8 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
 
 <template>
   <div class="app-shell">
+    <img :src="bubblePattern" alt="" class="app-bubble-pattern" aria-hidden="true">
+    <img :src="waveOverlay" alt="" class="app-wave-overlay" aria-hidden="true">
     <header class="app-top-bar" role="banner">
       <button
         type="button"
@@ -89,15 +93,34 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   position: relative;
 }
 
-.app-shell::before {
-  content: '';
+.app-bubble-pattern {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 4%),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 3%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 5%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
   z-index: 0;
+  opacity: 1;
+}
+
+.app-wave-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bubble-pattern,
+  .app-wave-overlay {
+    opacity: 1;
+  }
 }
 
 .app-top-bar {
