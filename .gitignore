@@ -2,3 +2,4 @@
 
 # CI-generated ZAP reports
 artifacts/zap/
+artifacts
