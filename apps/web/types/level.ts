@@ -1,3 +1,8 @@
+import type { InteractionModeId } from '~/types/mode'
+
+/** Pacing tag for session variety (never cluster challenge back-to-back). */
+export type PacingTag = 'easy' | 'normal' | 'challenge'
+
 /**
  * Level schema for data-driven math game.
  * Addition only for now; extensible for future operators.
@@ -17,4 +22,8 @@ export interface Level {
   difficultyTag: string
   /** Optional mastery rules for future use */
   masteryRules?: Record<string, unknown>
+  /** If present: level applies only to these modes; if absent, applies to all */
+  modeIds?: InteractionModeId[]
+  /** Pacing tag for session variety; if absent, derived from difficultyTag */
+  pacingTag?: PacingTag
 }

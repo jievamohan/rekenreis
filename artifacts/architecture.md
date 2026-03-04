@@ -1,34 +1,36 @@
-# Epic 7 — Architecture
-
-## Layering
-
-```
-/play
-  ├─ mode selector (modal or inline) — choose mode + skin
-  │   └─ localStorage: lastMode, lastSkin
-  ├─ route.query.mode, route.query.skin (synced from storage or user)
-  └─ game area
-      └─ <component :is="gameMode.component" /> (classic | timed-pop | build-bridge)
-```
-
-## Mode Selector
-
-- **Option A**: Modal overlay on /play — "Choose game" button opens modal
-- **Option B**: Dedicated route /play/select — navigates to /play with query after choice
-- **Option C**: Inline on /play — when ?mode= empty and no stored pref, show selector instead of game
-
-Recommendation: **Option A** — modal keeps URL simple; "Change mode" opens modal; first visit with no pref can auto-open or show selector above game area briefly.
-
-## Build-Bridge Component
-
-- Receives: SkinRoundProps + effectiveSkinId + (no recordTimeout for build-bridge)
-- Renders: question prompt, bridge visual, draggable planks (answer choices), drop slot
-- Callbacks: onAnswer(choice) when correct plank placed; onNext() after feedback
-- Wrong placement: call onAnswer with wrong value → core loop handles feedback; show gentle hint
-- Keyboard: plank buttons focusable; "place" via click on slot or dedicated control
+# Epic 8 — Content Packs per Mode + Pacing Rules: Architecture
 
 ## Data Flow
 
-- usePlayGame unchanged: generates question, handles selectAnswer/nextQuestion
-- ModeBuildBridge: same contract as ModeClassic — receives question, choices, calls onAnswer/onNext
-- Only interaction changes: drag-and-drop or keyboard place vs click
+```
+play.vue
+  └─ effectiveModeParam → interactionMode (classic | timed-pop | build-bridge)
+  └─ levelPack = loadPackForMode(interactionMode)  [new]
+  └─ usePlayGame(mode, { source, levelPack })
+
+usePlayGame
+  └─ if source=pack && levelPack.length > 0:
+       levels = applyPacing(levelPack, seed)  [new]
+       question = generateQuestionFromLevel(levels[index], rng)
+```
+
+## Schema Changes
+
+### Level (extended)
+
+- `modeIds?: InteractionModeId[]` — optional; if absent, applies to all modes
+- `pacingTag?: 'easy' | 'normal' | 'challenge'` — optional; maps from difficultyTag or explicit
+
+### Pacing Engine
+
+- Input: Level[], seed
+- Output: Level[] (reordered)
+- Invariant: never two consecutive challenge levels
+- Pattern: e.g. easy→normal→easy→challenge→easy (configurable)
+
+## Pack Loading
+
+- `content/levels.classic.v1.json`
+- `content/levels.timed-pop.v1.json`
+- `content/levels.build-bridge.v1.json`
+- Lazy import or static import per mode; validate on load.

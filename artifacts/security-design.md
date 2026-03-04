@@ -1,17 +1,11 @@
-# Epic 7 — Security Design
+# Epic 8 — Content Packs per Mode + Pacing Rules: Security
 
-## Scope
+## Risk Assessment
 
-- Mode selector: local UI only; no auth
-- Build-bridge: client-side drag/drop; no new network calls
-- localStorage: stores mode/skin preferences only; no PII
-
-## Risks
-
-- **Low**: localStorage could be manipulated; impact limited to UX (user's own preferences)
-- **None**: No new external deps for drag (native HTML5 or VueUse if already present); no auth/crypto changes
+- **Low risk**: No auth, no user input to levels, no network. Content packs are static JSON.
+- Schema validation prevents malformed data from causing runtime errors.
 
 ## Mitigations
 
-- Validate mode/skin values when reading from localStorage (allowlist)
-- No secrets in localStorage
+- Validate all packed levels on load (levelValidator)
+- No user-controlled level content in this epic

@@ -20,15 +20,16 @@ export interface PlayFeedbackTimeout {
 export type PlayFeedback = PlayFeedbackCorrect | PlayFeedbackTimeout
 
 export interface UsePlayGameOptions {
-  source?: 'infinite' | 'pack'
-  levelPack?: Level[]
+  source?: 'infinite' | 'pack' | Ref<'infinite' | 'pack'>
+  levelPack?: Level[] | Ref<Level[]>
 }
 
 export function usePlayGame(
   mode: GameMode | Ref<GameMode>,
   options: UsePlayGameOptions = {}
 ) {
-  const { source = 'infinite', levelPack = [] } = options
+  const sourceRef = isRef(options.source) ? options.source : ref(options.source ?? 'infinite')
+  const levelPackRef = isRef(options.levelPack) ? options.levelPack : ref(options.levelPack ?? [])
   const modeRef = isRef(mode) ? mode : ref(mode)
   const question = ref<AdditionQuestion | null>(null)
   const score = ref(0)
@@ -41,6 +42,8 @@ export function usePlayGame(
   const packRng = createSeededRng(42)
 
   function loadQuestion() {
+    const source = sourceRef.value
+    const levelPack = levelPackRef.value
     if (source === 'pack' && levelPack.length > 0) {
       const level = levelPack[packIndex.value % levelPack.length]
       question.value = generateQuestionFromLevel(level, packRng)
@@ -51,12 +54,12 @@ export function usePlayGame(
     feedback.value = null
   }
 
-  watch(modeRef, () => {
+  watch([modeRef, sourceRef, levelPackRef], () => {
     score.value = 0
     streak.value = 0
     packIndex.value = 0
     loadQuestion()
-  })
+  }, { deep: true })
 
   function selectAnswer(choice: number) {
     if (!question.value || feedback.value) return

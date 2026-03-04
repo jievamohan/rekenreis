@@ -14,8 +14,8 @@ describe('levelValidator', () => {
   describe('validateLevel', () => {
     it('accepts valid level', () => {
       const result = validateLevel(validLevel)
-      expect(result).toEqual(validLevel)
       expect(result.operator).toBe('addition')
+      expect(result).toMatchObject(validLevel)
       expect(result.operandMin).toBe(0)
       expect(result.operandMax).toBe(10)
       expect(result.choiceCount).toBe(4)
@@ -54,6 +54,30 @@ describe('levelValidator', () => {
     it('throws on non-integer operands', () => {
       expect(() => validateLevel({ ...validLevel, operandMin: 1.5 })).toThrow()
     })
+
+    it('accepts valid modeIds', () => {
+      const withModeIds = { ...validLevel, modeIds: ['classic', 'build-bridge'] }
+      const result = validateLevel(withModeIds)
+      expect(result.modeIds).toEqual(['classic', 'build-bridge'])
+    })
+
+    it('accepts valid pacingTag', () => {
+      const withPacing = { ...validLevel, pacingTag: 'challenge' }
+      const result = validateLevel(withPacing)
+      expect(result.pacingTag).toBe('challenge')
+    })
+
+    it('throws on invalid modeIds (not array)', () => {
+      expect(() => validateLevel({ ...validLevel, modeIds: 'classic' })).toThrow()
+    })
+
+    it('throws on invalid modeIds (bad value)', () => {
+      expect(() => validateLevel({ ...validLevel, modeIds: ['invalid-mode'] })).toThrow()
+    })
+
+    it('throws on invalid pacingTag', () => {
+      expect(() => validateLevel({ ...validLevel, pacingTag: 'hard' })).toThrow()
+    })
   })
 
   describe('parseLevel', () => {
@@ -72,5 +96,28 @@ describe('levelValidator', () => {
         expect(result.error).toBeInstanceOf(LevelValidationError)
       }
     })
+  })
+
+  describe('content packs with pacingTag', () => {
+    const packs = [
+      { name: 'classic', data: () => import('../content/levels.classic.v1.json').then((m) => m.default) },
+      { name: 'timed-pop', data: () => import('../content/levels.timed-pop.v1.json').then((m) => m.default) },
+      { name: 'build-bridge', data: () => import('../content/levels.build-bridge.v1.json').then((m) => m.default) },
+    ]
+    for (const pack of packs) {
+      it(`${pack.name}: 25-30 levels, all pass validation`, async () => {
+        const levels = (await pack.data()) as unknown[]
+        expect(Array.isArray(levels)).toBe(true)
+        expect(levels.length).toBeGreaterThanOrEqual(25)
+        expect(levels.length).toBeLessThanOrEqual(30)
+        for (const level of levels) {
+          expect(() => validateLevel(level)).not.toThrow()
+          const validated = validateLevel(level)
+          expect(validated.operator).toBe('addition')
+          expect(validated.pacingTag).toBeDefined()
+          expect(['easy', 'normal', 'challenge']).toContain(validated.pacingTag)
+        }
+      })
+    }
   })
 })

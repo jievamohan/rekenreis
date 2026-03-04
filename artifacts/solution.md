@@ -1,40 +1,32 @@
-# Epic 7 — Solution
+# Epic 8 — Content Packs per Mode + Pacing Rules: Solution
 
-## 1. Extend Mode Contract
+## 1. Level Schema Extension
 
-- `InteractionModeId`: add `'build-bridge'`
-- `modeResolver.ts`: include build-bridge in INTERACTION_IDS
-- `useMode.ts`: register ModeBuildBridge component
+Add to `Level`:
 
-## 2. Mode Selector UI
+- `modeIds?: InteractionModeId[]` — if present, level applies only to listed modes; if absent, applies to all
+- `pacingTag?: 'easy' | 'normal' | 'challenge'` — if absent, derive from `difficultyTag` (easy→easy, medium→normal, hard→challenge)
 
-- New component: `ModeSelector.vue` (or `PlayModeSelector.vue`)
-  - Big buttons: Classic, Timed Pop, Build Bridge (with simple icons or emoji)
-  - Optional skin picker inline or reuse existing skin-picker
-  - On select: write to localStorage (lastMode, lastSkin), update route query, close
-- Integration: play.vue
-  - "Choose game" / "Change mode" button opens selector (v-if showSelector)
-  - On mount: if no route.query.mode and no localStorage, consider showing selector; else use stored or default
-  - Sync: when mode/skin changes (user or selector), update route + localStorage
+Backward compatible: existing levels work without these fields.
 
-## 3. Build-Bridge Mode
+## 2. Content Packs
 
-- `ModeBuildBridge.vue`:
-  - Layout: question text, bridge graphic (simple SVG/CSS), planks as draggable elements
-  - VueUse `useDrag` or native HTML5 drag API; keyboard: focus plank → click slot to "place"
-  - On drop/place: if correct → onAnswer(correctAnswer), then show feedback; if wrong → onAnswer(wrong), show hint
-  - Feedback: reuse PlayFeedback; gentle hint on wrong ("Try another!")
-  - No timer; no recordTimeout
+- Create `levels.classic.v1.json`, `levels.timed-pop.v1.json`, `levels.build-bridge.v1.json`
+- Each contains Level[]; optionally filter by modeIds or use mode-specific packs
+- Migrate/split from `levels.v1.json` or generate from levelGenerator with mode-specific configs
 
-## 4. Persistence
+## 3. Pacing Engine
 
-- Keys: `rekenreis_last_mode`, `rekenreis_last_skin`
-- Read on /play load; write when user selects in selector
-- Fallback: classic, first unlocked skin
+- `applyPacing(levels: Level[], seed: number): Level[]`
+- Use seeded RNG for deterministic shuffle that respects: no two consecutive challenge
+- Algorithm: bucket by pacingTag; interleave so challenge never adjacent
 
-## 5. Tests
+## 4. play.vue Integration
 
-- Unit: modeResolver includes build-bridge
-- Unit: Mode selector writes/reads localStorage
-- Unit: ModeBuildBridge — deterministic with fake events (simulate place correct/wrong)
-- E2E: smoke — navigate to build-bridge, complete one round
+- Map `interactionMode` → pack path
+- Load pack for current mode; fallback to infinite or generic pack if missing
+
+## 5. usePlayGame
+
+- When source=pack: apply pacing to levelPack before use
+- Pass seed for determinism (session or configurable)

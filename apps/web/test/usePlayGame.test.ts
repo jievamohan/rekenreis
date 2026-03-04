@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest'
+import type { Level } from '../types/level'
 import { usePlayGame } from '../composables/usePlayGame'
 import { isCorrectFeedback } from '../utils/feedbackHelpers'
 import levelsV1 from '../content/levels.v1.json'
+import levelsClassic from '../content/levels.classic.v1.json'
+import levelsTimedPop from '../content/levels.timed-pop.v1.json'
+import levelsBuildBridge from '../content/levels.build-bridge.v1.json'
 
 const levelPack = levelsV1 as Array<{
   operator: 'addition'
@@ -119,6 +123,22 @@ describe('usePlayGame', () => {
       expect(q2).not.toEqual(q3)
       expect(q3).not.toEqual(q4)
       expect(q4.a + q4.b).toBe(q4.correctAnswer)
+    })
+
+    it.each([
+      ['classic', levelsClassic],
+      ['timed-pop', levelsTimedPop],
+      ['build-bridge', levelsBuildBridge],
+    ] as const)('pack mode works for %s and completes one round', (_name, pack) => {
+      const levels = pack as unknown as Level[]
+      const game = usePlayGame('upTo10', { source: 'pack', levelPack: levels })
+      const q = game.question.value!
+      expect(q).not.toBeNull()
+      expect(q.a + q.b).toBe(q.correctAnswer)
+      game.selectAnswer(q.correctAnswer)
+      expect(game.score.value).toBe(1)
+      game.nextQuestion()
+      expect(game.question.value).not.toBeNull()
     })
   })
 })
