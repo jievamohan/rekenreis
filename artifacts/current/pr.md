@@ -1,21 +1,21 @@
-# Epic 19.4 — Page Unification
+# Epic 19.5 — Polish & a11y
 
-Unify all pages and components with the underwater theme by replacing hardcoded colors with CSS custom properties.
+Final polish pass: fix WCAG AA contrast, add missing focus-visible states, verify reduced motion.
 
 ## Summary
-- Replace all hardcoded colors in shared components, pages, modes, hints, and skins
-- Use existing CSS custom properties from tokens.css/graphics.css
-- Ensure visual consistency across all routes
+- Fix contrast tokens for WCAG AA compliance
+- Add dark text color for use on light surfaces
+- Add missing :focus-visible states on interactive elements
+- Fix reduced-motion gaps in ParentGate
 
 ## Tasks
-- [ ] 0112 — Theme shared components
-- [ ] 0113 — Theme pages
-- [ ] 0114 — Theme game modes + hints
-- [ ] 0115 — Theme skins
-- [ ] 0116 — Verify typecheck + build + bundle budget
+- [ ] 0117 — Fix contrast tokens + dark text on surfaces
+- [ ] 0118 — Add missing :focus-visible states
+- [ ] 0119 — Fix reduced-motion gaps
+- [ ] 0120 — Verify typecheck + build + bundle budget
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic-19.4-page-unification
-- PR: #46
-- URL: https://github.com/jievamohan/rekenreis/pull/46
+- Branch: feat/epic-19.5-polish-a11y
+- PR: #47
+- URL: https://github.com/jievamohan/rekenreis/pull/47
