@@ -372,7 +372,7 @@ Acceptance:
 ---
 
 ## Epic 19.2 — Shell & Nav Redesign
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-19.md
 - archive: artifacts/archive/epic-19.0/latest
