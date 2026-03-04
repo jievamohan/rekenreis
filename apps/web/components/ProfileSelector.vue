@@ -96,7 +96,7 @@ h2 {
   font-size: 1rem;
   border: 2px solid #333;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
   display: flex;
   align-items: center;

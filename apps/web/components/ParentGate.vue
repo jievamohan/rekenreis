@@ -147,7 +147,7 @@ onUnmounted(() => {
   font-size: 1rem;
   border-radius: 0.375rem;
   cursor: pointer;
-  background: #fff;
+  background: var(--app-surface);
   border: 2px solid #333;
 }
 .hold-bar {

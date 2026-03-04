@@ -163,7 +163,7 @@ const hasFeedback = computed(() => !!props.feedback)
   font-size: 1.125rem;
   border: 2px solid #ccc;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 .choice:hover:not(:disabled) {

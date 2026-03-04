@@ -1,36 +1,44 @@
-# Epic 18 — UX Design
+# Epic 19 — UX Layout & Components (UX Designer)
 
-## Design Principles
+## Primary Screens Impacted
 
-1. **Playful, not document-like**: Every page feels like part of a game
-2. **Big tap targets**: ≥ 44×44px everywhere
-3. **Kid-friendly typography**: Large, rounded, readable
-4. **Consistent feedback**: Same button/tile styles across app
-5. **Accessibility preserved**: Contrast, reduced-motion, keyboard/focus
+- `/` (index)
+- `/start`
+- `/play`
+- `/stickers`
+- `/summary`
+- `/settings`
 
-## App Shell (Global Layout)
+All pages use the default layout with AppShell.
 
-- **Background**: Gradient or soft pattern (no plain white)
-- **Stage card**: Centered content area with rounded corners, subtle shadow
-- **Top bar**:
-  - Active profile pill (e.g. "Player 1")
-  - "Choose game" button as primary action
-- **Nav**: Big icon-tabs — Sticker book / Progress / Settings
-- **Reduce empty white**: Consistent background and framing
+## Global Shell Structure
 
-## Component Patterns
+- **Top bar**: Profile pill + Choose game (keep structure; restyle for underwater)
+- **Main stage**: GameStageCard (replace white surface with themed surface)
+- **Bottom nav**: NavTabs (replace emoji icons with underwater SVG icons)
 
-- **PrimaryButton**: Big, playful, primary action
-- **SecondaryButton**: Outlined or softer
-- **StatPill**: Score, streak, rounds today
-- **GameStageCard**: Wraps minigames; integrates with shell
-- **NavTabs**: Icon + label, big tap targets
+## Navigation Model
 
-## Visual Acceptance Criteria (Non-Negotiable)
+- Same routes; no structural change
+- Nav items: Sticker book, Progress, Settings
+- Icons: SVG-based (fish, chart/bubbles, gear/coral) instead of emoji
 
-- No page has a "plain white document" look
-- All main actions have big, playful buttons
-- Tap targets ≥ 44×44px everywhere
-- Consistent typography (no default browser look)
-- Contrast + reduced-motion compliance
-- Minigame integrates into shell (no styled island)
+## Component Catalog
+
+| Component | Change |
+|-----------|--------|
+| AppShell | Underwater background, themed top bar |
+| GameStageCard | Non-white surface (glass/bubble effect or gradient) |
+| NavTabs | SVG icons, themed active state |
+| PrimaryButton / SecondaryButton | Use new tokens |
+| StatPill | Themed |
+| ProfileSelector overlay | Themed |
+| PlayModeSelector | Themed |
+| Skin picker (play page) | Themed |
+
+## Tap Targets & Accessibility Notes
+
+- Keep `--app-tap-min: 44px`
+- Focus states: visible outline (2px solid)
+- Skip link: keep for play page
+- Keyboard: no structural changes; ensure focus order preserved

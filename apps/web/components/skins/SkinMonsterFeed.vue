@@ -89,7 +89,7 @@ defineProps<SkinRoundProps>()
   margin: 0 auto;
   padding: 1.5rem;
   font-family: system-ui, sans-serif;
-  background: linear-gradient(to bottom, #e8f5e9, #fff);
+  background: linear-gradient(to bottom, #e8f5e9, var(--app-surface));
   border-radius: 1rem;
 }
 
@@ -134,7 +134,7 @@ h1 {
   font-size: 1.25rem;
   border: 2px solid #2e7d32;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
   color: #1b5e20;
 }
@@ -202,7 +202,7 @@ h1 {
   font-size: 1rem;
   border: 1px solid #2e7d32;
   border-radius: 0.375rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 

@@ -145,7 +145,7 @@ h1 {
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  color: #fff;
+  color: var(--app-text);
 }
 
 .choice:hover:not(.disabled) {
@@ -153,7 +153,7 @@ h1 {
 }
 
 .choice:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--app-text);
   outline-offset: 2px;
 }
 
@@ -213,11 +213,11 @@ h1 {
   border-radius: 0.375rem;
   background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  color: #fff;
+  color: var(--app-text);
 }
 
 .next:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--app-text);
   outline-offset: 2px;
 }
 

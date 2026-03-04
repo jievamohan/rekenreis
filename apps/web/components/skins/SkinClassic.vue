@@ -140,7 +140,7 @@ h1 {
   font-size: 1.25rem;
   border: 2px solid #333;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 
@@ -208,7 +208,7 @@ h1 {
   font-size: 1rem;
   border: 1px solid #333;
   border-radius: 0.375rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 

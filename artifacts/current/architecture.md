@@ -1,40 +1,45 @@
-# Epic 18 — Architecture
+# Epic 19 — Architecture Notes (Principal Architect)
 
-## Layering
+## Where Tokens Live
+
+- `apps/web/assets/css/tokens.css` — primary design tokens
+- `apps/web/assets/css/graphics.css` — graphics-specific tokens (build-bridge, etc.)
+
+Epic 19 updates both for underwater palette. Consider adding `--theme-*` namespace if we ever support theme switching.
+
+## Where Shell Lives
+
+- `apps/web/layouts/default.vue` — wraps with AppShell
+- `apps/web/components/AppShell.vue` — top bar, stage, nav
+- `apps/web/components/GameStageCard.vue` — content card
+- `apps/web/components/NavTabs.vue` — bottom nav
+
+## Component Folder Structure
 
 ```
-app.vue
-  └── AppShell (new global layout)
-        ├── TopBar (profile pill, Choose game)
-        ├── Main content slot (NuxtPage wrapped in GameStageCard or equivalent)
-        └── NavTabs (Sticker book, Progress, Settings)
+apps/web/
+  assets/
+    css/
+      tokens.css
+      graphics.css
+    graphics/
+      backgrounds/     # Add underwater patterns
+      objects/         # Add underwater objects (fish, bubbles, etc.)
+      icons/           # New: nav icons (fish, chart, gear)
+  components/
+    AppShell.vue
+    GameStageCard.vue
+    NavTabs.vue
+    ...
 ```
 
-## Design Tokens (Single Source of Truth)
+## Asset Pipeline Rules
 
-- **Location**: `apps/web/assets/css/tokens.css` (or extend `graphics.css`)
-- **Variables**:
-  - Colors: bg, surface, primary, secondary, correct, wrong, muted
-  - Typography: font-family, scale (large, rounded)
-  - Radii, spacing, shadows
-  - Button + tile styles
+- SVGs: inline or `~/assets/` import
+- Background patterns: CSS `background-image` or SVG
+- Size budget: keep total graphics reasonable (< 50KB for new assets)
 
-## Component Hierarchy
+## Performance Constraints
 
-- **AppShell**: Wraps all pages; provides background, top bar, nav
-- **LayoutFrame / GameStageCard**: Wraps page content in "stage" card
-- **NavTabs**: Shared bottom/top nav
-- **PrimaryButton / SecondaryButton**: Shared button components
-- **StatPill**: Shared stat display
-
-## Page Integration
-
-- Each page uses default layout (AppShell) via Nuxt layout
-- Pages opt into `GameStageCard` wrapper for content
-- Play page: game area inside stage card; existing minigame components unchanged
-
-## Lane Ownership
-
-- W1: layouts, pages, components (UI surface)
-- W2: composables if needed for layout state
-- T: tests, smoke, UI regression
+- Bundle size budget must pass (Gate F)
+- Lazy-load non-critical assets if needed

@@ -1,15 +1,16 @@
-# Fix browser console hydration errors on /play
+# Epic 19.1 — Tokens & No-White
 
-Disable SSR for `/play` route to eliminate Vue hydration mismatches caused by:
-- Random question generation (server vs client different)
-- Client-only state (localStorage: bestScore, telemetryOptOut)
-- Profile data from localStorage
+Replace white app look with underwater design tokens.
 
 ## Tasks
-- [x] Add routeRules: { '/play': { ssr: false } } to nuxt.config.ts
+
+- [ ] epic19-1-tokens: Update tokens.css with underwater palette
+- [ ] epic19-1-graphics: Update graphics.css with underwater tokens
+- [ ] epic19-1-surfaces: Remove hardcoded white; GameStageCard themed
+- [ ] epic19-1-verify: typecheck, build, smoke green
 
 ## PR Metadata
 - Base: main
-- Branch: feat/hydration-console-errors
-- PR: #42
-- URL: https://github.com/jievamohan/rekenreis/pull/42
+- Branch: feat/epic19-1-tokens-no-white
+- PR: #43
+- URL: https://github.com/jievamohan/rekenreis/pull/43

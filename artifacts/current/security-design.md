@@ -1,20 +1,15 @@
-# Epic 18 — Security Design
+# Epic 19 — Security/Privacy Notes (Security/Privacy)
 
-## Risk Assessment
+## New Risks Introduced
 
-- **No auth changes**: Profile/parent gate unchanged
-- **No new data flows**: Frontend-only styling
-- **No new dependencies**: CSS/tokens only; optional icon font (e.g. inline SVG)
-- **No secrets**: Design tokens are public styling
+- **None**: Epic 19 is purely visual (CSS, SVG assets, tokens)
+- No new data collection, auth, or network changes
 
-## Mitigations
+## Config Constraints
 
-- Use only CSS variables and existing assets
-- No external CDN for fonts unless already in use (prefer system or bundled)
-- SAST/semgrep: no new patterns; existing rules apply
-- Gitleaks: no secrets in new files
+- SVG assets: ensure no embedded scripts or external fetches
+- Inline SVGs: sanitize if user-generated (N/A for this epic)
 
-## Compliance
+## Data Handling
 
-- Contrast: maintain WCAG AA where applicable
-- Reduced motion: respect `prefers-reduced-motion` (already in use for graphics)
+- No changes

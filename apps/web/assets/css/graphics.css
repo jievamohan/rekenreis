@@ -1,13 +1,13 @@
-/* Epic 17 — Graphics tokens (art-direction) */
+/* Epic 17/19 — Graphics tokens (underwater theme) */
 :root {
-  --graphics-sky: #87ceeb;
-  --graphics-ground: #8b7355;
-  --graphics-water: #4a90d9;
-  --graphics-plank: #d2691e;
-  --graphics-plank-highlight: #deb887;
-  --graphics-bridge: #8b4513;
-  --graphics-accent: #2e7d32;
-  --graphics-soft-wrong: #e57373;
-  --graphics-text: #1a1a1a;
-  --graphics-text-muted: #5c5c5c;
+  --graphics-sky: #4dd0e1;
+  --graphics-ground: #00695c;
+  --graphics-water: #00838f;
+  --graphics-plank: #ff8a65;
+  --graphics-plank-highlight: #ffab91;
+  --graphics-bridge: #004d40;
+  --graphics-accent: #00bcd4;
+  --graphics-soft-wrong: #ff8a65;
+  --graphics-text: #e0f7fa;
+  --graphics-text-muted: #80cbc4;
 }

@@ -1,30 +1,24 @@
-# Epic 18 — QA Strategy
+# Epic 19 — Test Strategy (QA Strategist)
 
-## Test Requirements
+## Unit Tests Required
 
-1. **E2E smoke**: Layout loads; play still works
-   - Visit /play, /stickers, /summary, /settings, /start
-   - Play a round (classic or build-bridge)
-   - Verify no regressions
+- No new logic; existing unit tests remain
+- If token/theme switching logic added: test fallbacks
 
-2. **UI regression**: AppShell renders nav tabs and stage
-   - Assert nav tabs visible (Sticker book, Progress, Settings)
-   - Assert stage/card wrapper present
-   - Can be manual smoke step or automated if Playwright exists
+## E2E Smoke Updates
 
-3. **Unit tests** (if applicable):
-   - AppShell, NavTabs render without error
-   - Token CSS variables applied
+- Update selectors if class names change
+- Verify nav tabs still work (Sticker book, Progress, Settings)
+- Verify play flow still works
+- Verify mode selector and skin picker
 
-## Gates
+## Non-Flaky UI Assertions
 
-- Gate C: typecheck clean
-- Gate D: security baseline (no new secrets, semgrep clean)
-- Gate F: build succeeds, bundle budget
+- Prefer role/label over class names
+- Avoid asserting exact colors in E2E
 
-## Manual Verification
+## Visual Regression Approach
 
-- No page has plain white background
-- Tap targets ≥ 44×44px
-- Typography consistent
-- Contrast and reduced-motion preserved
+- Lightweight: manual check of each page
+- Optional: screenshot comparison (if tooling exists)
+- Document expected look in design bible

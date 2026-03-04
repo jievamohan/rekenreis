@@ -1,20 +1,20 @@
-/* Epic 18 — Global kid-friendly design tokens */
+/* Epic 18/19 — Global kid-friendly design tokens (underwater theme) */
 
 :root {
-  /* Colors */
-  --app-bg: linear-gradient(135deg, #e8f4f8 0%, #f0e6fa 50%, #fff5e6 100%);
-  --app-bg-fallback: #e8f4f8;
-  --app-surface: #ffffff;
-  --app-surface-elevated: #ffffff;
-  --app-primary: #2e7d32;
-  --app-primary-hover: #1b5e20;
-  --app-secondary: #4a90d9;
-  --app-secondary-hover: #357abd;
-  --app-correct: #2e7d32;
-  --app-wrong: #c62828;
-  --app-muted: #5c5c5c;
-  --app-text: #1a1a1a;
-  --app-text-muted: #5c5c5c;
+  /* Colors — underwater palette */
+  --app-bg: linear-gradient(135deg, #0d47a1 0%, #006064 50%, #00838f 100%);
+  --app-bg-fallback: #006064;
+  --app-surface: rgba(178, 223, 219, 0.95);
+  --app-surface-elevated: rgba(224, 247, 250, 0.98);
+  --app-primary: #00bcd4;
+  --app-primary-hover: #00acc1;
+  --app-secondary: #4dd0e1;
+  --app-secondary-hover: #26c6da;
+  --app-correct: #69f0ae;
+  --app-wrong: #ff8a65;
+  --app-muted: #80cbc4;
+  --app-text: #e0f7fa;
+  --app-text-muted: #80cbc4;
 
   /* Typography */
   --app-font: 'Nunito', 'Quicksand', 'Comic Sans MS', 'Chalkboard SE', system-ui, sans-serif;
@@ -104,7 +104,7 @@
 }
 
 .app-btn-secondary:hover {
-  background: rgba(46, 125, 50, 0.08);
+  background: rgba(0, 188, 212, 0.12);
 }
 
 .app-btn-secondary:focus-visible {
