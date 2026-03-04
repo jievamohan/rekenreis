@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 44" aria-hidden="true">
+  <defs>
+    <linearGradient id="plank" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#DEB887"/>
+      <stop offset="1" stop-color="#D2691E"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="52" height="40" rx="4" fill="url(#plank)" stroke="#8B4513" stroke-width="1"/>
+</svg>

@@ -1,17 +1,29 @@
-# QA: ZAP Workflow Speed
+# Epic 17 — Graphics v1: QA Strategy
 
-## Acceptance Criteria
+## Unit Tests
 
-1. ZAP job completes successfully on PR.
-2. All 4 ZAP targets scanned: web /start, /play; api /api/health, /api/session-stats.
-3. Security headers check still passes.
-4. Gate C, D, F, Lint & Test unchanged.
-5. On cache-hit run: ZAP job ≤120s (stretch ≤90s).
-6. Reports still written to artifacts/current/zap/.
+| Area | Test |
+|------|------|
+| Mode contract | ModeBuildBridge receives SkinRoundProps, calls onAnswer/onNext correctly |
+| Drag/drop state | Wrong drop: wobble, plank returns, no onNext; correct: onAnswer, onNext |
+| Hint integration | After 2 wrong, hintToShow is used; hint displayed |
+| Keyboard | Select plank, focus drop zone, place; same outcome as drag |
+| Reduced motion | prefers-reduced-motion: reduce disables wobble (mock matchMedia or CSS test) |
 
-## Test Plan
+## E2E / Smoke
 
-1. Push to feature branch; verify CI green.
-2. Trigger second run (cache warm); measure ZAP job duration in Actions UI.
-3. Verify ZAP reports present in artifacts.
-4. Confirm no regression in security coverage (same URLs, same rules).
+| Flow | Verification |
+|------|---------------|
+| Switch to build-bridge | /play → Choose game → Build Bridge → scene visible |
+| Complete one round | Drag correct plank to gap → feedback "Correct!" → Next → new question |
+| Wrong then correct | Wrong plank → wobble, try again → correct plank → success |
+
+## Manual Smoke (docs/runbooks)
+
+- Update smoke steps 10–11 to reflect graphical build-bridge
+- Verify classic, timed-pop unchanged
+
+## Performance
+
+- Bundle size within budget (no heavy libs)
+- No layout thrash; CSS/SVG only

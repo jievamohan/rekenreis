@@ -1,27 +1,48 @@
-# Architecture: ZAP Workflow Optimization
+# Epic 17 — Graphics v1: Architecture
 
-## Current Flow
-
-```
-checkout → buildx → cache mysql → cache zap → build web → build api
-  → compose up → wait health → security-headers → ZAP×4 → teardown
-```
-
-## Proposed Flow (optimized)
+## Layering
 
 ```
-checkout → buildx → [parallel: cache mysql | cache zap]
-  → buildx bake (web + api parallel)
-  → compose up → wait health (tighter) → security-headers
-  → ZAP×4 parallel (background jobs)
-  → teardown
+play.vue (orchestrator)
+  └── usePlayGame, useAssistance, useMode, useSkin
+  └── <component :is="gameMode.component" v-bind="modeProps" />
+        └── ModeBuildBridge (graphical)
+              └── SceneLayout (background + foreground + character slot)
+              └── DraggablePlank (game object)
+              └── DropZone (bridge gap)
 ```
 
-## Key Changes
+## Data Flow (unchanged)
 
-1. **Buildx bake:** Single `docker buildx bake` for web+api in parallel.
-2. **Cache hardening:** Add `restore-keys` for mysql/zap; ensure cache save on success.
-3. **Parallel ZAP:** Run 4 ZAP containers in parallel via `&` and `wait`.
-4. **Health wait:** Reduce to 5s + 12×2s = 29s max (from 5+36×5=185s).
-5. **ZAP -m flag:** Consider `-m 1` (1 min) if acceptable for baseline; saves ~1 min per run.
-6. **Artifactory (optional):** If org has Artifactory, use as Docker registry cache for mysql/zap; pull from local mirror faster than Docker Hub/GHCR.
+- **usePlayGame**: question, feedback, selectAnswer, nextQuestion
+- **useAssistance**: hintToShow (after 2 wrong)
+- **SkinRoundProps**: Passed to mode component; no game logic in mode
+
+## New Components
+
+| Component | Responsibility |
+|-----------|----------------|
+| `SceneLayout` | Wrapper: background layer + foreground layer + character slot; CSS layout |
+| `DraggablePlank` | Plank game object: SVG or styled div, draggable, keyboard focusable |
+| `DropZone` | Bridge gap: accepts drop, keyboard place |
+
+## Assets Pipeline
+
+- **Location**: `apps/web/assets/graphics/`
+- **Structure**: `backgrounds/`, `objects/`, `characters/` (or placeholders)
+- **Format**: SVG preferred (scalable, small)
+- **Import**: `~/assets/graphics/...` or via Nuxt asset handling
+
+## Mode Contract
+
+- ModeBuildBridge continues to implement SkinRoundProps
+- Receives same props: question, feedback, onAnswer, onNext, hintToShow, etc.
+- No changes to usePlayGame or level engine
+
+## Reduced Motion
+
+- `@media (prefers-reduced-motion: reduce)` disables:
+  - Wobble on wrong
+  - Celebration bounce (optional)
+  - Non-essential transitions
+- Keep: essential state changes (plank moves, feedback visible)

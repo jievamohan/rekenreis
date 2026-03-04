@@ -1,52 +1,44 @@
-# Discovery: ZAP Workflow Speed Optimization
+# Epic 17 — Graphics v1: Discovery
 
-## Problem Statement
+## Summary
 
-The OWASP ZAP Baseline job in `.github/workflows/gates.yml` takes ~6 minutes per run. Per epic iteration, this action runs twice (pre-squash and post-squash), totaling ~12 minutes of wait time. This is excessive for developer feedback loops.
+Build a truly kid-friendly **graphical** minigame (not a styled form). The build-bridge mode exists today but is form-like: text prompt, gradient rectangles, plain buttons. Epic 17 transforms it into a visual game scene with background, character/objects, and answer choices rendered as game objects (e.g., planks, balloons).
 
-**Target:** Reduce ZAP gate to ≤90 seconds (ideally ≤60 seconds).
+## Definition of "Graphical" (non-negotiable)
 
-## Current State (from CI logs run-22682977290)
+- **Interaction**: Primarily visual and spatial (drag/drop or tap-on-objects), not text buttons
+- **Scene**: Looks like a game scene with background + character/objects
+- **Answer choices**: Rendered as game objects (balloons, planks, food items), not plain buttons with borders
 
-| Phase | Duration | Notes |
-|-------|----------|-------|
-| Checkout | ~5s | |
-| Buildx setup | ~2s | |
-| MySQL cache | ~2s hit / ~20s miss | actions/cache + docker save/load |
-| ZAP cache | ~2s hit / ~60s miss | ZAP image ~600MB; cache often misses |
-| Build web | ~60-120s | pnpm install + build; buildx GHA cache |
-| Build api | ~60-120s | composer + php-ext; buildx GHA cache |
-| Start stack | ~5s | docker compose up --no-build |
-| Wait for health | ~16-120s | sleep 5 + 36×5s curl loop |
-| Security headers | ~5s | curl-based check |
-| ZAP baseline (4 runs) | ~180s | Sequential: web/start, web/play, api/health, api/session-stats |
-| Teardown | ~15s | docker compose down |
+## Current State
 
-**Total cold run:** ~6-7 min. **Warm run (cache hit):** ~4-5 min.
+- **ModeBuildBridge.vue**: Exists with drag/drop + keyboard alternative; uses gradient divs, text prompt "a + b = ?", button-styled planks
+- **Core loop**: usePlayGame, useAssistance, level packs — all remain source of truth
+- **Mode selector**: PlayModeSelector with Classic, Timed Pop, Build Bridge; kid-friendly but minimal
+- **Assets**: No dedicated graphics pipeline; no `assets/graphics/` folder
 
-## Root Causes
+## Scope In
 
-1. **Docker image caches not reliable:** MySQL and ZAP use `actions/cache` with static keys; cache eviction or first-run = full pull (~30s ZAP, ~20s MySQL).
-2. **Sequential builds:** Web and API built one after another.
-3. **Sequential ZAP scans:** 4 ZAP runs × ~45s each = ~3 min.
-4. **Health wait conservative:** 36×5s = 180s max; typically 15-30s.
-5. **ZAP spider time:** `-m 2` = 2 min max per target; each run spiders then passive-scans.
+1. Planning deliverables (design-first): art-direction.md, game-feel.md, motion-audio.md, assets.md
+2. Assets pipeline: `apps/web/assets/graphics/`, scene layout component
+3. One graphical mode: build-bridge (drag & drop)
+   - Bridge gap scene, draggable planks with numbers
+   - Wrong drop: gentle wobble + return plank + hint after 2 wrong
+   - Keyboard alternative (select plank → place)
+4. Mode selector: allow switching to build-bridge (kid-friendly)
+5. Tests: unit (mode contract, drag/drop state), e2e smoke (switch → complete one round)
+6. Reduced motion: `prefers-reduced-motion` disables non-essential animation
+7. Performance: CSS/SVG only, no heavy canvas/game engine
 
-## Images/Containers Used
+## Scope Out
 
-| Image | Source | Size (approx) | Cached? |
-|-------|--------|---------------|---------|
-| mysql:8.0 | Docker Hub | ~500MB | actions/cache (docker save) |
-| ghcr.io/zaproxy/zaproxy:stable | GHCR | ~600MB | actions/cache (docker save) |
-| node:22-alpine | Docker Hub | ~50MB | buildx GHA (web base) |
-| php:8.4-cli-alpine | Docker Hub | ~100MB | buildx GHA (api base) |
-| composer:latest | Docker Hub | ~200MB | buildx GHA (api COPY) |
-| rekenreis-web:latest | Built | ~300MB | buildx GHA |
-| rekenreis-api:latest | Built | ~400MB | buildx GHA |
+- Multiple new graphical modes
+- High-fidelity art packs (placeholders OK; must look like game scene)
+- New operators or math logic changes
 
-## Constraints
+## Key Constraints
 
-- Must scan PR code (not main); cannot skip build.
-- ZAP baseline coverage: web /start, /play; api /api/health, /api/session-stats.
-- Security headers check must run against live stack.
-- No destructive DB ops; reversible changes only.
+- Keep existing core loop + level engine as source of truth
+- No duplicated math logic
+- CI green; no breakage of classic/timed-pop modes
+- Bundle size within budget
