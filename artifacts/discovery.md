@@ -1,27 +1,43 @@
-# Epic 6 — Game Modes Framework: Discovery
+# Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI: Discovery
 
-## Summary
+## Feature Summary
 
-Introduce a Game Modes framework so different interaction patterns (classic click, timed-pop) can coexist without duplicating core logic. Modes are higher-level than skins: mode = interaction pattern, skin = visual theme.
+Add a second new game mode (build-bridge) using drag-and-drop interaction, plus a kid-friendly mode selector UI reachable from /play. Mode selector allows choosing Mode and optionally Skin, with last selection persisted locally.
 
 ## Current State
 
-- **usePlayGame**: Core loop (question, score, streak, feedback, selectAnswer, nextQuestion). Uses GameMode = upTo10 | upTo20 (difficulty).
-- **Skin contract**: SkinRoundProps (question, feedback, score, streak, mode, onAnswer, onNext, onModeChange). Skins render the round.
-- **play.vue**: route.query.mode = 'pack' | undefined for content source (pack vs infinite). route.query.skin for skin. mode ref = GameMode (difficulty).
-- **Naming conflict**: Epic wants /play?mode=classic and /play?mode=timed-pop. Current route.query.mode = pack for content. Resolution: use route.query.source for pack/infinite, route.query.mode for classic/timed-pop. Backward compat: route.query.mode=pack → source=pack.
+- **Modes**: classic (click/tap), timed-pop (timer + click)
+- **Skins**: classic, monster-feed, space, pirate (with unlock rewards)
+- **Routing**: /play uses route.query.mode and route.query.skin
+- **Mode contract**: InteractionModeId = 'classic' | 'timed-pop', ModeDefinition in types/mode.ts
+- **Core loop**: usePlayGame is single source of truth; modes only change interaction pattern
+- **Persistence**: localStorage for telemetry opt-out; no current mode/skin preference persistence
 
-## Scope
+## Requirements (from Epic)
 
-- GameMode (interaction) contract: InteractionModeId = 'classic' | 'timed-pop'
-- Mode registry + resolution from query
-- /play?mode=classic (default), /play?mode=timed-pop
-- Implement timed-pop: question + 3–4 choices + configurable timer; on timeout: friendly feedback, reveal answer, continue (no fail)
-- a11y: keyboard, timer does not block progress
-- Tests: mode selection, timer (fake), smoke extended
+1. Mode selector UI: big buttons with icons, reachable from /play
+   - Choose Mode + optionally Skin
+   - Remember last selection (local)
+2. build-bridge mode: drag/drop
+   - Show gap/bridge with planks labeled with answers (or draggable tiles)
+   - Player drags correct plank/tile into place
+   - Friendly feedback, no fail state; on wrong: gentle hint
+3. Core loop remains source of truth; mode only changes interaction pattern
+4. Accessibility: keyboard alternative (select + place) for users without drag support
+5. Tests: mode selector routing + persistence; build-bridge logic deterministic (fake timers/DOM events)
+6. E2E: smoke covers switching to build-bridge and completing one round
 
-## Out of Scope
+## Non-goals
 
-- Multiple new modes (only timed-pop)
-- Backend persistence/auth
-- Second mode (Epic 7: build-bridge)
+- More than 2 modes total (classic + timed-pop + build-bridge = 3 modes; Epic says "second mode" meaning second new mode after timed-pop, so build-bridge is the third mode overall but second additional mode)
+- New operators (addition only)
+
+## Key Files
+
+- `apps/web/types/mode.ts` — extend InteractionModeId
+- `apps/web/utils/modeResolver.ts` — add build-bridge
+- `apps/web/composables/useMode.ts` — register ModeBuildBridge
+- `apps/web/components/modes/ModeBuildBridge.vue` — new component
+- `apps/web/pages/play.vue` — add mode selector entry point
+- New: mode selector component/page
+- New: localStorage key for last mode/skin

@@ -1,39 +1,40 @@
-# Epic 6 — Game Modes Framework: Solution
+# Epic 7 — Solution
 
-## 1. Types & Contract
+## 1. Extend Mode Contract
 
-- Add `InteractionModeId = 'classic' | 'timed-pop'` in `types/mode.ts`
-- Extend `PlayFeedback`: `{ correct, selectedAnswer } | { type: 'timeout', correctAnswer }`
-- `ModeDefinition`: id, component (like SkinDefinition)
+- `InteractionModeId`: add `'build-bridge'`
+- `modeResolver.ts`: include build-bridge in INTERACTION_IDS
+- `useMode.ts`: register ModeBuildBridge component
 
-## 2. Query Param Handling
+## 2. Mode Selector UI
 
-- play.vue: `source` from `route.query.source ?? (route.query.mode === 'pack' ? 'pack' : 'infinite')`
-- `interactionMode` from `route.query.mode` when classic|timed-pop else 'classic'
+- New component: `ModeSelector.vue` (or `PlayModeSelector.vue`)
+  - Big buttons: Classic, Timed Pop, Build Bridge (with simple icons or emoji)
+  - Optional skin picker inline or reuse existing skin-picker
+  - On select: write to localStorage (lastMode, lastSkin), update route query, close
+- Integration: play.vue
+  - "Choose game" / "Change mode" button opens selector (v-if showSelector)
+  - On mount: if no route.query.mode and no localStorage, consider showing selector; else use stored or default
+  - Sync: when mode/skin changes (user or selector), update route + localStorage
 
-## 3. usePlayGame Extension
+## 3. Build-Bridge Mode
 
-- Add `recordTimeout()`: if question exists and no feedback yet, set `feedback = { type: 'timeout', correctAnswer: question.correctAnswer }`, no score change
+- `ModeBuildBridge.vue`:
+  - Layout: question text, bridge graphic (simple SVG/CSS), planks as draggable elements
+  - VueUse `useDrag` or native HTML5 drag API; keyboard: focus plank → click slot to "place"
+  - On drop/place: if correct → onAnswer(correctAnswer), then show feedback; if wrong → onAnswer(wrong), show hint
+  - Feedback: reuse PlayFeedback; gentle hint on wrong ("Try another!")
+  - No timer; no recordTimeout
 
-## 4. Mode Registry
+## 4. Persistence
 
-- useMode(interactionModeId) returns ModeDefinition
-- ModeClassic: wraps current skin-based round (pass SkinRoundProps to skin)
-- ModeTimedPop: renders round with timer; on timeout calls recordTimeout; uses same SkinRoundProps shape for consistency
+- Keys: `rekenreis_last_mode`, `rekenreis_last_skin`
+- Read on /play load; write when user selects in selector
+- Fallback: classic, first unlocked skin
 
-## 5. Timed-pop Implementation
+## 5. Tests
 
-- Timer: configurable (default 15s), use setInterval/ref
-- On expiry: clear timer, call recordTimeout(), show feedback
-- UI: question + choices (same structure as classic) + timer display (e.g. "0:12" countdown)
-- Tests: use vi.useFakeTimers() for deterministic timer behavior
-
-## 6. Routing & Play Page
-
-- Resolve interactionMode from query
-- Resolve mode component; pass game state + callbacks (including recordTimeout for timed mode)
-- Render `<component :is="mode.component" v-bind="modeProps" />`
-
-## 7. Smoke
-
-- Update docs/runbooks: add step for /play?mode=timed-pop, verify timer and timeout flow
+- Unit: modeResolver includes build-bridge
+- Unit: Mode selector writes/reads localStorage
+- Unit: ModeBuildBridge — deterministic with fake events (simulate place correct/wrong)
+- E2E: smoke — navigate to build-bridge, complete one round

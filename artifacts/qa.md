@@ -1,29 +1,25 @@
-# Epic 6 — Game Modes Framework: QA
+# Epic 7 — QA
 
-## Unit Tests
+## Test Strategy
 
-- **modeResolver**: resolveInteractionMode returns classic/timed-pop from query; unknown → classic
-- **usePlayGame.recordTimeout**: sets feedback to timeout type, no score change, nextQuestion works
-- **useMode**: returns correct component for classic and timed-pop
-- **timed-pop timer**: with vi.useFakeTimers, timer expires → recordTimeout called → feedback shows timeout
+### Unit
 
-## Integration
+- `modeResolver`: 'build-bridge' resolves correctly; unknown falls back to classic
+- Mode selector: select mode → localStorage updated; on load, stored mode applied
+- ModeBuildBridge: given question with choices, placing correct plank calls onAnswer(correct); wrong calls onAnswer(wrong)
+- Deterministic: use fake timers / jsdom events for build-bridge logic
 
-- Mode switch: changing route.query.mode updates rendered mode
-- Timed-pop: answer before timeout works; timeout shows correct feedback
-- Backward compat: /play?mode=pack still yields pack content
+### Integration
 
-## Smoke (manual)
+- /play?mode=build-bridge renders ModeBuildBridge
+- Mode selector opens, selection updates route and localStorage
 
-- /play → classic
-- /play?mode=classic → classic
-- /play?mode=timed-pop → timed-pop, timer visible
-- /play?mode=timed-pop: wait for timeout → "Time's up!" → Next → new question
-- /play?mode=pack → pack content (source=pack)
-- /play?mode=timed-pop&source=pack → timed-pop with pack
+### E2E
 
-## Regression
+- Smoke: visit /play, open mode selector, select build-bridge, complete one round (place correct answer), verify score increments
+- Existing smoke: classic and timed-pop still pass
 
-- Existing skins work in classic mode
-- /play?skin=X still works
-- Typecheck, lint, build pass
+### Accessibility
+
+- Keyboard: build-bridge playable without mouse (select plank, place via Enter/Space)
+- Focus visible; no traps

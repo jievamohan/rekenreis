@@ -1,59 +1,34 @@
-# Epic 6 — Game Modes Framework: Architecture
+# Epic 7 — Architecture
 
 ## Layering
 
 ```
-play.vue (routing, query params)
-    │
-    ├─ source: pack | infinite (content)
-    ├─ mode: classic | timed-pop (interaction)
-    ├─ skin: classic | monster-feed | space | pirate (visual)
-    └─ difficulty: upTo10 | upTo20 (GameMode in types/game.ts)
+/play
+  ├─ mode selector (modal or inline) — choose mode + skin
+  │   └─ localStorage: lastMode, lastSkin
+  ├─ route.query.mode, route.query.skin (synced from storage or user)
+  └─ game area
+      └─ <component :is="gameMode.component" /> (classic | timed-pop | build-bridge)
 ```
 
-## Query Param Resolution
+## Mode Selector
 
-- `source` = route.query.source ?? (route.query.mode === 'pack' ? 'pack' : 'infinite')
-- `interactionMode` = ['classic','timed-pop'].includes(route.query.mode) ? route.query.mode : 'classic'
-- Skin and difficulty unchanged.
+- **Option A**: Modal overlay on /play — "Choose game" button opens modal
+- **Option B**: Dedicated route /play/select — navigates to /play with query after choice
+- **Option C**: Inline on /play — when ?mode= empty and no stored pref, show selector instead of game
 
-## Mode Contract
+Recommendation: **Option A** — modal keeps URL simple; "Change mode" opens modal; first visit with no pref can auto-open or show selector above game area briefly.
 
-```ts
-// Interaction mode (new)
-type InteractionModeId = 'classic' | 'timed-pop'
+## Build-Bridge Component
 
-interface ModeRoundProps extends SkinRoundProps {
-  // Same as SkinRoundProps; mode may add timer config
-  timerSeconds?: number  // optional, for timed modes
-}
+- Receives: SkinRoundProps + effectiveSkinId + (no recordTimeout for build-bridge)
+- Renders: question prompt, bridge visual, draggable planks (answer choices), drop slot
+- Callbacks: onAnswer(choice) when correct plank placed; onNext() after feedback
+- Wrong placement: call onAnswer with wrong value → core loop handles feedback; show gentle hint
+- Keyboard: plank buttons focusable; "place" via click on slot or dedicated control
 
-// Mode can optionally receive recordTimeout for timed modes
-interface TimedModeCallbacks {
-  onAnswer: (choice: number) => void
-  onNext: () => void
-  recordTimeout?: () => void  // when timer expires
-}
-```
+## Data Flow
 
-## Core Loop Extension
-
-usePlayGame remains the single source of truth. For timed-pop:
-- Add `recordTimeout()`: sets feedback to { type: 'timeout', correctAnswer } without changing score.
-- SkinRoundProps/PlayFeedback: extend to support type 'timeout' for friendly copy.
-
-## Component Structure
-
-- **classic**: Existing behavior. Current skins render rounds. No change.
-- **timed-pop**: New mode component. Renders question + choices (reusing skin structure or minimal duplication) + timer. On timeout: calls recordTimeout(), shows "Time's up! The answer was X.", Next enabled.
-
-## Files
-
-- `types/mode.ts` — InteractionModeId, ModeDefinition
-- `utils/modeResolver.ts` — resolveInteractionMode(query)
-- `composables/useMode.ts` — mode registry, resolve mode component
-- `components/modes/ModeClassic.vue` — delegates to skin (thin wrapper)
-- `components/modes/ModeTimedPop.vue` — timer + round render
-- `composables/usePlayGame.ts` — add recordTimeout()
-- `types/game.ts` or skin.ts — extend PlayFeedback for timeout
-- `pages/play.vue` — wire mode from query, resolve mode+skin
+- usePlayGame unchanged: generates question, handles selectAnswer/nextQuestion
+- ModeBuildBridge: same contract as ModeClassic — receives question, choices, calls onAnswer/onNext
+- Only interaction changes: drag-and-drop or keyboard place vs click

@@ -29,4 +29,12 @@ describe('resolveInteractionMode', () => {
   it('normalizes timed_pop to timed-pop', () => {
     expect(resolveInteractionMode('timed_pop')).toBe('timed-pop')
   })
+
+  it('returns build-bridge for mode=build-bridge', () => {
+    expect(resolveInteractionMode('build-bridge')).toBe('build-bridge')
+  })
+
+  it('normalizes build_bridge to build-bridge', () => {
+    expect(resolveInteractionMode('build_bridge')).toBe('build-bridge')
+  })
 })
