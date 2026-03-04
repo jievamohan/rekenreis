@@ -3,10 +3,12 @@ import type { GameMode } from '~/types/game'
 import type { Level } from '~/types/level'
 import type { SkinId } from '~/utils/skinResolver'
 import { resolveSkinId } from '~/utils/skinResolver'
+import { resolveInteractionMode } from '~/utils/modeResolver'
 import { useApi } from '~/composables/useApi'
 import { usePlayGame } from '~/composables/usePlayGame'
 import { useRewards } from '~/composables/useRewards'
 import { useSkin } from '~/composables/useSkin'
+import { useMode } from '~/composables/useMode'
 import { useTelemetry } from '~/composables/useTelemetry'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import levelsV1 from '~/content/levels.v1.json'
@@ -16,8 +18,12 @@ const router = useRouter()
 const api = useApi()
 const { telemetryOptOut, setOptOut } = useTelemetry()
 const playSource = computed(() =>
-  route.query.mode === 'pack' ? 'pack' : 'infinite'
+  route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite'
 )
+const interactionMode = computed(() =>
+  resolveInteractionMode(route.query.mode as string | undefined)
+)
+const gameMode = computed(() => useMode(interactionMode.value))
 const levelPack = computed(() =>
   playSource.value === 'pack' ? (levelsV1 as Level[]) : []
 )
@@ -64,6 +70,12 @@ const skinProps = computed(() => ({
   },
 }))
 
+const modeProps = computed(() => ({
+  ...skinProps.value,
+  effectiveSkinId: effectiveSkinId.value,
+  recordTimeout: game.recordTimeout,
+}))
+
 function selectSkin(id: SkinId) {
   if (isUnlocked(id)) {
     router.push({ query: { ...route.query, skin: id } })
@@ -91,7 +103,7 @@ function selectSkin(id: SkinId) {
       </button>
     </nav>
     <div id="game-main" tabindex="-1">
-      <component :is="skin.component" v-bind="skinProps" />
+      <component :is="gameMode.component" v-bind="modeProps" />
     </div>
     <footer class="privacy-footer">
       <p class="privacy-note">

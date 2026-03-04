@@ -1,46 +1,59 @@
-# Hardening Epic — Architecture
+# Epic 6 — Game Modes Framework: Architecture
 
-## Context
+## Layering
 
-Repo layout: `/apps/web` (Nuxt), `/apps/api` (Laravel), `/packages`. CI in `.github/workflows/gates.yml`.
+```
+play.vue (routing, query params)
+    │
+    ├─ source: pack | infinite (content)
+    ├─ mode: classic | timed-pop (interaction)
+    ├─ skin: classic | monster-feed | space | pirate (visual)
+    └─ difficulty: upTo10 | upTo20 (GameMode in types/game.ts)
+```
 
-## Additions
+## Query Param Resolution
 
-### 1. Policy-as-code
+- `source` = route.query.source ?? (route.query.mode === 'pack' ? 'pack' : 'infinite')
+- `interactionMode` = ['classic','timed-pop'].includes(route.query.mode) ? route.query.mode : 'classic'
+- Skin and difficulty unchanged.
 
-- **Target files**: `docker-compose.yml`, `.github/workflows/*.yml`, `*.env.example`, `**/.env.example`
-- **Mechanism**: OPA/Conftest or custom YAML/TOML checks (e.g. shell + yq)
-- **Placement**: New CI job or step in Gate D
+## Mode Contract
 
-### 2. Semgrep
+```ts
+// Interaction mode (new)
+type InteractionModeId = 'classic' | 'timed-pop'
 
-- **Location**: `.semgrep/` or repo root `.semgreprules.yml`
-- **Rules**: TS (apps/web), PHP (apps/api), YAML (workflows, compose)
-- **CI**: Add `semgrep scan --config auto` (or custom config) to Gate D
+interface ModeRoundProps extends SkinRoundProps {
+  // Same as SkinRoundProps; mode may add timer config
+  timerSeconds?: number  // optional, for timed modes
+}
 
-### 3. Gitleaks
+// Mode can optionally receive recordTimeout for timed modes
+interface TimedModeCallbacks {
+  onAnswer: (choice: number) => void
+  onNext: () => void
+  recordTimeout?: () => void  // when timer expires
+}
+```
 
-- **Location**: `.gitleaks.toml` at repo root
-- **Tuning**: config-file patterns (env, compose, yaml) with allowlists for known placeholders (e.g. base64 zeros, `secret`, `root`)
+## Core Loop Extension
 
-### 4. Trivy + Hadolint
+usePlayGame remains the single source of truth. For timed-pop:
+- Add `recordTimeout()`: sets feedback to { type: 'timeout', correctAnswer } without changing score.
+- SkinRoundProps/PlayFeedback: extend to support type 'timeout' for friendly copy.
 
-- **Trivy**: Scan Dockerfiles and built images (config + vuln); CI job
-- **Hadolint**: Lint Dockerfiles; CI step before build
+## Component Structure
 
-### 5. OWASP ZAP Baseline
+- **classic**: Existing behavior. Current skins render rounds. No change.
+- **timed-pop**: New mode component. Renders question + choices (reusing skin structure or minimal duplication) + timer. On timeout: calls recordTimeout(), shows "Time's up! The answer was X.", Next enabled.
 
-- **Flow**: `docker compose up -d` → wait for health → `zap-baseline.py -t http://web:3000` and `-t http://api:8001`
-- **Placement**: Separate job (or optional scheduled); may run in same workflow with services
+## Files
 
-### 6. Security Regression Tests
-
-- **Web**: Headers (X-Frame-Options, CSP-like), cookies (httpOnly, secure when applicable)
-- **API**: CORS, validation, authz defaults (e.g. unauthenticated endpoints documented)
-- **Lanes**: T (tests), minimal W2/A2 for wiring
-
-## Lanes
-
-- **I**: CI workflows, config files (.gitleaks.toml, .semgrep, policy checks)
-- **T**: Security regression tests
-- **W2/A2**: Minimal wiring (e.g. Nuxt headers, Laravel CORS config) only if tests require it
+- `types/mode.ts` — InteractionModeId, ModeDefinition
+- `utils/modeResolver.ts` — resolveInteractionMode(query)
+- `composables/useMode.ts` — mode registry, resolve mode component
+- `components/modes/ModeClassic.vue` — delegates to skin (thin wrapper)
+- `components/modes/ModeTimedPop.vue` — timer + round render
+- `composables/usePlayGame.ts` — add recordTimeout()
+- `types/game.ts` or skin.ts — extend PlayFeedback for timeout
+- `pages/play.vue` — wire mode from query, resolve mode+skin

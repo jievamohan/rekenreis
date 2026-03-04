@@ -1,50 +1,39 @@
-# Hardening Epic — Solution
+# Epic 6 — Game Modes Framework: Solution
 
-## 1. Policy-as-code
+## 1. Types & Contract
 
-Use lightweight checks via `yq` or `opa eval` against Rego policies. Avoid heavy Conftest unless needed.
+- Add `InteractionModeId = 'classic' | 'timed-pop'` in `types/mode.ts`
+- Extend `PlayFeedback`: `{ correct, selectedAnswer } | { type: 'timeout', correctAnswer }`
+- `ModeDefinition`: id, component (like SkinDefinition)
 
-- **Policies**:
-  - docker-compose: no hardcoded prod secrets; ports documented
-  - workflows: no inline secrets; use `${{ secrets.* }}`
-  - .env.example: no real secrets; placeholder values only
-- **Implementation**: `.github/policies/` or `scripts/ci/policy-check.sh` + Rego or shell
+## 2. Query Param Handling
 
-## 2. Semgrep
+- play.vue: `source` from `route.query.source ?? (route.query.mode === 'pack' ? 'pack' : 'infinite')`
+- `interactionMode` from `route.query.mode` when classic|timed-pop else 'classic'
 
-- Create `.semgrep/rules/` with:
-  - `ts-security.yaml`: TS rules (e.g. eval, dangerous patterns)
-  - `php-security.yaml`: PHP rules (e.g. sql injection, command injection)
-  - `yaml-policy.yaml`: YAML rules for workflows/compose
-- Config: `semgrep --config .semgrep` or extend `auto`
+## 3. usePlayGame Extension
 
-## 3. Gitleaks
+- Add `recordTimeout()`: if question exists and no feedback yet, set `feedback = { type: 'timeout', correctAnswer: question.correctAnswer }`, no score change
 
-- `.gitleaks.toml` at repo root
-- `[extend] useDefault = true`
-- Custom rules for: env vars, compose `environment`, workflow env
-- Allowlist: `base64:0000...`, `secret`, `root` in example files
+## 4. Mode Registry
 
-## 4. Trivy + Hadolint
+- useMode(interactionModeId) returns ModeDefinition
+- ModeClassic: wraps current skin-based round (pass SkinRoundProps to skin)
+- ModeTimedPop: renders round with timer; on timeout calls recordTimeout; uses same SkinRoundProps shape for consistency
 
-- **Hadolint**: `hadolint apps/web/Dockerfile apps/api/Dockerfile`
-- **Trivy**: `trivy config .` for IaC; `trivy image` for built images (optional, heavier)
-- CI: New job `gate-d-container` or extend `gate-d-security`
+## 5. Timed-pop Implementation
 
-## 5. OWASP ZAP Baseline
+- Timer: configurable (default 15s), use setInterval/ref
+- On expiry: clear timer, call recordTimeout(), show feedback
+- UI: question + choices (same structure as classic) + timer display (e.g. "0:12" countdown)
+- Tests: use vi.useFakeTimers() for deterministic timer behavior
 
-- Job: `docker compose up -d`; wait for `/health`; run `zap-baseline.py -t http://localhost:3000` and `http://localhost:8001`
-- Use `ghcr.io/zaproxy/zaproxy:stable`; `-I` for warnings-only initially
-- Mount config to tune rules (FAIL vs IGNORE)
+## 6. Routing & Play Page
 
-## 6. Security Regression Tests
+- Resolve interactionMode from query
+- Resolve mode component; pass game state + callbacks (including recordTimeout for timed mode)
+- Render `<component :is="mode.component" v-bind="modeProps" />`
 
-- **Web (Vitest + fetch/axios)**:
-  - GET `/` or `/start` → assert headers (X-Frame-Options or equivalent)
-  - Cookie attributes if any
-- **API (PHPUnit)**:
-  - CORS preflight / headers
-  - Validation on `/session-stats` (invalid payload → 422)
-  - Health returns 200
-- **Nuxt**: Add minimal security headers in `nuxt.config.ts` (e.g. `headers` in routeRules)
-- **Laravel**: CORS config in `config/cors.php` if missing
+## 7. Smoke
+
+- Update docs/runbooks: add step for /play?mode=timed-pop, verify timer and timeout flow

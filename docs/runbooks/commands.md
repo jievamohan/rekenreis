@@ -54,10 +54,13 @@ docker compose up --build
 
 1. `docker compose up --build`
 2. Visit http://localhost:3000/start — should show API health JSON
-3. Visit http://localhost:3000/play — should show math game (infinite mode), question, answer buttons
-4. Visit http://localhost:3000/play?mode=pack — should show math game with content pack levels
-5. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
-6. Select an answer — feedback appears; click Next — new question loads (both modes)
+3. Visit http://localhost:3000/play — should show math game (classic mode, infinite content), question, answer buttons
+4. Visit http://localhost:3000/play?mode=classic — same as above (explicit classic)
+5. Visit http://localhost:3000/play?mode=timed-pop — should show math game with countdown timer
+6. For timed-pop: wait ~15s for timeout → "Time's up! The answer was X" → click Next → new question loads
+7. Visit http://localhost:3000/play?mode=pack or /play?source=pack — should show math game with content pack levels
+8. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
+9. Select an answer — feedback appears; click Next — new question loads (classic and timed-pop)
 
 ## Install (prerequisites)
 

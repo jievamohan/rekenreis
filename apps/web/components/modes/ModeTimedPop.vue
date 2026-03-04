@@ -1,22 +1,83 @@
 <script setup lang="ts">
+import { ref, computed, watch, onUnmounted } from 'vue'
 import type { SkinRoundProps } from '~/types/skin'
+import type { SkinId } from '~/utils/skinResolver'
+import { useSkin } from '~/composables/useSkin'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 
-defineProps<SkinRoundProps>()
+const props = defineProps<
+  SkinRoundProps & { effectiveSkinId: SkinId; recordTimeout: () => void }
+>()
+
+const DEFAULT_TIMER_SECONDS = 15
+const timerSeconds = DEFAULT_TIMER_SECONDS
+const elapsed = ref(0)
+const timerId = ref<ReturnType<typeof setInterval> | null>(null)
+const skin = useSkin(props.effectiveSkinId)
+const skinProps = {
+  question: props.question,
+  feedback: props.feedback,
+  score: props.score,
+  streak: props.streak,
+  mode: props.mode,
+  onAnswer: props.onAnswer,
+  onNext: props.onNext,
+  onModeChange: props.onModeChange,
+}
+
+function startTimer() {
+  stopTimer()
+  elapsed.value = 0
+  timerId.value = setInterval(() => {
+    elapsed.value += 1
+    if (elapsed.value >= timerSeconds) {
+      stopTimer()
+      props.recordTimeout()
+    }
+  }, 1000)
+}
+
+function stopTimer() {
+  if (timerId.value) {
+    clearInterval(timerId.value)
+    timerId.value = null
+  }
+}
+
+watch(
+  () => props.question,
+  (q) => {
+    if (q && !props.feedback) startTimer()
+    else stopTimer()
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.feedback,
+  (fb) => {
+    if (fb) stopTimer()
+  },
+  { immediate: true }
+)
+
+onUnmounted(stopTimer)
+
+const remaining = computed(() => Math.max(0, timerSeconds - elapsed.value))
+const displayTime = computed(() => {
+  const s = remaining.value
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+})
+const hasFeedback = computed(() => !!props.feedback)
 </script>
 
 <template>
-  <div class="play" role="main">
-    <h1>Math Game</h1>
-
-    <div
-      v-if="question"
-      class="question"
-      role="group"
-      :aria-label="`${question.a} plus ${question.b} equals ?`"
-    >
+  <div class="mode-timed-pop" role="main">
+    <div v-if="question" class="question" role="group" :aria-label="`${question.a} plus ${question.b} equals ?`">
       <p class="prompt">{{ question.a }} + {{ question.b }} = ?</p>
-
+      <p v-if="!hasFeedback" class="timer" role="timer" :aria-label="`${remaining} seconds remaining`">
+        {{ displayTime }}
+      </p>
       <div class="choices" role="group" aria-label="Answer choices">
         <button
           v-for="(choice, i) in question.choices"
@@ -58,133 +119,76 @@ defineProps<SkinRoundProps>()
       <span>Score: {{ score }}</span>
       <span>Streak: {{ streak }}</span>
     </div>
-
-    <div class="mode">
-      <label>
-        <input
-          :checked="mode === 'upTo10'"
-          type="radio"
-          name="skin-classic-mode"
-          value="upTo10"
-          @change="onModeChange('upTo10')"
-        />
-        Up to 10
-      </label>
-      <label>
-        <input
-          :checked="mode === 'upTo20'"
-          type="radio"
-          name="skin-classic-mode"
-          value="upTo20"
-          @change="onModeChange('upTo20')"
-        />
-        Up to 20
-      </label>
-    </div>
   </div>
 </template>
 
 <style scoped>
-.play {
+.mode-timed-pop {
   max-width: 24rem;
   margin: 0 auto;
   padding: 1.5rem;
   font-family: system-ui, sans-serif;
 }
-
-h1 {
-  margin-top: 0;
-  font-size: 1.5rem;
-}
-
 .question {
   margin: 1.5rem 0;
 }
-
 .prompt {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
 }
-
+.timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: #06c;
+}
 .choices {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 1rem;
 }
-
 .choice {
-  min-width: 3.5rem;
-  padding: 0.75rem 1rem;
-  font-size: 1.25rem;
-  border: 2px solid #333;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.125rem;
+  border: 2px solid #ccc;
   border-radius: 0.5rem;
   background: #fff;
   cursor: pointer;
 }
-
-.choice:hover:not(.disabled) {
+.choice:hover:not(:disabled) {
   background: #f0f0f0;
 }
-
 .choice:focus-visible {
   outline: 2px solid #06c;
   outline-offset: 2px;
 }
-
 .choice.disabled {
   cursor: default;
   opacity: 0.7;
 }
-
 .feedback {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  margin-top: 1rem;
 }
-
 .feedback .correct {
-  color: #0a0;
-  font-weight: 600;
+  color: #080;
 }
-
 .feedback .incorrect {
-  color: #c00;
+  color: #800;
 }
-
 .next {
-  display: block;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid #333;
-  border-radius: 0.375rem;
-  background: #fff;
   cursor: pointer;
 }
-
 .next:focus-visible {
   outline: 2px solid #06c;
   outline-offset: 2px;
 }
-
 .stats {
   margin-top: 1rem;
-  display: flex;
-  gap: 1.5rem;
-  font-size: 1rem;
-}
-
-.mode {
-  margin-top: 1.5rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.mode label {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
 }
 </style>
