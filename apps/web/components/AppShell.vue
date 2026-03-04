@@ -3,7 +3,6 @@ import type { AvatarId } from '~/utils/profileSchema'
 import { useProfile } from '~/composables/useProfile'
 import { useAppShell } from '~/composables/useAppShell'
 import ProfileSelector from '~/components/ProfileSelector.vue'
-
 const profile = useProfile()
 const { getChooseGameHandler } = useAppShell()
 const router = useRouter()
@@ -11,9 +10,9 @@ const route = useRoute()
 const showProfileSelector = ref(false)
 
 const navItems = [
-  { to: '/stickers', label: 'Sticker book', icon: '📚' },
-  { to: '/summary', label: 'Progress', icon: '📊' },
-  { to: '/settings', label: 'Settings', icon: '⚙️' },
+  { to: '/stickers', label: 'Sticker book', icon: 'fish' },
+  { to: '/summary', label: 'Progress', icon: 'chart-bubbles' },
+  { to: '/settings', label: 'Settings', icon: 'gear-coral' },
 ]
 
 function onChooseGame() {
@@ -85,6 +84,20 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   display: flex;
   flex-direction: column;
   padding: var(--app-space-sm);
+  background: var(--app-bg-fallback);
+  background: var(--app-bg);
+  position: relative;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 4%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 3%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 5%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .app-top-bar {
@@ -94,6 +107,8 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   gap: var(--app-space-md);
   margin-bottom: var(--app-space-md);
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .profile-pill {
@@ -113,7 +128,7 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
 }
 
 .profile-pill:hover {
-  background: rgba(46, 125, 50, 0.08);
+  background: rgba(0, 188, 212, 0.15);
 }
 
 .profile-pill:focus-visible {
@@ -176,6 +191,8 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   flex-direction: column;
   align-items: center;
   padding: 0 var(--app-space-sm);
+  position: relative;
+  z-index: 1;
 }
 
 </style>

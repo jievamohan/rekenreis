@@ -1,0 +1,18 @@
+<script setup lang="ts">
+defineOptions({ inheritAttrs: false })
+</script>
+
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="nav-icon-svg" v-bind="$attrs">
+    <path d="M2 12c2 0 4 2 6 0s4-2 6 0 4 2 6 0"/>
+    <circle cx="18" cy="12" r="2"/>
+    <path d="M2 12h4"/>
+  </svg>
+</template>
+
+<style scoped>
+.nav-icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+</style>

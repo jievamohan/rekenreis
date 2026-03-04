@@ -1,32 +1,24 @@
-# Epic 19.1 — Backlog (Slice: Tokens & No-White)
+# Epic 19.2 — Backlog (Slice: Shell & Nav Redesign)
 
 ## Scope_in
 
-- Update tokens.css: underwater palette (deep water gradient bg, no #ffffff surfaces)
-- Update graphics.css: underwater-themed graphics tokens
-- GameStageCard: use themed surface (glass/teal, not white)
-- app.vue: ensure root uses new --app-bg
-- Remove hardcoded #fff, #ffffff from dominant surfaces
-- Keep --app-tap-min, focus states, reduced motion
-- Tests: typecheck, build, smoke green
+- AppShell: underwater background pattern, themed top bar (profile pill, Choose game)
+- GameStageCard: integrate with new tokens from 19.1
+- NavTabs: replace emoji icons with underwater SVG icons (fish, chart/bubbles, gear/coral)
+- Add assets/graphics/icons/ for nav SVGs
+- Playful typography (Nunito or Fredoka One) applied consistently
+- Keep a11y: 44px tap targets, focus states
+- Tests: typecheck, build, smoke (nav tabs work)
 
 ## Scope_out
 
-- AppShell/NavTabs redesign (Epic 19.2)
-- New SVG assets (Epic 19.3)
-- Page unification beyond tokens (Epic 19.4)
-- Full a11y audit (Epic 19.5)
-
-## Risks
-
-- Contrast: dark backgrounds require light text; ensure WCAG AA
-- Mitigation: use art-direction palette (--app-text: #e0f7fa on dark)
+- Full asset pipeline (Epic 19.3)
+- Page unification (Epic 19.4)
 
 ## Task List
 
 | # | Title | Lanes | Gates | Acceptance |
 |---|-------|-------|-------|------------|
-| 1 | epic19-1-tokens | W1 | C,D,F | tokens.css underwater palette; no #fff surfaces |
-| 2 | epic19-1-graphics | W1 | C,D,F | graphics.css underwater tokens |
-| 3 | epic19-1-surfaces | W1 | C,D,F | Remove hardcoded white; GameStageCard themed |
-| 4 | epic19-1-verify | T | C,D,F | typecheck, build, smoke green |
+| 1 | epic19-2-nav-icons | W1 | C,D,F | SVG icons in assets/graphics/icons/ |
+| 2 | epic19-2-shell-bg | W1 | C,D,F | AppShell underwater background |
+| 3 | epic19-2-nav-icons-wire | W1 | C,D,F | NavTabs use SVG icons |
