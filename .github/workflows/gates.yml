@@ -64,6 +64,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
 
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-semgrep
+
       - name: Semgrep
         run: |
           pip install --quiet semgrep
@@ -102,6 +108,25 @@ jobs:
         run: |
           cd apps/api && composer install --no-interaction --prefer-dist
           composer run audit-deps || true
+
+      - name: Cache hadolint + trivy images
+        uses: actions/cache@v4
+        id: docker-tools-cache
+        with:
+          path: /tmp/docker-cache/tools
+          key: docker-hadolint-trivy
+
+      - name: Pull hadolint + trivy images
+        if: steps.docker-tools-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull hadolint/hadolint
+          docker pull aquasec/trivy
+          mkdir -p /tmp/docker-cache/tools
+          docker save hadolint/hadolint aquasec/trivy -o /tmp/docker-cache/tools/tools.tar
+
+      - name: Load hadolint + trivy images
+        if: steps.docker-tools-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/docker-cache/tools/tools.tar
 
       - name: Hadolint (Dockerfiles)
         run: |
@@ -144,9 +169,67 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache mysql image
+        uses: actions/cache@v4
+        id: mysql-cache
+        with:
+          path: /tmp/docker-cache/mysql
+          key: docker-mysql-8.0
+
+      - name: Pull mysql image
+        if: steps.mysql-cache.outputs.cache-hit != 'true'
+        run: docker pull mysql:8.0 && mkdir -p /tmp/docker-cache/mysql && docker save mysql:8.0 -o /tmp/docker-cache/mysql/mysql.tar
+
+      - name: Load mysql image
+        if: steps.mysql-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/docker-cache/mysql/mysql.tar
+
+      - name: Cache ZAP image
+        uses: actions/cache@v4
+        id: zap-cache
+        with:
+          path: /tmp/docker-cache/zap
+          key: docker-zaproxy-stable
+
+      - name: Pull ZAP image
+        if: steps.zap-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull ghcr.io/zaproxy/zaproxy:stable
+          mkdir -p /tmp/docker-cache/zap
+          docker save ghcr.io/zaproxy/zaproxy:stable -o /tmp/docker-cache/zap/zap.tar
+
+      - name: Load ZAP image
+        if: steps.zap-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/docker-cache/zap/zap.tar
+
+      - name: Build web image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./apps/web
+          file: ./apps/web/Dockerfile
+          load: true
+          tags: rekenreis-web:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          scope: web
+
+      - name: Build api image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./apps/api
+          file: ./apps/api/Dockerfile
+          load: true
+          tags: rekenreis-api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          scope: api
+
       - name: Start stack
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d
           sleep 5
           docker compose logs api || true
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait

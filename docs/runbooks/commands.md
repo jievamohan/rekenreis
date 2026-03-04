@@ -20,8 +20,8 @@ Commands used by CI gates and local development. All paths relative to repo root
 | semgrep | `semgrep scan --config auto --config .semgrep --error` | SAST: auto + custom rules in `.semgrep/` (install: pip install semgrep) |
 | pnpm audit | `cd apps/web && pnpm audit --prod` | Web deps |
 | composer audit | `cd apps/api && composer run audit-deps` | API deps (audit reserved by Composer) |
-| hadolint | `docker run --rm -i hadolint/hadolint < apps/web/Dockerfile` | Dockerfile lint |
-| trivy config | `docker run --rm -v "$(pwd):/app" -w /app aquasec/trivy config .` | IaC/config scan |
+| hadolint | `docker run --rm -i hadolint/hadolint < apps/web/Dockerfile` | Dockerfile lint (image cached in gate-d) |
+| trivy config | `docker run --rm -v "$(pwd):/app" -w /app aquasec/trivy config .` | IaC/config scan (image cached in gate-d) |
 | ZAP baseline | See `.github/workflows/gates.yml` zap-baseline job | DAST: web /start, /play; api /api/health, /api/session-stats |
 | security-headers-check | `bash scripts/ci/security-headers-check.sh` | Requires stack running; asserts X-Frame-Options, X-Content-Type-Options, CORS |
 
@@ -36,6 +36,9 @@ Commands used by CI gates and local development. All paths relative to repo root
 
 - **pnpm**: Cached via `setup-node` with `cache-dependency-path: apps/web/pnpm-lock.yaml`
 - **composer**: Cached via `actions/cache` with key `composer-${{ hashFiles('apps/api/composer.lock') }}`
+- **Docker (zap-baseline)**: Buildx + GHA cache (`cache-from: type=gha`, `cache-to: type=gha,mode=max`) for web and api images; images built via `docker/build-push-action` with `load: true`, then `docker compose up --no-build`. Pre-pulled images (mysql:8.0, ghcr.io/zaproxy/zaproxy:stable) cached via `actions/cache` + `docker save`/`docker load`.
+- **pip (gate-d)**: Cached via `actions/cache` with key `pip-${{ runner.os }}-semgrep` for semgrep install
+- **Docker pull (gate-d)**: hadolint + trivy images cached via `docker save`/`docker load` + `actions/cache`
 
 ## Lint & Test
 
