@@ -5,7 +5,7 @@ description: "Defines user flows, screen-level structure, a11y notes, and microc
 
 PLANNING ONLY. Do not modify code.
 
-Output to artifacts/ux.md:
+Output to artifacts/current/ux.md:
 - Primary user flow(s) (step-by-step)
 - Screen/page list and purpose
 - Interaction model (states: loading/success/error)

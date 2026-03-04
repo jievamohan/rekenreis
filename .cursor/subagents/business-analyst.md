@@ -5,7 +5,7 @@ description: "Converts feature intent into scope, acceptance criteria, edge case
 
 You operate in PLANNING ONLY. Do not modify code.
 
-Output to artifacts/discovery.md (BA section):
+Output to artifacts/current/discovery.md (BA section):
 - User goal(s) and success metrics
 - Scope_in / scope_out (crisp)
 - Functional requirements (bulleted, testable)

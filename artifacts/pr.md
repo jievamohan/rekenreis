@@ -1,23 +1,16 @@
-# Epic 16 — Release Prep (Verification)
+# Artifact Lifecycle Hardening
 
-Prepare for release-quality UX and stability. Epic 16 requirements match Epic 15; this PR verifies all criteria and fixes any regressions.
+Introduce `artifacts/current` and `artifacts/archive/<epic-id>/<timestamp>`; update all scripts to read/write only `artifacts/current`; add archive step after finalize.
 
 **Scope:**
-- Verify tap targets (44×44px), contrast, reduced-motion
-- Verify friendly microcopy
-- Verify bug-bash checklist + scripts
-- Verify perf budget
-- Fix any regressions
+- artifacts/current as working directory
+- artifacts/archive for completed runs
+- Script updates: PR bootstrap, ci-watch, ci-fetch-logs, finalize
+- Archive step after finalize
 
-**Non-goals:**
-- New modes/skins
+**Non-goals:** Game features
 
 ## Tasks
 
-- [ ] 0088-epic16-release-prep-verification
-
-## PR Metadata
-- Base: main
-- Branch: feat/epic16-release-prep-verification
-- PR: #35
-- URL: https://github.com/jievamohan/rekenreis/pull/35
+- [ ] 0090-artifacts-current-and-scripts
+- [ ] 0091-archive-and-finalize

@@ -7,8 +7,9 @@ BRANCH="${3:-}"     # branch name optional
 RETRIES="${RETRIES:-20}"
 SLEEP="${SLEEP:-30}"
 
-mkdir -p artifacts
-STATUS_FILE="artifacts/ci-status.md"
+ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}"
+mkdir -p "$ARTIFACTS_DIR"
+STATUS_FILE="$ARTIFACTS_DIR/ci-status.md"
 
 run_gh() {
   if [[ "$MODE" == "container" ]]; then
@@ -73,7 +74,7 @@ for ((i=1; i<=RETRIES; i++)); do
     else
       echo "" >> "$STATUS_FILE"
       echo "❌ CI FAILED (run $RUN_ID, conclusion=$CONCLUSION)" >> "$STATUS_FILE"
-      echo "$RUN_ID" > artifacts/ci-last-run-id.txt
+      echo "$RUN_ID" > "$ARTIFACTS_DIR/ci-last-run-id.txt"
       # Auto-fetch logs per /ci-watch protocol
       SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
       "$SCRIPT_DIR/gh_fetch_logs.sh" "$MODE" || true

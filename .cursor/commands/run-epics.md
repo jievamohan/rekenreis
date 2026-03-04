@@ -28,7 +28,7 @@ Protocol:
       - bootstrap a single PR
       - run tasks
       - finalize (squash + CI watch)
-   d) Confirm PR exists by reading artifacts/pr-number.txt (or infer via gh).
+   d) Confirm PR exists by reading artifacts/current/pr-number.txt (or infer via gh).
    e) Ensure CI is green for the PR:
       - scripts/ci/gh_watch.sh host <PR_NUM>
    f) Enter WAIT MODE until merged:

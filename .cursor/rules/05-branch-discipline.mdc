@@ -8,7 +8,7 @@ Before ANY file modifications:
 - If current branch is `main` or `master`:
   - Create and switch to a feature branch:
     - `feat/{task.id}-{slug}`
-  - Record the branch name in `artifacts/plan.md`.
+  - Record the branch name in `artifacts/current/plan.md`.
 
 Hard stop:
 - If you cannot create/switch branches, mark the task BLOCKED and do not edit files.

@@ -1,21 +1,30 @@
-# Epic 16 — Release Prep: QA
+# QA: Artifact Lifecycle Hardening
 
-## Strategy
+## Test Strategy
 
-Verification audit: confirm Epic 15 deliverables satisfy Epic 16 requirements.
+### Unit / Script Tests
 
-## Tests
+- **Path resolution**: Verify scripts resolve `artifacts/current` correctly
+- **Archive**: Run `gh_archive_artifacts.sh` and assert `artifacts/archive/<epic-id>/<timestamp>/` exists with expected files
 
-- **Unit**: N/A (verification only)
-- **E2E**: Smoke already covers play flows
-- **Manual**: Bug bash checklist (docs/bug-bash-checklist.md)
-- **Gates**: C, D, F pass
+### Integration Tests
 
-## Acceptance Criteria
+- Run `gh_pr_bootstrap.sh` (requires gh auth, PR creation) → verify `artifacts/current/pr-number.txt` exists
+- Run `gh_watch.sh` with mock/short timeout → verify `artifacts/current/ci-status.md` written
+- Run `gh_fetch_logs.sh` with a known RUN_ID → verify logs in `artifacts/current/ci-logs/`
 
-1. Tap targets: 44×44px minimum on all interactive elements
-2. Contrast: 4.5:1 (normal), 3:1 (large)
-3. Reduced motion: prefers-reduced-motion honored
-4. Copy: friendly microcopy across key pages
-5. Bug bash: checklist + scripts exist
-6. Perf: bundle within budget
+### Smoke / E2E
+
+- Execute a minimal `/feature` run (e.g. --plan only) and confirm:
+  - PR bootstrap creates PR and writes to `artifacts/current`
+  - Finalize + archive produces `artifacts/archive/...`
+
+### Acceptance Criteria Mapping
+
+| AC | Test |
+|----|------|
+| AC1 | Grep all scripts for `artifacts/` and assert they use `artifacts/current` |
+| AC2 | Run archive after finalize; assert archive dir exists and contains copy |
+| AC3 | Run PR bootstrap; assert pr-number.txt in artifacts/current |
+| AC4 | Run ci-watch; assert ci-status.md in artifacts/current |
+| AC5 | CI workflow run; assert ZAP uses artifacts/current/zap |
