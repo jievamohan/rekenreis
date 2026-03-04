@@ -1,0 +1,13 @@
+/* Epic 17 — Graphics tokens (art-direction) */
+:root {
+  --graphics-sky: #87ceeb;
+  --graphics-ground: #8b7355;
+  --graphics-water: #4a90d9;
+  --graphics-plank: #d2691e;
+  --graphics-plank-highlight: #deb887;
+  --graphics-bridge: #8b4513;
+  --graphics-accent: #2e7d32;
+  --graphics-soft-wrong: #e57373;
+  --graphics-text: #1a1a1a;
+  --graphics-text-muted: #5c5c5c;
+}

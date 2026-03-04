@@ -283,7 +283,7 @@ Non-goals:
 
 ## Epic 16 — Release Prep (UX Pass, Copy Pass, Bug Bash Automation)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --ci --max-tasks=5
 Build Epic 16: Prepare for release-quality UX and stability.
 
 Requirements:
@@ -300,3 +300,26 @@ Requirements:
 
 Non-goals:
 - new modes/skins
+
+---
+
+## Epic 17 — Graphics v1
+- [x]
+/feature --ci --max-tasks=5
+Build Epic 17 (Graphics v1): create a truly kid-friendly GRAPHICAL minigame (not a styled form).
+
+Definition of "graphical" (non-negotiable):
+- The interaction must be primarily visual and spatial (drag/drop or tap-on-objects), not just text buttons.
+- The screen must look like a game scene with background + character/objects.
+- Answer choices must be rendered as game objects (e.g., planks), not plain buttons with borders.
+
+Scope:
+- Planning: art-direction.md, game-feel.md, motion-audio.md, assets.md
+- Assets pipeline + SceneLayout
+- Graphical build-bridge: scene, game objects, wrong-drop wobble, hint after 2 wrong
+- Reduced motion support
+- Unit tests + smoke update
+
+Non-goals:
+- multiple new graphical modes
+- high-fidelity art packs

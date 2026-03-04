@@ -71,7 +71,7 @@ docker compose up --build
 8. Visit http://localhost:3000/play?skin=monster-feed (or space, pirate) — should show that skin
 9. Select an answer — feedback appears; click Next — new question loads (classic and timed-pop)
 10. Click "Choose game" — mode selector opens with Classic, Timed Pop, Build Bridge; select Build Bridge — game switches to build-bridge mode
-11. Visit http://localhost:3000/play?mode=build-bridge — bridge visual, planks as answer choices; drag correct plank to slot or click plank then slot — feedback; click Next — score increments, new question loads
+11. Visit http://localhost:3000/play?mode=build-bridge — graphical scene (background, bridge, character); planks as game objects; drag correct plank to gap or click plank then gap — feedback; wrong drop shows wobble; after 2 wrong, hint appears; click Next — score increments, new question loads
 
 ## Install (prerequisites)
 

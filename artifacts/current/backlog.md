@@ -1,43 +1,43 @@
-# Backlog: ZAP Workflow Speed
+# Epic 17 — Graphics v1: Backlog
 
 ## Epic Summary
 
-Reduce OWASP ZAP Baseline job from ~6 min to ≤90s (ideally ≤60s) via parallelization, caching, and tighter waits.
+Build a truly kid-friendly **graphical** minigame. Transform build-bridge from form-like (buttons, gradients) to a game scene with background, character/objects, and answer choices as game objects (planks).
 
 ## Scope In
 
-- Parallel Docker builds (buildx bake for web+api)
-- Parallel ZAP scans (4 runs in parallel)
-- Cache hardening (restore-keys for mysql/zap)
-- Tighter health wait (12×2s instead of 36×5s)
-- Optional: ZAP -m 1 for faster spider
-- Optional: Artifactory if available (user to confirm)
+- Planning: art-direction.md, game-feel.md, motion-audio.md, assets.md ✓
+- Assets pipeline: `apps/web/assets/graphics/`, SceneLayout component
+- Graphical build-bridge: scene, draggable planks as objects, wrong-drop (wobble + return + hint after 2 wrong)
+- Keyboard alternative, reduced motion
+- Unit tests + smoke update
 
 ## Scope Out
 
-- Reducing ZAP URL coverage
-- Changing ZAP rules or thresholds
-- Moving ZAP to different trigger (e.g. merge-only)
-- Modifying other gates (C, D, F, Lint)
+- Multiple new graphical modes
+- High-fidelity art packs
+- Heavy canvas/game engine libs
 
 ## Risks + Mitigations
 
 | Tag | Risk | Mitigation |
 |-----|------|------------|
-| infra | Cache key changes may cause cold run | Document; accept first run slower |
-| perf | Parallel ZAP may stress stack | Monitor; revert if flaky |
-| security | -m 1 reduces spider depth | Only if explicitly approved |
+| perf | Bundle bloat | CSS/SVG only; no heavy deps |
+| a11y | Drag-only blocks keyboard | Keyboard path: select → place |
+| perf | Animation jank | prefers-reduced-motion disables non-essential |
 
 ## NFRs
 
-- **Perf:** ZAP job ≤120s warm, ≤90s stretch
-- **Security:** Same coverage, no regression
-- **Reliability:** No new flakiness
+- **Perf**: Bundle within budget; no new heavy deps
+- **Security**: No new attack surface; frontend-only
+- **A11y**: Keyboard playable; big tap targets
 
 ## Task List
 
-| ID | Title | Lanes | Gates | Risk |
-|----|-------|-------|-------|------|
-| 0091 | zap-workflow-parallel-build | I | C,D,F | infra |
-| 0092 | zap-workflow-parallel-zap-cache | I | C,D,F | infra,perf |
-| 0093 | zap-workflow-docs | I | - | - |
+| # | Task | Lanes | Gates |
+|---|------|-------|-------|
+| 1 | 0092-graphics-assets-scene | W1 | C, D, F |
+| 2 | 0093-graphics-build-bridge-visual | W1 | C, D, F |
+| 3 | 0094-graphics-wrong-drop-hint | W1 | C, D, F |
+| 4 | 0095-graphics-reduced-motion | W1 | C, D, F |
+| 5 | 0096-graphics-tests-smoke | T, I | C, D, F |

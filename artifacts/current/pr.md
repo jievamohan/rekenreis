@@ -1,20 +1,25 @@
-# Remove ci-status.md; use exit code only
+# Epic 17 — Graphics v1
 
-**Scope:**
-- Stop writing `artifacts/current/ci-status.md` from `gh_watch.sh`
-- Merge-ready gate: ci-watch exit code 0 instead of file check
-- Remove ci-status.md from git tracking (no more "changes" after merge)
+Build a truly kid-friendly graphical minigame. Transform build-bridge from form-like to a game scene with background, character/objects, and answer choices as game objects.
 
-**Why:**
-- ci-status.md updated every poll → noisy
-- File stayed tracked → always showed as modified after PR merge
+## Summary
 
-**Changes:**
-- `scripts/ci/gh_watch.sh`: no STATUS_FILE writes; exit 0/1/2/3 only
-- `.cursor/rules/50-ci-watch.mdc`: gate based on exit code
-- `.cursor/commands/*`: remove ci-status.md references
-- `git rm --cached artifacts/current/ci-status.md`
+- Assets pipeline + SceneLayout
+- Graphical build-bridge: scene, game objects, drag/drop
+- Wrong drop: wobble, return, hint after 2 wrong
+- Reduced motion support
+- Unit tests + smoke update
 
 ## Tasks
 
-- [ ] ci-status exitcode-only
+- [x] 0092-graphics-assets-scene
+- [x] 0093-graphics-build-bridge-visual
+- [x] 0094-graphics-wrong-drop-hint
+- [x] 0095-graphics-reduced-motion
+- [x] 0096-graphics-tests-smoke
+
+## PR Metadata
+- Base: main
+- Branch: feat/17-graphics-v1
+- PR: #39
+- URL: https://github.com/jievamohan/rekenreis/pull/39
