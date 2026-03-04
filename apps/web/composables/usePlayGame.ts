@@ -5,10 +5,19 @@ import { generateAdditionQuestion } from '../utils/questionGenerator'
 import { generateQuestionFromLevel } from '../utils/levelGenerator'
 import { createSeededRng } from '../utils/seedableRng'
 
-export interface PlayFeedback {
+/** Normal feedback: correct/incorrect with selected answer */
+export interface PlayFeedbackCorrect {
   correct: boolean
   selectedAnswer: number
 }
+
+/** Timeout feedback: reveal answer without score change */
+export interface PlayFeedbackTimeout {
+  type: 'timeout'
+  correctAnswer: number
+}
+
+export type PlayFeedback = PlayFeedbackCorrect | PlayFeedbackTimeout
 
 export interface UsePlayGameOptions {
   source?: 'infinite' | 'pack'
@@ -65,6 +74,14 @@ export function usePlayGame(
     loadQuestion()
   }
 
+  function recordTimeout() {
+    if (!question.value || feedback.value) return
+    feedback.value = {
+      type: 'timeout',
+      correctAnswer: question.value.correctAnswer,
+    }
+  }
+
   loadQuestion()
 
   return {
@@ -74,5 +91,6 @@ export function usePlayGame(
     feedback: readonly(feedback),
     selectAnswer,
     nextQuestion,
+    recordTimeout,
   }
 }

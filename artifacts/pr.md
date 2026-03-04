@@ -1,25 +1,25 @@
-# Hardening Epic: Security Hardening Pipeline and Policies
+# Epic 6 — Game Modes Framework + 1 New Mode
 
-Implement security hardening pipeline and policies for the repo.
+Build Game Modes framework so we can have different kinds of games without duplicating core logic. Implement ONE new mode: timed-pop.
 
 **Requirements:**
-- Policy-as-code checks for compose/workflows/env files
-- Semgrep custom rules for TS + PHP + YAML
-- Gitleaks config tuned for config-file secrets patterns
-- Trivy config scan + Hadolint in CI
-- OWASP ZAP baseline job against docker-compose stack (web + api)
-- Minimal security regression tests: headers, cookies, CORS, API validation/authz defaults
-
-**Non-goals:** feature work, UI changes.
+- GameMode contract (InteractionModeId, ModeDefinition)
+- /play?mode=classic (default), /play?mode=timed-pop
+- Timed-pop: mild timer, friendly timeout, no fail state
+- a11y: keyboard playable, timer does not block
+- Tests: mode selection, recordTimeout, timer (fake)
+- Smoke extended for mode switch
 
 ## Tasks
 
-- [x] 0032-hardening-policy-gitleaks-semgrep
-- [x] 0033-hardening-trivy-hadolint-zap
-- [x] 0034-hardening-security-tests
+- [x] 0035-mode-contract-types
+- [x] 0036-play-query-mode-routing
+- [x] 0037-timed-pop-mode
+- [x] 0038-mode-timer-tests
+- [x] 0039-smoke-mode-switch
 
 ## PR Metadata
 - Base: main
-- Branch: feat/hardening-epic
-- PR: #19
-- URL: https://github.com/jievamohan/rekenreis/pull/19
+- Branch: feat/epic6-game-modes
+- PR: #21
+- URL: https://github.com/jievamohan/rekenreis/pull/21

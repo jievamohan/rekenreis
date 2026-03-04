@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SkinRoundProps } from '~/types/skin'
+import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 
 defineProps<SkinRoundProps>()
 </script>
@@ -37,7 +38,10 @@ defineProps<SkinRoundProps>()
     </div>
 
     <div v-if="feedback" class="feedback" role="status" aria-live="polite">
-      <p v-if="feedback.correct" class="correct">Ahoy! Correct! ⚓</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Ahoy! Correct! ⚓</p>
+      <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
+        Time's up! The answer was {{ feedback.correctAnswer }}. Arrr!
+      </p>
       <p v-else class="incorrect">
         The answer was {{ question?.correctAnswer }}. Arrr!
       </p>

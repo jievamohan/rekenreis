@@ -1,16 +1,29 @@
-# Hardening Epic — QA
+# Epic 6 — Game Modes Framework: QA
 
-## Acceptance Criteria
+## Unit Tests
 
-1. **Policy-as-code**: CI fails if compose/workflows/env violate policy (e.g. hardcoded secret patterns)
-2. **Semgrep**: Custom rules for TS + PHP + YAML; semgrep in CI; clean or documented exceptions
-3. **Gitleaks**: `.gitleaks.toml` tuned for config files; CI uses it; no regressions
-4. **Trivy + Hadolint**: Both run in CI; Dockerfiles pass hadolint; Trivy config scan runs
-5. **OWASP ZAP baseline**: ZAP job runs against web+api; reports generated; baseline established
-6. **Security regression tests**: Headers, cookies, CORS, API validation tests exist and pass
+- **modeResolver**: resolveInteractionMode returns classic/timed-pop from query; unknown → classic
+- **usePlayGame.recordTimeout**: sets feedback to timeout type, no score change, nextQuestion works
+- **useMode**: returns correct component for classic and timed-pop
+- **timed-pop timer**: with vi.useFakeTimers, timer expires → recordTimeout called → feedback shows timeout
 
-## Test Strategy
+## Integration
 
-- **Unit/integration**: Security regression tests (T lane)
-- **CI**: All new gates must pass on PR
-- **Manual**: ZAP baseline review; policy adjustments as needed
+- Mode switch: changing route.query.mode updates rendered mode
+- Timed-pop: answer before timeout works; timeout shows correct feedback
+- Backward compat: /play?mode=pack still yields pack content
+
+## Smoke (manual)
+
+- /play → classic
+- /play?mode=classic → classic
+- /play?mode=timed-pop → timed-pop, timer visible
+- /play?mode=timed-pop: wait for timeout → "Time's up!" → Next → new question
+- /play?mode=pack → pack content (source=pack)
+- /play?mode=timed-pop&source=pack → timed-pop with pack
+
+## Regression
+
+- Existing skins work in classic mode
+- /play?skin=X still works
+- Typecheck, lint, build pass

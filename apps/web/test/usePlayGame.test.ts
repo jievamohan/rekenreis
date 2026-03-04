@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { usePlayGame } from '../composables/usePlayGame'
+import { isCorrectFeedback } from '../utils/feedbackHelpers'
 import levelsV1 from '../content/levels.v1.json'
 
 const levelPack = levelsV1 as Array<{
@@ -28,7 +29,7 @@ describe('usePlayGame', () => {
     game.selectAnswer(q.correctAnswer)
     expect(game.score.value).toBe(1)
     expect(game.streak.value).toBe(1)
-    expect(game.feedback.value?.correct).toBe(true)
+    expect(isCorrectFeedback(game.feedback.value) && game.feedback.value!.correct).toBe(true)
   })
 
   it('incorrect answer resets streak', () => {
@@ -38,7 +39,7 @@ describe('usePlayGame', () => {
     game.selectAnswer(wrong)
     expect(game.score.value).toBe(0)
     expect(game.streak.value).toBe(0)
-    expect(game.feedback.value?.correct).toBe(false)
+    expect(isCorrectFeedback(game.feedback.value) && !game.feedback.value!.correct).toBe(true)
   })
 
   it('streak accumulates on consecutive correct answers', () => {
@@ -77,6 +78,19 @@ describe('usePlayGame', () => {
     expect(game.question.value!.a + game.question.value!.b).toBe(
       game.question.value!.correctAnswer
     )
+  })
+
+  it('recordTimeout sets timeout feedback without score change', () => {
+    const game = usePlayGame('upTo10')
+    expect(game.question.value).not.toBeNull()
+    const scoreBefore = game.score.value
+    game.recordTimeout()
+    expect(game.feedback.value).not.toBeNull()
+    expect(game.feedback.value).toMatchObject({
+      type: 'timeout',
+      correctAnswer: game.question.value!.correctAnswer,
+    })
+    expect(game.score.value).toBe(scoreBefore)
   })
 
   describe('pack mode', () => {
