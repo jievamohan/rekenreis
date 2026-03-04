@@ -1,38 +1,28 @@
-# PR: [0003] vertical-slice-skeleton
+# Task 0004: game-types-generator — PR
 
 ## Summary
 
-Minimal end-to-end slice: Nuxt `/start` page calls Laravel `GET /api/health` and renders the JSON. Docker Compose brings up web, api, and mysql.
+Add types and question generator for Epic 0 Game Core MVP.
 
-## Acceptance Criteria
+## Acceptance criteria
 
-- [x] Web has a page `/start` that calls API and renders the returned JSON
-- [x] API exposes `GET /api/health` returning `{ status: 'ok', version: '1.0.0' }`
-- [x] Running via docker compose brings up web+api+mysql, and `/start` renders status ok
-- [x] Unit tests exist for: web fetch helper (mocked) and api endpoint response
-- [ ] All gates pass (C,D,F) and CI is green on PR
+- [x] types/game.ts exports AdditionQuestion, GameMode
+- [x] generateAdditionQuestion('upTo10') returns a+b≤10, 3-4 unique choices
+- [x] generateAdditionQuestion('upTo20') returns a+b≤20
+- [x] Unit tests pass: correctness, uniqueness
+- [x] Gate C, D, F pass; api.test.ts and HealthTest green
 
-## Commands Run
+## Commands run
 
-- `cd apps/web && pnpm run typecheck` ✓
-- `cd apps/web && pnpm run test` ✓
-- `cd apps/web && pnpm run build` ✓
-- `cd apps/web && pnpm run size` ✓ (2.5M, baseline)
-- `cd apps/api && composer run phpstan` ✓
-- `cd apps/api && composer run test` ✓
+- `pnpm run typecheck` — PASS
+- `pnpm run test` — PASS (11 tests)
+- `pnpm run lint` — PASS
+- `pnpm run build` — PASS
 
 ## Risks
 
-- **infra**: Docker networking + env wiring – minimal, documented in runbooks
-- **perf**: Page lightweight – no heavy deps
+- perf: negligible (sync generator)
 
 ## Rollback
 
-Revert commit; remove docker-compose.yml, Dockerfiles if needed.
-
----
-
-## PR Metadata
-
-- **PR**: #4
-- **URL**: https://github.com/jievamohan/rekenreis/pull/4
+Revert commit; no migrations or API changes.

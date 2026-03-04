@@ -1,16 +1,10 @@
-# Risk: 0003-vertical-slice-skeleton
+# Task 0004: game-types-generator — Risk
 
-## Risk Areas
+## Risk areas
 
-| Area | Note | Mitigation |
-|------|------|------------|
-| **infra** | Docker networking + env wiring | Minimal changes; document in runbooks; no secrets in compose |
-| **perf** | Keep page lightweight | No heavy deps; simple fetch only |
+- **perf**: Generator is sync, in-memory; negligible impact.
+- **deps**: No new dependencies.
 
-## High-Risk Changes
+## High-risk changes
 
-- **None** – No auth, crypto, or payment changes.
-
-## Conditional Artifacts
-
-- `artifacts/infra-review.md` – Required (I lane: docker-compose, Dockerfiles, env)
+None.
