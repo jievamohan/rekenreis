@@ -398,7 +398,7 @@ Acceptance:
 ---
 
 ## Epic 19.3 — Underwater Asset Pipeline
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-19.md
 - archive: artifacts/archive/epic-19.0/latest
