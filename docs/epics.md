@@ -60,7 +60,7 @@ Requirements:
 
 
 ## Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 7: Add a second game mode using drag & drop interaction and a kid-friendly mode selector UI.
 
