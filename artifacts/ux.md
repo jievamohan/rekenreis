@@ -1,37 +1,30 @@
-# Epic 1: Level Contract + Content Pack — UX
+# Epic 2: Skin System + 1 Skin — UX
 
-## Primary user flow(s)
+## Current state
 
-1. **Infinite mode (unchanged)**  
-   - User visits /play (or /play?mode=infinite).  
-   - Questions generated on-the-fly.  
-   - Answer → feedback → Next → repeat.
+- /play has "classic" math UI: prompt, choices, feedback, Next, stats, mode toggles
+- No skin switching today
 
-2. **Content pack mode**  
-   - User visits /play?mode=pack (or configured default).  
-   - Questions served from levels.v1.json in order (or deterministic shuffle).  
-   - Same flow: answer → feedback → Next → repeat.
+## Target state
 
-## Screen/page list
+### Classic skin (default)
+- Unchanged from current: same layout, colors, controls
+- Acts as reference implementation of the skin contract
 
-- **/play** (unchanged visually). Same UI: question, choices, score, streak, feedback, Next.  
-- Optional: minimal mode indicator (e.g. "Practice" vs "Levels")—out of scope for Epic 1 if not required; keep minimal.
+### Monster Feed skin
+- Minimal thematic overlay: "Feed the monster!"
+- Same interaction model: question, choices, feedback, Next
+- Visual twist: e.g. monster graphic or emoji; correct answer "feeds" it
+- Accessible: same ARIA/focus behavior as classic
+- No new controls; reuse choice buttons, feedback, Next
 
-## Interaction model
+### Skin selection
+- Query param: `/play?skin=monster-feed` or `/play?skin=classic`
+- Default: classic when no param
+- No extra nav/selector in Epic 2 (can add later)
 
-- **Loading**: Same as today; no spinner needed if pack loads instantly (static import).  
-- **Success**: Questions render; user answers, gets feedback.  
-- **Error**: If pack fails to load in pack mode → fallback to infinite mode silently, or show brief message.
+## Constraints
 
-## A11y notes
-
-- No change: existing keyboard, focus, ARIA from Epic 0 remain.
-
-## Minimal microcopy
-
-- No new labels required. If mode toggle added later: "Practice" / "Levels".
-
-## UI edge cases
-
-- Empty pack: fallback to infinite mode.  
-- Invalid mode param: treat as infinite (safe default).
+- a11y: keyboard, focus, ARIA preserved (no regression)
+- Bundle: keep within budget
+- Minimal UI for Monster Feed — no heavy assets

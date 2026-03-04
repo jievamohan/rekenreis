@@ -1,31 +1,18 @@
-# Epic 1: Level Contract + Content Pack — QA
+# Epic 2: Skin System + 1 Skin — QA
 
-## Unit tests
+## Test strategy
 
-1. **levelValidator.test.ts**
-   - Valid Level passes validation.
-   - Invalid (missing operator, bad operand ranges, wrong types) fails.
+### Unit tests
+- `useSkin`: given valid id "classic" | "monster-feed", returns correct component
+- `useSkin`: given invalid id, returns classic (fallback)
+- Skin contract: when onAnswer/onNext called, verify they are invoked with correct args (mock/spy)
 
-2. **levelGenerator.test.ts**
-   - Same seed + config → identical level pack output.
-   - Generated levels: operands in range, correct answer in choices, choices unique.
-   - choiceCount respected.
+### E2E / Smoke
+- Existing smoke: /play, /play?mode=pack still work
+- Add: /play?skin=monster-feed loads and shows Monster Feed UI; answer flow works
 
-3. **usePlayGame.test.ts**
-   - Pack mode: questions come from provided pack.
-   - Infinite mode: behavior unchanged (existing tests).
+## Gates
 
-## Smoke/e2e
-
-- /play loads in both modes (no regression).
-- Answer → feedback → Next works.
-- Existing api.test.ts, HealthTest, smoke runbook pass.
-
-## Test matrix
-
-| Scenario | Mode | Expected |
-|----------|------|----------|
-| /play | infinite (default) | Generated questions |
-| /play?mode=pack | pack | Pack questions |
-| /play?mode=invalid | infinite | Fallback |
-| Empty pack | pack | Fallback to infinite |
+- Gate C: typecheck clean
+- Gate D: security scan clean
+- Gate F: bundle budget pass
