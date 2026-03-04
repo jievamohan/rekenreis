@@ -1,44 +1,31 @@
-# PR Summary: 0001-bootstrap-tooling
-
-## Title
-
-Bootstrap tooling: gates C, D, F for web and API
+# PR: [0003] vertical-slice-skeleton
 
 ## Summary
 
-Establishes baseline scripts and CI for quality gates before any game logic.
-
-## Changes
-
-### apps/web (Nuxt 3 + Vue 3 + TypeScript)
-- Minimal Nuxt 3 app with package.json scripts: `dev`, `build`, `lint`, `typecheck`, `test`, `size`
-- ESLint, Vitest, vue-tsc configured
-
-### apps/api (Laravel)
-- Laravel 12 app with composer scripts: `phpstan`, `test`, `audit-deps`
-- Larastan (PHPStan) level 5
-
-### CI
-- `.github/workflows/gates.yml`: typecheck, security (gitleaks, audits), build, lint-test
-
-### Docs
-- `docs/runbooks/commands.md`: canonical command list
-
-### Artifacts
-- `/artifacts`: plan.md, risk.md, typecheck.md, security.md, perf.md, tests.md, review.md, pr.md
+Minimal end-to-end slice: Nuxt `/start` page calls Laravel `GET /api/health` and renders the JSON. Docker Compose brings up web, api, and mysql.
 
 ## Acceptance Criteria
 
-- [x] Web: lint, typecheck, test, build, size scripts
-- [x] API: phpstan, test, audit-deps scripts
-- [x] CI runs gates on PR
-- [x] /artifacts path exists
+- [x] Web has a page `/start` that calls API and renders the returned JSON
+- [x] API exposes `GET /api/health` returning `{ status: 'ok', version: '1.0.0' }`
+- [x] Running via docker compose brings up web+api+mysql, and `/start` renders status ok
+- [x] Unit tests exist for: web fetch helper (mocked) and api endpoint response
+- [ ] All gates pass (C,D,F) and CI is green on PR
 
-## Known Issues
+## Commands Run
 
-- **pnpm audit**: 13 vulns in web deps (Nuxt 3.13.2, transitive). Documented in security.md. Upgrade Nuxt to ≥3.16 in follow-up.
-- **audit script**: Composer reserves `audit`; we use `audit-deps` (runs `composer audit`)
+- `cd apps/web && pnpm run typecheck` ✓
+- `cd apps/web && pnpm run test` ✓
+- `cd apps/web && pnpm run build` ✓
+- `cd apps/web && pnpm run size` ✓ (2.5M, baseline)
+- `cd apps/api && composer run phpstan` ✓
+- `cd apps/api && composer run test` ✓
 
-## Branch
+## Risks
 
-Current: `feat/0001-bootstrap-tooling`. Open PR to `master`.
+- **infra**: Docker networking + env wiring – minimal, documented in runbooks
+- **perf**: Page lightweight – no heavy deps
+
+## Rollback
+
+Revert commit; remove docker-compose.yml, Dockerfiles if needed.

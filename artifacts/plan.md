@@ -1,58 +1,64 @@
-# Plan: 0001-bootstrap-tooling
+# Plan: 0003-vertical-slice-skeleton
+
+## Branch
+
+**Active branch**: `feat/0003-vertical-slice-skeleton`
 
 ## Task Contract Validation
 
 | Item | Status |
 |------|--------|
-| scope_in | ✓ scripts/config for gates C, D, F; web/api scripts; CI; artifacts |
-| scope_out | ✓ no game logic |
-| acceptance criteria | ✓ 4 items |
-| lanes | ✓ I, W2, A2, T |
+| scope_in | ✓ Minimal E2E slice, env/config wiring, deterministic response |
+| scope_out | ✓ No game logic, auth, persistence beyond proof |
+| acceptance criteria | ✓ 5 items |
+| lanes | ✓ W1, W2, A1, A2, T, I |
 | gates | ✓ C, D, F |
+| risks | ✓ infra, perf |
 
-**Prerequisite**: apps/web and apps/api do not exist. Lane I must scaffold minimal app structure first.
+## Acceptance Criteria Mapping
 
-## Wave 0: Shared Setup
+| # | Criterion | Lane | Implementation |
+|---|-----------|------|----------------|
+| 1 | Web `/start` calls API and renders returned JSON | W1, W2 | Page + composable/service |
+| 2 | API `GET /api/health` returns `{ status: 'ok', version: <string> }` | A1, A2 | Route + controller/service |
+| 3 | docker compose brings up web+api+mysql; `/start` renders status ok | I | docker-compose.yml, env, Dockerfiles |
+| 4 | Unit tests: web fetch (mocked), api endpoint | T | Vitest + PHPUnit |
+| 5 | Gates C,D,F pass; CI green on PR | All | typecheck, security, perf, CI |
 
-- [x] Create /artifacts directory
-- [ ] Create docs/runbooks/commands.md (canonical command list)
+## Wave Plan
 
-## Wave 1: Lane I (deps/infra)
+### Wave 0: Shared config (I lane, serialized)
+- Root `.env.example` with `API_URL` for web
+- `docker-compose.yml` with web, api, mysql services
+- `apps/web/Dockerfile`, `apps/api/Dockerfile`
+- Update `docs/runbooks/commands.md` with docker compose commands
 
-### 1.1 Scaffold apps/web (Nuxt 3 + Vue 3 + TypeScript)
-- Create apps/web via `pnpm create nuxt-app` or manual minimal structure
-- package.json with: lint, typecheck, test, build, size scripts
+### Wave 1: Backend (A2 → A1)
+- A2: `apps/api/app/Services/HealthService.php` (returns status + version)
+- A1: `apps/api/routes/api.php`, controller for `GET /api/health`
+- Wire api routes in `bootstrap/app.php`
 
-### 1.2 Scaffold apps/api (Laravel)
-- Create apps/api via `composer create-project` or manual minimal structure
-- composer.json / Makefile with: phpstan, test, audit scripts
+### Wave 2: Frontend (W2 → W1)
+- W2: `apps/web/composables/useApi.ts` or `apps/web/utils/api.ts` (fetch helper)
+- W2: `apps/web/nuxt.config.ts` runtimeConfig for `API_URL`
+- W1: `apps/web/pages/start.vue` calls API, renders JSON
 
-### 1.3 CI Workflow
-- .github/workflows/gates.yml: runs gates on PR (typecheck, phpstan, lint, audit, build, size)
+### Wave 3: Tests + hardening (T)
+- T: Web unit test for fetch helper (mocked)
+- T: API unit test for health endpoint
+- Run gates, produce artifacts
 
-### 1.4 Artifacts path
-- Ensure /artifacts exists (with .gitkeep if needed)
+## Lane Ownership
 
-## Wave 2: Lane W2 (typecheck) + Lane A2 (phpstan)
+| Lane | Files | Owner |
+|------|-------|-------|
+| I | docker-compose.yml, .env.example, apps/**/Dockerfile, docs/runbooks/** | deps-infra |
+| A2 | apps/api/app/Services/**, app/Domain/** | api |
+| A1 | apps/api/routes/**, app/Http/Controllers/** | api |
+| W2 | apps/web/composables/**, services/**, utils/** | web |
+| W1 | apps/web/pages/**, components/** | web |
+| T | apps/web/**/__tests__/**, apps/api/tests/** | tester |
 
-- W2: Wire vue-tsc or nuxt typecheck in apps/web
-- A2: Wire PHPStan in apps/api (phpstan.neon, composer script)
+## Integration Order
 
-## Wave 3: Lane T (test harness)
-
-- Minimal smoke: `pnpm run typecheck` and `composer run phpstan` (or equivalent) succeed
-- artifacts/tests.md with commands and results
-
-## Gate Artifacts (post-implementation)
-
-- typecheck.md (Gate C)
-- security.md (Gate D: gitleaks, semgrep, pnpm audit, composer audit)
-- perf.md (Gate F: bundle-size baseline, build)
-- tests.md
-- review.md
-- pr.md
-
-## Branch Strategy
-
-- Single branch for bootstrap (no per-lane branches; task is infra-only)
-- Branch: `feat/0001-bootstrap-tooling` (per 05-branch-discipline)
+I → A2 → A1 → W2 → W1 → T

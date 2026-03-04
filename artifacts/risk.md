@@ -1,24 +1,16 @@
-# Risk: 0001-bootstrap-tooling
+# Risk: 0003-vertical-slice-skeleton
 
-## Risk Assessment
+## Risk Areas
 
-| Area | Risk Level | Notes |
-|------|------------|-------|
-| auth/permissions | None | No auth logic |
-| crypto/payments | None | No crypto/payment logic |
-| deps | Low | Adding standard tooling deps (eslint, vue-tsc, phpstan, etc.) |
-| infra/CI | Low | New CI workflow; reversible |
-| db | None | No migrations |
+| Area | Note | Mitigation |
+|------|------|------------|
+| **infra** | Docker networking + env wiring | Minimal changes; document in runbooks; no secrets in compose |
+| **perf** | Keep page lightweight | No heavy deps; simple fetch only |
 
-## Mitigations
+## High-Risk Changes
 
-- **Deps**: All new deps are dev-only (lint, typecheck, test tooling). Producing artifacts/dependency-review.md if composer/npm deps change.
-- **CI**: Workflow is additive; can be disabled by removing file. artifacts/infra-review.md for CI changes.
-- **Reversibility**: Entire apps/ can be removed; CI can be reverted. No persistent state.
+- **None** – No auth, crypto, or payment changes.
 
-## Policy Compliance
+## Conditional Artifacts
 
-- No auth/crypto/payment changes → no special flag
-- Deps changes → dependency-review.md (will produce)
-- CI changes → infra-review.md (will produce)
-- No db changes → no db-review.md
+- `artifacts/infra-review.md` – Required (I lane: docker-compose, Dockerfiles, env)

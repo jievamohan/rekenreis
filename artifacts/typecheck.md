@@ -1,21 +1,21 @@
 # Gate C: Type-safety
 
-## Web (apps/web)
+## Web
+
+**Status**: PASS
 
 ```
-pnpm run typecheck
+cd apps/web && pnpm run typecheck
 ```
 
-**Result**: PASS
+- Nuxt typecheck (vue-tsc) completed with no errors.
 
-- nuxt typecheck (vue-tsc) completed with no errors
+## API
 
-## API (apps/api)
+**Status**: PASS
 
 ```
-composer run phpstan
+cd apps/api && composer run phpstan
 ```
 
-**Result**: PASS
-
-- PHPStan (Larastan) level 5, 0 errors
+- PHPStan completed with no errors.

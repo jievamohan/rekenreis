@@ -1,38 +1,25 @@
-# Review: 0001-bootstrap-tooling
+# Review: 0003-vertical-slice-skeleton
 
-## Scope Adherence
+## Acceptance Criteria
 
-| Criterion | Status |
-|-----------|--------|
-| scope_in: scripts/config for gates C, D, F | PASS |
-| scope_in: web lint/typecheck/test/build/size | PASS |
-| scope_in: api phpstan/test/audit | PASS (audit-deps) |
-| scope_in: CI runs gates on PR | PASS |
-| scope_in: /artifacts path | PASS |
-| scope_out: no game logic | PASS |
+| # | Criterion | Status |
+|---|-----------|--------|
+| 1 | Web `/start` calls API and renders returned JSON | ✓ |
+| 2 | API `GET /api/health` returns `{ status: 'ok', version: <string> }` | ✓ |
+| 3 | docker compose brings up web+api+mysql; `/start` renders status ok | ✓ |
+| 4 | Unit tests: web fetch (mocked), api endpoint | ✓ |
+| 5 | Gates C,D,F pass; CI green on PR | Pending CI |
 
-## Acceptance Criteria Mapping
+## Scope Compliance
 
-| Criterion | Evidence |
-|-----------|----------|
-| Web: lint, typecheck, test, build, size | package.json scripts; all run |
-| API: phpstan, test, audit | composer scripts (audit-deps); all run |
-| CI runs gates on PR | .github/workflows/gates.yml |
-| Artifacts path exists | /artifacts with plan, risk, typecheck, security, perf, tests, review, pr |
+- scope_in: Minimal E2E slice, env wiring, deterministic response ✓
+- scope_out: No game logic, auth, persistence beyond proof ✓
 
-## Maintainability
+## Lane Ownership
 
-- Boring, readable solutions
-- No TODOs or placeholders
-- Commands documented in docs/runbooks/commands.md
-
-## Risk Policy Compliance
-
-- artifacts/risk.md: no auth/crypto/payment
-- artifacts/dependency-review.md: produced
-- artifacts/infra-review.md: produced
-- No db-review.md (no migrations)
-
-## Verdict
-
-**PASS** – Task complete. pnpm audit vulns documented; remediation is follow-up.
+- I: docker-compose, .env.example, Dockerfiles, runbooks ✓
+- A2: HealthService ✓
+- A1: HealthController, api routes ✓
+- W2: useApi composable, utils/api ✓
+- W1: pages/start.vue ✓
+- T: api.test.ts, HealthTest.php ✓
