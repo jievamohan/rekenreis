@@ -1,16 +1,11 @@
-# Epic 11 — Audio & Micro-Animations: Security Design
+# Epic 12 — Rewards Expansion: Security Design
 
 ## Scope
 
-- Sound: local files only (public/sfx); no external URLs
-- Animations: CSS/Vue only; no user-controlled input
+- Local storage only; no new API
+- Date handling: client-side only; no server trust
 
 ## Risks
 
 - **Low**: No auth, payments, or sensitive data
-- Audio: same-origin assets only
-
-## Mitigations
-
-- Use only bundled/public assets for SFX
-- No eval or dynamic script from user input
+- Date manipulation: user could change device date; acceptable for local-only reward

@@ -1,28 +1,22 @@
-# Epic 11 — Audio & Micro-Animations
+# Epic 12 — Rewards Expansion (Sticker Book, Daily Goal)
 
-Add optional sound effects and micro-animations to make the game more playful.
+Expand rewards into a sticker book and optional daily goal.
 
 **Requirements:**
-- Sound: tiny SFX pack (correct/wrong/celebrate), global toggle per profile
-- Never block gameplay if audio fails
-- Animations: subtle motion on correct, gentle shake on wrong
-- Respect prefers-reduced-motion
-- Tests: settings persistence, reduced-motion behavior
+- Sticker book: pages, categories, "new sticker" highlight
+- Daily goal: "play 5 rounds" reward, timezone-safe local calculation
+- Persist rewards per profile
+- Tests: daily reset logic, reward unlocking rules
+- UX: celebratory but short; never blocks play
 
 **Non-goals:**
-- Background music
-- Heavy animation libraries
+- Monetization
+- Leaderboards
 
 ## Tasks
 
-- [ ] 0060-sound-prefs-schema
-- [ ] 0061-useSound-composable
-- [ ] 0062-sfx-assets-settings-toggle
-- [ ] 0063-feedback-micro-animations
-- [ ] 0064-audio-animations-tests
-
-## PR Metadata
-- Base: main
-- Branch: feat/epic11-audio-animations
-- PR: #27
-- URL: https://github.com/jievamohan/rekenreis/pull/27
+- [ ] 0065-daily-goal-schema
+- [ ] 0066-useDailyGoal-composable
+- [ ] 0067-sticker-book-config-page
+- [ ] 0068-daily-goal-play-integration
+- [ ] 0069-rewards-expansion-tests

@@ -1,26 +1,30 @@
-# Epic 11 — Audio & Micro-Animations: Architecture
+# Epic 12 — Rewards Expansion: Architecture
 
-## Storage
+## Profile Progress Extension
 
-- **ProfilePrefs** (profileSchema.ts): add `soundOn: boolean` (default true)
+```ts
+progress: {
+  bestScore: number
+  dailyGoal?: { date: string; roundsPlayed: number }  // YYYY-MM-DD local
+}
+```
 
-## Composables
+## Sticker Model
 
-- **useSound(profile?)**: play correct/wrong/celebrate; reads soundOn from active profile; lazy-loads audio; never blocks (try/catch, no throw)
-- Called from play flow when feedback changes (usePlayGame consumer) or when reward unlocks (useRewards)
+- Stickers map 1:1 to skins (for v1): stickerId = skinId
+- Category: "Skins" (single category for now)
+- Unlock: same as skin (bestScore >= threshold)
+- "New": track lastUnlockedAt or session-based
 
-## Assets
+## useDailyGoal
 
-- `public/sfx/correct.mp3`, `wrong.mp3`, `celebrate.mp3` (tiny files; Web Audio or HTML5 Audio)
-- Lazy: create Audio objects on first play; don't preload in critical path
-
-## Animations
-
-- Skin/mode feedback areas: wrap in `<Transition name="feedback">` or use CSS classes
-- CSS: `.feedback-correct` scale; `.feedback-incorrect` shake
-- `@media (prefers-reduced-motion: reduce)` disables transitions/transforms
+- `getTodayLocal()`: YYYY-MM-DD via `new Date().toLocaleDateString('en-CA')`
+- `roundsPlayed`, `goalRounds` (5)
+- `incrementRound()`: when round completes; reset if new day
+- `isGoalReached`: roundsPlayed >= goalRounds
 
 ## Flow
 
-1. Play → feedback set → useSound plays (if soundOn) → skin shows animation (if not reduced-motion)
-2. Settings → sound toggle → profile.updateProfile(prefs: { soundOn })
+1. Round completes → useDailyGoal.incrementRound() → persist to profile
+2. Sticker book → read unlocked from useRewards; show with categories
+3. Daily goal widget → show rounds/goal; celebrate when reached
