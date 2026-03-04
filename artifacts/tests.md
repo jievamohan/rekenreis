@@ -1,23 +1,9 @@
-# Tests
-
-## Web
-
-**Status**: PASS
+# Tests — PASS
 
 ```
 cd apps/web && pnpm run test
 ```
 
-- test/example.test.ts: 1 passed
-- test/api.test.ts: 2 passed (fetchHealth with mocked fetch)
-
-## API
-
-**Status**: PASS
-
-```
-cd apps/api && composer run test
-```
-
-- Tests\Feature\HealthTest::test_health_endpoint_returns_ok_and_version: PASS
-- All 3 tests passed (4 assertions)
+- test/example.test.ts: pass
+- test/api.test.ts: pass (vertical slice intact)
+- test/questionGenerator.test.ts: 8 tests pass (correctness, uniqueness, determinism)

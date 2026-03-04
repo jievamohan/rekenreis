@@ -1,38 +1,42 @@
-# PR: [0003] vertical-slice-skeleton
+# Epic 0: Game Core MVP — PR
 
 ## Summary
 
-Minimal end-to-end slice: Nuxt `/start` page calls Laravel `GET /api/health` and renders the JSON. Docker Compose brings up web, api, and mysql.
+Playable `/play` route for kids math game (age ~6): addition-only core loop, up to 10/20 modes, 3-4 multiple choice answers, immediate feedback, score/streak, keyboard a11y.
 
-## Acceptance Criteria
+## Tasks completed
 
-- [x] Web has a page `/start` that calls API and renders the returned JSON
-- [x] API exposes `GET /api/health` returning `{ status: 'ok', version: '1.0.0' }`
-- [x] Running via docker compose brings up web+api+mysql, and `/start` renders status ok
-- [x] Unit tests exist for: web fetch helper (mocked) and api endpoint response
-- [ ] All gates pass (C,D,F) and CI is green on PR
+1. **0004** Types + question generator
+2. **0005** usePlayGame composable
+3. **0006** /play page with minimal UI
+4. **0007** Regression + smoke verification
 
-## Commands Run
+## Acceptance criteria
 
-- `cd apps/web && pnpm run typecheck` ✓
-- `cd apps/web && pnpm run test` ✓
-- `cd apps/web && pnpm run build` ✓
-- `cd apps/web && pnpm run size` ✓ (2.5M, baseline)
-- `cd apps/api && composer run phpstan` ✓
-- `cd apps/api && composer run test` ✓
+- [x] /play renders and is playable
+- [x] Question generator: upTo10, upTo20 modes; 3-4 unique choices
+- [x] Immediate feedback, score, streak
+- [x] Keyboard navigation (Tab, Enter/Space)
+- [x] Unit tests: generator correctness, choice uniqueness, composable logic
+- [x] Vertical slice (/start, api.test.ts, HealthTest) unchanged
+
+## Commands run
+
+- `pnpm run typecheck` — PASS
+- `pnpm run test` — PASS (17 tests)
+- `pnpm run lint` — PASS
+- `pnpm run build` — PASS
 
 ## Risks
 
-- **infra**: Docker networking + env wiring – minimal, documented in runbooks
-- **perf**: Page lightweight – no heavy deps
+- perf: negligible (client-only, sync generator)
 
 ## Rollback
 
-Revert commit; remove docker-compose.yml, Dockerfiles if needed.
-
----
+Revert commits; no migrations or API changes.
 
 ## PR Metadata
-
-- **PR**: #4
-- **URL**: https://github.com/jievamohan/rekenreis/pull/4
+- Base: main
+- Branch: feat/epic0-game-core-mvp
+- PR: #9
+- URL: https://github.com/jievamohan/rekenreis/pull/9
