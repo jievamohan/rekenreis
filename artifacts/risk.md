@@ -1,12 +1,4 @@
-# Task 0008: Level Schema Validator — Risk
+# Epic 3 Risk
 
-## Risk areas
-
-| Area | Level | Mitigation |
-|------|-------|------------|
-| deps | Low | Add Zod; Gate F enforces bundle budget |
-| perf | Negligible | Validation runs on load; small JSON |
-
-## High-risk changes
-
-- None. No auth, crypto, payments, or data-loss.
+- perf: 2 new skin components; bundle remains within budget
+- privacy: localStorage for best score only; no PII

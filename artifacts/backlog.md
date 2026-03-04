@@ -1,35 +1,29 @@
-# Epic 2: Skin System + 1 Skin — Backlog
+# Epic 3 Backlog
 
-## Epic summary
+## Epic Summary
+Add 2 additional skins + simple rewards/unlocks. Local-only; a11y preserved; bundle within budget.
 
-Build a minigame skin system: TS contract for rendering a round, core loop stays single source of truth, /play switches skin via query/config (default classic), implement ONE skin (Monster Feed). Tests for skin selection and contract correctness. Keep smoke/e2e green.
+## Scope_in
+- 2 new skins reusing Skin contract (SkinRoundProps)
+- Simple rewards/unlocks (local-only; minimal UI)
+- Tests for unlock logic and skin switching
+- a11y stays correct; bundle stays within budget
 
-## Scope_in / Scope_out
+## Scope_out
+- API changes; auth; payments
+- Heavy assets; complex animations
+- Server-side persistence
 
-**In**: Skin contract (TS), skin registry, classic skin extraction, Monster Feed skin, useSkin composable, /play skin param, unit tests, smoke updates.
-**Out**: Multiple skins beyond one, rewards, persistence, backend.
-
-## Risks + mitigations
-
-| Area   | Risk              | Mitigation                    |
-|--------|-------------------|--------------------------------|
-| perf   | Bundle size       | Minimal Monster Feed UI; no heavy assets |
-| a11y   | Regression        | Preserve ARIA/focus in both skins |
-
-No auth/db/crypto/payments.
+## Risks + Mitigations
+- perf: New components may add bundle size → verify budget
+- privacy: localStorage for unlocks only; no PII
 
 ## NFRs
+- Perf: bundle budget
+- Security: none (local only)
+- a11y: keyboard, focus, ARIA
 
-- Perf: bundle within budget
-- Security: skin id allowlist (no injection)
-- a11y: keyboard, focus, ARIA preserved
-
-## Task list
-
-| ID   | Title                         | Lanes | Gates | Acceptance |
-|------|-------------------------------|-------|-------|------------|
-| 0013 | Skin contract + types         | W2    | C,D,F | SkinRoundProps, SkinDefinition in types/skin.ts |
-| 0014 | useSkin composable + registry | W2    | C,D,F | useSkin(id) returns component; invalid → classic |
-| 0015 | Extract SkinClassic           | W1    | C,D,F | Current play UI as SkinClassic.vue |
-| 0016 | Monster Feed skin             | W1    | C,D,F | SkinMonsterFeed.vue, minimal UI, accessible |
-| 0017 | Play page skin wiring + tests | W1,W2,T| C,D,F | /play?skin=, tests, smoke green |
+## Task List
+1. **0018-two-new-skins** — Add 2 skins (space, pirate) reusing contract [W1, W2]
+2. **0019-rewards-unlocks** — Rewards composable + minimal unlock UI [W2, W1]
+3. **0020-skin-rewards-tests** — Tests for unlock logic and skin switching [T]

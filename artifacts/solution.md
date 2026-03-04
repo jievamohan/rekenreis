@@ -1,16 +1,6 @@
-# Epic 2: Skin System + 1 Skin — Solution
+# Epic 3 Solution
 
-## Approach
-
-1. **Contract first**: Define `SkinRoundProps` and `SkinDefinition` in types/skin.ts
-2. **Refactor classic**: Extract current play UI into SkinClassic.vue; play.vue passes props
-3. **Skin resolver**: useSkin(route.query.skin) returns { component, id }; fallback to classic
-4. **Monster Feed**: New SkinMonsterFeed.vue implementing same contract; minimal thematic UI
-5. **Tests**: useSkin returns correct component; contract callback tests
-
-## Implementation notes
-
-- usePlayGame unchanged; play.vue binds its outputs to skin props
-- Skin components use defineProps<SkinRoundProps>(); emit via callbacks
-- Monster Feed: simple styling, maybe emoji or minimal SVG; no new deps
-- Logging: none required for Epic 2
+1. **Skin A + Skin B**: Create two Vue components implementing SkinRoundProps (e.g. space, pirate themes). Update SKIN_IDS, REGISTRY, skinResolver.
+2. **Rewards composable**: `useRewards(score)` returns unlocked skin ids. Thresholds: e.g. 0→classic,monster-feed; 5→skinA; 10→skinB.
+3. **Minimal UI**: In play page or skin selector: show available skins; locked skins greyed with lock icon.
+4. **Tests**: Unit tests for unlock logic; integration for skin switching via query param.

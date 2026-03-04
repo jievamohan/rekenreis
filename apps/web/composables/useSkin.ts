@@ -3,10 +3,14 @@ import type { SkinId } from '~/utils/skinResolver'
 import { resolveSkinId } from '~/utils/skinResolver'
 import SkinClassic from '~/components/skins/SkinClassic.vue'
 import SkinMonsterFeed from '~/components/skins/SkinMonsterFeed.vue'
+import SkinSpace from '~/components/skins/SkinSpace.vue'
+import SkinPirate from '~/components/skins/SkinPirate.vue'
 
 const REGISTRY: Record<SkinId, SkinDefinition> = {
   classic: { id: 'classic', component: SkinClassic },
   'monster-feed': { id: 'monster-feed', component: SkinMonsterFeed },
+  space: { id: 'space', component: SkinSpace },
+  pirate: { id: 'pirate', component: SkinPirate },
 }
 
 /**
