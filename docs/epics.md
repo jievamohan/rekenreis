@@ -145,7 +145,7 @@ Non-goals:
 ---
 
 ## Epic 10 — Child Profiles (Local) + Parent Gate
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 10: Add local child profiles so multiple kids can use the same device, with a simple parent gate.
 
