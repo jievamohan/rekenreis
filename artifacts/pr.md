@@ -1,19 +1,29 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules
+# Epic 9 — Adaptive Assistance (Hints, Anti-Guessing, Confidence Gate)
 
-Introduce content packs per game mode (classic, timed-pop, build-bridge) with pacing rules to keep sessions varied and frustration-free.
+Add adaptive assistance so kids don't get stuck or spam-guess.
 
 **Requirements:**
-- Extend level schema: modeId applicability, pacing tags (easy/normal/challenge)
-- Content packs: levels.classic.v1.json, levels.timed-pop.v1.json, levels.build-bridge.v1.json
-- Pacing engine: mix easy/normal/challenge; never cluster hard back-to-back
-- Determinism: same seed => same sequence per mode
-- Tests: pacing invariants, pack schema validation
-- E2E: verify pack mode works for all modes
+- Confidence gate: after 2 wrong answers, reveal hint (dots / number line)
+- Hint modes: dots, number-line visuals
+- Gentle pacing: if child struggles (3+ wrong), auto-switch to easier tag for a few rounds
+- Persist assistance state locally (session-only for Epic 9)
+- Tests: deterministic triggers, no infinite loops
+- UX: feedback stays positive; no negative scoring
+
+**Non-goals:**
+- Full personalization ML
+- Parental dashboards
 
 ## Tasks
 
-- [ ] 0045-level-schema-mode-pacing
-- [ ] 0046-content-packs-per-mode
-- [ ] 0047-pacing-engine
-- [ ] 0048-play-integration-packs
-- [ ] 0049-tests-pacing-e2e
+- [ ] 0050-assistance-state
+- [ ] 0051-hint-components
+- [ ] 0052-play-integration-assistance
+- [ ] 0053-pacing-intervention
+- [ ] 0054-tests-assistance
+
+## PR Metadata
+- Base: main
+- Branch: feat/epic9-adaptive-assistance
+- PR: #25
+- URL: https://github.com/jievamohan/rekenreis/pull/25

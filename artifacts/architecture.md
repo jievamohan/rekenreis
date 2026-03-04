@@ -1,36 +1,34 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules: Architecture
+# Epic 9 — Adaptive Assistance: Architecture
 
-## Data Flow
+## Layer Overview
 
 ```
 play.vue
-  └─ effectiveModeParam → interactionMode (classic | timed-pop | build-bridge)
-  └─ levelPack = loadPackForMode(interactionMode)  [new]
-  └─ usePlayGame(mode, { source, levelPack })
-
-usePlayGame
-  └─ if source=pack && levelPack.length > 0:
-       levels = applyPacing(levelPack, seed)  [new]
-       question = generateQuestionFromLevel(levels[index], rng)
+  └── usePlayGame (existing) + useAssistance (new)
+        └── assistance state: wrongCount, hintRevealed, strugglingRoundsLeft
+  └── Skin components
+        └── receive hintToShow, reducedChoices from assistance
+        └── HintDots / HintNumberLine / HintGrouping (new components)
 ```
 
-## Schema Changes
+## State Flow
 
-### Level (extended)
+- **usePlayGame**: continues to own question, score, streak, feedback
+- **useAssistance**: consumes feedback + question; exposes:
+  - `hintToShow: 'dots' | 'number-line' | 'grouping' | null`
+  - `reducedChoices: number[] | null` (subset when reduced)
+  - `wrongCountThisQuestion: number`
+- **SkinRoundProps**: extend with optional `hintToShow`, `reducedChoices` (backward compatible)
 
-- `modeIds?: InteractionModeId[]` — optional; if absent, applies to all modes
-- `pacingTag?: 'easy' | 'normal' | 'challenge'` — optional; maps from difficultyTag or explicit
+## Assistance Rules (deterministic)
 
-### Pacing Engine
+1. On `feedback.correct === false`: increment wrongCount (per question or per session—per question is simpler)
+2. When wrongCount >= 2: set hintToShow based on level.hintMode or default 'dots'
+3. On nextQuestion: reset wrongCount, hintToShow; optionally persist to localStorage
+4. Pacing: usePlayGame/level pack already ordered; "easier for a few rounds" = advance pack cursor to next easy-level when struggling
 
-- Input: Level[], seed
-- Output: Level[] (reordered)
-- Invariant: never two consecutive challenge levels
-- Pattern: e.g. easy→normal→easy→challenge→easy (configurable)
+## Persistence (minimal for Epic 9)
 
-## Pack Loading
-
-- `content/levels.classic.v1.json`
-- `content/levels.timed-pop.v1.json`
-- `content/levels.build-bridge.v1.json`
-- Lazy import or static import per mode; validate on load.
+- Key: `rekenreis_assistance_v1`
+- Value: `{ wrongStreak: number, lastReset: number }` (session-only for now; no child profile yet)
+- Reset on new session (page load) or when 2 correct in a row

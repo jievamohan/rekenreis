@@ -1,32 +1,21 @@
-# Epic 8 — Content Packs per Mode + Pacing Rules: Solution
+# Epic 9 — Adaptive Assistance: Solution
 
-## 1. Level Schema Extension
+## Task Breakdown
 
-Add to `Level`:
+1. **assistance-state** (W2): Create useAssistance composable; wrong-answer counter; hint-reveal trigger (2 wrong → show hint)
+2. **hint-components** (W1): HintDots, HintNumberLine, HintGrouping components; plug into SkinRoundProps
+3. **play-integration-assistance** (W1,W2): Wire useAssistance into play.vue; pass hintToShow to skins; integrate hint components
+4. **pacing-intervention** (W2): When wrongStreak >= 3, prefer easier levels for next 2 rounds (pack mode only)
+5. **tests-assistance** (T): Unit tests for assistance triggers; deterministic; no infinite loops; E2E smoke
 
-- `modeIds?: InteractionModeId[]` — if present, level applies only to listed modes; if absent, applies to all
-- `pacingTag?: 'easy' | 'normal' | 'challenge'` — if absent, derive from `difficultyTag` (easy→easy, medium→normal, hard→challenge)
+## Scope Reduction for 5 Tasks
 
-Backward compatible: existing levels work without these fields.
+- **Choice reduction**: Defer to later (simplify)
+- **Persistence**: Session-only for Epic 9; full per-profile in Epic 10
+- **Hint types**: Implement dots + number-line; grouping as "dots with grouping" variant
 
-## 2. Content Packs
+## Determinism
 
-- Create `levels.classic.v1.json`, `levels.timed-pop.v1.json`, `levels.build-bridge.v1.json`
-- Each contains Level[]; optionally filter by modeIds or use mode-specific packs
-- Migrate/split from `levels.v1.json` or generate from levelGenerator with mode-specific configs
-
-## 3. Pacing Engine
-
-- `applyPacing(levels: Level[], seed: number): Level[]`
-- Use seeded RNG for deterministic shuffle that respects: no two consecutive challenge
-- Algorithm: bucket by pacingTag; interleave so challenge never adjacent
-
-## 4. play.vue Integration
-
-- Map `interactionMode` → pack path
-- Load pack for current mode; fallback to infinite or generic pack if missing
-
-## 5. usePlayGame
-
-- When source=pack: apply pacing to levelPack before use
-- Pass seed for determinism (session or configurable)
+- Assistance triggers are pure functions of (wrongCount, threshold)
+- No randomness in hint reveal
+- Tests use fake feedback sequence

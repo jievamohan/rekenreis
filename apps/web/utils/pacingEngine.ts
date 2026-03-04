@@ -4,7 +4,7 @@ import { createSeededRng } from './seedableRng'
 /**
  * Resolve effective pacing tag for a level (derives from difficultyTag if absent).
  */
-function effectivePacingTag(level: Level): PacingTag {
+export function effectivePacingTag(level: Level): PacingTag {
   if (level.pacingTag) return level.pacingTag
   const d = level.difficultyTag?.toLowerCase() ?? 'medium'
   if (d === 'easy') return 'easy'

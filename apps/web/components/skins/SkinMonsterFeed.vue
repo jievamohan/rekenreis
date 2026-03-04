@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SkinRoundProps } from '~/types/skin'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
+import HintDots from '~/components/hints/HintDots.vue'
+import HintNumberLine from '~/components/hints/HintNumberLine.vue'
 
 defineProps<SkinRoundProps>()
 </script>
@@ -45,6 +47,18 @@ defineProps<SkinRoundProps>()
       <p v-else class="incorrect">
         Oops! The answer was {{ question?.correctAnswer }}. Try again!
       </p>
+      <HintDots
+        v-if="hintToShow === 'dots' && hintQuestion"
+        :a="hintQuestion.a"
+        :b="hintQuestion.b"
+        :correct-answer="hintQuestion.correctAnswer"
+      />
+      <HintNumberLine
+        v-else-if="hintToShow === 'number-line' && hintQuestion"
+        :a="hintQuestion.a"
+        :b="hintQuestion.b"
+        :correct-answer="hintQuestion.correctAnswer"
+      />
       <button
         type="button"
         class="next"
