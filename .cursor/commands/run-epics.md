@@ -32,7 +32,7 @@ Protocol:
    e) Ensure CI is green for the PR:
       - scripts/ci/gh_watch.sh host <PR_NUM>
    f) Enter WAIT MODE until merged:
-      - scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
+      - TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
    g) Once merged: update epic checkbox to `- [x]` in docs/epics.md.
    h) Run BRANCH SYNC again (checkout main, pull); then move on to next epic.
 

@@ -28,3 +28,6 @@
 # IDE
 **/.DS_Store
 **/.idea/
+
+.pnpm-store*
+.pnpm-store/
