@@ -1,0 +1,9 @@
+---
+description: "CI-WATCH: after push/PR updates, poll CI and ingest logs on failure"
+alwaysApply: true
+---
+
+When a change claims merge-ready OR after updating a PR:
+- Run /ci-watch.
+- If CI fails: run /ci-fetch-logs and create a Lane I CI-fix task based on artifacts/ci-logs.
+- Never wait indefinitely. Use bounded polling only.
