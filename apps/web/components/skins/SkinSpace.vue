@@ -98,8 +98,8 @@ defineProps<SkinRoundProps>()
   margin: 0 auto;
   padding: 1.5rem;
   font-family: system-ui, sans-serif;
-  background: linear-gradient(to bottom, #0d47a1, #1565c0);
-  color: #e3f2fd;
+  background: linear-gradient(to bottom, #0d47a1, var(--app-bg-fallback));
+  color: var(--app-text);
   border-radius: 1rem;
 }
 
@@ -141,7 +141,7 @@ h1 {
   min-height: 44px;
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
-  border: 2px solid #42a5f5;
+  border: 2px solid var(--app-secondary);
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
@@ -149,7 +149,7 @@ h1 {
 }
 
 .choice:hover:not(.disabled) {
-  background: rgba(66, 165, 245, 0.4);
+  background: rgba(0, 188, 212, 0.3);
 }
 
 .choice:focus-visible {
@@ -196,12 +196,12 @@ h1 {
 }
 
 .feedback .correct {
-  color: #81c784;
+  color: var(--app-correct);
   font-weight: 600;
 }
 
 .feedback .incorrect {
-  color: #ef9a9a;
+  color: var(--app-wrong);
 }
 
 .next {
@@ -209,7 +209,7 @@ h1 {
   margin-top: 0.75rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid #42a5f5;
+  border: 1px solid var(--app-secondary);
   border-radius: 0.375rem;
   background: rgba(255, 255, 255, 0.2);
   cursor: pointer;

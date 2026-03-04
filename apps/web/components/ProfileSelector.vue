@@ -94,7 +94,7 @@ h2 {
   min-width: 48px;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  border: 2px solid #333;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
@@ -103,15 +103,15 @@ h2 {
   gap: 0.75rem;
 }
 .profile-btn:hover {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 .profile-btn:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 .profile-btn.active {
-  border-color: #06c;
-  background: #e6f2ff;
+  border-color: var(--app-primary);
+  background: rgba(0, 188, 212, 0.15);
 }
 .profile-btn.add {
   justify-content: center;

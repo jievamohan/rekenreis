@@ -1,19 +1,35 @@
-# Review — Epic 19.3: Underwater Asset Pipeline
+# Review — Epic 19.4: Page Unification
 
 ## Summary
 
-Added 14 new underwater-themed SVG assets (12 objects + 2 background patterns) and integrated them into AppShell and SceneLayout.
+Replaced all hardcoded colors across 16 Vue components with CSS custom properties from the underwater theme.
 
-## Changes
+## Files Changed
 
-### New Assets (14 files)
-- `objects/`: fish-small, fish-large, bubbles, seaweed, coral, shell, starfish, jellyfish, seahorse, turtle, octopus, crab
-- `backgrounds/`: bubble-pattern, wave-overlay
+### Shared Components
+- ProfileSelector.vue, ProfileCreate.vue, PlayModeSelector.vue, ParentGate.vue
 
-### Modified Components (2 files)
-- `AppShell.vue`: Replaced radial-gradient pseudo-element with bubble-pattern.svg overlay + wave-overlay.svg at bottom
-- `SceneLayout.vue`: Added bubble-pattern.svg as atmospheric overlay in scene background
+### Pages
+- index.vue, play.vue, summary.vue
+
+### Game Modes + Hints
+- ModeTimedPop.vue, ModeBuildBridge.vue, HintNumberLine.vue, HintDots.vue
+
+### Skins
+- SkinClassic.vue, SkinMonsterFeed.vue, SkinSpace.vue, SkinPirate.vue
+
+## Replacement Summary
+
+| Old | New |
+|-----|-----|
+| #06c | var(--app-primary) |
+| #333, #666, #999, #ccc | var(--app-muted) / var(--app-text-muted) |
+| #f0f0f0, #f5f5f5, #eee, #f9f9f9 | var(--app-surface-elevated) |
+| #e6f2ff | rgba(0, 188, 212, 0.15) |
+| #0a0, #080 | var(--app-correct) |
+| #c00, #800 | var(--app-wrong) |
+| rgba(46,125,50,...) | rgba(0,188,212,...) |
 
 ## Quality Gates
 
-All gates PASS. See typecheck.md, perf.md, security.md, tests.md.
+All gates PASS.

@@ -136,7 +136,7 @@ function close() {
   padding: 0.75rem 1rem;
   min-height: 44px;
   font-size: 1rem;
-  border: 2px solid #ccc;
+  border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
@@ -144,17 +144,17 @@ function close() {
 }
 
 .mode-btn:hover {
-  background: #f5f5f5;
+  background: var(--app-surface-elevated);
 }
 
 .mode-btn:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 
 .mode-btn.active {
-  border-color: #06c;
-  background: #e6f2ff;
+  border-color: var(--app-primary);
+  background: rgba(0, 188, 212, 0.15);
 }
 
 .mode-icon {
@@ -172,7 +172,7 @@ function close() {
 .skin-label {
   margin: 0 0 0.5rem;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--app-text-muted);
 }
 
 .skin-btns {
@@ -186,24 +186,24 @@ function close() {
   min-height: 44px;
   min-width: 44px;
   font-size: 0.9rem;
-  border: 1px solid #999;
+  border: 1px solid var(--app-muted);
   border-radius: 0.375rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 
 .skin-btn:hover:not(:disabled) {
-  background: #f0f0f0;
+  background: var(--app-surface-elevated);
 }
 
 .skin-btn:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 
 .skin-btn.active {
-  border-color: #06c;
-  background: #e6f2ff;
+  border-color: var(--app-primary);
+  background: rgba(0, 188, 212, 0.15);
 }
 
 .skin-btn.locked {
@@ -216,18 +216,18 @@ function close() {
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid #999;
+  border: 1px solid var(--app-muted);
   border-radius: 0.375rem;
-  background: #f5f5f5;
+  background: var(--app-surface-elevated);
   cursor: pointer;
 }
 
 .close-btn:hover {
-  background: #eee;
+  background: var(--app-surface);
 }
 
 .close-btn:focus-visible {
-  outline: 2px solid #06c;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 </style>

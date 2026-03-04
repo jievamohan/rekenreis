@@ -89,14 +89,14 @@ defineProps<SkinRoundProps>()
   margin: 0 auto;
   padding: 1.5rem;
   font-family: system-ui, sans-serif;
-  background: linear-gradient(to bottom, #e8f5e9, var(--app-surface));
+  background: linear-gradient(to bottom, rgba(0, 188, 212, 0.12), var(--app-surface));
   border-radius: 1rem;
 }
 
 h1 {
   margin-top: 0;
   font-size: 1.5rem;
-  color: #2e7d32;
+  color: var(--app-primary);
 }
 
 .monster {
@@ -117,7 +117,7 @@ h1 {
 
 .hint {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--app-text-muted);
   margin-bottom: 1rem;
 }
 
@@ -132,19 +132,19 @@ h1 {
   min-height: 44px;
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
-  border: 2px solid #2e7d32;
+  border: 2px solid var(--app-primary);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
-  color: #1b5e20;
+  color: var(--app-text);
 }
 
 .choice:hover:not(.disabled) {
-  background: #c8e6c9;
+  background: var(--app-surface-elevated);
 }
 
 .choice:focus-visible {
-  outline: 2px solid #2e7d32;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 
@@ -187,12 +187,12 @@ h1 {
 }
 
 .feedback .correct {
-  color: #0a0;
+  color: var(--app-correct);
   font-weight: 600;
 }
 
 .feedback .incorrect {
-  color: #c00;
+  color: var(--app-wrong);
 }
 
 .next {
@@ -200,14 +200,14 @@ h1 {
   margin-top: 0.75rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid #2e7d32;
+  border: 1px solid var(--app-primary);
   border-radius: 0.375rem;
   background: var(--app-surface);
   cursor: pointer;
 }
 
 .next:focus-visible {
-  outline: 2px solid #2e7d32;
+  outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
 

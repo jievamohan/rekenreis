@@ -51,7 +51,7 @@ const scale = computed(() => 100 / max.value)
 .line {
   position: relative;
   height: 2rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid var(--app-muted);
 }
 .tick {
   position: absolute;
@@ -67,9 +67,9 @@ const scale = computed(() => 100 / max.value)
   top: -1rem;
 }
 .marker.a {
-  color: #06c;
+  color: var(--app-primary);
 }
 .marker.b {
-  color: #0a0;
+  color: var(--app-correct);
 }
 </style>

@@ -90,7 +90,7 @@ h1 {
 }
 .metric {
   padding: var(--app-space-md);
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 188, 212, 0.08);
   border-radius: var(--app-radius-md);
 }
 .metric .label {
