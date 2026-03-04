@@ -1,32 +1,34 @@
-# Discovery: Browser Console Hydration Errors
+# Epic 19 — Discovery (BA + Game Designer)
 
-## Summary
-Vue hydration mismatches on `/play` page cause console warnings. Server-rendered HTML differs from client-rendered HTML because of client-only state and non-deterministic data.
+## Feature Intent
 
-## Root Causes
+**Aggressive Underwater Reskin Sprint**: Transform the entire app from a light/white document look into a cohesive underwater-themed, playful experience.
 
-### 1. Random question generation (ModeBuildBridge)
-- `generateAdditionQuestion()` uses `Math.random` (no seed)
-- Server: one random question (e.g. 4+1=?)
-- Client: different random question (e.g. 7+1=?)
-- Mismatch: prompt text, plank numbers
+## Slice 19.1 Focus
 
-### 2. Skin lock state (play.vue ~214–226)
-- `isUnlocked()` depends on `bestScore` from `usePersistence` / profile
-- Server: `loadProgress()` returns `{ bestScore: 0 }` (no localStorage)
-- Client: reads actual bestScore from localStorage
-- Mismatch: server shows locked, client expects unlocked (or vice versa)
+Tokens & No-White: Update design tokens with underwater palette; remove white surfaces.
 
-### 3. Telemetry checkbox (play.vue ~242)
-- `telemetryOptOut` from `useTelemetry` / profile
-- Server: `getOptOut()` returns true when `window === undefined`; `createFreshSchema()` uses `telemetryOptOut: true`
-- Client: reads from localStorage (may be false)
-- Mismatch: server checked, client unchecked
+## Target Audience
 
-### 4. Suspense warning
-- Nuxt/Vue internal; not from our code
+- Kleuters (4–7 years) and their parents
+- Same as existing product; no new user segment
 
-## Affected Files
-- `apps/web/pages/play.vue`
-- `apps/web/components/modes/ModeBuildBridge.vue`
-- Composables: `usePlayGame`, `useRewards`, `useTelemetry`, `usePersistence`, `useProfile`
+## Primary Experience Goal
+
+- Every screen feels like a game world, not a form or document
+- No white app look anywhere
+- Cohesive underwater theme across index, start, play, stickers, summary, settings
+
+## Success Criteria (Slice 19.1)
+
+- App background is underwater gradient
+- No white (#fff/#ffffff) as primary surface anywhere
+- Stage card has themed (non-white) surface
+- Tokens and graphics.css use underwater palette
+
+## Non-Goals
+
+- New game modes or mechanics
+- Backend changes
+- New content packs
+- Monetization or accounts

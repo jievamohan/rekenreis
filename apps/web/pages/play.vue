@@ -270,7 +270,7 @@ onUnmounted(() => {
   font-size: 0.85rem;
   border: 1px solid #999;
   border-radius: 0.375rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 .skin-btn:hover:not(:disabled) {
@@ -318,7 +318,7 @@ onUnmounted(() => {
   z-index: 100;
   padding: 0.5rem 1rem;
   background: #06c;
-  color: #fff;
+  color: var(--app-text);
   text-decoration: none;
   border-radius: 0.25rem;
 }

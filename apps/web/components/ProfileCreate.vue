@@ -65,7 +65,7 @@ function cancel() {
   padding: 1rem;
   border: 2px solid #06c;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   margin-top: 0.75rem;
 }
 h3 {
@@ -94,7 +94,7 @@ h3 {
   font-size: 1.5rem;
   border: 2px solid #999;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 .avatar-btn:hover {
@@ -117,7 +117,7 @@ h3 {
 }
 .btn.primary {
   background: #06c;
-  color: #fff;
+  color: var(--app-text);
   border: none;
 }
 </style>

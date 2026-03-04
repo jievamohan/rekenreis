@@ -110,7 +110,7 @@ function close() {
 
 .mode-selector-panel {
   position: relative;
-  background: #fff;
+  background: var(--app-surface);
   border-radius: 0.5rem;
   padding: 1.5rem;
   max-width: 20rem;
@@ -138,7 +138,7 @@ function close() {
   font-size: 1rem;
   border: 2px solid #ccc;
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
   text-align: left;
 }
@@ -188,7 +188,7 @@ function close() {
   font-size: 0.9rem;
   border: 1px solid #999;
   border-radius: 0.375rem;
-  background: #fff;
+  background: var(--app-surface);
   cursor: pointer;
 }
 

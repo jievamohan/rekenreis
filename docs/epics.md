@@ -342,3 +342,128 @@ Scope (implemented):
 - Smoke UI regression: AppShell nav tabs and stage documented
 
 Merged: PR #40
+
+---
+
+## Epic 19.1 — Tokens & No-White
+- [ ]
+PlanRef:
+- design: docs/design/epic-19.md
+- archive: artifacts/archive/epic-19.0/latest
+- slice: 19.1
+
+/feature --ci --max-tasks=5
+Build Epic 19.1: Replace white app look with underwater design tokens.
+
+Requirements:
+- Update tokens.css: underwater palette (deep water gradient bg, no #ffffff surfaces)
+- Update graphics.css: underwater-themed graphics tokens
+- GameStageCard: use themed surface (glass/teal, not white)
+- app.vue: ensure root uses new --app-bg
+- Remove hardcoded #fff, #ffffff from dominant surfaces
+- Keep --app-tap-min, focus states, reduced motion
+- Tests: typecheck, build, smoke green
+
+Acceptance:
+- No white (#fff/#ffffff) as primary surface anywhere
+- App background is underwater gradient
+- Stage card has themed (non-white) surface
+
+---
+
+## Epic 19.2 — Shell & Nav Redesign
+- [ ]
+PlanRef:
+- design: docs/design/epic-19.md
+- archive: artifacts/archive/epic-19.0/latest
+- slice: 19.2
+
+/feature --ci --max-tasks=5
+Build Epic 19.2: New app shell and nav tabs with underwater theme and playful typography/iconography.
+
+Requirements:
+- AppShell: underwater background pattern, themed top bar (profile pill, Choose game)
+- GameStageCard: integrate with new tokens from 19.1
+- NavTabs: replace emoji icons with underwater SVG icons (fish, chart/bubbles, gear/coral)
+- Add assets/graphics/icons/ for nav SVGs
+- Playful typography (Nunito or Fredoka One) applied consistently
+- Keep a11y: 44px tap targets, focus states
+- Tests: typecheck, build, smoke (nav tabs work)
+
+Acceptance:
+- Nav shows SVG icons instead of emoji
+- Shell has underwater-themed background
+- Typography is playful and consistent
+
+---
+
+## Epic 19.3 — Underwater Asset Pipeline
+- [ ]
+PlanRef:
+- design: docs/design/epic-19.md
+- archive: artifacts/archive/epic-19.0/latest
+- slice: 19.3
+
+/feature --ci --max-tasks=5
+Build Epic 19.3: Add 10+ underwater SVG assets and background patterns.
+
+Requirements:
+- Add 10+ underwater SVGs: fish, bubbles, seaweed, coral, shells, etc.
+- Add background patterns (bubble pattern, wave overlay)
+- Organize in assets/graphics/backgrounds/, objects/, icons/
+- Integrate patterns into AppShell and/or SceneLayout
+- Each SVG target < 2KB; total new assets < 50KB
+- Bundle size budget must pass
+- Tests: typecheck, build
+
+Acceptance:
+- At least 10 underwater-themed SVG assets in repo
+- Background patterns visible on at least one screen
+- Bundle budget passes
+
+---
+
+## Epic 19.4 — Page Unification
+- [ ]
+PlanRef:
+- design: docs/design/epic-19.md
+- archive: artifacts/archive/epic-19.0/latest
+- slice: 19.4
+
+/feature --ci --max-tasks=5
+Build Epic 19.4: Unify all pages visually with underwater theme.
+
+Requirements:
+- index, start, play, stickers, summary, settings: all use themed shell and tokens
+- Remove any remaining hardcoded colors (e.g. play page skin picker, privacy footer)
+- ProfileSelector, PlayModeSelector: themed
+- Ensure visual consistency across all routes
+- Tests: typecheck, build, smoke all pages
+
+Acceptance:
+- Every page (/, /start, /play, /stickers, /summary, /settings) looks unified
+- No orphaned white or off-theme elements
+
+---
+
+## Epic 19.5 — Polish & a11y
+- [ ]
+PlanRef:
+- design: docs/design/epic-19.md
+- archive: artifacts/archive/epic-19.0/latest
+- slice: 19.5
+
+/feature --ci --max-tasks=5
+Build Epic 19.5: Final polish, a11y audit, reduced motion verification.
+
+Requirements:
+- Contrast audit: WCAG AA on all text/background combinations
+- Reduced motion: verify all transitions respect prefers-reduced-motion
+- Focus states visible on all interactive elements
+- Document a11y notes in design bible if needed
+- Tests: typecheck, build, smoke, manual a11y check
+
+Acceptance:
+- Contrast meets WCAG AA
+- Reduced motion preference disables non-essential animations
+- Focus states visible

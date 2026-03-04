@@ -37,6 +37,11 @@ Protocol:
 - Else: FINALIZE=true (default)
 
 1) Discovery (no code changes)
+PlanRef override:
+- If the feature input contains a "PlanRef:" block:
+  - Do NOT regenerate discovery/planning artifacts.
+  - Use the referenced design doc + archive directory as the single source of truth.
+  - Generate tasks only for the specified slice (e.g. 18.2).
 Dispatch planning subagents and produce:
 - artifacts/current/discovery.md
 - artifacts/current/ux.md
