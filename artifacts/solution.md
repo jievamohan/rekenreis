@@ -1,28 +1,16 @@
-# Epic 1: Level Contract + Content Pack — Solution
+# Epic 2: Skin System + 1 Skin — Solution
 
-## Environment/config
+## Approach
 
-- No new env vars required.
-- Mode: query param `?mode=infinite|pack`; default `infinite` for backward compatibility.
-- Optional: `nuxt.config` runtime config for default mode if needed.
+1. **Contract first**: Define `SkinRoundProps` and `SkinDefinition` in types/skin.ts
+2. **Refactor classic**: Extract current play UI into SkinClassic.vue; play.vue passes props
+3. **Skin resolver**: useSkin(route.query.skin) returns { component, id }; fallback to classic
+4. **Monster Feed**: New SkinMonsterFeed.vue implementing same contract; minimal thematic UI
+5. **Tests**: useSkin returns correct component; contract callback tests
 
-## Integration points
+## Implementation notes
 
-- **usePlayGame**: Accept `source: 'infinite' | 'pack'` and optional `levelPack?: Level[]`.
-- **play.vue**: Read `route.query.mode` or config; pass to usePlayGame.
-- **Content**: `import levelsV1 from '~/content/levels.v1.json'` (Nuxt auto-import) or `fetch('/content/levels.v1.json')` at runtime.
-
-## Operational concerns
-
-- Logging: none required for Epic 1.
-- Error handling: Invalid pack → fallback to infinite; log to console in dev.
-
-## NFRs checklist
-
-- **Perf**: Gate F; content pack < 10KB.
-- **Security**: Gate D; no new surface.
-- **Reliability**: Fallback on pack load failure.
-
-## Rollback
-
-- Revert branch; content pack and schema are additive; no DB/API changes.
+- usePlayGame unchanged; play.vue binds its outputs to skin props
+- Skin components use defineProps<SkinRoundProps>(); emit via callbacks
+- Monster Feed: simple styling, maybe emoji or minimal SVG; no new deps
+- Logging: none required for Epic 2

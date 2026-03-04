@@ -1,80 +1,54 @@
-# Epic 1: Level Contract + Content Pack — Discovery
+# Epic 2: Skin System + 1 Skin — Discovery
 
 ## User goal(s) and success metrics
 
-- **Primary**: Make the kids math game data-driven via a level schema (addition only for now).
+- **Primary**: Add a minigame skin system so the same core game logic can be rendered with different visual themes.
 - **Success metrics**:
-  - Game consumes level definitions (operator, operand ranges, choiceCount, hintMode, difficultyTag, masteryRules optional).
-  - Starter content pack (~50 levels) available and wired into /play.
-  - /play can run in "infinite generator mode" AND "content pack mode".
-  - Mode switch via config or query param (minimal UX).
-  - Same seed → same output (deterministic generator).
-  - Existing smoke/e2e tests remain green.
+  - Skin contract (TS) defines rendering interface (round state + callbacks)
+  - Core loop (usePlayGame) remains single source of truth — no duplicated logic
+  - /play switches skin via query param or config (default: classic)
+  - ONE skin implemented: Monster Feed (minimal UI, accessible)
+  - Tests: skin selection + contract/callback correctness
+  - Existing smoke/e2e green
 
 ## Scope_in
 
-- **Level schema**: TypeScript type + JSON schema or runtime validator.
-  - Fields: operator (addition only), operand ranges (min/max), choiceCount, hintMode, difficultyTag, masteryRules (optional).
-- **Deterministic level generator**: Create starter pack from seed/config.
-- **Content storage**: Versioned file at `apps/web/content/levels.v1.json`.
-- **/play updates**:
-  - Infinite generator mode (current behavior, seeded).
-  - Content pack mode (load from levels.v1.json).
-  - Switch mode via config or query param (minimal).
-- **Unit tests**: Schema validation, generator determinism, ranges, correct answer present, choices unique.
-- No backend persistence/auth. No new operators. No minigame skins.
-- Smoke/e2e tests must not break; update if needed.
+- **Skin contract**: TypeScript interface for rendering a round (question, choices, feedback, callbacks)
+- **Skin registry/config**: Map skin id → skin component; default "classic"
+- **/play updates**: Read skin from `?skin=monster-feed` or config; render via skin component
+- **Classic skin**: Current play.vue UI as the default "classic" skin
+- **Monster Feed skin**: ONE alternative skin (minimal UI, thematic — feeding a monster)
+- **Unit tests**: Skin selection logic, contract/callback correctness
+- Keep existing smoke/e2e green; update lightly if needed
 
 ## Scope_out
 
-- New operators (subtraction, etc.).
-- Minigame skins.
-- Backend storage/auth.
-- High scores or progress persistence.
+- Multiple skins beyond Monster Feed (Epic 3)
+- Rewards/unlocks (Epic 3)
+- Persistence (Epic 4)
+- Backend changes
 
 ## Functional requirements (bulleted, testable)
 
-1. **Level schema**
-   - TypeScript type `Level` with: operator, operandMin, operandMax, choiceCount, hintMode, difficultyTag, masteryRules (optional).
-   - Runtime validator (e.g. Zod, valibot) or JSON schema that rejects invalid data.
-2. **Deterministic generator**
-   - `generateLevelPack(seed, config)` produces identical output for same seed/config.
-   - Output conforms to Level schema.
-3. **Content pack**
-   - File `apps/web/content/levels.v1.json` contains ~50 levels.
-   - Levels loadable at runtime.
-4. **/play modes**
-   - Infinite mode: generate questions on-the-fly using seeded generator.
-   - Content pack mode: serve questions from loaded pack in order (or shuffled deterministically).
-   - Mode switch: config or query param (e.g. `?mode=pack` vs `?mode=infinite`).
+1. **Skin contract**
+   - TS interface: `SkinProps { question, feedback, score, streak, onAnswer, onNext }`
+   - Skin components receive props and render; no game logic inside skin
+2. **Skin selection**
+   - Read from `route.query.skin` or nuxt config; default "classic"
+   - Validate skin id against registry; fallback to classic if unknown
+3. **Classic skin**
+   - Extract current play UI into `SkinsClassic.vue` (or keep inline as default)
+4. **Monster Feed skin**
+   - New `SkinsMonsterFeed.vue`: minimal UI, accessible (ARIA, keyboard)
+   - Thematic: e.g. "feed the monster the right answer"
 5. **Tests**
-   - Schema validation passes for valid levels; rejects invalid.
-   - Same seed → same level pack output.
-   - Sanity: operand ranges respected, correct answer in choices, choices unique.
+   - Skin selection returns correct component for valid id; fallback for invalid
+   - Contract: callbacks invoked with correct args
 
 ## Acceptance criteria templates (Given/When/Then)
 
-- **AC-1**: Given a valid Level object, When validated, Then it passes.
-- **AC-2**: Given invalid Level (missing operator, bad ranges), When validated, Then it fails.
-- **AC-3**: Given seed X and config C, When generateLevelPack(X, C) runs twice, Then output is identical.
-- **AC-4**: Given a generated level, When inspecting operands and choices, Then operands in range, correct answer present, choices unique.
-- **AC-5**: Given /play?mode=infinite, When playing, Then questions are generated on-the-fly.
-- **AC-6**: Given /play?mode=pack (or default from config), When playing, Then questions come from content pack.
-- **AC-7**: Given repo, When running existing smoke/e2e tests, Then all pass.
-
-## Edge cases + failure modes
-
-- Empty content pack: fallback to infinite mode.
-- Corrupt JSON: graceful error, fallback or clear message.
-- Mode param typo: default to safe mode (infinite).
-
-## Dependencies and constraints
-
-- Extends existing `questionGenerator.ts`, `usePlayGame.ts`, `play.vue`.
-- No new heavy deps; prefer lightweight validator (Zod/valibot) if needed.
-- Content loaded at build or runtime (static import or fetch).
-
-## Risk tags
-
-- **perf**: Low—content pack is static; bundle impact minimal.
-- **deps**: Low—one validator lib if not using native JSON parsing + manual checks.
+- **AC-1**: Given skin id "classic", When /play loads, Then classic UI renders.
+- **AC-2**: Given skin id "monster-feed", When /play loads, Then Monster Feed skin renders.
+- **AC-3**: Given unknown skin id, When /play loads, Then classic (fallback) renders.
+- **AC-4**: Given Monster Feed skin, When user selects correct answer, Then onAnswer(correctAnswer) called; feedback shown.
+- **AC-5**: All existing smoke/e2e tests pass.

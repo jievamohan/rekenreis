@@ -1,43 +1,35 @@
-# Epic 1: Level Contract + Content Pack — Backlog
+# Epic 2: Skin System + 1 Skin — Backlog
 
 ## Epic summary
 
-Make the kids math game data-driven via a Level schema (addition only). Provide a starter content pack (~50 levels), deterministic level generator, and wire /play to support both "infinite generator mode" and "content pack mode" with minimal mode switch (query param). Unit tests for schema validation, generator determinism, and sanity checks. No backend, no new operators, no skins.
+Build a minigame skin system: TS contract for rendering a round, core loop stays single source of truth, /play switches skin via query/config (default classic), implement ONE skin (Monster Feed). Tests for skin selection and contract correctness. Keep smoke/e2e green.
 
-## Scope_in
+## Scope_in / Scope_out
 
-- Level schema (TypeScript + runtime validator): operator, operand ranges, choiceCount, hintMode, difficultyTag, masteryRules (optional)
-- Deterministic level generator from seed/config
-- Content pack: apps/web/content/levels.v1.json (~50 levels)
-- /play dual-mode: infinite | pack, switch via query param
-- Unit tests: schema validation, generator determinism, sanity (ranges, correct answer, unique choices)
-- Smoke/e2e: must not break; update if needed
-
-## Scope_out
-
-- New operators
-- Minigame skins
-- Backend storage/auth
+**In**: Skin contract (TS), skin registry, classic skin extraction, Monster Feed skin, useSkin composable, /play skin param, unit tests, smoke updates.
+**Out**: Multiple skins beyond one, rewards, persistence, backend.
 
 ## Risks + mitigations
 
-| Risk | Tag | Mitigation |
-|------|-----|------------|
-| Bundle bloat | perf | Lightweight validator; Gate F |
-| Regression | perf | Full test suite; smoke verification |
+| Area   | Risk              | Mitigation                    |
+|--------|-------------------|--------------------------------|
+| perf   | Bundle size       | Minimal Monster Feed UI; no heavy assets |
+| a11y   | Regression        | Preserve ARIA/focus in both skins |
+
+No auth/db/crypto/payments.
 
 ## NFRs
 
-- **Perf**: Gate F (build + size) pass
-- **Security**: Gate D (no new surface)
-- **A11y**: No change; existing behavior
+- Perf: bundle within budget
+- Security: skin id allowlist (no injection)
+- a11y: keyboard, focus, ARIA preserved
 
 ## Task list
 
-| # | Task | Lanes | Gates | Risk tags |
-|---|------|-------|-------|-----------|
-| 1 | Level schema + validator + unit tests | W2, T | C, D, F | — |
-| 2 | Deterministic level generator + content pack | W2, T | C, D, F | — |
-| 3 | usePlayGame dual-mode (infinite | pack) | W2, T | C, D, F | — |
-| 4 | play.vue mode switch via query param | W1, W2 | C, D, F | — |
-| 5 | Smoke/e2e verification | T | C, D, F | — |
+| ID   | Title                         | Lanes | Gates | Acceptance |
+|------|-------------------------------|-------|-------|------------|
+| 0013 | Skin contract + types         | W2    | C,D,F | SkinRoundProps, SkinDefinition in types/skin.ts |
+| 0014 | useSkin composable + registry | W2    | C,D,F | useSkin(id) returns component; invalid → classic |
+| 0015 | Extract SkinClassic           | W1    | C,D,F | Current play UI as SkinClassic.vue |
+| 0016 | Monster Feed skin             | W1    | C,D,F | SkinMonsterFeed.vue, minimal UI, accessible |
+| 0017 | Play page skin wiring + tests | W1,W2,T| C,D,F | /play?skin=, tests, smoke green |

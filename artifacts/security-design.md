@@ -1,19 +1,18 @@
-# Epic 1: Level Contract + Content Pack — Security Design
+# Epic 2: Skin System + 1 Skin — Security Design
 
-## Attack surface
+## Scope
 
-- **Content pack**: Static file; not user-uploaded. Low risk.
-- **Query param**: `mode` is read-only; no injection into level generation.
-- **Validator**: Validates structure only; no eval or dynamic code.
+- Frontend-only: skin components, composable, types
+- No new API, auth, or data handling
+- No user input beyond existing (answer selection)
 
-## Secrets
+## Threats
 
-- None. No API keys, no auth.
+- **XSS**: Skin components render game data (numbers); no raw HTML. Vue escaping suffices.
+- **Injection**: Skin id from query param; validate against allowlist before use. Unknown → classic.
 
-## Auth implications
+## Mitigations
 
-- None. Game remains unauthenticated.
-
-## SAST / dependency audit
-
-- Gate D: gitleaks, semgrep, pnpm audit, composer audit—unchanged.
+- Skin id allowlist in useSkin; never pass unknown id to component resolution
+- No eval or dangerouslySetInnerHTML
+- No new network calls or storage
