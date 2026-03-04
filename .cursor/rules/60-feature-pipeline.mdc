@@ -1,5 +1,5 @@
 ---
-description: "Feature pipeline: discovery -> tasks -> optional autopilot delivery (AUTO + FORCE)"
+description: "Feature pipeline: discovery -> tasks -> default autopilot (FORCE) with --safe option"
 alwaysApply: true
 ---
 
@@ -25,22 +25,22 @@ When using /feature:
   - gates (C, D, F at minimum unless explicitly justified)
   - risk tags and mitigation notes
 
-3) Autopilot modes
-- AUTO (default): allowed only if Complexity Gate passes:
+3) Default delivery mode
+- Default behavior of /feature is FORCE autopilot (bounded).
+- FORCE safety floor (always enforced):
+  - max tasks executed per /feature run <= 5 (or user-provided --max-tasks, capped at 5)
+  - stop immediately on any BLOCKED task
+  - any I/D/auth-related work must be explicitly flagged in task risks and artifacts/risk.md
+  - no destructive DB operations; prefer reversible changes only
+
+4) --safe behavior
+- If --safe is used, delivery is allowed only if the SAFE Complexity Gate passes:
   - tasks_generated <= 3
   - no high-risk tags (auth/payments/crypto/data-loss/privacy)
   - no lanes I or D unless explicitly allowed in the feature input
   - acceptance criteria include required tests (unit at minimum)
-- FORCE (--force): may execute even if Complexity Gate fails, but must remain bounded and safe:
-  - max tasks executed per /feature run <= 5 (or user-provided --max-tasks, capped at 5)
-  - stop immediately on any BLOCKED task
-  - any I/D/auth-related work must be explicitly flagged in artifacts/risk.md and the task(s)
-  - no destructive DB operations; prefer reversible changes only
-
-4) Gate failure behavior
-- If AUTO gate fails: stop after planning and produce backlog + tasks (PLAN_ONLY output).
-- If FORCE is used: proceed with bounded delivery execution, otherwise stop.
+- If SAFE gate fails: stop after planning and output backlog + tasks (PLAN_ONLY).
 
 5) Delivery handoff rule
-- Delivery execution (AUTO/FORCE) must run tasks via /orchestrate-task.
-- /orchestrate-task remains the single authority for PR creation, CI watch, CI autofix, and merge-ready claims.
+- Delivery execution (FORCE/SAFE) must run tasks via /orchestrate-task.
+- /orchestrate-task remains the single authority for PR creation, CI watch, CI autofix, artifacts commit, and merge-ready claims.
