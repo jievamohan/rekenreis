@@ -243,7 +243,7 @@ Non-goals:
 ---
 
 ## Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed)
-- [ ]
+- [x]
 /feature --ci --max-tasks=5  
 Build Epic 14: Strengthen security/testing hardening and CI speed.
 

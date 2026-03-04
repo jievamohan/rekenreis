@@ -16,3 +16,4 @@
 | Epic 11 — Audio & Micro-Animations | done | PR #27 merged |
 | Epic 12 — Rewards Expansion | done | PR #28 merged |
 | Epic 13 — Share/Print Progress Summary | done | PR #30 merged |
+| Epic 14 — Production Hardening 2 | done | PR #32 merged |
