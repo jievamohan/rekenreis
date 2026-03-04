@@ -2,7 +2,7 @@
 id: "0006"
 title: "play-page"
 owner: "orchestrator"
-status: "ready"
+status: "done"
 scope_in:
   - "/play route with minimal UI: question, 3-4 answer buttons, score, streak"
   - "Immediate feedback (correct/incorrect), next-question progression"

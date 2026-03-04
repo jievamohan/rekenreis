@@ -2,7 +2,7 @@
 id: "0005"
 title: "play-composable"
 owner: "orchestrator"
-status: "ready"
+status: "done"
 scope_in:
   - "usePlayGame() composable: current question, score, streak, feedback state"
   - "Actions: selectAnswer, nextQuestion; integrates generateAdditionQuestion"

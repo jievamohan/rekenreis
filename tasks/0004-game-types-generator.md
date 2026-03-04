@@ -2,7 +2,7 @@
 id: "0004"
 title: "game-types-generator"
 owner: "orchestrator"
-status: "ready"
+status: "done"
 scope_in:
   - "Define AdditionQuestion and GameMode types for extensibility"
   - "Implement pure generateAdditionQuestion(mode) with 3-4 unique choices"

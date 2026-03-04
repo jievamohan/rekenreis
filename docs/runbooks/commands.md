@@ -40,8 +40,16 @@ Commands used by CI gates and local development. All paths relative to repo root
 docker compose up --build
 
 # Web: http://localhost:3000/start
+# Web game: http://localhost:3000/play
 # API: http://localhost:8000/api/health
 ```
+
+## Smoke verification
+
+1. `docker compose up --build`
+2. Visit http://localhost:3000/start — should show API health JSON
+3. Visit http://localhost:3000/play — should show math game, question, answer buttons
+4. Select an answer — feedback appears; click Next — new question loads
 
 ## Install (prerequisites)
 

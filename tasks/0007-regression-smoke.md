@@ -2,7 +2,7 @@
 id: "0007"
 title: "regression-smoke"
 owner: "orchestrator"
-status: "ready"
+status: "done"
 scope_in:
   - "Verify vertical slice intact: /start renders API health"
   - "Verify /play smoke: load, play a few questions"
