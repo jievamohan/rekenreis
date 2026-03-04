@@ -37,7 +37,7 @@ Requirements:
 - tests for persistence schema/versioning
 
 ## Epic 5 — Polish / Hardening
-- [ ]
+- [x]
 /feature --ci --max-tasks=5
 Build Epic 5: Polish, accessibility, reliability, performance hardening.
 Requirements:
