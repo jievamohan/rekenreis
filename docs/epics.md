@@ -845,7 +845,8 @@ Acceptance:
 ---
 
 ## Epic 21.5 — Final 2 Minigames (Submarine Sort + Starfish Match)
-- [ ]
+- [x]
+Merged: PR #62
 PlanRef:
 - design: docs/design/epic-21.md
 - archive: artifacts/archive/epic-21.0/latest

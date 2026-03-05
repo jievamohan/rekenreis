@@ -35,3 +35,4 @@
 | Epic 21.2 — Minigame Types + Serving + Difficulty | done | PR #59 merged |
 | Epic 21.3 — Bubble Pop + Treasure Dive | done | PR #60 merged |
 | Epic 21.4 — Fish Feed + Coral Builder | done | PR #61 merged |
+| Epic 21.5 — Submarine Sort + Starfish Match | done | PR #62 merged |
