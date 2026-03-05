@@ -1,30 +1,29 @@
-# Epic 21.2 — UX Notes
+# Epic 21.3 — UX
 
-**Source:** docs/design/epic-21.md §3
+**Source:** docs/design/epic-21.md
 
-## UI Component: MinigameRenderer
+## Bubble Pop
 
-- **Single new UI surface:** MinigameRenderer.vue
-- **Placement:** Renders within existing play page (GameStageCard/play layout)
-- **Role:** Dynamic component loader (lazy via defineAsyncComponent)
+- **Pattern:** tap
+- **Mechanic:** Bubbles float up with numbers; tap the bubble showing the correct answer
+- **Targets:** All bubbles ≥ 44px; spacing ≥ 8px
+- **Keyboard:** Tab through bubbles, Enter/Space to select
 
-## Flow
+## Treasure Dive
 
-```
-Map → Play → [ProblemCard] → [Minigame Scene] → [Answer] → Feedback → Next
-```
+- **Pattern:** drag
+- **Mechanic:** Gems/shells with numbers; drag the correct one into the chest
+- **Keyboard fallback:** Select-from-list (Tab + Enter/Space) when drag unavailable
+- **Targets:** Gems and chest hitbox ≥ 44px
 
-- ProblemCard remains canonical math display.
-- Minigame is the interaction wrapper for answering.
-- **Fallback:** If minigame fails to load → show Keypad.
+## Layout
 
-## UX Constraints (from design)
+- Minigames render within existing GameStageCard/play layout
+- ProblemCard remains canonical math display
+- Fallback: if minigame fails to load, show Keypad
 
-- Tap targets ≥ 44px (deferred to minigame implementations).
-- Keyboard: Tab, Enter/Space, arrow keys (deferred).
-- No user choice of minigame—system auto-selects via mapping + serving.
+## Accessibility
 
-## Epic 21.2 Scope
-
-- MinigameRenderer: loading state, error state, a11y fallback to Keypad.
-- No minigame visuals yet—foundation only.
+- Focus states visible on all interactive elements
+- Reduced motion: instant state change under prefers-reduced-motion
+- aria-labels on game objects; decorative SVGs aria-hidden

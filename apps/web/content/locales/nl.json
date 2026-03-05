@@ -264,5 +264,15 @@
     "correct": "Goed zo!",
     "timeout": "De tijd is om! Het antwoord was {answer}.",
     "wrong": "Probeer een andere! Het antwoord was {answer}."
+  },
+  "minigameBubblePop": {
+    "ariaLabel": "Bubble Pop — tik op de juiste bubbel",
+    "bubbleLabel": "Bubbel {value}"
+  },
+  "minigameTreasureDive": {
+    "ariaLabel": "Schatduik — sleep de juiste edelsteen naar de schatkist",
+    "gemLabel": "Edelsteen {value}",
+    "chestLabel": "Schatkist",
+    "chestReady": "Sleep of klik om antwoord te geven"
   }
 }

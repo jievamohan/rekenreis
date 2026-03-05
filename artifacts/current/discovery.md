@@ -1,30 +1,26 @@
-# Epic 21.2 — Discovery (Business Analysis)
+# Epic 21.3 — Discovery
 
 **Source:** docs/design/epic-21.md
 
-## What Epic 21.2 Delivers
+## Business Context
 
-### Business Value
+- **Target:** Kleuters (4–6), parents, educators (NL/Flanders)
+- **Goal:** First playable minigames to sustain engagement through varied interaction patterns
 
-- **Foundation for varied play:** Establishes the plumbing so future epics can plug in 6 distinct minigames (Bubble Pop, Treasure Dive, Fish Feed, Coral Builder, Submarine Sort, Starfish Match).
-- **Deterministic serving:** Same seed + mapping → same minigame sequence per session. Enables reproducible tests and predictable UX.
-- **Difficulty scaffolding:** Math ranges and minigame params scale by chapter/level. Ready for use when minigames land.
+## Value Proposition
 
-### User-Facing Outcomes
+1. **First playable minigames** — Bubble Pop and Treasure Dive are the first two of six planned minigames
+2. **Visual variety in sessions** — Players experience tap vs drag mechanics; underwater theme
+3. **Safe, positive practice** — No punitive fail states; gentle retry/hint on wrong answer
 
-- MinigameRenderer wired into play flow; system picks minigame per round (visible in dev tools or via test).
-- If a minigame fails to load, Keypad fallback ensures play continues.
-- No visible minigame content yet—only the loader and fallback.
+## Success Criteria
 
-### Non-Goals
+- A play session cycles through Bubble Pop and Treasure Dive automatically
+- Every visible string in Dutch
+- Difficulty gently ramps; no game-over on wrong answer
 
-- Implementing any of the 6 minigames.
-- i18n, animations, new assets.
-- Backend/API changes.
+## Non-Goals
 
-### Acceptance Criteria
-
-- Types clean (typecheck passes).
-- Serving deterministic with seed.
-- Difficulty scales per chapter.
-- MinigameRenderer loads with fallback.
+- All 6 minigames at once
+- Backend changes, monetization
+- i18n beyond Dutch

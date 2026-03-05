@@ -1,7 +1,20 @@
-# Epic 21.2 — Assets
+# Epic 21.3 — Assets
 
-## N/A: No New Assets
+**Source:** docs/design/epic-21.md
 
-- **Reason:** Epic 21.2 delivers types, composables, MinigameRenderer, mapping table. No minigame implementations.
-- **Impact:** None. No new SVGs or graphics.
-- **Checks still required:** No asset checks for this epic.
+## Locations
+
+- `apps/web/assets/graphics/minigames/bubble-pop/`
+- `apps/web/assets/graphics/minigames/treasure-dive/`
+
+## Placeholder SVGs
+
+- **Bubble Pop:** Bubble shapes (circles); simple, < 2KB each
+- **Treasure Dive:** Gem shapes, chest; simple geometric, < 2KB each
+- **Budget:** Total < 40KB for both minigames
+
+## Style
+
+- Flat SVG, chunky rounded
+- Underwater themed
+- Consistent with existing assets/graphics/
