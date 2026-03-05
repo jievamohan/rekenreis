@@ -678,7 +678,8 @@ Screenshot targets:
 ---
 
 ## Epic 21.1 — i18n Foundation + Dutch UI Copy
-- [ ]
+- [x]
+Merged: PR #58
 PlanRef:
 - design: docs/design/epic-21.md
 - archive: artifacts/archive/epic-21.0/latest

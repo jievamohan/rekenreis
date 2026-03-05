@@ -19,3 +19,16 @@
 | Epic 14 — Production Hardening 2 | done | PR #32 merged |
 | Epic 15 — Release Prep | done | PR #33 merged |
 | Epic 16 — Release Prep (Verification) | done | PR #35 merged |
+| Epic 17 — Graphics v1 | done | PR merged |
+| Epic 18 — Global Kid-Friendly Look & Feel v2 | done | PR #40 merged |
+| Epic 19.1 — Tokens & No-White | done | PR merged |
+| Epic 19.2 — Shell & Nav Redesign | done | PR merged |
+| Epic 19.3 — Underwater Asset Pipeline | done | PR merged |
+| Epic 19.4 — Page Unification | done | PR merged |
+| Epic 19.5 — Polish & a11y | done | PR merged |
+| Epic 20.1 — Playwright & Tokens Foundation | done | PR #49 merged |
+| Epic 20.2 — Level Map Screen | done | PR #50 merged |
+| Epic 20.3 — Play Screen Redesign | done | PR #51 merged |
+| Epic 20.4 — Level Complete Modal + Confetti | done | PR #52 merged |
+| Epic 20.5 — Mistakes Review + Polish | done | PR #53 merged |
+| Epic 21.1 — i18n Foundation + Dutch UI Copy | done | PR #58 merged |
