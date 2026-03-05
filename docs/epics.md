@@ -506,7 +506,8 @@ Screenshot targets:
 ---
 
 ## Epic 20.2 — Level Map Screen
-- [ ]
+- [x]
+Merged: PR #50
 PlanRef:
 - design: docs/design/epic-20.md
 - archive: artifacts/archive/epic-20.0/latest
