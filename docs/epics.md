@@ -799,7 +799,8 @@ Acceptance:
 ---
 
 ## Epic 21.4 — Middle 2 Minigames (Fish Feed + Coral Builder)
-- [ ]
+- [x]
+Merged: PR #61
 PlanRef:
 - design: docs/design/epic-21.md
 - archive: artifacts/archive/epic-21.0/latest
