@@ -20,8 +20,15 @@ services:
       - CHOKIDAR_INTERVAL=100
       - PNPM_HOME=/pnpm
       - PNPM_STORE_PATH=/pnpm-store
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/start', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 10s
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
   api:
     build:
@@ -43,6 +50,12 @@ services:
       - SESSION_DRIVER=array
       - CACHE_STORE=array
       - QUEUE_CONNECTION=sync
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/api/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
     depends_on:
       mysql:
         condition: service_healthy
@@ -72,7 +85,8 @@ services:
       - BASE_URL=http://web:3000
       - PNPM_STORE_PATH=/pnpm-store
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     ports:
       - "9323:9323"
 

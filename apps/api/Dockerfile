@@ -6,6 +6,7 @@ RUN apk add --no-cache \
     libzip-dev \
     icu-dev \
     oniguruma-dev \
+    curl \
     && docker-php-ext-install -j$(nproc) pdo_mysql zip intl mbstring
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

@@ -4,7 +4,13 @@ import { useLevelProgress } from '~/composables/useLevelProgress'
 import MapNode from '~/components/map/MapNode.vue'
 import MapPath from '~/components/map/MapPath.vue'
 import MapAvatar from '~/components/map/MapAvatar.vue'
+import MapDecor from '~/components/map/MapDecor.vue'
 import levelsData from '~/content/levels.classic.v1.json'
+import {
+  generateWaypoints,
+  computeMapHeight,
+  MAP_VIEW_WIDTH,
+} from '~/utils/mapWaypoints'
 
 definePageMeta({ layout: 'bare' })
 
@@ -13,6 +19,7 @@ const profile = useProfile()
 const { currentLevel, isUnlocked, starsFor, levelProgress } = useLevelProgress(profile)
 
 const totalLevels = levelsData.length
+const waypoints = generateWaypoints(totalLevels)
 
 const totalStars = computed(() => {
   const progress = levelProgress.value
@@ -24,32 +31,20 @@ function playCurrentLevel() {
   router.push({ path: '/play', query: { level: String(currentLevel.value) } })
 }
 
-const viewWidth = 300
-const spacing = 80
-const startY = 40
-
-function nodePosition(index: number) {
-  const y = startY + index * spacing
-  const offsetX = (index % 2 === 0 ? -1 : 1) * 50
-  const x = viewWidth / 2 + offsetX
-  return { x, y }
-}
-
 function nodeStyle(index: number) {
-  const { x, y } = nodePosition(index)
-  const leftPct = (x / viewWidth) * 100
-  const topPx = y
+  const { x, y } = waypoints[index]
+  const leftPct = (x / MAP_VIEW_WIDTH) * 100
   return {
     position: 'absolute' as const,
     left: `${leftPct}%`,
-    top: `${topPx}px`,
+    top: `${y}px`,
     transform: 'translate(-50%, -50%)',
   }
 }
 
 function avatarStyle(index: number) {
-  const { x, y } = nodePosition(index)
-  const leftPct = (x / viewWidth) * 100
+  const { x, y } = waypoints[index]
+  const leftPct = (x / MAP_VIEW_WIDTH) * 100
   return {
     position: 'absolute' as const,
     left: `${leftPct}%`,
@@ -62,7 +57,7 @@ function selectLevel(level: number) {
   router.push({ path: '/play', query: { level: String(level) } })
 }
 
-const mapHeight = computed(() => Math.max(400, totalLevels * spacing + 60))
+const mapHeight = computed(() => computeMapHeight(waypoints))
 </script>
 
 <template>
@@ -83,6 +78,7 @@ const mapHeight = computed(() => Math.max(400, totalLevels * spacing + 60))
     </button>
     <div class="map-scroll" role="list" aria-label="Level map">
       <div class="map-container" :style="{ height: `${mapHeight}px` }">
+        <MapDecor :waypoints="waypoints" :map-height="mapHeight" />
         <MapPath :node-count="totalLevels" />
 
         <template v-for="i in totalLevels" :key="i">
@@ -119,23 +115,25 @@ const mapHeight = computed(() => Math.max(400, totalLevels * spacing + 60))
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--app-space-md);
+  padding: var(--app-space-sm) var(--app-space-md);
   flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
 }
 
 .map-title {
   font-family: var(--app-font);
   font-size: var(--app-font-size-2xl);
   font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
-  margin: var(--app-space-sm) 0;
+  color: #fff;
+  margin: 0;
 }
 
 .map-progress {
   font-family: var(--app-font);
   font-size: var(--app-font-size-base);
   font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
+  color: #fff;
 }
 
 .play-current-cta {
@@ -169,13 +167,29 @@ const mapHeight = computed(() => Math.max(400, totalLevels * spacing + 60))
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: var(--app-space-md);
+  padding: var(--app-space-md) var(--app-space-sm);
+  position: relative;
+}
+
+.map-scroll::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 120px at 15% 8%, rgba(77, 208, 225, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 160px at 80% 25%, rgba(0, 188, 212, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 100px at 30% 50%, rgba(178, 223, 219, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 140px at 75% 70%, rgba(77, 208, 225, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 110px at 20% 88%, rgba(0, 188, 212, 0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .map-container {
   position: relative;
   width: 100%;
-  max-width: 320px;
+  max-width: 600px;
   margin: 0 auto;
+  z-index: 1;
 }
 </style>
