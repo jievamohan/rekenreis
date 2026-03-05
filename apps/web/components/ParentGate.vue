@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+const { t } = useI18n()
 const GATE_STORAGE_KEY = 'rekenreis_parent_gate'
 const GATE_TTL_MS = 5 * 60 * 1000
 
@@ -77,25 +79,25 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="parent-gate" role="region" aria-label="Parent verification">
-    <p class="prompt">For grown-ups: verify to access settings.</p>
+  <div class="parent-gate" role="region" :aria-label="t('parentGate.ariaLabel')">
+    <p class="prompt">{{ t('parentGate.prompt') }}</p>
     <template v-if="mode === 'choose'">
       <div class="options">
         <button
           type="button"
           class="gate-btn"
-          aria-label="Hold for 3 seconds"
+          :aria-label="t('parentGate.holdAriaLabel')"
           @click="startHold"
         >
-          Hold 3 seconds
+          {{ t('parentGate.holdButton') }}
         </button>
         <button
           type="button"
           class="gate-btn"
-          aria-label="Solve a simple sum"
+          :aria-label="t('parentGate.solveAriaLabel')"
           @click="startMath"
         >
-          Solve a simple sum
+          {{ t('parentGate.solveButton') }}
         </button>
       </div>
     </template>
@@ -104,7 +106,7 @@ onUnmounted(() => {
         <div class="hold-bar">
           <div class="hold-fill" :style="{ width: `${holdProgress}%` }" />
         </div>
-        <p>Keep holding...</p>
+        <p>{{ t('parentGate.keepHolding') }}</p>
       </div>
     </template>
     <template v-else>
@@ -115,12 +117,12 @@ onUnmounted(() => {
             v-model="mathAnswer"
             type="number"
             inputmode="numeric"
-            aria-label="Answer"
+            :aria-label="t('parentGate.answerLabel')"
             @keydown.enter="submitMath"
           />
         </label>
-        <p v-if="mathError" class="error">Try again.</p>
-        <button type="button" class="gate-btn" @click="submitMath">Check</button>
+        <p v-if="mathError" class="error">{{ t('parentGate.tryAgain') }}</p>
+        <button type="button" class="gate-btn" @click="submitMath">{{ t('parentGate.check') }}</button>
       </div>
     </template>
   </div>

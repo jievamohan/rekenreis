@@ -31,7 +31,7 @@ test.describe('mistakes review', () => {
 
     await expect(page.locator('.modal-dialog')).toBeVisible()
 
-    const reviewBtn = page.locator('.cta-secondary:has-text("Review Mistakes")')
+    const reviewBtn = page.locator('.cta-secondary:has-text("Fouten bekijken")')
     await expect(reviewBtn).toBeVisible()
     await reviewBtn.click()
 

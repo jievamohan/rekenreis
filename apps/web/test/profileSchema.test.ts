@@ -77,7 +77,7 @@ describe('profileSchema', () => {
   it('createDefaultProfile returns valid profile', () => {
     const p = createDefaultProfile()
     expect(p.id).toMatch(/^p_/)
-    expect(p.name).toBe('Player 1')
+    expect(p.name).toBe('Speler 1')
     expect(p.avatarId).toBe('default')
     expect(p.progress.bestScore).toBe(0)
     expect(p.prefs.lastMode).toBe('classic')
@@ -108,6 +108,6 @@ describe('profileSchema', () => {
     )
     const result = loadProfiles()
     expect(result.profiles).toHaveLength(1)
-    expect(result.profiles[0].name).toBe('Player 1')
+    expect(result.profiles[0].name).toBe('Speler 1')
   })
 })

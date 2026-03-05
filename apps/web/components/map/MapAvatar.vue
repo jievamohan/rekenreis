@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { AvatarId } from '~/utils/profileSchema'
+import { useI18n } from '~/composables/useI18n'
 
+const { t } = useI18n()
 defineProps<{
   avatarId: AvatarId
   name: string
@@ -16,7 +18,7 @@ const avatarEmoji: Record<AvatarId, string> = {
 </script>
 
 <template>
-  <div class="map-avatar" :aria-label="`${name}'s position`">
+  <div class="map-avatar" :aria-label="t('mapAvatar.position', { name })">
     <span class="avatar-bubble" aria-hidden="true">{{ avatarEmoji[avatarId] ?? '🐠' }}</span>
   </div>
 </template>

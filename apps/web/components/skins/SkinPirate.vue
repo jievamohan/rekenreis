@@ -1,25 +1,27 @@
 <script setup lang="ts">
 import type { SkinRoundProps } from '~/types/skin'
+import { useI18n } from '~/composables/useI18n'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 
+const { t } = useI18n()
 defineProps<SkinRoundProps>()
 </script>
 
 <template>
   <div class="skin-pirate" role="main">
-    <h1>Pirate Math!</h1>
+    <h1>{{ t('skins.pirateMath') }}</h1>
     <p class="theme" aria-hidden="true">🏴‍☠️</p>
 
     <div
       v-if="question"
       class="question"
       role="group"
-      :aria-label="`${question.a} plus ${question.b} equals ?`"
+      :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: '?' })"
     >
       <p class="prompt">{{ question.a }} + {{ question.b }} = ?</p>
-      <p class="hint">Pick the treasure number!</p>
+      <p class="hint">{{ t('skins.treasureHint') }}</p>
 
-      <div class="choices" role="group" aria-label="Answer choices">
+      <div class="choices" role="group" :aria-label="t('common.answerChoices')">
         <button
           v-for="(choice, i) in question.choices"
           :key="`${choice}-${i}`"
@@ -44,12 +46,12 @@ defineProps<SkinRoundProps>()
       role="status"
       aria-live="polite"
     >
-      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Ahoy! Correct! ⚓</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">{{ t('skins.ahoyCorrect') }}</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
-        Time's up! The answer was {{ feedback.correctAnswer }}. Arrr!
+        {{ t('skins.timesUpArrr', { answer: feedback.correctAnswer }) }}
       </p>
       <p v-else class="incorrect">
-        The answer was {{ question?.correctAnswer }}. Arrr!
+        {{ t('skins.answerWasArrr', { answer: question?.correctAnswer ?? 0 }) }}
       </p>
       <button
         type="button"
@@ -58,13 +60,13 @@ defineProps<SkinRoundProps>()
         @keydown.enter.prevent="onNext"
         @keydown.space.prevent="onNext"
       >
-        Next
+        {{ t('common.next') }}
       </button>
     </div>
 
     <div class="stats" role="status">
-      <span>Score: {{ score }}</span>
-      <span>Streak: {{ streak }}</span>
+      <span>{{ t('common.score') }}: {{ score }}</span>
+      <span>{{ t('common.streak') }}: {{ streak }}</span>
     </div>
 
     <div class="mode">
@@ -76,7 +78,7 @@ defineProps<SkinRoundProps>()
           value="upTo10"
           @change="onModeChange('upTo10')"
         />
-        Up to 10
+        {{ t('common.upTo10') }}
       </label>
       <label>
         <input
@@ -86,7 +88,7 @@ defineProps<SkinRoundProps>()
           value="upTo20"
           @change="onModeChange('upTo20')"
         />
-        Up to 20
+        {{ t('common.upTo20') }}
       </label>
     </div>
   </div>

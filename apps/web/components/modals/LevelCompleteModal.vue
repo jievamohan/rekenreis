@@ -2,6 +2,9 @@
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import mascotSrc from '~/assets/graphics/characters/mascot.svg'
 import Confetti from '~/components/effects/Confetti.vue'
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   open: boolean
@@ -22,11 +25,6 @@ const dialogRef = ref<HTMLElement | null>(null)
 const starVisible = ref<boolean[]>([])
 const showConfetti = ref(false)
 
-const MESSAGES: Record<number, string> = {
-  3: 'Perfect! Amazing work!',
-  2: 'Great job! Almost perfect!',
-  1: 'Good effort! Keep practicing!',
-}
 
 watch(() => props.open, async (isOpen) => {
   if (isOpen) {
@@ -86,14 +84,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           class="modal-dialog"
           role="dialog"
           aria-modal="true"
-          aria-label="Level complete"
+          :aria-label="t('levelComplete.ariaLabel')"
           tabindex="-1"
         >
-          <img :src="mascotSrc" alt="Mascot celebrating" class="mascot" />
+          <img :src="mascotSrc" :alt="t('levelComplete.mascotAlt')" class="mascot" />
 
-          <h2 class="modal-title">Level {{ level }} Complete!</h2>
+          <h2 class="modal-title">{{ t('levelComplete.title', { level }) }}</h2>
 
-          <div class="stars-row" aria-label="`${stars} out of 3 stars`">
+          <div class="stars-row" :aria-label="t('levelComplete.starsAria', { stars })">
             <svg
               v-for="i in 3"
               :key="i"
@@ -109,11 +107,11 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             </svg>
           </div>
 
-          <p class="modal-message">{{ MESSAGES[stars] ?? MESSAGES[1] }}</p>
+          <p class="modal-message">{{ stars === 3 ? t('levelComplete.perfect') : stars === 2 ? t('levelComplete.great') : t('levelComplete.good') }}</p>
 
           <div class="modal-actions">
             <button type="button" class="cta-primary" @click="emit('backToMap')">
-              Back to Map
+              {{ t('levelComplete.backToMap') }}
             </button>
             <button
               v-if="!isLastLevel"
@@ -121,7 +119,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               class="cta-secondary"
               @click="emit('next')"
             >
-              Next Level
+              {{ t('levelComplete.nextLevel') }}
             </button>
             <button
               v-if="hasMistakes"
@@ -129,7 +127,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               class="cta-secondary"
               @click="emit('reviewMistakes')"
             >
-              Review Mistakes
+              {{ t('levelComplete.reviewMistakes') }}
             </button>
           </div>
         </div>

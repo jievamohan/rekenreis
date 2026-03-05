@@ -28,7 +28,7 @@ test.describe('play page — keypad mode', () => {
     await page.locator('.check-key').click()
 
     await expect(page.locator('.keypad-feedback')).toBeVisible()
-    await expect(page.locator('.keypad-feedback')).toContainText('Correct')
+    await expect(page.locator('.keypad-feedback')).toContainText('Goed zo')
   })
 
   test('keyboard number entry works', async ({ page }) => {

@@ -1,27 +1,29 @@
 <script setup lang="ts">
 import type { SkinRoundProps } from '~/types/skin'
+import { useI18n } from '~/composables/useI18n'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 import HintDots from '~/components/hints/HintDots.vue'
 import HintNumberLine from '~/components/hints/HintNumberLine.vue'
 
+const { t } = useI18n()
 defineProps<SkinRoundProps>()
 </script>
 
 <template>
   <div class="monster-feed" role="main">
-    <h1>Feed the Monster!</h1>
+    <h1>{{ t('skins.feedMonster') }}</h1>
     <p class="monster" aria-hidden="true">🦖</p>
 
     <div
       v-if="question"
       class="question"
       role="group"
-      :aria-label="`${question.a} plus ${question.b} equals ?`"
+      :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: '?' })"
     >
       <p class="prompt">{{ question.a }} + {{ question.b }} = ?</p>
-      <p class="hint">Pick the right number to feed the monster.</p>
+      <p class="hint">{{ t('skins.monsterHint') }}</p>
 
-      <div class="choices" role="group" aria-label="Answer choices">
+      <div class="choices" role="group" :aria-label="t('common.answerChoices')">
         <button
           v-for="(choice, i) in question.choices"
           :key="`${choice}-${i}`"
@@ -46,12 +48,12 @@ defineProps<SkinRoundProps>()
       role="status"
       aria-live="polite"
     >
-      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Yum! The monster is happy! 🎉</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">{{ t('skins.yumHappy') }}</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
-        Time's up! The answer was {{ feedback.correctAnswer }}. Try again!
+        {{ t('skins.timesUpTryAgain', { answer: feedback.correctAnswer }) }}
       </p>
       <p v-else class="incorrect">
-        Oops! The answer was {{ question?.correctAnswer }}. Try again!
+        {{ t('skins.oopsAnswer', { answer: question?.correctAnswer ?? 0 }) }}
       </p>
       <HintDots
         v-if="hintToShow === 'dots' && hintQuestion"
@@ -72,13 +74,13 @@ defineProps<SkinRoundProps>()
         @keydown.enter.prevent="onNext"
         @keydown.space.prevent="onNext"
       >
-        Next
+        {{ t('common.next') }}
       </button>
     </div>
 
     <div class="stats" role="status">
-      <span>Score: {{ score }}</span>
-      <span>Streak: {{ streak }}</span>
+      <span>{{ t('common.score') }}: {{ score }}</span>
+      <span>{{ t('common.streak') }}: {{ streak }}</span>
     </div>
   </div>
 </template>

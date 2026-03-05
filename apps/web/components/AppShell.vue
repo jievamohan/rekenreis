@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { AvatarId } from '~/utils/profileSchema'
+import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import { useAppShell } from '~/composables/useAppShell'
 import ProfileSelector from '~/components/ProfileSelector.vue'
 import bubblePattern from '~/assets/graphics/backgrounds/bubble-pattern.svg'
 import waveOverlay from '~/assets/graphics/backgrounds/wave-overlay.svg'
 
+const { t } = useI18n()
 const profile = useProfile()
 const { getChooseGameHandler } = useAppShell()
 const router = useRouter()
@@ -16,12 +18,12 @@ const canGoBackToMap = computed(() => route.path !== '/map')
 
 defineProps<{ noCard?: boolean }>()
 
-const navItems = [
-  { to: '/map', label: 'Map', icon: 'map' },
-  { to: '/stickers', label: 'Sticker book', icon: 'fish' },
-  { to: '/summary', label: 'Progress', icon: 'chart-bubbles' },
-  { to: '/settings', label: 'Settings', icon: 'gear-coral' },
-]
+const navItems = computed(() => [
+  { to: '/map', label: t('nav.map'), icon: 'map' },
+  { to: '/stickers', label: t('nav.stickerBook'), icon: 'fish' },
+  { to: '/summary', label: t('nav.progress'), icon: 'chart-bubbles' },
+  { to: '/settings', label: t('nav.settings'), icon: 'gear-coral' },
+])
 
 const hasChooseGameHandler = computed(() => !!getChooseGameHandler())
 
@@ -57,29 +59,29 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
       <button
         type="button"
         class="profile-pill"
-        aria-label="Switch profile"
+        :aria-label="t('profile.switchProfile')"
         @click="showProfileSelector = true"
       >
-        {{ profile.activeProfile.value?.name ?? 'Player 1' }}
+        {{ profile.activeProfile.value?.name ?? t('common.player1') }}
       </button>
       <div class="top-bar-actions">
         <button
           v-if="canGoBackToMap"
           type="button"
           class="back-to-map-btn"
-          aria-label="Back to Map"
+          :aria-label="t('common.backToMapAria')"
           @click="goToMap"
         >
-          ← Map
+          {{ t('common.backToMap') }}
         </button>
         <button
           v-if="hasChooseGameHandler"
           type="button"
           class="choose-game-btn"
-          aria-label="Choose game"
+          :aria-label="t('modeSelector.title')"
           @click="onChooseGame"
         >
-          Choose game
+          {{ t('modeSelector.title') }}
         </button>
       </div>
     </header>
@@ -92,7 +94,7 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
         @create="onProfileCreate"
       />
       <button type="button" class="close-btn" @click="showProfileSelector = false">
-        Close
+        {{ t('common.close') }}
       </button>
     </div>
 

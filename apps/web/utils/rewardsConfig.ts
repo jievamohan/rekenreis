@@ -22,5 +22,5 @@ export interface StickerCategory {
 }
 
 export const STICKER_CATEGORIES: StickerCategory[] = [
-  { id: 'skins', label: 'Skins', stickerIds: SKIN_ORDER },
+  { id: 'skins', label: 'stickers.categorySkins', stickerIds: SKIN_ORDER },
 ]

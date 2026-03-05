@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
 import NavIconFish from '~/components/icons/NavIconFish.vue'
 import NavIconChartBubbles from '~/components/icons/NavIconChartBubbles.vue'
 import NavIconGearCoral from '~/components/icons/NavIconGearCoral.vue'
 import NavIconMap from '~/components/icons/NavIconMap.vue'
 
+const { t } = useI18n()
 defineProps<{
   items: { to: string; label: string; icon: string }[]
   activePath?: string
@@ -18,7 +20,7 @@ const iconComponents: Record<string, typeof NavIconFish> = {
 </script>
 
 <template>
-  <nav class="nav-tabs" role="navigation" aria-label="Main navigation">
+  <nav class="nav-tabs" role="navigation" :aria-label="t('nav.mainNavigation')">
     <NuxtLink
       v-for="item in items"
       :key="item.to"

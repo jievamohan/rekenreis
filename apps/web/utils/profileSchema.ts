@@ -109,7 +109,7 @@ function migrateFromLegacy(): ProfileSchemaV1 {
 
   const profile: ProfileData = {
     id: genId(),
-    name: 'Player 1',
+    name: 'Speler 1',
     avatarId: 'default',
     progress: { bestScore },
     prefs,
@@ -125,7 +125,7 @@ function migrateFromLegacy(): ProfileSchemaV1 {
 function createFreshSchema(): ProfileSchemaV1 {
   const profile: ProfileData = {
     id: genId(),
-    name: 'Player 1',
+    name: 'Speler 1',
     avatarId: 'default',
     progress: { bestScore: 0 },
     prefs: defaultPrefs(),
@@ -231,7 +231,7 @@ export function saveProfiles(data: ProfileSchemaV1): void {
 export function createDefaultProfile(): ProfileData {
   return {
     id: genId(),
-    name: 'Player 1',
+    name: 'Speler 1',
     avatarId: 'default',
     progress: { bestScore: 0 },
     prefs: defaultPrefs(),

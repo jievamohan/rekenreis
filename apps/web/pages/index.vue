@@ -1,10 +1,15 @@
+<script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+const { t } = useI18n()
+</script>
+
 <template>
   <div class="home">
-    <h1>Welcome!</h1>
-    <p class="intro">Ready to practice math? Pick a game and have fun!</p>
+    <h1>{{ t('index.welcome') }}</h1>
+    <p class="intro">{{ t('index.intro') }}</p>
     <nav class="home-nav">
-      <NuxtLink to="/start" class="nav-link nav-link-secondary">Check connection</NuxtLink>
-      <NuxtLink to="/play" class="nav-link nav-link-primary">Play math game</NuxtLink>
+      <NuxtLink to="/start" class="nav-link nav-link-secondary">{{ t('index.checkConnection') }}</NuxtLink>
+      <NuxtLink to="/play" class="nav-link nav-link-primary">{{ t('index.playGame') }}</NuxtLink>
     </nav>
   </div>
 </template>

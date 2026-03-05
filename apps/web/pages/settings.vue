@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import ParentGate from '~/components/ParentGate.vue'
 import type { GameMode } from '~/types/game'
 
+const { t } = useI18n()
 const profile = useProfile()
 const unlocked = ref(false)
 
@@ -47,23 +49,23 @@ onMounted(() => {
 
 <template>
   <div class="settings-page">
-    <h1>Settings</h1>
+    <h1>{{ t('settings.title') }}</h1>
     <ParentGate v-if="!unlocked" @unlocked="onUnlocked" />
     <div v-else class="settings-form">
       <label class="field">
-        <span>Difficulty ceiling</span>
+        <span>{{ t('settings.difficultyCeiling') }}</span>
         <select v-model="difficultyCeiling">
-          <option value="upTo10">Up to 10</option>
-          <option value="upTo20">Up to 20</option>
+          <option value="upTo10">{{ t('settings.upTo10') }}</option>
+          <option value="upTo20">{{ t('settings.upTo20') }}</option>
         </select>
       </label>
       <label class="field">
         <input v-model="hintsOn" type="checkbox" />
-        <span>Show hints when stuck</span>
+        <span>{{ t('settings.showHints') }}</span>
       </label>
       <label class="field">
         <input v-model="soundOn" type="checkbox" />
-        <span>Sound effects</span>
+        <span>{{ t('settings.soundEffects') }}</span>
       </label>
     </div>
   </div>

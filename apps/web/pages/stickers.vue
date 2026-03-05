@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { SkinId } from '~/utils/skinResolver'
+import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import { useRewards } from '~/composables/useRewards'
 import { STICKER_CATEGORIES, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 
+const { t } = useI18n()
 const profile = useProfile()
 const currentScore = ref(0)
 const { bestScore, isUnlocked } = useRewards(currentScore, profile)
@@ -29,10 +31,10 @@ watch(bestScore, (score, oldScore) => {
 
 <template>
   <div class="stickers-page">
-    <h1>Sticker Book</h1>
-    <p class="intro">Play to collect stickers! Your best score so far: {{ bestScore }}.</p>
+    <h1>{{ t('stickers.title') }}</h1>
+    <p class="intro">{{ t('stickers.intro', { score: bestScore }) }}</p>
     <div v-for="cat in STICKER_CATEGORIES" :key="cat.id" class="category">
-      <h2>{{ cat.label }}</h2>
+      <h2>{{ t(cat.label) }}</h2>
       <div class="stickers">
         <div
           v-for="id in cat.stickerIds"
@@ -40,12 +42,12 @@ watch(bestScore, (score, oldScore) => {
           class="sticker"
           :class="{ locked: !isUnlocked(id), new: newlyUnlocked.has(id) }"
           role="img"
-          :aria-label="isUnlocked(id) ? `Unlocked: ${id}` : `${id} locked (score ${UNLOCK_THRESHOLDS[id]} to unlock)`"
+          :aria-label="isUnlocked(id) ? t('stickers.unlocked', { id }) : t('stickers.locked', { id, threshold: UNLOCK_THRESHOLDS[id] })"
         >
           <span v-if="isUnlocked(id)" class="sticker-icon">{{ id === 'classic' ? '📐' : id === 'monster-feed' ? '🦖' : id === 'space' ? '🚀' : '🏴‍☠️' }}</span>
           <span v-else class="sticker-lock" aria-hidden="true">🔒</span>
           <span class="sticker-label">{{ id }}</span>
-          <span v-if="newlyUnlocked.has(id)" class="new-badge">New!</span>
+          <span v-if="newlyUnlocked.has(id)" class="new-badge">{{ t('stickers.new') }}</span>
         </div>
       </div>
     </div>

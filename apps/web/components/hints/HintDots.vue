@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
 defineProps<{
   a: number
   b: number
@@ -10,7 +13,7 @@ defineProps<{
   <div
     class="hint-dots"
     role="img"
-    :aria-label="`${a} dots plus ${b} dots equals ${correctAnswer}`"
+    :aria-label="t('hints.dots', { a, b, answer: correctAnswer })"
   >
     <span class="group" :aria-hidden="true">
       <span v-for="i in a" :key="i" class="dot" aria-hidden="true">●</span>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ProfileData, AvatarId } from '~/utils/profileSchema'
+import { useI18n } from '~/composables/useI18n'
 import ProfileCreate from './ProfileCreate.vue'
 
 function avatarEmoji(id: string): string {
@@ -13,6 +14,7 @@ function avatarEmoji(id: string): string {
   return map[id] ?? '👤'
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   profiles: ProfileData[]
   activeProfileId: string
@@ -36,15 +38,15 @@ function onCreate(name: string, avatarId: AvatarId) {
 </script>
 
 <template>
-  <div class="profile-selector" role="region" aria-label="Select profile">
-    <h2>Who is playing?</h2>
+  <div class="profile-selector" role="region" :aria-label="t('profile.selectProfile')">
+    <h2>{{ t('profile.whoIsPlaying') }}</h2>
     <ul class="profile-list" role="list">
       <li v-for="p in profiles" :key="p.id">
         <button
           type="button"
           class="profile-btn"
           :class="{ active: p.id === activeProfileId }"
-          :aria-label="`Select ${p.name}`"
+          :aria-label="t('profile.selectName', { name: p.name })"
           :aria-pressed="p.id === activeProfileId"
           @click="onSelect(p.id)"
         >
@@ -56,10 +58,10 @@ function onCreate(name: string, avatarId: AvatarId) {
         <button
           type="button"
           class="profile-btn add"
-          aria-label="Add new profile"
+          :aria-label="t('profile.addProfile')"
           @click="showCreate = true"
         >
-          + Add
+          {{ t('profile.addButton') }}
         </button>
       </li>
     </ul>
