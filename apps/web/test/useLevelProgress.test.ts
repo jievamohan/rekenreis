@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { ref, computed } from 'vue'
 import { useLevelProgress } from '../composables/useLevelProgress'
 import type { ProfileData, ProfileProgress } from '../utils/profileSchema'
