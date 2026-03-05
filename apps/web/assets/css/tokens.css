@@ -51,6 +51,8 @@
   /* Map — level path & nodes */
   --app-map-path: rgba(178, 223, 219, 0.85);
   --app-map-path-edge: #80cbc4;
+  --app-map-trail: rgba(194, 230, 226, 0.8);
+  --app-map-trail-edge: rgba(128, 203, 196, 0.45);
   --app-node-unlocked: #fff8e1;
   --app-node-locked: rgba(178, 223, 219, 0.5);
 

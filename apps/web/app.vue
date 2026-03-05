@@ -5,6 +5,14 @@
 </template>
 
 <style>
+html {
+  background: #000;
+}
+
+body {
+  margin: 0;
+}
+
 .app-root {
   min-height: 100vh;
   background: var(--app-bg-fallback);

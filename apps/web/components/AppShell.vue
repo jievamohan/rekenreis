@@ -114,7 +114,7 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: var(--app-space-sm);
+  padding: 0;
   background: var(--app-bg-fallback);
   background: var(--app-bg);
   position: relative;
