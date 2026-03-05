@@ -467,3 +467,205 @@ Acceptance:
 - Contrast meets WCAG AA
 - Reduced motion preference disables non-essential animations
 - Focus states visible
+
+---
+
+## Epic 20.1 — Playwright & Tokens Foundation
+- [ ]
+PlanRef:
+- design: docs/design/epic-20.md
+- archive: artifacts/archive/epic-20.0/latest
+- slice: 20.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 20.1: Playwright foundation + design tokens + data model for level map UI.
+
+Requirements:
+- Create `apps/web/playwright.config.ts` (testDir: e2e, baseURL from env, visual project, container-aware)
+- Create `apps/web/e2e/smoke.spec.ts` — basic smoke: navigate to /, /play, verify page loads
+- Add new design tokens to `tokens.css`: `--app-map-path`, `--app-map-path-edge`, `--app-node-unlocked`, `--app-node-locked`, `--app-keypad-key`, `--app-keypad-key-active`, easing tokens
+- Create `useLevelProgress` composable (read/write `levelProgress`, `currentLevel` in ProfileProgress)
+- Create `useMistakes` composable (session-only mistake collection)
+- Extend `ProfileProgress` schema with `levelProgress?: Record<number, { stars: number }>`, `currentLevel?: number`
+- Unit tests for `useLevelProgress`, `useMistakes`
+- Playwright must run container-only: `docker compose run --rm e2e`
+
+Acceptance:
+- `docker compose run --rm e2e pnpm exec playwright test` passes with smoke test
+- New tokens exist in tokens.css
+- Composables have passing unit tests
+- ProfileProgress schema accepts levelProgress and currentLevel
+
+Screenshot targets:
+- Smoke test passes (infrastructure proof)
+
+---
+
+## Epic 20.2 — Level Map Screen
+- [ ]
+PlanRef:
+- design: docs/design/epic-20.md
+- archive: artifacts/archive/epic-20.0/latest
+- slice: 20.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 20.2: Level map page with winding path, nodes, avatar, and Play CTA.
+
+Requirements:
+- Create `pages/map.vue` — level map page within AppShell (no GameStageCard wrapper)
+- Create `components/map/MapPath.vue` — SVG winding path with draw-in animation (stroke-dasharray)
+- Create `components/map/MapNode.vue` — circular node (locked/unlocked/completed states, star/lock icons, level number)
+- Create `components/map/MapAvatar.vue` — avatar bubble at current node position
+- Add star.svg and lock.svg to `assets/graphics/icons/`
+- Update NavTabs to include Map tab (or update index page to link to /map)
+- Big "Play" CTA navigates to `/play?level=N&source=pack`
+- Auto-scroll to current node on mount
+- Nodes use `useLevelProgress` for state
+- Reduced motion: path visible immediately, no pulse
+- Keyboard: Tab through unlocked nodes, Enter/Space to select
+- E2E: `e2e/map.spec.ts` — map loads, path visible, nodes rendered, Play navigates
+- Visual: `e2e/visual/map-visual.spec.ts` — screenshot baseline
+
+Acceptance:
+- /map renders winding path with level nodes (locked/unlocked/completed)
+- Avatar displayed at current node
+- Play CTA navigates to /play with level param
+- No plain white background
+- Playwright screenshot captured for map page
+- Keyboard navigable
+
+Screenshot targets:
+- Full map page with path and nodes
+- Node states (locked, current, completed with stars)
+
+---
+
+## Epic 20.3 — Play Screen Redesign (Keypad + ProblemCard)
+- [ ]
+PlanRef:
+- design: docs/design/epic-20.md
+- archive: artifacts/archive/epic-20.0/latest
+- slice: 20.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 20.3: Replace multiple-choice with numeric keypad and big problem card.
+
+Requirements:
+- Create `components/play/ProblemCard.vue` — large `a + b = ?` display (2.5rem), themed card
+- Create `components/play/Keypad.vue` — 0-9 digit grid + Clear + Check; builds answer string; submits via onAnswer(number)
+- Integrate Keypad + ProblemCard into `play.vue` (replace SkinClassic choice buttons for keypad mode)
+- Support `?level=N` query param to start at specific pack index
+- Play header: score (StatPill), progress indicator (e.g., "3/5")
+- Keypad: max 2 digits, Check disabled when empty, visual press feedback (scale 0.95)
+- Feedback: correct/wrong still works with keypad input
+- Answer display area between problem and keypad (large, centered)
+- Keyboard accessible: Tab through keys, Enter/Space to press, number keys work directly
+- E2E: `e2e/play.spec.ts` — keypad visible, enter answer, submit, feedback appears
+- Visual: `e2e/visual/play-visual.spec.ts` — screenshot baseline
+
+Acceptance:
+- /play shows ProblemCard + Keypad instead of multiple-choice buttons
+- Keypad input works (type digits, clear, check)
+- Correct/wrong feedback displays after submission
+- No multiple-choice buttons visible
+- Keyboard playable (Tab, Enter, number keys)
+- Playwright screenshot captured
+
+Screenshot targets:
+- Play page with problem card + keypad
+- Feedback state (correct answer)
+
+---
+
+## Epic 20.4 — Level Complete Modal + Confetti
+- [ ]
+PlanRef:
+- design: docs/design/epic-20.md
+- archive: artifacts/archive/epic-20.0/latest
+- slice: 20.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 20.4: Level complete celebration with modal, stars, mascot, confetti.
+
+Requirements:
+- Create `components/modals/LevelCompleteModal.vue` — mascot, 1-3 stars (staggered reveal), message, "Next" CTA
+- Create `components/effects/Confetti.vue` — CSS-only confetti (24-32 particles, multiple keyframe variants)
+- Create `assets/graphics/characters/mascot.svg` — friendly underwater character (flat, rounded, happy)
+- Level complete trigger: detect last problem of level in pack mode, show modal
+- Stars computed from session mistakes (0 wrong = 3, 1 wrong = 2, 2+ wrong = 1)
+- Confetti only for 2+ stars; reduced-motion: disabled or static sparkles
+- Modal: `Teleport` to body, `role="dialog"`, `aria-modal="true"`, focus trap
+- Escape key closes modal
+- "Next" CTA: navigates to next level or back to /map (if last level)
+- "Review Mistakes" secondary CTA when session has errors
+- Sound: `playCelebrate()` when modal opens
+- Star animation: scale 0→1 with bounce easing, 150ms stagger
+- E2E: `e2e/level-complete.spec.ts` — modal appears, mascot visible, stars visible, Next works
+- Visual: screenshot of modal
+
+Acceptance:
+- Level complete modal appears after finishing level
+- Mascot and stars displayed (star count matches accuracy)
+- Confetti plays for 2+ stars (respects reduced-motion)
+- Next CTA advances to next level or map
+- Focus trapped in modal
+- Playwright screenshot captured
+
+Screenshot targets:
+- Level complete modal (3 stars)
+- Level complete modal (1 star, no confetti)
+
+---
+
+## Epic 20.5 — Mistakes Review + Polish
+- [ ]
+PlanRef:
+- design: docs/design/epic-20.md
+- archive: artifacts/archive/epic-20.0/latest
+- slice: 20.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 20.5: Friendly mistakes review and final polish pass.
+
+Requirements:
+- Create `components/review/MistakesReview.vue` — card-based list per mistake (problem, child's answer, correct answer, optional HintDots)
+- Mascot encouragement header ("Laten we deze nog eens bekijken!")
+- Cards: slide-in animation (staggered), themed surface, no red X marks
+- CTAs: "Opnieuw proberen" (retry level), "Naar de kaart" (back to map)
+- Integrate with useMistakes composable — show after level complete when errors exist
+- Level progress persistence: save stars to ProfileProgress.levelProgress after level complete
+- Update map to reflect saved progress on return
+- Accessibility audit: keyboard nav across all new screens, contrast check (WCAG AA), focus states
+- Reduced motion: verify all animations degrade properly
+- Visual regression baselines: update/capture for all 4 screens (map, play, level-complete, mistakes)
+- E2E: `e2e/mistakes-review.spec.ts` — review shows after errors, cards displayed, CTAs work
+- Visual: final screenshot baselines committed
+
+Acceptance:
+- Mistakes review shows friendly card per wrong answer
+- HintDots or visual aid on each mistake card
+- Level progress persists (stars saved, map reflects on return)
+- All screens pass contrast check (WCAG AA)
+- Reduced motion disables non-essential animations
+- All visual regression baselines committed and CI passes
+- No plain white surfaces anywhere
+
+Screenshot targets:
+- Mistakes review with 2+ mistake cards
+- Map page showing completed levels with stars
+- Full app flow proof (map → play → complete → review → map)

@@ -61,6 +61,20 @@ services:
       timeout: 5s
       retries: 10
 
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    working_dir: /repo/apps/web
+    volumes:
+      - ./:/repo
+      - ./.cache/pnpm:/pnpm-store
+    environment:
+      - NODE_ENV=test
+      - BASE_URL=http://web:3000
+      - PNPM_STORE_PATH=/pnpm-store
+    depends_on:
+      - web
+    ports:
+      - "9323:9323"
 
 volumes:
   web_node_modules:

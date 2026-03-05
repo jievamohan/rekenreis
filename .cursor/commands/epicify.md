@@ -83,3 +83,4 @@ Constraints:
 - Plan-only: do not modify app code.
 - Do not mark any epic as [x].
 - Never execute /feature here.
+-	“Playwright (including screenshot tests) must run only via docker compose e2e service.”

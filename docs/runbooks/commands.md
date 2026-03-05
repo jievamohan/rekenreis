@@ -69,6 +69,14 @@ docker compose up --build
 # API: http://localhost:8001/api/health
 ```
 
+### Playwright (container-only)
+- Run e2e:
+  - docker compose run --rm e2e pnpm install
+  - docker compose run --rm e2e pnpm playwright test
+- Run e2e with UI (optional):
+  - docker compose run --rm -p 9323:9323 e2e pnpm playwright test --ui --host 0.0.0.0
+
+
 ## Smoke verification
 
 1. `docker compose up --build`
