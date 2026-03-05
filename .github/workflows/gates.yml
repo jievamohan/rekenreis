@@ -201,8 +201,8 @@ jobs:
 
       - name: Start stack (no rebuild)
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d web api mysql
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait web api mysql
 
       - name: Install web deps (inside e2e container, cached store)
         run: |
@@ -285,10 +285,10 @@ jobs:
 
       - name: Start stack
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d web api mysql
           sleep 5
           docker compose logs api || true
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait web api mysql
 
       - name: Wait for health
         run: |
