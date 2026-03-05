@@ -1,7 +1,8 @@
-# Performance: Epic 21
+# Performance: Fix Failing Playwright Tests
 
-## Gate F — PASS
-- Build succeeds (2.34 MB total, 582 kB gzip)
-- No new dependencies added
-- One new composable (useNavigationState) - minimal overhead
-- One new type file (navigation.ts) - compile-time only
+## Status: PASS
+
+No performance impact:
+- Build output size unchanged (2.34 MB total, 582 kB gzip)
+- One additional `<title>` tag (~20 bytes) in HTML head
+- Snapshot PNGs are test fixtures only, not shipped in production

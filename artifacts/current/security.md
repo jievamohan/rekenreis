@@ -1,7 +1,9 @@
-# Security: Epic 21
+# Security: Fix Failing Playwright Tests
 
-## Gate D — PASS
-- No new dependencies added
-- No secrets or credentials in code
-- No auth/crypto/payment changes
-- Client-side UI/routing changes only
+## Status: PASS
+
+No security-relevant changes:
+- Added HTML `<title>` tag (informational only)
+- Generated PNG test fixtures (visual regression baselines)
+- No dependencies added/changed
+- No auth/crypto/payment code touched

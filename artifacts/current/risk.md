@@ -1,18 +1,11 @@
-# Risk Assessment: Epic 21
+# Risk: Fix Failing Playwright Tests
 
-## Overall Risk: LOW
+## Risk Assessment
+- **Overall risk**: LOW
+- No auth/crypto/payments/privacy changes
+- No dependency changes
+- No infrastructure changes
+- No database changes
 
-| Category | Risk | Mitigation |
-|----------|------|------------|
-| Auth/Permissions | None | No auth changes |
-| Crypto/Payments | None | N/A |
-| Data Loss | None | No persistence changes (reads only) |
-| Privacy | None | No telemetry changes |
-| Dependencies | None | No new deps |
-| Infrastructure | None | No Docker/CI changes |
-| Database | None | No migrations |
-
-## Notes
-- All changes are client-side Vue components and composables
-- Existing functionality preserved (additive changes only)
-- No breaking changes to existing routes or data flow
+## Mitigations
+- Visual snapshots generated in the same Docker image used by CI to ensure consistency.
