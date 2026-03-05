@@ -1,9 +1,5 @@
-# Backlog — Epic 21.4
+# Epic 21.5 Backlog
 
-**Source:** docs/design/epic-21.md
-
-## Tasks
-
-1. **FishFeed** — MinigameFishFeed.vue, timer, pellets, tap handler, unit tests
-2. **CoralBuilder** — MinigameCoralBuilder.vue, pieces, tap handler, unit tests
-3. **Assets + i18n** — Placeholder SVGs, nl.json keys, E2E smoke
+1. **Submarine Sort** — MinigameSubmarineSort.vue, drag-to-compartment, keyboard fallback, SVGs
+2. **Starfish Match** — MinigameStarfishMatch.vue, tap pairs, optional timer, SVGs
+3. **Map + integration** — minigame-map.v1.json, useMinigame registry, E2E smoke

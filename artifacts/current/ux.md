@@ -1,23 +1,13 @@
-# UX — Epic 21.4
+# Epic 21.5 UX
 
-**Source:** docs/design/epic-21.md
+**Submarine Sort:**
+- Drag item with correct number into compartment (2–3 compartments, 3–5 items)
+- Keyboard fallback: Tab to items, Enter/Space to select; arrow keys or list to choose compartment
+- 44px+ tap targets; spacing ≥ 8px
 
-## Fish Feed
+**Starfish Match:**
+- Tap two starfish whose numbers sum to the answer (2–4 pairs)
+- Optional timer (10–25s); extend/disable under prefers-reduced-motion
+- Keyboard: Tab through starfish, Enter/Space to select pair
 
-- Pellets labeled with numbers drop into scene
-- User taps correct pellet (matches answer) to feed fish
-- Timer (8–20s); pellet flow rate; max pellets visible
-- Tap targets ≥ 44px; keyboard fallback
-
-## Coral Builder
-
-- Coral pieces with numbers; tap correct piece to build reef
-- Piece count (3–5); piece reveal delay
-- Scene/tap pattern (no timer)
-- Tap targets ≥ 44px; keyboard fallback
-
-## Shared
-
-- ProblemCard remains canonical math display
-- Minigame is interaction wrapper for answering
-- Fallback: Keypad if minigame fails to load
+**Shared:** ProblemCard remains canonical math display; minigame is interaction wrapper. Fallback to Keypad if load fails.

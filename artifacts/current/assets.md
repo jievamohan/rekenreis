@@ -1,13 +1,9 @@
-# Assets — Epic 21.4
+# Epic 21.5 Assets
 
-**Source:** docs/design/epic-21.md
+**Paths:**
+- `apps/web/assets/graphics/minigames/submarine-sort/` — submarine, compartments, items
+- `apps/web/assets/graphics/minigames/starfish-match/` — starfish shapes
 
-## Directories
+**Format:** Flat SVG, < 2 KB each. Placeholder geometric shapes acceptable for v1.
 
-- `apps/web/assets/graphics/minigames/fish-feed/` — fish, pellets
-- `apps/web/assets/graphics/minigames/coral-builder/` — coral pieces, reef base
-
-## Format
-
-- Flat SVG; per file < 2 KB
-- Placeholder geometric shapes acceptable for v1
+**Budget:** ~6–10 SVGs total; stay within Epic 21 asset budget (< 80 KB new).

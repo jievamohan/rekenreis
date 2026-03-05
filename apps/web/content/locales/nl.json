@@ -284,5 +284,14 @@
     "ariaLabel": "Koraal bouwen — tik op het juiste koraalstuk",
     "pieceLabel": "Koraalstuk {value}",
     "reefLabel": "Koraalrif"
+  },
+  "minigameSubmarineSort": {
+    "ariaLabel": "Onderzeeër sorteren — sleep het juiste item naar het compartiment",
+    "itemLabel": "Item {value}",
+    "compartmentLabel": "Onderzeeër compartiment"
+  },
+  "minigameStarfishMatch": {
+    "ariaLabel": "Zeester match — tik op de juiste zeester",
+    "starLabel": "Zeester {value}"
   }
 }

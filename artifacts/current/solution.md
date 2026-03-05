@@ -1,15 +1,10 @@
-# Solution — Epic 21.4
+# Epic 21.5 Solution
 
-**Source:** docs/design/epic-21.md
+**Implementation order:**
+1. Submarine Sort — MinigameSubmarineSort.vue, compartmentCount/itemCount knobs
+2. Starfish Match — MinigameStarfishMatch.vue, pairCount/timerSeconds knobs
+3. SVGs — placeholder assets in submarine-sort/ and starfish-match/
+4. i18n — nl.json keys for labels/hints (if any new)
+5. Map update — minigame-map.v1.json entries for both
 
-## Implementation Order
-
-1. **FishFeed** — MinigameFishFeed.vue, timer logic, pellet drop, tap handler
-2. **CoralBuilder** — MinigameCoralBuilder.vue, piece reveal, tap handler
-3. **SVGs** — Placeholder assets in fish-feed/ and coral-builder/
-4. **i18n** — Dutch keys in nl.json for both minigames
-
-## Integration
-
-- Register in useMinigame; add to minigame-map.v1.json
-- Wire difficulty knobs (timerSeconds, pelletFlowRate, pieceCount, pieceRevealDelay)
+**Files:** `components/minigames/`, `assets/graphics/minigames/`, `content/minigame-map.v1.json`, `content/locales/nl.json`

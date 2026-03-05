@@ -1,8 +1,10 @@
-# Risk — Epic 21.4
+# Epic 21.5 Risk
 
-**Overall:** Low risk
+**Overall:** Low risk.
 
-- Client-side Vue components only
-- No new API, DB, auth, or payment changes
-- Static JSON content; no eval or dynamic scripts
-- Standard Gate D sufficient
+**Tags:** none (no auth, payments, crypto, data-loss, privacy)
+
+**Mitigations:**
+- Static content only; no new network/data
+- Reuse existing patterns from Epics 21.3/21.4
+- Gate D baseline sufficient

@@ -1,16 +1,7 @@
-# Game Feel — Epic 21.4
+# Epic 21.5 Game Feel
 
-**Source:** docs/design/epic-21.md
+**Submarine Sort:** Item slide animation when dropped into compartment (≤ 300ms ease-out).
 
-## Fish Feed
+**Starfish Match:** Match glow (box-shadow) on correct pair (≤ 300ms ease-out); optional connection line draw-in (≤ 400ms).
 
-- **Pellet drop:** translateY animation (~400ms ease-out)
-- **Fish eat pulse:** scale/opacity pulse ≤ 300ms when correct pellet tapped
-
-## Coral Builder
-
-- **Piece place bounce:** scale bounce when piece placed on reef (≤ 300ms cubic-bezier)
-
-## Feedback
-
-- Reuse correct/wrong/celebrate SFX via useSound
+**Feedback:** Reuse correct/wrong SFX via useSound. Gentle visual feedback on wrong answer.
