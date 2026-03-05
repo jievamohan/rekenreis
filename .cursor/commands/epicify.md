@@ -10,9 +10,18 @@ Protocol:
 
 2) Determine NEXT_MAJOR_EPIC number N:
 - Find the highest Epic number present in docs/epics.md.
-- Set N = highest + 1, unless the user explicitly says a specific epic number.
+- Set N = highest + 1, unless the user explicitly says a specific epic number (e.g. "Use major epic number: 21.").
 
-3) Planning-only discovery (no code changes):
+3) RESET_CURRENT_ARTIFACTS + RUN MANIFEST (hard requirement)
+- Run: scripts/ci/reset_current_artifacts.sh
+- Create a run id (UTC timestamp) and write:
+  - artifacts/current/run-id.txt
+- Initialize: artifacts/current/run-manifest.md with:
+  - Run id
+  - Epic number N
+  - Required planning agents list (see below) with placeholders for OK/N/A + artifact path
+
+4) Planning-only discovery (no code changes):
 Dispatch planning subagents:
 - business-analyst
 - ux-designer
@@ -23,7 +32,7 @@ Dispatch planning subagents:
 - solution-designer
 - qa-strategist
 - security-privacy
-- illustrator (only if the intent explicitly requests new assets)
+- illustrator (only if the intent explicitly requests new assets; otherwise must output N/A)
 
 Write planning artifacts to artifacts/current:
 - artifacts/current/discovery.md
@@ -31,13 +40,27 @@ Write planning artifacts to artifacts/current:
 - artifacts/current/art-direction.md
 - artifacts/current/game-feel.md
 - artifacts/current/motion-audio.md
-- artifacts/current/architecture.md (only if needed)
-- artifacts/current/solution.md (only if needed)
+- artifacts/current/architecture.md
+- artifacts/current/solution.md
 - artifacts/current/qa.md
 - artifacts/current/security-design.md
+- artifacts/current/assets.md (OK or N/A)
 - artifacts/current/backlog.md
 
-4) Create Design Bible (living doc) for this major epic:
+N/A policy (no empty files):
+- If a discipline does not apply, the artifact MUST include:
+  - "N/A: <reason>"
+  - "Impact: none"
+  - "Checks still required: <yes/no + short list>"
+
+5) PLANNING_COMPLETENESS_CHECK (hard stop)
+- Verify:
+  - artifacts/current/run-id.txt exists
+  - artifacts/current/run-manifest.md exists and includes the same run id
+  - Each required artifact file exists
+- If any required artifact is missing, mark BLOCKED and stop (no slicing, no epics appended).
+
+6) Create Design Bible (living doc) for this major epic:
 - Create docs/design/epic-<N>.md using docs/design/_epic-template.md
 - Fill the chapters using the planning artifacts:
   - BA + Game Designer -> Chapter 1
@@ -49,12 +72,12 @@ Write planning artifacts to artifacts/current:
   - Security/Privacy -> Chapter 8
   - Orchestrator -> Chapter 9 (Slice Map)
 
-5) Slice into 3–8 micro-epics:
+7) Slice into 3–8 micro-epics:
 - Each micro-epic MUST be implementable in <= 5 tasks.
 - Each micro-epic MUST have a visible milestone (“what looks/feels different”).
 - Order should be safe: tokens/background -> shell/nav -> components -> assets -> motion -> polish.
 
-6) Append micro-epics to docs/epics.md with PlanRef injected:
+8) Append micro-epics to docs/epics.md with PlanRef injected:
 For k=1..m, append:
 
 ## Epic <N>.<k> — <Title>
@@ -69,7 +92,7 @@ Rules:
 
 Then include a /feature block (explicit prompt) and acceptance criteria.
 
-7) Archive the master plan snapshot:
+9) Archive the master plan snapshot:
 - Run: scripts/ci/archive_current_artifacts.sh "<N>.0"
 - Commit:
   - docs/epics.md
@@ -83,4 +106,4 @@ Constraints:
 - Plan-only: do not modify app code.
 - Do not mark any epic as [x].
 - Never execute /feature here.
--	“Playwright (including screenshot tests) must run only via docker compose e2e service.”
+- Playwright (including screenshot tests) must run only via docker compose e2e service.
