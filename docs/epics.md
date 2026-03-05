@@ -549,7 +549,8 @@ Screenshot targets:
 ---
 
 ## Epic 20.3 — Play Screen Redesign (Keypad + ProblemCard)
-- [ ]
+- [x]
+Merged: PR #51
 PlanRef:
 - design: docs/design/epic-20.md
 - archive: artifacts/archive/epic-20.0/latest
