@@ -590,7 +590,8 @@ Screenshot targets:
 ---
 
 ## Epic 20.4 — Level Complete Modal + Confetti
-- [ ]
+- [x]
+Merged: PR #52
 PlanRef:
 - design: docs/design/epic-20.md
 - archive: artifacts/archive/epic-20.0/latest
