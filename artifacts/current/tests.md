@@ -1,15 +1,22 @@
-# Tests — Epic 19.3
+# Tests: Epic 21
 
-## Gate Results
+## New E2E Tests (all passing)
+- `e2e/app-flow.spec.ts` (3 tests):
+  - complete level → back to map with progress
+  - exit-to-map button navigates back
+  - map shows choose level header and play CTA
+- `e2e/navigation.spec.ts` (4 tests):
+  - map-only elements not on play page
+  - play-only elements not on map page
+  - map page has choose level header and progress
+  - exit to map from play returns to map
 
-| Gate | Status |
-|------|--------|
-| C — Typecheck | PASS |
-| D — Security baseline | PASS (no new deps, SVGs clean) |
-| F — Performance budget | PASS (2.25 MB total, assets 13.7 KB) |
+## Updated Tests
+- `e2e/level-complete.spec.ts`: updated "Next Level" button selector for new modal layout
 
-## Notes
+## Pre-existing CI failures (not caused by this PR)
+- `smoke.spec.ts`: homepage title assertion (empty title in CI)
+- `visual/play-visual.spec.ts`: missing baseline snapshot
 
-- No new logic added; existing unit tests unaffected
-- SVG assets are purely decorative (aria-hidden="true")
-- Integration into AppShell and SceneLayout uses existing patterns
+## Container-only
+All Playwright tests run via `docker compose run --rm e2e` only.

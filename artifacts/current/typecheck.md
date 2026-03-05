@@ -1,5 +1,5 @@
-# Typecheck — Epic 19.5
+# Typecheck: Epic 21
 
-- **Status**: PASS
-- **Command**: `docker compose exec web pnpm run typecheck`
-- **Result**: Clean, no errors
+## Gate C — PASS
+- `pnpm run typecheck` in container: clean (exit 0)
+- No type errors introduced

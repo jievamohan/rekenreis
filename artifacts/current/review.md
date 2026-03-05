@@ -1,35 +1,39 @@
-# Review — Epic 19.5: Polish & a11y
+# Review: Epic 21 — Cohesive App Shell + Map→Level→Game→Feedback→Map Flow
 
 ## Summary
-
-Fixed WCAG AA contrast issues, added missing focus-visible states, and closed reduced-motion gaps.
+Implemented cohesive app shell with consistent navigation, UI visibility rules,
+and a complete Map→Play→Feedback→Map flow.
 
 ## Changes
+| File | Change |
+|------|--------|
+| types/navigation.ts | NEW: NavigationPage, NavTab, NavigationState types |
+| composables/useNavigationState.ts | NEW: route-reactive navigation state composable |
+| components/AppShell.vue | MODIFIED: "Back to Map" button, context-aware TopBar |
+| components/NavTabs.vue | MODIFIED: aria-current for active tab |
+| components/modals/LevelCompleteModal.vue | MODIFIED: "Back to Map" as primary CTA |
+| pages/map.vue | MODIFIED: "Choose Level" header, stars total, "Play current" CTA |
+| pages/play.vue | MODIFIED: "Exit to Map" button, modal back-to-map handler |
+| pages/settings.vue | MODIFIED: removed ad-hoc nav links |
+| pages/stickers.vue | MODIFIED: removed ad-hoc nav links |
+| pages/summary.vue | MODIFIED: removed ad-hoc nav links |
+| e2e/app-flow.spec.ts | NEW: 3 full flow E2E tests |
+| e2e/navigation.spec.ts | NEW: 4 navigation visibility E2E tests |
+| e2e/level-complete.spec.ts | MODIFIED: updated selector for new modal layout |
 
-### Contrast Fixes (Task 0117)
-- Added `--app-text-on-surface: #004d40` and `--app-text-muted-on-surface: #2e7d72`
-- Lightened `--app-text-muted` to `#9dd5cd` (~4.5:1 on dark bg)
-- GameStageCard now sets dark text color for content on light surface
-- Primary buttons use dark text for AA contrast on cyan background
+## Gates
+- C (Typecheck): PASS
+- D (Security): PASS (no new deps, no secrets, no auth changes)
+- F (Build): PASS (2.34 MB total)
+- E2E: 28/32 passed — 4 failures are pre-existing (smoke title, visual baseline)
 
-### Focus States (Task 0118)
-- ProfileCreate: .avatar-btn, .btn, .field input
-- ParentGate: .gate-btn, .math-area input
-- Settings: select, checkbox inputs
-- Play: .skip-link:focus-visible
-
-### Reduced Motion (Task 0119)
-- ParentGate: replaced hardcoded `0.05s` transition with `var(--app-transition)`
-
-## Contrast Audit Results
-
-| Combination | Ratio | WCAG AA |
-|-------------|-------|---------|
-| --app-text on --app-bg-fallback | ~6.5:1 | PASS |
-| --app-text-muted on --app-bg-fallback | ~4.5:1 | PASS |
-| --app-text-on-surface on --app-surface | ~7.2:1 | PASS |
-| --app-text-on-surface on --app-primary | ~4.9:1 | PASS |
-
-## Quality Gates
-
-All PASS.
+## Acceptance Criteria
+- [x] From /map you can open an unlocked level and play it
+- [x] After level completion, return to /map with progress reflected (stars)
+- [x] "Back to Map" is primary CTA in level complete modal
+- [x] "Exit to Map" button on play page
+- [x] "Choose Level" header + stars total + "Play current" CTA on map
+- [x] No orphan page without a way back to /map
+- [x] Ad-hoc navigation removed from settings/stickers/summary
+- [x] E2E covers map→level→finish→back flow
+- [x] UI visibility rules: map-only elements isolated, play-only elements isolated

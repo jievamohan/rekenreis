@@ -31,8 +31,6 @@ watch(bestScore, (score, oldScore) => {
   <div class="stickers-page">
     <h1>Sticker Book</h1>
     <p class="intro">Play to collect stickers! Your best score so far: {{ bestScore }}.</p>
-    <NuxtLink to="/play" class="back">Back to game</NuxtLink>
-
     <div v-for="cat in STICKER_CATEGORIES" :key="cat.id" class="category">
       <h2>{{ cat.label }}</h2>
       <div class="stickers">
@@ -68,21 +66,6 @@ h1 {
 .intro {
   color: var(--app-text-muted);
   margin-bottom: var(--app-space-md);
-}
-.back {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--app-tap-min);
-  padding: var(--app-space-sm) var(--app-space-md);
-  margin-bottom: var(--app-space-lg);
-  font-family: var(--app-font);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-primary);
-  text-decoration: none;
-}
-.back:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
 }
 .category {
   margin-bottom: var(--app-space-lg);

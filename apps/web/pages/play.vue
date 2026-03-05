@@ -142,6 +142,11 @@ function advanceRound() {
   keypadRef.value?.clear()
 }
 
+function onModalBackToMap() {
+  showLevelComplete.value = false
+  router.push('/map')
+}
+
 function onModalNext() {
   showLevelComplete.value = false
   const lvl = levelParam.value!
@@ -303,6 +308,16 @@ onUnmounted(() => {
   <div class="play-page">
     <a href="#game-main" class="skip-link">Skip to game</a>
 
+    <button
+      v-if="!showLevelComplete && !showReview"
+      type="button"
+      class="exit-to-map-btn"
+      aria-label="Exit to Map"
+      @click="onBackToMap"
+    >
+      ← Map
+    </button>
+
     <!-- Mistakes review -->
     <template v-if="useKeypadMode && showReview">
       <MistakesReview
@@ -399,6 +414,7 @@ onUnmounted(() => {
       :stars="completedStars"
       :has-mistakes="hasMistakes"
       :is-last-level="(levelParam ?? 1) >= totalLevels"
+      @back-to-map="onModalBackToMap"
       @next="onModalNext"
       @review-mistakes="onModalReviewMistakes"
       @close="onModalClose"
@@ -425,6 +441,30 @@ onUnmounted(() => {
 .play-page {
   position: relative;
   padding: 0.5rem;
+}
+
+.exit-to-map-btn {
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-base);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  background: var(--app-surface);
+  border: 2px solid var(--app-primary);
+  border-radius: var(--app-radius-md);
+  cursor: pointer;
+  margin-bottom: var(--app-space-sm);
+  transition: background var(--app-transition);
+}
+
+.exit-to-map-btn:hover {
+  background: rgba(0, 188, 212, 0.15);
+}
+
+.exit-to-map-btn:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
 }
 
 .play-header {

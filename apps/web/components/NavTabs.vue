@@ -25,6 +25,7 @@ const iconComponents: Record<string, typeof NavIconFish> = {
       :to="item.to"
       class="nav-tab"
       :class="{ active: ($props.activePath ?? '') === item.to }"
+      :aria-current="($props.activePath ?? '') === item.to ? 'page' : undefined"
       :aria-label="item.label"
     >
       <span class="nav-icon" aria-hidden="true">
