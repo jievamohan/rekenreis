@@ -1,24 +1,27 @@
-# Discovery: Epic 21 — App Shell + Flow
+# Discovery: Fix Failing Playwright Tests
 
-## Current State
-- AppShell exists with TopBar (profile pill + "Choose game") and NavTabs
-- Map page at /map with bare layout (nodes, path, avatar)
-- Play page with keypad mode (levels) and classic mode (skins)
-- LevelCompleteModal with Next/Review/Close
-- Level progress persisted via useLevelProgress
-- Settings/Stickers/Summary pages have ad-hoc navigation links
+## Problem Statement
+The Playwright job in CI (GitHub Actions) is failing with 4 test failures (28 passed, 4 failed).
 
-## Gaps Identified
-1. No centralized route state contract (TypeScript)
-2. No "Back to Map" control in AppShell (pages use ad-hoc links)
-3. TopBar always shows "Choose game" regardless of context
-4. NavTabs don't reflect active page meaningfully (styling only)
-5. No "Exit to Map" on play page
-6. Map-only elements (progress summary) not gated by composable
-7. No E2E test for full map→play→complete→map flow
-8. No map.spec.ts test file
+## Root Causes Identified
 
-## Risk
-- Low: all changes are UI/routing, no auth/payments/crypto
-- No DB changes, no API changes
-- No new dependencies expected
+### 1. Missing page title (`smoke.spec.ts:4` — "homepage loads")
+- Test expects `page.toHaveTitle(/rekenreis/i)` but receives `""`.
+- The Nuxt app has no `<title>` configured — neither `app.head` in `nuxt.config.ts` nor `useHead()` in `app.vue` or `pages/index.vue`.
+- Fails in both `chromium` and `visual` projects (2 failures).
+
+### 2. Missing visual regression snapshots (`visual/play-visual.spec.ts:4`)
+- Test calls `page.toHaveScreenshot('play-keypad.png')` but no baseline snapshot PNGs exist in the repo.
+- Playwright writes the actual image but fails because there's nothing to compare against.
+- Missing files:
+  - `e2e/visual/play-visual.spec.ts-snapshots/play-keypad-chromium-linux.png`
+  - `e2e/visual/play-visual.spec.ts-snapshots/play-keypad-visual-linux.png`
+- Fails in both `chromium` and `visual` projects (2 failures).
+
+## Scope
+- Fix 1 is a one-line config change in `nuxt.config.ts` (add `app.head.title`).
+- Fix 2 requires generating baseline snapshots inside the e2e container (Linux) and committing them.
+
+## Constraints
+- Snapshots must be generated in the same environment as CI (Linux, Playwright 1.49.0 Docker image).
+- Per repo rules, Playwright must run via `docker compose run --rm e2e`.

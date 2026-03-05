@@ -1,24 +1,19 @@
-# Plan: Epic 21 — Cohesive App Shell + Map→Level→Game→Feedback→Map Flow
+# Plan: Fix Failing Playwright Tests
 
-Branch: `feat/epic-21-app-shell-flow`
+## Branch
+- Feature branch: `feat/0117-fix-playwright-tests`
 
-## Objective
-Make the app feel like one coherent game with consistent navigation, UI visibility rules,
-and a complete Map→Play→Feedback→Map flow.
+## Task Summary
+| Task | Acceptance | Status |
+|------|-----------|--------|
+| 0117 | All 32 Playwright tests pass, typecheck clean, build succeeds | pending |
 
-## Tasks (5)
+## Wave Plan
+- Wave 0: n/a (no shared contracts)
+- Wave 1: n/a (no backend)
+- Wave 2: W1 — add title to nuxt.config.ts
+- Wave 3: T — generate visual snapshots, verify all tests pass
 
-| # | Title | Lane | Status |
-|---|-------|------|--------|
-| 1 | Route state contract + useNavigationState composable | W2 | pending |
-| 2 | Refactor AppShell with UI visibility rules | W1 | pending |
-| 3 | Update pages to respect visibility rules + wire flow | W1 | pending |
-| 4 | Wire complete Map→Play→Feedback→Map end-to-end | W1/W2 | pending |
-| 5 | E2E tests for full flow + navigation | T | pending |
-
-## Acceptance Criteria
-- From /map you can open an unlocked level and play it
-- After level completion, return to /map with progress reflected
-- Nav to Settings/Stickers/Summary works with correct UI visibility
-- No orphan page without a way back to /map
-- E2E covers: map→level→finish→back + settings navigation
+## Lane Assignments
+- W1: `apps/web/nuxt.config.ts`
+- T: `apps/web/e2e/visual/play-visual.spec.ts-snapshots/**`

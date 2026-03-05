@@ -1,21 +1,11 @@
-# QA Strategy: Epic 21
+# QA: Fix Failing Playwright Tests
 
-## E2E Tests (container-only Playwright)
-1. `e2e/app-flow.spec.ts`:
-   - Open /map → click unlocked level → completes game → back to map
-   - Verify progress reflected on map after completion
-2. `e2e/navigation.spec.ts`:
-   - Navigate to settings from map, verify "Back to Map" visible
-   - Navigate back to map
-   - Verify NavTabs present on all pages
-   - Verify no orphan pages (every page has way back to /map)
+## Acceptance Criteria
+1. `smoke.spec.ts` — "homepage loads" passes in both chromium and visual projects.
+2. `visual/play-visual.spec.ts` — "keypad mode screenshot" passes in both chromium and visual projects.
+3. All 32 Playwright tests pass (28 already passing + 4 fixed).
+4. No regressions in other CI gates (typecheck, build, security).
 
-## Manual Verification
-- Check UI visibility rules match the matrix in solution.md
-- Check all pages have NavTabs
-- Check /play has Exit to Map button
-
-## Gate Coverage
-- Gate C: typecheck clean
-- Gate D: no new deps, no secrets
-- Gate F: build passes, bundle within budget
+## Test Plan
+- Run full Playwright suite via `docker compose run --rm e2e` locally before push.
+- CI will re-run all gates on the PR.

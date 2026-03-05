@@ -1,22 +1,17 @@
-# Tests: Epic 21
+# Tests: Fix Failing Playwright Tests
 
-## New E2E Tests (all passing)
-- `e2e/app-flow.spec.ts` (3 tests):
-  - complete level → back to map with progress
-  - exit-to-map button navigates back
-  - map shows choose level header and play CTA
-- `e2e/navigation.spec.ts` (4 tests):
-  - map-only elements not on play page
-  - play-only elements not on map page
-  - map page has choose level header and progress
-  - exit to map from play returns to map
+## Status: PASS
 
-## Updated Tests
-- `e2e/level-complete.spec.ts`: updated "Next Level" button selector for new modal layout
+### Playwright (full suite)
+- **32 passed** (0 failed)
+- Runtime: 14.4s
+- Projects: chromium, visual
 
-## Pre-existing CI failures (not caused by this PR)
-- `smoke.spec.ts`: homepage title assertion (empty title in CI)
-- `visual/play-visual.spec.ts`: missing baseline snapshot
+### Previously Failing Tests (now fixed)
+1. `[chromium] smoke.spec.ts:4 › smoke › homepage loads` — PASS
+2. `[visual] smoke.spec.ts:4 › smoke › homepage loads` — PASS
+3. `[chromium] visual/play-visual.spec.ts:4 › play page visual › keypad mode screenshot` — PASS
+4. `[visual] visual/play-visual.spec.ts:4 › play page visual › keypad mode screenshot` — PASS
 
-## Container-only
-All Playwright tests run via `docker compose run --rm e2e` only.
+### Build
+- `pnpm run build` — SUCCESS (2.34 MB total output)

@@ -1,28 +1,29 @@
-# Backlog: Epic 21
+# Backlog: Fix Failing Playwright Tests
 
-## Tasks
+## Epic Summary
+Fix 4 failing Playwright tests in CI caused by a missing page title and missing visual regression baseline snapshots.
 
-### Task 0112: Route state contract + useNavigationState
-- Lane: W2
-- Priority: 1 (foundation)
-- Deps: none
+## Scope_in
+- Add default `<title>` to Nuxt app config
+- Generate and commit visual regression baseline PNGs for the e2e container environment
 
-### Task 0113: Refactor AppShell with UI visibility rules
-- Lane: W1
-- Priority: 2
-- Deps: 0112
+## Scope_out
+- Any game logic changes
+- New tests beyond fixing existing failures
+- CI workflow modifications
+- Dependency updates
 
-### Task 0114: Update pages for visibility rules + flow
-- Lane: W1
-- Priority: 3
-- Deps: 0113
+## Risks + Mitigations
+- **Risk**: Visual snapshots generated locally may differ from CI environment → **Mitigation**: Generate inside the same Docker image used by CI (`mcr.microsoft.com/playwright:v1.49.0-jammy`)
+- No high-risk tags (auth/payments/crypto/data-loss/privacy)
 
-### Task 0115: Wire Map→Play→Feedback→Map end-to-end
-- Lane: W1/W2
-- Priority: 4
-- Deps: 0114
+## NFRs
+- Perf: no impact (title tag is negligible)
+- Security: no impact
+- A11y: title tag improves screen reader experience (positive)
 
-### Task 0116: E2E tests for full flow
-- Lane: T
-- Priority: 5
-- Deps: 0115
+## Task List
+
+| # | Task | Lanes | Gates | Risk |
+|---|------|-------|-------|------|
+| 0117 | fix-playwright-title-and-snapshots | W1, T | C, F | none |

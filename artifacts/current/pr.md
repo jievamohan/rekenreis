@@ -1,27 +1,19 @@
-# Epic 19.5 — Polish & a11y
-
-Final polish pass: fix WCAG AA contrast, add missing focus-visible states, verify reduced motion.
+# Fix Failing Playwright Tests
 
 ## Summary
-- Fix contrast tokens for WCAG AA compliance
-- Add dark text color for use on light surfaces
-- Add missing :focus-visible states on interactive elements
-- Fix reduced-motion gaps in ParentGate
+Fixes 4 failing Playwright tests in CI:
+- **smoke.spec.ts "homepage loads"** — adds missing `<title>` tag to the Nuxt app
+- **visual/play-visual.spec.ts "keypad mode screenshot"** — generates and commits missing visual regression baseline snapshots
+
+## Changes
+1. `apps/web/nuxt.config.ts` — added `app.head.title: 'Rekenreis'`
+2. `apps/web/e2e/visual/play-visual.spec.ts-snapshots/` — committed baseline PNGs for chromium and visual projects
 
 ## Tasks
-- [ ] 0117 — Fix contrast tokens + dark text on surfaces
-- [ ] 0118 — Add missing :focus-visible states
-- [ ] 0119 — Fix reduced-motion gaps
-- [ ] 0120 — Verify typecheck + build + bundle budget
+- [ ] 0117-fix-playwright-title-and-snapshots
 
 ## PR Metadata
 - Base: main
-- Branch: feat/epic-19.5-polish-a11y
-- PR: #47
-- URL: https://github.com/jievamohan/rekenreis/pull/47
-
-## PR Metadata
-- Base: main
-- Branch: feat/epic-21-app-shell-flow
-- PR: #54
-- URL: https://github.com/jievamohan/rekenreis/pull/54
+- Branch: feat/0117-fix-playwright-tests
+- PR: #55
+- URL: https://github.com/jievamohan/rekenreis/pull/55
