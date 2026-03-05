@@ -21,6 +21,10 @@ import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 import { useAppShell } from '~/composables/useAppShell'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
+import { useLevelProgress } from '~/composables/useLevelProgress'
+import { useMistakes } from '~/composables/useMistakes'
+import ProblemCard from '~/components/play/ProblemCard.vue'
+import Keypad from '~/components/play/Keypad.vue'
 import levelsClassic from '~/content/levels.classic.v1.json'
 import levelsTimedPop from '~/content/levels.timed-pop.v1.json'
 import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
@@ -37,6 +41,8 @@ const MODE_OPTIONS: { id: InteractionModeId; label: string }[] = [
   { id: 'build-bridge', label: 'Build Bridge' },
 ]
 
+const ROUNDS_PER_LEVEL = 5
+
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
@@ -46,9 +52,16 @@ const { lastMode, lastSkin, setPreferences } = usePlayPreferences(profile)
 const { setChooseGameHandler } = useAppShell()
 const showModeSelector = ref(false)
 
-const playSource = computed(() =>
-  route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite'
-)
+const levelParam = computed(() => {
+  const q = route.query.level as string | undefined
+  return q ? Number(q) : null
+})
+const useKeypadMode = computed(() => levelParam.value !== null)
+
+const playSource = computed(() => {
+  if (useKeypadMode.value) return 'pack' as const
+  return (route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite') as 'pack' | 'infinite'
+})
 
 const effectiveModeParam = computed(() => {
   const q = route.query.mode as string | undefined
@@ -75,6 +88,51 @@ const game = usePlayGame(mode, {
   strugglingRoundsLeft,
 })
 const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
+
+const keypadRef = ref<InstanceType<typeof Keypad> | null>(null)
+const roundIndex = ref(0)
+const { record: recordMistake, clear: clearMistakes, count: mistakeCount } = useMistakes()
+const { completeLevel } = useLevelProgress(profile)
+
+const feedbackResult = computed<boolean | null>(() => {
+  const fb = game.feedback.value
+  if (!fb) return null
+  if (isCorrectFeedback(fb)) return fb.correct
+  return false
+})
+
+function onKeypadAnswer(answer: number) {
+  game.selectAnswer(answer)
+  if (game.question.value && answer !== game.question.value.correctAnswer) {
+    recordMistake({
+      a: game.question.value.a,
+      b: game.question.value.b,
+      correctAnswer: game.question.value.correctAnswer,
+      selectedAnswer: answer,
+    })
+  }
+}
+
+function advanceRound() {
+  const fb = game.feedback.value
+  if (fb) {
+    const outcome = isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')
+    roundOutcome.recordRoundOutcome(outcome, interactionMode.value)
+    dailyGoal.incrementRound()
+  }
+
+  roundIndex.value += 1
+
+  if (useKeypadMode.value && roundIndex.value >= ROUNDS_PER_LEVEL) {
+    const stars = mistakeCount.value === 0 ? 3 : mistakeCount.value <= 1 ? 2 : 1
+    completeLevel(levelParam.value!, stars)
+    router.push('/map')
+    return
+  }
+
+  game.nextQuestion()
+  keypadRef.value?.clear()
+}
 
 const sessionStatsSent = ref(false)
 watch(
@@ -179,6 +237,8 @@ function onModeSelectorSelect(mode: InteractionModeId, skin: SkinId) {
 
 onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
+  clearMistakes()
+  roundIndex.value = 0
   const qm = route.query.mode as string | undefined
   if (!qm || qm === 'pack') {
     const needsSync = lastMode.value !== 'classic' || lastSkin.value !== 'classic'
@@ -202,38 +262,86 @@ onUnmounted(() => {
 <template>
   <div class="play-page">
     <a href="#game-main" class="skip-link">Skip to game</a>
-    <PlayModeSelector
-      v-model="showModeSelector"
-      :current-mode="interactionMode"
-      :current-skin="effectiveSkinId"
-      :is-unlocked="isUnlocked"
-      :mode-options="MODE_OPTIONS"
-      @select="onModeSelectorSelect"
-    />
-    <nav class="skin-picker" role="navigation" aria-label="Skin selector">
-      <button
-        v-for="id in SKIN_ORDER"
-        :key="id"
-        type="button"
-        class="skin-btn"
-        :class="{ active: skin.id === id, locked: !isUnlocked(id) }"
-        :disabled="!isUnlocked(id)"
-        :aria-label="isUnlocked(id) ? `Switch to ${id} skin` : `${id} locked (score ${UNLOCK_THRESHOLDS[id]} to unlock)`"
-        :title="isUnlocked(id) ? id : `Score ${UNLOCK_THRESHOLDS[id]} to unlock`"
-        @click="selectSkin(id)"
-      >
-        <span class="skin-label">{{ id }}</span>
-        <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
-      </button>
-    </nav>
-    <StatPill
-      v-if="profile.activeProfile.value"
-      label="Rounds today"
-      :value="`${dailyGoal.roundsPlayed}/${dailyGoal.goalRounds}`"
-    />
-    <div id="game-main" tabindex="-1">
-      <component :is="gameMode.component" v-bind="modeProps" />
-    </div>
+
+    <!-- Keypad mode: ProblemCard + Keypad -->
+    <template v-if="useKeypadMode && game.question.value">
+      <div class="play-header">
+        <StatPill label="Score" :value="game.score.value" />
+        <span class="progress-indicator" role="status" aria-label="Round progress">
+          {{ roundIndex + 1 }} / {{ ROUNDS_PER_LEVEL }}
+        </span>
+        <StatPill label="Streak" :value="game.streak.value" />
+      </div>
+
+      <div id="game-main" class="keypad-stage" tabindex="-1">
+        <ProblemCard
+          :a="game.question.value.a"
+          :b="game.question.value.b"
+          :answer="keypadRef?.input ?? ''"
+          :is-correct="feedbackResult"
+        />
+
+        <div
+          v-if="game.feedback.value"
+          class="keypad-feedback"
+          :class="feedbackResult ? 'feedback-correct' : 'feedback-wrong'"
+          role="status"
+          aria-live="polite"
+        >
+          <p v-if="feedbackResult">Correct!</p>
+          <p v-else>
+            Not quite. The answer was {{ game.question.value.correctAnswer }}.
+          </p>
+          <button type="button" class="next-btn" @click="advanceRound">
+            {{ roundIndex + 1 >= ROUNDS_PER_LEVEL ? 'Finish' : 'Next' }}
+          </button>
+        </div>
+
+        <Keypad
+          v-show="!game.feedback.value"
+          ref="keypadRef"
+          :disabled="!!game.feedback.value"
+          @answer="onKeypadAnswer"
+        />
+      </div>
+    </template>
+
+    <!-- Classic mode: existing skin system -->
+    <template v-else>
+      <PlayModeSelector
+        v-model="showModeSelector"
+        :current-mode="interactionMode"
+        :current-skin="effectiveSkinId"
+        :is-unlocked="isUnlocked"
+        :mode-options="MODE_OPTIONS"
+        @select="onModeSelectorSelect"
+      />
+      <nav class="skin-picker" role="navigation" aria-label="Skin selector">
+        <button
+          v-for="id in SKIN_ORDER"
+          :key="id"
+          type="button"
+          class="skin-btn"
+          :class="{ active: skin.id === id, locked: !isUnlocked(id) }"
+          :disabled="!isUnlocked(id)"
+          :aria-label="isUnlocked(id) ? `Switch to ${id} skin` : `${id} locked (score ${UNLOCK_THRESHOLDS[id]} to unlock)`"
+          :title="isUnlocked(id) ? id : `Score ${UNLOCK_THRESHOLDS[id]} to unlock`"
+          @click="selectSkin(id)"
+        >
+          <span class="skin-label">{{ id }}</span>
+          <span v-if="!isUnlocked(id)" class="lock" aria-hidden="true">🔒</span>
+        </button>
+      </nav>
+      <StatPill
+        v-if="profile.activeProfile.value"
+        label="Rounds today"
+        :value="`${dailyGoal.roundsPlayed}/${dailyGoal.goalRounds}`"
+      />
+      <div id="game-main" tabindex="-1">
+        <component :is="gameMode.component" v-bind="modeProps" />
+      </div>
+    </template>
+
     <footer class="privacy-footer">
       <p class="privacy-note">
         We may use anonymous play stats to improve the game. No personal data is collected.
@@ -256,6 +364,73 @@ onUnmounted(() => {
   position: relative;
   padding: 0.5rem;
 }
+
+.play-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--app-space-sm);
+  margin-bottom: var(--app-space-md);
+}
+
+.progress-indicator {
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-text-on-surface);
+}
+
+.keypad-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-lg);
+  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.keypad-feedback {
+  text-align: center;
+  padding: var(--app-space-md);
+  border-radius: var(--app-radius-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+}
+
+.feedback-correct {
+  color: var(--app-correct);
+}
+
+.feedback-wrong {
+  color: var(--app-wrong);
+}
+
+.next-btn {
+  margin-top: var(--app-space-sm);
+  min-height: var(--app-tap-min);
+  min-width: 120px;
+  padding: var(--app-space-sm) var(--app-space-lg);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-text-on-surface);
+  background: var(--app-primary);
+  border: none;
+  border-radius: var(--app-radius-md);
+  cursor: pointer;
+  transition: background var(--app-transition);
+}
+
+.next-btn:hover {
+  background: var(--app-primary-hover);
+}
+
+.next-btn:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
+
 .skin-picker {
   display: flex;
   flex-wrap: wrap;
