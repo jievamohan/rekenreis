@@ -33,3 +33,4 @@
 | Epic 20.5 — Mistakes Review + Polish | done | PR #53 merged |
 | Epic 21.1 — i18n Foundation + Dutch UI Copy | done | PR #58 merged |
 | Epic 21.2 — Minigame Types + Serving + Difficulty | done | PR #59 merged |
+| Epic 21.3 — Bubble Pop + Treasure Dive | done | PR #60 merged |

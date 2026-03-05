@@ -749,7 +749,8 @@ Acceptance:
 ---
 
 ## Epic 21.3 — First 2 Minigames (Bubble Pop + Treasure Dive)
-- [ ]
+- [x]
+Merged: PR #60
 PlanRef:
 - design: docs/design/epic-21.md
 - archive: artifacts/archive/epic-21.0/latest
