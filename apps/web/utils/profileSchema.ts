@@ -11,6 +11,10 @@ const LEGACY_TELEMETRY_KEY = 'rekenreis_telemetry_opt_out'
 export type AvatarId = 'default' | 'star' | 'heart' | 'circle' | 'square'
 export type GameMode = 'upTo10' | 'upTo20'
 
+export interface LevelStars {
+  stars: number
+}
+
 export interface ProfileProgress {
   bestScore: number
   dailyGoal?: { date: string; roundsPlayed: number }
@@ -20,6 +24,10 @@ export interface ProfileProgress {
   totalWrong?: number
   totalTimeout?: number
   modeCounts?: Partial<Record<InteractionModeId, number>>
+  /** Per-level completion — level index (1-based) → stars (1–3) */
+  levelProgress?: Record<number, LevelStars>
+  /** Highest unlocked level (1-based). Defaults to 1. */
+  currentLevel?: number
 }
 
 export interface ProfilePrefs {
@@ -163,6 +171,20 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
         (typeof p.progress.modeCounts === 'object' &&
           p.progress.modeCounts !== null &&
           Object.values(p.progress.modeCounts).every((v) => typeof v === 'number' && v >= 0))) &&
+      (p.progress.levelProgress === undefined ||
+        (typeof p.progress.levelProgress === 'object' &&
+          p.progress.levelProgress !== null &&
+          Object.entries(p.progress.levelProgress).every(
+            ([k, v]) =>
+              Number.isFinite(Number(k)) &&
+              typeof v === 'object' &&
+              v !== null &&
+              typeof (v as LevelStars).stars === 'number' &&
+              (v as LevelStars).stars >= 1 &&
+              (v as LevelStars).stars <= 3
+          ))) &&
+      (p.progress.currentLevel === undefined ||
+        (typeof p.progress.currentLevel === 'number' && p.progress.currentLevel >= 1)) &&
       p.prefs &&
       VALID_MODES.includes(p.prefs.lastMode as InteractionModeId) &&
       VALID_SKINS.includes(p.prefs.lastSkin as SkinId) &&
@@ -182,10 +204,15 @@ export function loadProfiles(): ProfileSchemaV1 {
   try {
     const data = JSON.parse(raw) as unknown
     if (isValidV1(data)) {
-      // Ensure soundOn exists for profiles loaded before Epic 11
       for (const p of data.profiles) {
         if (p.prefs && p.prefs.soundOn === undefined) {
           p.prefs.soundOn = true
+        }
+        if (p.progress.currentLevel === undefined) {
+          p.progress.currentLevel = 1
+        }
+        if (p.progress.levelProgress === undefined) {
+          p.progress.levelProgress = {}
         }
       }
       return data
