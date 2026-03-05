@@ -471,7 +471,8 @@ Acceptance:
 ---
 
 ## Epic 20.1 — Playwright & Tokens Foundation
-- [ ]
+- [x]
+Merged: PR #49
 PlanRef:
 - design: docs/design/epic-20.md
 - archive: artifacts/archive/epic-20.0/latest
