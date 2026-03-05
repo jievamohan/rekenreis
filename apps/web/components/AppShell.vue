@@ -11,7 +11,10 @@ const router = useRouter()
 const route = useRoute()
 const showProfileSelector = ref(false)
 
+defineProps<{ noCard?: boolean }>()
+
 const navItems = [
+  { to: '/map', label: 'Map', icon: 'map' },
   { to: '/stickers', label: 'Sticker book', icon: 'fish' },
   { to: '/summary', label: 'Progress', icon: 'chart-bubbles' },
   { to: '/settings', label: 'Settings', icon: 'gear-coral' },
@@ -73,9 +76,12 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
     </div>
 
     <main class="app-stage">
-      <GameStageCard>
+      <GameStageCard v-if="!noCard">
         <slot />
       </GameStageCard>
+      <div v-else class="app-stage-bare">
+        <slot />
+      </div>
     </main>
 
     <NavTabs :items="navItems" :active-path="route.path" />
@@ -216,6 +222,15 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
   padding: 0 var(--app-space-sm);
   position: relative;
   z-index: 1;
+}
+
+.app-stage-bare {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 </style>
