@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '~/composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   a: number
   b: number
@@ -15,7 +17,7 @@ const scale = computed(() => 100 / max.value)
   <div
     class="hint-number-line"
     role="img"
-    :aria-label="`Number line from 0 to ${max}: ${a} plus ${b} equals ${correctAnswer}`"
+    :aria-label="t('hints.numberLine', { max, a, b, answer: correctAnswer })"
   >
     <div class="line">
       <span

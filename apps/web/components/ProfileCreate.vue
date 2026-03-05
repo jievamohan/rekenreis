@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { AvatarId } from '~/utils/profileSchema'
+import { useI18n } from '~/composables/useI18n'
 
+const { t } = useI18n()
 const AVATARS: { id: AvatarId; emoji: string }[] = [
   { id: 'default', emoji: '👤' },
   { id: 'star', emoji: '⭐' },
@@ -18,7 +20,7 @@ const emit = defineEmits<{
 }>()
 
 function submit() {
-  emit('create', name.value.trim() || 'Player 1', selectedAvatar.value)
+  emit('create', name.value.trim() || t('common.player1'), selectedAvatar.value)
 }
 
 function cancel() {
@@ -27,26 +29,26 @@ function cancel() {
 </script>
 
 <template>
-  <div class="profile-create" role="dialog" aria-label="Create profile">
-    <h3>New profile</h3>
+  <div class="profile-create" role="dialog" :aria-label="t('profile.createTitle')">
+    <h3>{{ t('profile.newProfile') }}</h3>
     <label class="field">
-      <span>Name</span>
+      <span>{{ t('profile.name') }}</span>
       <input
         v-model="name"
         type="text"
-        placeholder="Player 1"
+        :placeholder="t('common.player1')"
         maxlength="50"
-        aria-label="Profile name"
+        :aria-label="t('profile.profileName')"
       />
     </label>
-    <div class="avatars" role="group" aria-label="Choose avatar">
+    <div class="avatars" role="group" :aria-label="t('profile.chooseAvatar')">
       <button
         v-for="a in AVATARS"
         :key="a.id"
         type="button"
         class="avatar-btn"
         :class="{ active: selectedAvatar === a.id }"
-        :aria-label="`Avatar ${a.id}`"
+        :aria-label="t('profile.avatarLabel', { id: a.id })"
         :aria-pressed="selectedAvatar === a.id"
         @click="selectedAvatar = a.id"
       >
@@ -54,8 +56,8 @@ function cancel() {
       </button>
     </div>
     <div class="actions">
-      <button type="button" class="btn" @click="cancel">Cancel</button>
-      <button type="button" class="btn primary" @click="submit">Create</button>
+      <button type="button" class="btn" @click="cancel">{{ t('profile.cancel') }}</button>
+      <button type="button" class="btn primary" @click="submit">{{ t('profile.create') }}</button>
     </div>
   </div>
 </template>

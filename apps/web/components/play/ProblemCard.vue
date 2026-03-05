@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
 defineProps<{
   a: number
   b: number
@@ -15,7 +18,7 @@ defineProps<{
       'problem-wrong': isCorrect === false,
     }"
     role="group"
-    :aria-label="`${a} plus ${b} equals ${answer || 'blank'}`"
+    :aria-label="t('problemCard.ariaLabel', { a, b, answer: answer || t('problemCard.blank') })"
   >
     <span class="operand">{{ a }}</span>
     <span class="operator" aria-hidden="true">+</span>

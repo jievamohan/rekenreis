@@ -32,7 +32,7 @@ test.describe('app flow: map → play → complete → map', () => {
 
     await completeLevel(page)
 
-    await page.getByRole('button', { name: 'Back to Map' }).click()
+    await page.getByRole('button', { name: 'Naar de kaart' }).click()
     await expect(page).toHaveURL(/\/map/)
     await expect(page.locator('.map-page')).toBeVisible()
 
@@ -56,7 +56,7 @@ test.describe('app flow: map → play → complete → map', () => {
     await page.locator('.exit-to-map-btn').click()
     await expect(page).toHaveURL(/\/map/)
 
-    await expect(page.locator('.map-title')).toContainText('Choose Level')
+    await expect(page.locator('.map-title')).toContainText('Kies een level')
     await expect(page.locator('.play-current-cta')).toBeVisible()
     await expect(page.locator('.map-progress')).toBeVisible()
   })

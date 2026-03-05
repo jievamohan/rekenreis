@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   disabled: boolean
@@ -50,7 +53,7 @@ defineExpose({ input, clear: () => { input.value = '' } })
 </script>
 
 <template>
-  <div class="keypad" role="group" aria-label="Number keypad">
+  <div class="keypad" role="group" :aria-label="t('keypad.ariaLabel')">
     <div class="keypad-grid">
       <button
         v-for="d in [1, 2, 3, 4, 5, 6, 7, 8, 9]"
@@ -66,7 +69,7 @@ defineExpose({ input, clear: () => { input.value = '' } })
       <button
         type="button"
         class="key action clear-key"
-        aria-label="Clear"
+        :aria-label="t('keypad.clear')"
         :disabled="disabled"
         @click="clear"
       >
@@ -85,7 +88,7 @@ defineExpose({ input, clear: () => { input.value = '' } })
         type="button"
         class="key action check-key"
         :class="{ ready: input !== '' }"
-        aria-label="Check answer"
+        :aria-label="t('keypad.checkAnswer')"
         :disabled="disabled || input === ''"
         @click="check"
       >

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { MistakeItem } from '~/composables/useMistakes'
+import { useI18n } from '~/composables/useI18n'
 import mascotSrc from '~/assets/graphics/characters/mascot.svg'
 import HintDots from '~/components/hints/HintDots.vue'
 
+const { t } = useI18n()
 defineProps<{
   mistakes: MistakeItem[]
   level: number
@@ -18,11 +20,11 @@ defineEmits<{
   <div class="mistakes-review">
     <div class="review-header">
       <img :src="mascotSrc" alt="" class="review-mascot" aria-hidden="true" />
-      <h2 class="review-title">Laten we deze nog eens bekijken!</h2>
-      <p class="review-subtitle">Level {{ level }} — {{ mistakes.length }} to review</p>
+      <h2 class="review-title">{{ t('mistakesReview.title') }}</h2>
+      <p class="review-subtitle">{{ t('mistakesReview.subtitle', { level, count: mistakes.length }) }}</p>
     </div>
 
-    <div class="cards-container" role="list" aria-label="Mistakes to review">
+    <div class="cards-container" role="list" :aria-label="t('mistakesReview.ariaLabel')">
       <div
         v-for="(m, idx) in mistakes"
         :key="idx"
@@ -35,10 +37,10 @@ defineEmits<{
         </div>
         <div class="answer-row">
           <span class="your-answer">
-            Your answer: <strong>{{ m.selectedAnswer }}</strong>
+            {{ t('mistakesReview.yourAnswer') }} <strong>{{ m.selectedAnswer }}</strong>
           </span>
           <span class="correct-answer">
-            Correct: <strong>{{ m.correctAnswer }}</strong>
+            {{ t('mistakesReview.correctAnswer') }} <strong>{{ m.correctAnswer }}</strong>
           </span>
         </div>
         <HintDots
@@ -51,10 +53,10 @@ defineEmits<{
 
     <div class="review-actions">
       <button type="button" class="cta-primary" @click="$emit('retry')">
-        Opnieuw proberen
+        {{ t('mistakesReview.retry') }}
       </button>
       <button type="button" class="cta-secondary" @click="$emit('backToMap')">
-        Naar de kaart
+        {{ t('mistakesReview.backToMap') }}
       </button>
     </div>
   </div>

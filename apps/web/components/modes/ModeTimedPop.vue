@@ -2,8 +2,11 @@
 import { ref, computed, watch, onUnmounted } from 'vue'
 import type { SkinRoundProps } from '~/types/skin'
 import type { SkinId } from '~/utils/skinResolver'
+import { useI18n } from '~/composables/useI18n'
 import { useSkin } from '~/composables/useSkin'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
+
+const { t } = useI18n()
 
 const props = defineProps<
   SkinRoundProps & { effectiveSkinId: SkinId; recordTimeout: () => void }
@@ -75,12 +78,12 @@ const hasFeedback = computed(() => !!props.feedback)
 
 <template>
   <div class="mode-timed-pop" role="main">
-    <div v-if="question" class="question" role="group" :aria-label="`${question.a} plus ${question.b} equals ?`">
+    <div v-if="question" class="question" role="group" :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: '?' })">
       <p class="prompt">{{ question.a }} + {{ question.b }} = ?</p>
-      <p v-if="!hasFeedback" class="timer" role="timer" :aria-label="`${remaining} seconds remaining`">
+      <p v-if="!hasFeedback" class="timer" role="timer" :aria-label="t('modes.secondsRemaining', { remaining })">
         {{ displayTime }}
       </p>
-      <div class="choices" role="group" aria-label="Answer choices">
+      <div class="choices" role="group" :aria-label="t('common.answerChoices')">
         <button
           v-for="(choice, i) in question.choices"
           :key="`${choice}-${i}`"
@@ -105,12 +108,12 @@ const hasFeedback = computed(() => !!props.feedback)
       role="status"
       aria-live="polite"
     >
-      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Correct!</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">{{ t('common.correct') }}</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
-        Time's up! The answer was {{ feedback.correctAnswer }}.
+        {{ t('modes.timesUp', { answer: feedback.correctAnswer }) }}
       </p>
       <p v-else class="incorrect">
-        Not quite. The answer was {{ question?.correctAnswer }}.
+        {{ t('play.notQuiteAnswer', { answer: question?.correctAnswer ?? 0 }) }}
       </p>
       <button
         type="button"
@@ -119,13 +122,13 @@ const hasFeedback = computed(() => !!props.feedback)
         @keydown.enter.prevent="onNext"
         @keydown.space.prevent="onNext"
       >
-        Next
+        {{ t('common.next') }}
       </button>
     </div>
 
     <div class="stats" role="status">
-      <span>Score: {{ score }}</span>
-      <span>Streak: {{ streak }}</span>
+      <span>{{ t('common.score') }}: {{ score }}</span>
+      <span>{{ t('common.streak') }}: {{ streak }}</span>
     </div>
   </div>
 </template>

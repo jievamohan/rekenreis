@@ -31,7 +31,7 @@ test.describe('navigation and UI visibility', () => {
     await page.goto('/play?level=1')
     await page.locator('.exit-to-map-btn').click()
     await expect(page).toHaveURL(/\/map/)
-    await expect(page.locator('.map-title')).toContainText('Choose Level')
+    await expect(page.locator('.map-title')).toContainText('Kies een level')
     await expect(page.locator('.play-current-cta')).toBeVisible()
     await expect(page.locator('.map-progress')).toBeVisible()
   })

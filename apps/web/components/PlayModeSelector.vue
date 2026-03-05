@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { InteractionModeId } from '~/types/mode'
+import { useI18n } from '~/composables/useI18n'
 import type { SkinId } from '~/utils/skinResolver'
 import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 
+const { t } = useI18n()
 const props = defineProps<{
   modelValue: boolean
   currentMode: InteractionModeId
@@ -39,10 +41,10 @@ function close() {
       <div class="mode-selector-backdrop" aria-hidden="true" @click="close" />
       <div class="mode-selector-panel">
         <h2 id="mode-selector-title" class="mode-selector-title">
-          Choose game
+          {{ t('modeSelector.title') }}
         </h2>
 
-        <div class="mode-options" role="group" aria-label="Game mode">
+        <div class="mode-options" role="group" :aria-label="t('modeSelector.gameMode')">
           <button
             v-for="opt in modeOptions"
             :key="opt.id"
@@ -50,7 +52,7 @@ function close() {
             class="mode-btn"
             :class="{ active: currentMode === opt.id }"
             :aria-pressed="currentMode === opt.id"
-            :aria-label="`Select ${opt.label} mode`"
+            :aria-label="t('modeSelector.selectMode', { label: opt.label })"
             @click="selectMode(opt.id, currentSkin)"
           >
             <span class="mode-icon" aria-hidden="true">
@@ -60,8 +62,8 @@ function close() {
           </button>
         </div>
 
-        <div class="skin-options" role="group" aria-label="Skin">
-          <p class="skin-label">Theme</p>
+        <div class="skin-options" role="group" :aria-label="t('modeSelector.skinLabel')">
+          <p class="skin-label">{{ t('modeSelector.theme') }}</p>
           <div class="skin-btns">
             <button
               v-for="id in SKIN_ORDER"
@@ -70,7 +72,7 @@ function close() {
               class="skin-btn"
               :class="{ active: currentSkin === id, locked: !isUnlocked(id) }"
               :disabled="!isUnlocked(id)"
-              :aria-label="isUnlocked(id) ? `Select ${id} theme` : `${id} locked`"
+              :aria-label="isUnlocked(id) ? t('modeSelector.selectTheme', { id }) : t('modeSelector.themeLocked', { id })"
               @click="selectMode(currentMode, id)"
             >
               {{ id }}
@@ -81,10 +83,10 @@ function close() {
         <button
           type="button"
           class="close-btn"
-          aria-label="Close"
+          :aria-label="t('modeSelector.close')"
           @click="close"
         >
-          Close
+          {{ t('modeSelector.close') }}
         </button>
       </div>
     </div>

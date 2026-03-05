@@ -1,25 +1,27 @@
 <script setup lang="ts">
 import type { SkinRoundProps } from '~/types/skin'
+import { useI18n } from '~/composables/useI18n'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
 import HintDots from '~/components/hints/HintDots.vue'
 import HintNumberLine from '~/components/hints/HintNumberLine.vue'
 
+const { t } = useI18n()
 const props = defineProps<SkinRoundProps>()
 </script>
 
 <template>
   <div class="play" role="main">
-    <h1>Math Game</h1>
+    <h1>{{ t('skins.mathGame') }}</h1>
 
     <div
       v-if="question"
       class="question"
       role="group"
-      :aria-label="`${question.a} plus ${question.b} equals ?`"
+      :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: '?' })"
     >
       <p class="prompt">{{ question.a }} + {{ question.b }} = ?</p>
 
-      <div class="choices" role="group" aria-label="Answer choices">
+      <div class="choices" role="group" :aria-label="t('common.answerChoices')">
         <button
           v-for="(choice, i) in question.choices"
           :key="`${choice}-${i}`"
@@ -44,12 +46,12 @@ const props = defineProps<SkinRoundProps>()
       role="status"
       aria-live="polite"
     >
-      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Correct!</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">{{ t('common.correct') }}</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="incorrect">
-        Time's up! The answer was {{ feedback.correctAnswer }}.
+        {{ t('modes.timesUp', { answer: feedback.correctAnswer }) }}
       </p>
       <p v-else class="incorrect">
-        Not quite. The answer was {{ question?.correctAnswer }}.
+        {{ t('play.notQuiteAnswer', { answer: question?.correctAnswer ?? 0 }) }}
       </p>
       <HintDots
         v-if="hintToShow === 'dots' && hintQuestion"
@@ -70,13 +72,13 @@ const props = defineProps<SkinRoundProps>()
         @keydown.enter.prevent="onNext"
         @keydown.space.prevent="onNext"
       >
-        Next
+        {{ t('common.next') }}
       </button>
     </div>
 
     <div class="stats" role="status">
-      <span>Score: {{ score }}</span>
-      <span>Streak: {{ streak }}</span>
+      <span>{{ t('common.score') }}: {{ score }}</span>
+      <span>{{ t('common.streak') }}: {{ streak }}</span>
     </div>
 
     <div class="mode">
@@ -88,7 +90,7 @@ const props = defineProps<SkinRoundProps>()
           value="upTo10"
           @change="onModeChange('upTo10')"
         />
-        Up to 10
+        {{ t('common.upTo10') }}
       </label>
       <label>
         <input
@@ -98,7 +100,7 @@ const props = defineProps<SkinRoundProps>()
           value="upTo20"
           @change="onModeChange('upTo20')"
         />
-        Up to 20
+        {{ t('common.upTo20') }}
       </label>
     </div>
   </div>

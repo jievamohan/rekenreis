@@ -41,7 +41,7 @@ export function useProfile() {
     const s = schema.value
     if (!s) return
     const newProfile = createDefaultProfile()
-    newProfile.name = name.slice(0, 50) || 'Player 1'
+    newProfile.name = name.slice(0, 50) || 'Speler 1'
     newProfile.avatarId = avatarId
     const next: ProfileSchemaV1 = {
       version: 1,

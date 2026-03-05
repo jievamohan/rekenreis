@@ -2,7 +2,10 @@
 import { ref, computed } from 'vue'
 import type { SkinRoundProps } from '~/types/skin'
 import type { SkinId } from '~/utils/skinResolver'
+import { useI18n } from '~/composables/useI18n'
 import { isCorrectFeedback, isTimeoutFeedback } from '~/utils/feedbackHelpers'
+
+const { t } = useI18n()
 import SceneLayout from '~/components/graphics/SceneLayout.vue'
 import HintDots from '~/components/hints/HintDots.vue'
 import HintNumberLine from '~/components/hints/HintNumberLine.vue'
@@ -65,14 +68,14 @@ function handleDragOver(e: DragEvent) {
   <div class="mode-build-bridge" role="main">
     <SceneLayout v-if="question">
       <template #foreground>
-        <div class="bridge-visual" role="group" :aria-label="`${question.a} plus ${question.b} equals ?`">
+        <div class="bridge-visual" role="group" :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: '?' })">
           <img :src="bridgeLeft" alt="" class="bridge-left" aria-hidden="true">
           <div
             class="bridge-gap"
             :class="{ wobble: isWrongFeedback, 'has-selection': selectedPlank !== null }"
             role="button"
             tabindex="0"
-            :aria-label="selectedPlank !== null ? `Place plank ${selectedPlank} here` : 'Drop zone for answer plank'"
+            :aria-label="selectedPlank !== null ? t('modes.placePlank', { choice: selectedPlank }) : t('modes.dropZone')"
             @drop="handleDrop"
             @dragover="handleDragOver"
             @click="handlePlace"
@@ -106,7 +109,7 @@ function handleDragOver(e: DragEvent) {
             :correct-answer="hintQuestion.correctAnswer"
           />
         </div>
-        <div class="planks" role="group" aria-label="Answer planks">
+        <div class="planks" role="group" :aria-label="t('modes.answerPlanks')">
           <button
             v-for="(choice, i) in question.choices"
             :key="`${choice}-${i}`"
@@ -115,7 +118,7 @@ function handleDragOver(e: DragEvent) {
             :class="{ selected: selectedPlank === choice }"
             :disabled="!!feedback"
             draggable="true"
-            :aria-label="`Plank ${choice}${selectedPlank === choice ? ', selected, click drop zone to place' : ', click to select or drag to place'}`"
+            :aria-label="t('modes.plankLabel', { choice }) + (selectedPlank === choice ? t('modes.plankSelected') : t('modes.plankDefault'))"
             @click="handlePlankSelect(choice)"
             @keydown.enter.prevent="handlePlankSelect(choice)"
             @keydown.space.prevent="handlePlankSelect(choice)"
@@ -134,12 +137,12 @@ function handleDragOver(e: DragEvent) {
       role="status"
       aria-live="polite"
     >
-      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">Correct!</p>
+      <p v-if="isCorrectFeedback(feedback) && feedback.correct" class="correct">{{ t('common.correct') }}</p>
       <p v-else-if="isTimeoutFeedback(feedback)" class="info">
-        Time's up! The answer was {{ feedback.correctAnswer }}.
+        {{ t('modes.timesUp', { answer: feedback.correctAnswer }) }}
       </p>
       <p v-else class="hint">
-        Try another! The answer was {{ question?.correctAnswer }}.
+        {{ t('modes.tryAnother', { answer: question?.correctAnswer ?? 0 }) }}
       </p>
       <button
         type="button"
@@ -148,13 +151,13 @@ function handleDragOver(e: DragEvent) {
         @keydown.enter.prevent="props.onNext"
         @keydown.space.prevent="props.onNext"
       >
-        Next
+        {{ t('common.next') }}
       </button>
     </div>
 
     <div class="stats" role="status">
-      <span>Score: {{ score }}</span>
-      <span>Streak: {{ streak }}</span>
+      <span>{{ t('common.score') }}: {{ score }}</span>
+      <span>{{ t('common.streak') }}: {{ streak }}</span>
     </div>
   </div>
 </template>

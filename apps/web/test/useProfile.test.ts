@@ -20,7 +20,7 @@ describe('useProfile', () => {
   it('returns activeProfile from migrated default', () => {
     const { activeProfile, profiles } = useProfile()
     expect(activeProfile.value).not.toBeNull()
-    expect(activeProfile.value?.name).toBe('Player 1')
+    expect(activeProfile.value?.name).toBe('Speler 1')
     expect(profiles.value).toHaveLength(1)
   })
 

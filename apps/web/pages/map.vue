@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import { useLevelProgress } from '~/composables/useLevelProgress'
 import MapNode from '~/components/map/MapNode.vue'
@@ -15,6 +16,7 @@ import {
 definePageMeta({ layout: 'bare' })
 
 const router = useRouter()
+const { t } = useI18n()
 const profile = useProfile()
 const { currentLevel, isUnlocked, starsFor, levelProgress } = useLevelProgress(profile)
 
@@ -63,20 +65,20 @@ const mapHeight = computed(() => computeMapHeight(waypoints))
 <template>
   <div class="map-page">
     <div class="map-header">
-      <h1 class="map-title">Choose Level</h1>
-      <span class="map-progress" role="status" aria-label="Overall progress">
+      <h1 class="map-title">{{ t('map.title') }}</h1>
+      <span class="map-progress" role="status" :aria-label="t('map.overallProgress')">
         ⭐ {{ totalStars }} / {{ maxStars }}
       </span>
     </div>
     <button
       type="button"
       class="play-current-cta"
-      aria-label="Play current level"
+      :aria-label="t('map.playCurrentLevel')"
       @click="playCurrentLevel"
     >
-      Play Level {{ currentLevel }}
+      {{ t('map.playLevel', { n: currentLevel }) }}
     </button>
-    <div class="map-scroll" role="list" aria-label="Level map">
+    <div class="map-scroll" role="list" :aria-label="t('map.levelMap')">
       <div class="map-container" :style="{ height: `${mapHeight}px` }">
         <MapDecor :waypoints="waypoints" :map-height="mapHeight" />
         <MapPath :node-count="totalLevels" />
@@ -94,7 +96,7 @@ const mapHeight = computed(() => computeMapHeight(waypoints))
           <div v-if="i === currentLevel" :style="avatarStyle(i - 1)">
             <MapAvatar
               :avatar-id="profile.activeProfile.value?.avatarId ?? 'default'"
-              :name="profile.activeProfile.value?.name ?? 'Player'"
+              :name="profile.activeProfile.value?.name ?? t('common.player')"
             />
           </div>
         </template>

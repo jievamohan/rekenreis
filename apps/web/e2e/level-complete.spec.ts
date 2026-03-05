@@ -28,7 +28,7 @@ test.describe('level complete modal', () => {
     await expect(page.locator('.modal-dialog')).toBeVisible()
     await expect(page.locator('.mascot')).toBeVisible()
     await expect(page.locator('.star-svg')).toHaveCount(3)
-    await expect(page.locator('.modal-title')).toContainText('Level 1 Complete')
+    await expect(page.locator('.modal-title')).toContainText('Level 1 voltooid!')
   })
 
   test('Next Level button navigates to next level', async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe('level complete modal', () => {
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible()
-    await page.getByRole('button', { name: 'Next Level' }).click()
+    await page.getByRole('button', { name: 'Volgend level' }).click()
 
     await expect(page).toHaveURL(/level=2/)
   })

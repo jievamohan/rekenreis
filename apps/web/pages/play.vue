@@ -23,6 +23,7 @@ import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
 import { useLevelProgress } from '~/composables/useLevelProgress'
 import { useMistakes } from '~/composables/useMistakes'
+import { useI18n } from '~/composables/useI18n'
 import ProblemCard from '~/components/play/ProblemCard.vue'
 import Keypad from '~/components/play/Keypad.vue'
 import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
@@ -37,11 +38,12 @@ const PACK_BY_MODE: Record<InteractionModeId, Level[]> = {
   'build-bridge': applyPacing(levelsBuildBridge as Level[], 42),
 }
 
-const MODE_OPTIONS: { id: InteractionModeId; label: string }[] = [
-  { id: 'classic', label: 'Classic' },
-  { id: 'timed-pop', label: 'Timed Pop' },
-  { id: 'build-bridge', label: 'Build Bridge' },
-]
+const { t } = useI18n()
+const MODE_OPTIONS = computed(() => [
+  { id: 'classic' as const, label: t('modes.classic') },
+  { id: 'timed-pop' as const, label: t('modes.timedPop') },
+  { id: 'build-bridge' as const, label: t('modes.buildBridge') },
+])
 
 const ROUNDS_PER_LEVEL = 5
 
@@ -306,16 +308,16 @@ onUnmounted(() => {
 
 <template>
   <div class="play-page">
-    <a href="#game-main" class="skip-link">Skip to game</a>
+    <a href="#game-main" class="skip-link">{{ t('play.skipToGame') }}</a>
 
     <button
       v-if="!showLevelComplete && !showReview"
       type="button"
       class="exit-to-map-btn"
-      aria-label="Exit to Map"
+      :aria-label="t('play.exitToMap')"
       @click="onBackToMap"
     >
-      ← Map
+      {{ t('common.backToMap') }}
     </button>
 
     <!-- Mistakes review -->
@@ -331,11 +333,11 @@ onUnmounted(() => {
     <!-- Keypad mode: ProblemCard + Keypad -->
     <template v-else-if="useKeypadMode && game.question.value">
       <div class="play-header">
-        <StatPill label="Score" :value="game.score.value" />
-        <span class="progress-indicator" role="status" aria-label="Round progress">
+        <StatPill :label="t('play.score')" :value="game.score.value" />
+        <span class="progress-indicator" role="status" :aria-label="t('play.roundProgress')">
           {{ roundIndex + 1 }} / {{ ROUNDS_PER_LEVEL }}
         </span>
-        <StatPill label="Streak" :value="game.streak.value" />
+        <StatPill :label="t('play.streak')" :value="game.streak.value" />
       </div>
 
       <div id="game-main" class="keypad-stage" tabindex="-1">
@@ -353,12 +355,12 @@ onUnmounted(() => {
           role="status"
           aria-live="polite"
         >
-          <p v-if="feedbackResult">Correct!</p>
+          <p v-if="feedbackResult">{{ t('play.correct') }}</p>
           <p v-else>
-            Not quite. The answer was {{ game.question.value.correctAnswer }}.
+            {{ t('play.wrong', { answer: game.question.value.correctAnswer }) }}
           </p>
           <button type="button" class="next-btn" @click="advanceRound">
-            {{ roundIndex + 1 >= ROUNDS_PER_LEVEL ? 'Finish' : 'Next' }}
+            {{ roundIndex + 1 >= ROUNDS_PER_LEVEL ? t('common.finish') : t('common.next') }}
           </button>
         </div>
 
@@ -381,7 +383,7 @@ onUnmounted(() => {
         :mode-options="MODE_OPTIONS"
         @select="onModeSelectorSelect"
       />
-      <nav class="skin-picker" role="navigation" aria-label="Skin selector">
+      <nav class="skin-picker" role="navigation" :aria-label="t('play.skinSelector')">
         <button
           v-for="id in SKIN_ORDER"
           :key="id"
@@ -389,8 +391,8 @@ onUnmounted(() => {
           class="skin-btn"
           :class="{ active: skin.id === id, locked: !isUnlocked(id) }"
           :disabled="!isUnlocked(id)"
-          :aria-label="isUnlocked(id) ? `Switch to ${id} skin` : `${id} locked (score ${UNLOCK_THRESHOLDS[id]} to unlock)`"
-          :title="isUnlocked(id) ? id : `Score ${UNLOCK_THRESHOLDS[id]} to unlock`"
+          :aria-label="isUnlocked(id) ? t('play.switchSkin', { id }) : t('play.skinLocked', { id, threshold: UNLOCK_THRESHOLDS[id] })"
+          :title="isUnlocked(id) ? id : t('play.scoreToUnlock', { threshold: UNLOCK_THRESHOLDS[id] })"
           @click="selectSkin(id)"
         >
           <span class="skin-label">{{ id }}</span>
@@ -399,7 +401,7 @@ onUnmounted(() => {
       </nav>
       <StatPill
         v-if="profile.activeProfile.value"
-        label="Rounds today"
+        :label="t('play.roundsToday')"
         :value="`${dailyGoal.roundsPlayed}/${dailyGoal.goalRounds}`"
       />
       <div id="game-main" tabindex="-1">
@@ -422,16 +424,16 @@ onUnmounted(() => {
 
     <footer class="privacy-footer">
       <p class="privacy-note">
-        We may use anonymous play stats to improve the game. No personal data is collected.
+        {{ t('privacy.statsNote') }}
       </p>
       <label class="opt-out">
         <input
           type="checkbox"
           :checked="telemetryOptOut"
-          aria-label="Don't share anonymous stats"
+          :aria-label="t('privacy.optOut')"
           @change="setOptOut(($event.target as HTMLInputElement).checked)"
         />
-        Don't share anonymous stats
+        {{ t('privacy.optOut') }}
       </label>
     </footer>
   </div>

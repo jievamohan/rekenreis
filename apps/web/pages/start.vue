@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+const { t } = useI18n()
 const api = useApi()
 const { data, error } = await useAsyncData('health', () => api.fetchHealth())
 </script>
 
 <template>
   <div class="start-page">
-    <h1>Start</h1>
+    <h1>{{ t('start.title') }}</h1>
     <div v-if="error" class="error" role="alert">
-      <p>Unable to connect to the API. The math game works without it—visit <NuxtLink to="/play" class="start-link">/play</NuxtLink> to play.</p>
+      <p>{{ t('start.error') }} <NuxtLink to="/play" class="start-link">/play</NuxtLink> {{ t('start.errorSuffix') }}</p>
     </div>
     <pre v-else-if="data" class="health-json">{{ JSON.stringify(data, null, 2) }}</pre>
-    <p v-else class="loading">Loading...</p>
+    <p v-else class="loading">{{ t('start.loading') }}</p>
   </div>
 </template>
 

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
 defineProps<{
   level: number
   stars: number
@@ -18,7 +21,7 @@ defineEmits<{ select: [level: number] }>()
       current,
       completed: stars > 0,
     }"
-    :aria-label="`Level ${level}${stars > 0 ? `, ${stars} star${stars > 1 ? 's' : ''}` : ''}${!unlocked ? ', locked' : ''}`"
+    :aria-label="t('map.levelLabel', { level }) + (stars > 0 ? (stars > 1 ? t('map.levelStarsPlural', { stars }) : t('map.levelStars', { stars })) : '') + (!unlocked ? t('map.levelLocked') : '')"
     :aria-disabled="!unlocked"
     :tabindex="unlocked ? 0 : -1"
     @click="unlocked && $emit('select', level)"

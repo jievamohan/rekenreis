@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import { useProgressSummary } from '~/composables/useProgressSummary'
 
+const { t } = useI18n()
 const profile = useProfile()
 const summary = useProgressSummary(profile)
 
@@ -9,9 +11,9 @@ const copyStatus = ref<'idle' | 'success' | 'error'>('idle')
 
 const modeLabel = computed(() => {
   const m = summary.favoriteMode.value
-  if (m === 'classic') return 'Classic'
-  if (m === 'timed-pop') return 'Timed Pop'
-  if (m === 'build-bridge') return 'Build Bridge'
+  if (m === 'classic') return t('modes.classic')
+  if (m === 'timed-pop') return t('modes.timedPop')
+  if (m === 'build-bridge') return t('modes.buildBridge')
   return m
 })
 
@@ -29,38 +31,38 @@ function onDownload() {
 
 <template>
   <div class="summary-page">
-    <h1>Progress Summary</h1>
-    <p class="intro">A parent-friendly overview of play progress. All data stays on this device.</p>
+    <h1>{{ t('summary.title') }}</h1>
+    <p class="intro">{{ t('summary.intro') }}</p>
 
-    <div class="metrics" role="region" aria-label="Progress metrics">
+    <div class="metrics" role="region" :aria-label="t('summary.progressMetrics')">
       <div class="metric">
-        <span class="label">Rounds today</span>
+        <span class="label">{{ t('summary.roundsToday') }}</span>
         <span class="value">{{ summary.roundsToday }}</span>
       </div>
       <div class="metric">
-        <span class="label">Total rounds</span>
+        <span class="label">{{ t('summary.totalRounds') }}</span>
         <span class="value">{{ summary.roundsTotal }}</span>
       </div>
       <div class="metric">
-        <span class="label">Accuracy</span>
+        <span class="label">{{ t('summary.accuracy') }}</span>
         <span class="value">{{ summary.accuracy }}%</span>
       </div>
       <div class="metric">
-        <span class="label">Favorite mode</span>
+        <span class="label">{{ t('summary.favoriteMode') }}</span>
         <span class="value">{{ modeLabel }}</span>
       </div>
     </div>
 
     <div class="export-actions">
       <PrimaryButton @click="onCopy">
-        {{ copyStatus === 'success' ? 'Copied!' : copyStatus === 'error' ? 'Copy failed' : 'Copy to clipboard' }}
+        {{ copyStatus === 'success' ? t('summary.copied') : copyStatus === 'error' ? t('summary.copyFailed') : t('summary.copyToClipboard') }}
       </PrimaryButton>
       <SecondaryButton @click="onDownload">
-        Save as file
+        {{ t('summary.saveAsFile') }}
       </SecondaryButton>
     </div>
 
-    <p class="privacy">Exports contain no names or IDs. Safe to share with teachers or caregivers.</p>
+    <p class="privacy">{{ t('summary.privacyNote') }}</p>
 
   </div>
 </template>

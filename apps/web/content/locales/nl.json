@@ -1,0 +1,268 @@
+{
+  "common": {
+    "next": "Volgende",
+    "finish": "Afronden",
+    "close": "Sluiten",
+    "backToMap": "← Kaart",
+    "backToMapAria": "Terug naar kaart",
+    "player": "Speler",
+    "player1": "Speler 1",
+    "answerChoices": "Antwoordkeuzes",
+    "correct": "Goed zo!",
+    "score": "Score",
+    "streak": "Reeks",
+    "upTo10": "Tot 10",
+    "upTo20": "Tot 20"
+  },
+  "nav": {
+    "map": "Kaart",
+    "stickerBook": "Stickerboek",
+    "progress": "Voortgang",
+    "settings": "Instellingen",
+    "mainNavigation": "Hoofdnavigatie"
+  },
+  "index": {
+    "welcome": "Welkom!",
+    "intro": "Klaar om te oefenen met rekenen? Kies een spel en veel plezier!",
+    "checkConnection": "Verbinding controleren",
+    "playGame": "Rekenspel starten"
+  },
+  "start": {
+    "title": "Start",
+    "error": "Kan geen verbinding maken met de server. Het rekenspel werkt ook zonder — ga naar",
+    "errorSuffix": "om te spelen.",
+    "loading": "Laden..."
+  },
+  "map": {
+    "title": "Kies een level",
+    "overallProgress": "Totale voortgang",
+    "playCurrentLevel": "Speel huidig level",
+    "playLevel": "Speel level {n}",
+    "levelMap": "Levelkaart",
+    "levelLabel": "Level {level}",
+    "levelStars": ", {stars} ster",
+    "levelStarsPlural": ", {stars} sterren",
+    "levelLocked": ", vergrendeld",
+    "avatarPosition": "Positie van {name}"
+  },
+  "play": {
+    "skipToGame": "Ga naar het spel",
+    "exitToMap": "Terug naar kaart",
+    "score": "Score",
+    "roundProgress": "Ronde-voortgang",
+    "streak": "Reeks",
+    "correct": "Goed zo!",
+    "wrong": "Niet helemaal. Het antwoord was {answer}.",
+    "notQuiteAnswer": "Niet helemaal. Het antwoord was {answer}.",
+    "roundsToday": "Rondes vandaag",
+    "skinSelector": "Skins kiezen",
+    "switchSkin": "{id}-skin gebruiken",
+    "skinLocked": "{id} vergrendeld (score {threshold} om te ontgrendelen)",
+    "scoreToUnlock": "Score {threshold} om te ontgrendelen"
+  },
+  "levelComplete": {
+    "ariaLabel": "Level voltooid",
+    "mascotAlt": "Mascotte die feest viert",
+    "title": "Level {level} voltooid!",
+    "starsAria": "{stars} van 3 sterren",
+    "perfect": "Perfect! Geweldig gedaan!",
+    "great": "Goed gedaan! Bijna perfect!",
+    "good": "Goed geprobeerd! Blijf oefenen!",
+    "backToMap": "Naar de kaart",
+    "nextLevel": "Volgend level",
+    "reviewMistakes": "Fouten bekijken"
+  },
+  "mistakesReview": {
+    "title": "Laten we deze nog eens bekijken!",
+    "subtitle": "Level {level} — {count} om te bekijken",
+    "mistakesToReview": "Fouten om te bekijken",
+    "ariaLabel": "Fouten om te bekijken",
+    "yourAnswer": "Jouw antwoord:",
+    "correctAnswer": "Goed:",
+    "retry": "Opnieuw proberen",
+    "backToMap": "Naar de kaart",
+    "toMap": "Naar de kaart"
+  },
+  "summary": {
+    "title": "Voortgangsoverzicht",
+    "intro": "Een overzicht van de speelvoortgang, speciaal voor ouders. Alle gegevens blijven op dit apparaat.",
+    "progressMetrics": "Voortgangsmetrieken",
+    "roundsToday": "Rondes vandaag",
+    "totalRounds": "Totaal rondes",
+    "accuracy": "Nauwkeurigheid",
+    "favoriteMode": "Favoriete modus",
+    "copied": "Gekopieerd!",
+    "copyFailed": "Kopiëren mislukt",
+    "copyToClipboard": "Naar klembord kopiëren",
+    "saveAsFile": "Opslaan als bestand",
+    "privacyNote": "Exports bevatten geen namen of ID's. Veilig om te delen met leerkrachten of begeleiders."
+  },
+  "stickers": {
+    "title": "Stickerboek",
+    "intro": "Speel om stickers te verzamelen! Je beste score tot nu toe: {score}.",
+    "unlocked": "{id} ontgrendeld",
+    "locked": "{id} vergrendeld (score {threshold} om te ontgrendelen)",
+    "new": "Nieuw!",
+    "categorySkins": "Skins"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "difficultyCeiling": "Moeilijkheidsgrens",
+    "upTo10": "Tot 10",
+    "upTo20": "Tot 20",
+    "showHints": "Hints tonen als je vastzit",
+    "soundEffects": "Geluidseffecten"
+  },
+  "modes": {
+    "classic": "Klassiek",
+    "timedPop": "Op tijd",
+    "buildBridge": "Brug bouwen",
+    "timesUp": "De tijd is om! Het antwoord was {answer}.",
+    "secondsRemaining": "Nog {remaining} seconden",
+    "placePlank": "Plank {choice} hier plaatsen",
+    "dropZone": "Dropzone voor antwoordplank",
+    "answerPlanks": "Antwoordplanken",
+    "plankLabel": "Plank {choice}",
+    "plankSelected": ", geselecteerd, klik op de dropzone om te plaatsen",
+    "plankDefault": ", klik om te selecteren of sleep om te plaatsen",
+    "tryAnother": "Probeer een andere! Het antwoord was {answer}."
+  },
+  "skins": {
+    "classic": "Klassiek",
+    "monsterFeed": "Monster voeren",
+    "space": "Ruimte",
+    "pirate": "Piraat",
+    "mathGame": "Rekenspel",
+    "spaceMath": "Ruimte Rekenen!",
+    "pirateMath": "Piraten Rekenen!",
+    "feedMonster": "Voed het Monster!",
+    "launchHint": "Lanceer met het juiste getal.",
+    "blastOff": "Gelanceerd! Goed zo! 🌟",
+    "timesUpTryAgain": "De tijd is om! Het antwoord was {answer}. Probeer opnieuw!",
+    "answerWasTryAgain": "Het antwoord was {answer}. Probeer opnieuw!",
+    "treasureHint": "Kies het schatnummer!",
+    "ahoyCorrect": "Ahoy! Goed zo! ⚓",
+    "timesUpArrr": "De tijd is om! Het antwoord was {answer}. Arrr!",
+    "answerWasArrr": "Het antwoord was {answer}. Arrr!",
+    "monsterHint": "Kies het juiste getal om het monster te voeren.",
+    "yumHappy": "Mjam! Het monster is blij! 🎉",
+    "oopsAnswer": "Oeps! Het antwoord was {answer}. Probeer opnieuw!"
+  },
+  "profile": {
+    "createTitle": "Profiel aanmaken",
+    "whoIsPlaying": "Wie gaat er spelen?",
+    "selectProfile": "Profiel kiezen",
+    "selectName": "{name} kiezen",
+    "addProfile": "Nieuw profiel toevoegen",
+    "addButton": "+ Toevoegen",
+    "newProfile": "Nieuw profiel",
+    "name": "Naam",
+    "profileName": "Profielnaam",
+    "chooseAvatar": "Kies een avatar",
+    "avatarLabel": "Avatar {id}",
+    "cancel": "Annuleren",
+    "create": "Aanmaken",
+    "switchProfile": "Profiel wisselen"
+  },
+  "parentGate": {
+    "ariaLabel": "Ouderverificatie",
+    "prompt": "Voor volwassenen: verifieer om instellingen te openen.",
+    "holdAriaLabel": "Houd 3 seconden vast",
+    "holdButton": "Houd 3 seconden vast",
+    "solveAriaLabel": "Los een eenvoudige som op",
+    "solveButton": "Los een eenvoudige som op",
+    "keepHolding": "Blijf vasthouden...",
+    "answerLabel": "Antwoord",
+    "tryAgain": "Probeer opnieuw.",
+    "check": "Controleer"
+  },
+  "modeSelector": {
+    "title": "Kies een spel",
+    "gameMode": "Spelmodus",
+    "selectMode": "{label}-modus kiezen",
+    "skinLabel": "Skins",
+    "theme": "Thema",
+    "selectTheme": "{id}-thema kiezen",
+    "themeLocked": "{id} vergrendeld",
+    "close": "Sluiten"
+  },
+  "keypad": {
+    "ariaLabel": "Cijfertoetsenbord",
+    "clear": "Wissen",
+    "check": "Antwoord controleren",
+    "checkAnswer": "Antwoord controleren"
+  },
+  "problemCard": {
+    "ariaLabel": "{a} plus {b} is {answer}",
+    "blank": "leeg"
+  },
+  "mapNode": {
+    "ariaLabel": "Level {level}",
+    "stars": ", {stars} ster",
+    "starsPlural": ", {stars} sterren",
+    "locked": ", vergrendeld"
+  },
+  "mapAvatar": {
+    "position": "Positie van {name}"
+  },
+  "privacy": {
+    "statsNote": "We kunnen anonieme speelstatistieken gebruiken om het spel te verbeteren. Er worden geen persoonlijke gegevens verzameld.",
+    "optOut": "Deel geen anonieme statistieken"
+  },
+  "hints": {
+    "numberLine": "Getallenlijn van 0 tot {max}: {a} plus {b} is {answer}",
+    "dots": "{a} stippen plus {b} stippen is {answer}"
+  },
+  "skinClassic": {
+    "title": "Rekenspel",
+    "ariaLabel": "{a} plus {b} is ?",
+    "answerChoices": "Antwoordkeuzes",
+    "correct": "Goed zo!",
+    "timeout": "De tijd is om! Het antwoord was {answer}.",
+    "wrong": "Niet helemaal. Het antwoord was {answer}.",
+    "next": "Volgende",
+    "score": "Score:",
+    "streak": "Reeks:",
+    "upTo10": "Tot 10",
+    "upTo20": "Tot 20"
+  },
+  "skinSpace": {
+    "title": "Ruimte Rekenen!",
+    "hint": "Lanceer met het juiste getal.",
+    "correct": "Gelanceerd! Goed zo!",
+    "timeout": "De tijd is om! Het antwoord was {answer}. Probeer opnieuw!",
+    "wrong": "Het antwoord was {answer}. Probeer opnieuw!"
+  },
+  "skinPirate": {
+    "title": "Piraten Rekenen!",
+    "hint": "Kies het schatnummer!",
+    "correct": "Ahoy! Goed zo! ⚓",
+    "timeout": "De tijd is om! Het antwoord was {answer}. Arrr!",
+    "wrong": "Het antwoord was {answer}. Arrr!"
+  },
+  "skinMonsterFeed": {
+    "title": "Voed het Monster!",
+    "hint": "Kies het juiste getal om het monster te voeren.",
+    "correct": "Mjam! Het monster is blij! 🎉",
+    "timeout": "De tijd is om! Het antwoord was {answer}. Probeer opnieuw!",
+    "wrong": "Oeps! Het antwoord was {answer}. Probeer opnieuw!"
+  },
+  "modeTimedPop": {
+    "ariaLabel": "{a} plus {b} is ?",
+    "timeRemaining": "Nog {seconds} seconden",
+    "correct": "Goed zo!",
+    "timeout": "De tijd is om! Het antwoord was {answer}.",
+    "wrong": "Niet helemaal. Het antwoord was {answer}."
+  },
+  "modeBuildBridge": {
+    "ariaLabel": "{a} plus {b} is ?",
+    "placePlank": "Plank {plank} hier plaatsen",
+    "dropZone": "Dropzone voor antwoordplank",
+    "answerPlanks": "Antwoordplanken",
+    "plankSelected": "Plank {choice}, geselecteerd, klik op de dropzone om te plaatsen",
+    "plankDefault": "Plank {choice}, klik om te selecteren of sleep om te plaatsen",
+    "correct": "Goed zo!",
+    "timeout": "De tijd is om! Het antwoord was {answer}.",
+    "wrong": "Probeer een andere! Het antwoord was {answer}."
+  }
+}
