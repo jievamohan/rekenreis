@@ -674,3 +674,262 @@ Screenshot targets:
 - Mistakes review with 2+ mistake cards
 - Map page showing completed levels with stars
 - Full app flow proof (map → play → complete → review → map)
+
+---
+
+## Epic 21.1 — i18n Foundation + Dutch UI Copy
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.1: Create Dutch i18n infrastructure and replace all English UI strings with Dutch.
+
+Requirements:
+- Create `apps/web/content/locales/nl.json` as single source of truth for all UI text (Dutch only)
+- Create `apps/web/composables/useI18n.ts` composable: `t(key, params?)` lookup with interpolation support; returns key as fallback if missing
+- Replace all hardcoded English strings across all 7 pages (index, start, map, play, summary, stickers, settings)
+- Replace all hardcoded English strings in components (AppShell, NavTabs, LevelCompleteModal, MistakesReview, ProblemCard, PlayModeSelector, ParentGate, Keypad, ProfileSelector, ProfileCreate, StatPill, GameStageCard, rewardsConfig labels)
+- Add ESLint rule or lint script: `no-hardcoded-ui-strings` that flags English literal strings in Vue templates/components
+- Tests:
+  - Unit: useI18n key resolution, interpolation, missing key fallback
+  - E2E: verify no English visible on /map, /play, /settings pages
+- Keep all existing functionality identical; only text changes
+
+Acceptance:
+- 100% of visible UI strings come from nl.json via useI18n
+- ESLint rule or lint script catches new hardcoded English strings
+- E2E confirms Dutch text on key pages
+- No English text visible anywhere in the app
+- Typecheck clean, build passes, bundle budget passes
+
+---
+
+## Epic 21.2 — Minigame Types + Serving + Difficulty Foundation
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.2: Create minigame type system, serving infrastructure, difficulty progression, and MinigameRenderer.
+
+Requirements:
+- Create `apps/web/types/minigame.ts`: MinigameId union type (6 values), MinigameDefinition interface, MinigameMap schema (direct + weighted pool entries)
+- Create `apps/web/types/difficulty.ts`: DifficultyProgression interface (math ranges per chapter + minigame params)
+- Create `apps/web/composables/useMinigame.ts`: registry (MinigameId → MinigameDefinition), resolution from map
+- Create `apps/web/composables/useMinigameServing.ts`: shuffle-bag algorithm, no-repeat window (configurable N), deterministic seed via createSeededRng
+- Create `apps/web/composables/useDifficultyProgression.ts`: compute operandMin/Max/choiceCount from chapter + minigame-specific params from level index
+- Create `apps/web/content/minigame-map.v1.json`: mapping table with entries for level ranges → minigameId or weighted pools
+- Create `apps/web/components/minigames/MinigameRenderer.vue`: dynamic component loader via defineAsyncComponent; props: question, minigameId, onAnswer, difficultyParams; handles loading/error/a11y fallback
+- Tests:
+  - Unit: useMinigameServing (deterministic seed, no-repeat, bag exhaustion/refill), useDifficultyProgression (range scaling, edge cases), mapping table validation
+  - MinigameRenderer renders fallback when component not yet available
+- Typecheck clean, build passes
+
+Acceptance:
+- All types compile cleanly
+- Same seed produces identical minigame sequence across runs
+- No-repeat window prevents consecutive same minigame
+- Difficulty scales correctly per chapter (verified by unit tests)
+- MinigameRenderer loads dynamically and shows fallback on error
+- minigame-map.v1.json validates against schema
+
+---
+
+## Epic 21.3 — First 2 Minigames (Bubble Pop + Treasure Dive)
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.3: Implement Bubble Pop (tap) and Treasure Dive (drag) minigames with SVG placeholders.
+
+Requirements:
+- Create `apps/web/components/minigames/MinigameBubblePop.vue`:
+  - Receives question (AdditionQuestion) + onAnswer callback
+  - Renders floating bubbles with numbers (correct + distractors from question.choices)
+  - Tap/click correct bubble → calls onAnswer(correctAnswer)
+  - CSS float animation (translateY); pop animation (scale+opacity)
+  - Keyboard: focusable bubbles, Enter/Space to select
+  - Reduced motion: no float, instant state change
+  - Difficulty params: bubbleCount, floatSpeed
+- Create `apps/web/components/minigames/MinigameTreasureDive.vue`:
+  - Receives question + onAnswer
+  - Renders gems/shells with numbers; drag correct one into treasure chest
+  - Drag via pointer events (touch+mouse); generous drop zone hitbox
+  - Keyboard fallback: Tab through items, Enter to select (no drag required)
+  - CSS drag feedback (scale-up 1.05), chest open/close
+  - Reduced motion: no animations, instant placement
+  - Difficulty params: gemCount
+- Create SVG placeholder assets in `assets/graphics/minigames/bubble-pop/` and `treasure-dive/`
+- Register both in useMinigame registry
+- Wire into play.vue flow via MinigameRenderer
+- Tests:
+  - Unit: both components render, accept props, call onAnswer with correct value
+  - E2E: play a round with each minigame, verify answer submission and feedback
+- Dutch labels via useI18n (from 21.1)
+
+Acceptance:
+- Bubble Pop renders bubbles, tap submits answer, feedback shows
+- Treasure Dive renders items, drag (or keyboard select) submits answer
+- Both keyboard-playable
+- Reduced motion respected
+- SVG assets < 2KB each
+- E2E passes with both minigames
+- Typecheck clean, bundle budget passes
+
+---
+
+## Epic 21.4 — Middle 2 Minigames (Fish Feed + Coral Builder)
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.4: Implement Fish Feed (timed scene) and Coral Builder (scene/tap) minigames.
+
+Requirements:
+- Create `apps/web/components/minigames/MinigameFishFeed.vue`:
+  - Receives question + onAnswer
+  - Pellets with numbers; tap correct pellet to feed fish
+  - Optional gentle timer (timerSeconds from difficulty params); timer disabled/extended under reduced motion
+  - Fish eat animation on correct; pellet bounce on wrong
+  - Keyboard: Tab through pellets, Enter to select
+  - No punitive timeout: time expires → reveal answer gently
+- Create `apps/web/components/minigames/MinigameCoralBuilder.vue`:
+  - Receives question + onAnswer
+  - Coral pieces with numbers appear; tap correct piece to attach to reef
+  - Place animation (scale bounce); wrong piece returns with gentle hint
+  - Keyboard: Tab through pieces, Enter to select
+  - Difficulty: pieceCount, pieceRevealDelay
+- Create SVG placeholder assets in `assets/graphics/minigames/fish-feed/` and `coral-builder/`
+- Register both in useMinigame registry
+- Tests:
+  - Unit: components render, timer logic (fake timers), onAnswer called correctly
+  - E2E: play round with each minigame
+- Dutch labels via useI18n
+
+Acceptance:
+- Fish Feed renders, timer works (gentle), pellet tap submits answer
+- Coral Builder renders, tap places piece, answer submits
+- Timer respects reduced motion (disabled or extended)
+- Both keyboard-playable
+- SVG assets < 2KB each
+- E2E passes
+- Typecheck clean, bundle budget passes
+
+---
+
+## Epic 21.5 — Final 2 Minigames (Submarine Sort + Starfish Match)
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.5: Implement Submarine Sort (drag) and Starfish Match (tap/timed) minigames.
+
+Requirements:
+- Create `apps/web/components/minigames/MinigameSubmarineSort.vue`:
+  - Receives question + onAnswer
+  - Submarine with compartments; drag correct item into correct compartment
+  - Keyboard fallback: select item + compartment via Tab/Enter
+  - Slide animation into slot; wrong item returns
+  - Difficulty: compartmentCount, itemCount
+- Create `apps/web/components/minigames/MinigameStarfishMatch.vue`:
+  - Receives question + onAnswer
+  - Grid of starfish pairs; tap pair whose numbers sum to correctAnswer
+  - Match glow + connection line on correct; selection clears on wrong
+  - Optional gentle timer; extended/disabled under reduced motion
+  - Keyboard: Tab through pairs, Enter to select
+  - Difficulty: pairCount, timerSeconds
+- Create SVG placeholder assets in `assets/graphics/minigames/submarine-sort/` and `starfish-match/`
+- Register both in useMinigame registry
+- Update minigame-map.v1.json: all 6 minigames now available in weighted pools
+- Tests:
+  - Unit: both components, drag/select logic, timer (fake)
+  - E2E: play round with each; verify all 6 minigames in rotation
+- Verify no-repeat window working across full 6-minigame pool
+
+Acceptance:
+- Submarine Sort renders, drag/select submits answer
+- Starfish Match renders, pair selection submits answer
+- All 6 minigames available in serving rotation
+- No-repeat window prevents immediate repetition
+- Both keyboard-playable, reduced motion respected
+- SVG assets < 2KB each
+- E2E passes with all 6 minigames
+- Typecheck clean, bundle budget passes
+
+---
+
+## Epic 21.6 — Integration, Polish & a11y Hardening
+- [ ]
+PlanRef:
+- design: docs/design/epic-21.md
+- archive: artifacts/archive/epic-21.0/latest
+- slice: 21.6
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 21.6: Full integration, accessibility audit, visual regression, and performance verification.
+
+Requirements:
+- Full flow integration: map → play (with minigame rotation) → level complete → map
+  - Verify minigame variety in a 5+ round session (≥2 distinct minigames)
+  - Verify difficulty params increase across chapters
+  - Verify Dutch copy throughout the entire flow (no English leaks)
+- Accessibility audit:
+  - Keyboard navigation through all 6 minigames
+  - Contrast check (WCAG AA) on all minigame elements
+  - Focus states visible on all interactive elements
+  - Reduced motion: verify all animations degrade (spot-check each minigame)
+- Visual regression baselines:
+  - Screenshot baseline for each of the 6 minigames (initial state)
+  - Screenshot of play page with ProblemCard + active minigame
+  - All baselines committed for CI
+- Performance:
+  - Bundle budget (Gate F) must pass
+  - Lazy-loaded minigame chunks verified (not in initial bundle)
+  - Total new SVG assets < 80KB
+- E2E:
+  - Full flow test: map → play → 5 rounds with minigame variety → level complete → map
+  - Dutch copy verification on all pages
+  - Visual regression test suite
+
+Acceptance:
+- Full map → play → minigame → complete flow works end-to-end
+- ≥2 distinct minigames appear in a 5-round session
+- All 6 minigames keyboard-playable
+- WCAG AA contrast passes
+- Reduced motion verified on all minigames
+- Visual regression baselines committed and CI passes
+- Bundle budget passes; lazy-load verified
+- No English text visible anywhere
+- All E2E tests green
