@@ -21,9 +21,9 @@ services:
       - PNPM_HOME=/pnpm
       - PNPM_STORE_PATH=/pnpm-store
     healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 3000"]
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/start', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))\""]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 24
       start_period: 10s
     depends_on:
@@ -51,11 +51,11 @@ services:
       - CACHE_STORE=array
       - QUEUE_CONNECTION=sync
     healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 8000"]
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/api/health"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 12
-      start_period: 15s
+      start_period: 20s
     depends_on:
       mysql:
         condition: service_healthy
