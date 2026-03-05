@@ -1,7 +1,25 @@
-# Epic 21.2 — Art Direction
+# Epic 21.3 — Art Direction
 
-## N/A: No Visual Assets Yet
+**Source:** docs/design/epic-21.md
 
-- **Reason:** Epic 21.2 is foundation only—types, composables, MinigameRenderer, mapping table.
-- **Impact:** None. No new SVGs, colors, or layout changes.
-- **Checks still required:** No art-direction checks for this epic.
+## Theme
+
+Underwater; extend existing app theme. Reuse `--app-primary`, `--app-secondary`, `--app-correct`, `--app-wrong`, `--app-surface`.
+
+## Placeholder SVGs
+
+- **Budget:** < 2KB each
+- **Style:** Flat SVG, chunky rounded shapes; kid-friendly
+- **Target:** Simple geometric shapes at correct dimensions for v1
+
+## Constraints
+
+- 44px tap targets minimum
+- No sharp edges, no realistic/scary imagery
+- Optional: `--app-gem` (#b39ddb) for Treasure Dive gems
+
+## Don't
+
+- Realistic imagery, flashing/flickering
+- Gradients that bloat file size
+- Tiny details

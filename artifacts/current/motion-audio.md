@@ -1,7 +1,19 @@
-# Epic 21.2 — Motion & Audio
+# Epic 21.3 — Motion & Audio
 
-## N/A: No Animations/Audio
+**Source:** docs/design/epic-21.md
 
-- **Reason:** Epic 21.2 is foundation only. MinigameRenderer is a loader; no minigame content.
-- **Impact:** None. No new animations or audio.
-- **Checks still required:** No motion-audio checks for this epic.
+## Animations
+
+- **Bubble Pop:** Float (translateY loop 2–3s), pop (scale+opacity ≤ 300ms)
+- **Treasure Dive:** Drag scale-up (1.05, ≤ 200ms), chest open/close (≤ 300ms)
+- All via CSS `@keyframes` or `transition`; no JS libraries
+
+## Reduced Motion
+
+- Under `prefers-reduced-motion: reduce`: instant state change
+- Use `@media (prefers-reduced-motion: no-preference)` or `--app-transition: 0s` override
+
+## Audio
+
+- Reuse existing: correct, wrong, celebrate SFX via `useSound`
+- No new audio files for v1

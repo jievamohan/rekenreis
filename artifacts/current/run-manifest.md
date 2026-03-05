@@ -1,9 +1,9 @@
-# Epic 21.2 — Run Manifest
+# Epic 21.3 — Run Manifest
 
-**Run:** Epic 21.2 — Minigame Types + Serving + Difficulty Foundation  
-**Branch:** feat/epic-21.2-minigame-foundation
+**Branch:** feat/epic-21.3-bubble-pop-treasure-dive  
+**Source:** docs/design/epic-21.md
 
-## Required Planning Agents
+## Required Agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
@@ -13,17 +13,11 @@
 | solution-designer | OK | solution.md |
 | qa-strategist | OK | qa.md |
 | security-privacy | OK | security-design.md |
+| art-director | OK | art-direction.md |
+| game-designer | OK | game-feel.md |
+| motion-audio-designer | OK | motion-audio.md |
+| illustrator | OK | assets.md |
 
-## Feature-Conditional Agents (N/A for 21.2)
+## Planning Phase
 
-| Agent | Status | Artifact |
-|-------|--------|----------|
-| art-director | N/A (no visual assets yet) | art-direction.md |
-| game-designer | N/A (foundation layer, no animations) | game-feel.md |
-| motion-audio-designer | N/A (no animations/audio) | motion-audio.md |
-| illustrator | N/A (no new assets) | assets.md |
-
-## Checks
-
-- All required artifacts present: YES
-- N/A artifacts include reason: YES
+All required planning artifacts produced for Epic 21.3 — First 2 Minigames (Bubble Pop + Treasure Dive).

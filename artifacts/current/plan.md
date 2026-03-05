@@ -1,32 +1,25 @@
-# Epic 21.2 — Minigame Types + Serving + Difficulty Foundation
+# Epic 21.3 — Plan
 
-**Branch:** `feat/epic-21.2-minigame-foundation`  
-**Source:** docs/design/epic-21.md (Epic 21.2 slice)
-
-## Summary
-
-Foundation layer for the 6 minigames: type system, serving logic, difficulty scaling, and MinigameRenderer. No minigame implementations yet—only the plumbing.
+**Branch:** feat/epic-21.3-bubble-pop-treasure-dive  
+**Source:** docs/design/epic-21.md
 
 ## Scope
 
-- **In:** Types (MinigameId, MinigameDefinition, MinigameMap, DifficultyProgression), composables (useMinigame, useMinigameServing, useDifficultyProgression), MinigameRenderer.vue, minigame-map.v1.json
-- **Out:** Actual minigame components (Bubble Pop, etc.), i18n, animations, new assets
+Implement the first two playable minigames:
 
-## Lanes
+- **Bubble Pop** — tap interaction; floating bubbles with numbers; tap correct answer
+- **Treasure Dive** — drag interaction; gems with numbers; drag correct gem to chest
 
-- W2: types, composables
-- W1: MinigameRenderer component
+Both receive `AdditionQuestion` + `onAnswer` from the core loop. Register in `useMinigame`, wire into `play.vue` via `MinigameRenderer`.
+
+## Out of Scope
+
+- Fish Feed, Coral Builder, Submarine Sort, Starfish Match
+- Backend changes, new APIs
+- Full asset production (placeholders only)
 
 ## Gates
 
-- C: typecheck clean
-- D: gitleaks/semgrep clean
-- F: bundle budget passes
-
-## Deliverables
-
-1. Types in `apps/web/types/minigame.ts`, `difficulty.ts`
-2. Composables in `apps/web/composables/`
-3. MinigameRenderer.vue with lazy load + Keypad fallback
-4. minigame-map.v1.json mapping table
-5. Unit tests for serving determinism, difficulty scaling, mapping validation
+- C: Typecheck clean
+- D: Security baseline (gitleaks, semgrep, audits)
+- F: Bundle budget passes

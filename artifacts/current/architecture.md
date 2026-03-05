@@ -1,31 +1,29 @@
-# Epic 21.2 — Architecture
+# Epic 21.3 — Architecture
 
-**Source:** docs/design/epic-21.md §6
+**Source:** docs/design/epic-21.md
 
-## Type System
+## Components
 
-| Type | Purpose |
-|------|---------|
-| `MinigameId` | Union: 'bubble-pop' \| 'treasure-dive' \| 'fish-feed' \| 'coral-builder' \| 'submarine-sort' \| 'starfish-match' |
-| `MinigameDefinition` | id, component, requiredAssets, difficultyKnobs, a11yFallback |
-| `MinigameMap` | version + entries (direct or weighted pool per level range) |
-| `DifficultyProgression` | math ranges per chapter + minigame params per chapter |
+- `MinigameBubblePop.vue` — receives `AdditionQuestion` + `onAnswer`
+- `MinigameTreasureDive.vue` — receives `AdditionQuestion` + `onAnswer`
+- Both registered in `useMinigame` composable
+- `MinigameRenderer` resolves component by id, passes props
 
-## Composables
+## Integration
 
-| Composable | Purpose |
-|------------|---------|
-| `useMinigame` | Registry + resolution (id → component) |
-| `useMinigameServing` | Shuffle bag, no-repeat window N=2–3, deterministic seed via createSeededRng |
-| `useDifficultyProgression` | operandMin/Max/choiceCount from chapter + minigame params |
+1. `usePlayGame` generates question (unchanged)
+2. `useMinigameServing.pick(levelId, seed)` selects minigameId
+3. `MinigameRenderer` resolves component via `useMinigame`
+4. Minigame receives `question` + `onAnswer`, calls `onAnswer(choice)` on user action
+5. `usePlayGame.selectAnswer` validates and updates score/feedback
 
-## Component
+## File Locations
 
-- **MinigameRenderer.vue:** defineAsyncComponent loader; loading/error states; a11y fallback to Keypad.
+- Components: `apps/web/components/minigames/`
+- Assets: `apps/web/assets/graphics/minigames/bubble-pop/`, `treasure-dive/`
+- Types: `apps/web/types/minigame.ts`
 
-## File Layout
+## Lazy Loading
 
-- Types: `apps/web/types/minigame.ts`, `apps/web/types/difficulty.ts`
-- Composables: `apps/web/composables/useMinigame.ts`, `useMinigameServing.ts`, `useDifficultyProgression.ts`
-- Component: `apps/web/components/minigames/MinigameRenderer.vue`
-- Content: `apps/web/content/minigame-map.v1.json`
+- Minigame components loaded via `defineAsyncComponent`
+- Chunks excluded from initial bundle

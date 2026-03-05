@@ -1,18 +1,20 @@
-# Epic 21.2 — Security Design
+# Epic 21.3 — Security Design
 
-**Source:** docs/design/epic-21.md §8
+**Source:** docs/design/epic-21.md
 
 ## N/A: Client-Side Only
 
-- **Scope:** Types, composables, MinigameRenderer, static JSON content
-- **No new API endpoints**
-- **No auth/crypto/payments**
-- **No new data collection**
+- No new API endpoints
+- No new data collection or identifiers
+- No auth, crypto, or payment changes
+- Static JSON content; no eval, no dynamic scripts
 
-## Config Constraints
+## Impact
 
-- Static JSON content files (minigame-map.v1.json); no eval, no dynamic scripts
+None. Standard Gate D checks (gitleaks, semgrep, dependency audits) sufficient.
 
-## Verdict
+## Checks Required
 
-Standard Gate D checks (gitleaks, semgrep) sufficient. No additional security artifacts required.
+- gitleaks clean
+- semgrep auto clean (or documented)
+- pnpm audit --prod clean

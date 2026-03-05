@@ -1,24 +1,18 @@
-# Epic 21.2 — Risk Assessment
+# Epic 21.3 — Risk
 
-## Risk Level: LOW
+**Source:** docs/design/epic-21.md
 
-## Lanes Touched
+## Overall: Low
 
-- W2: composables/types
-- W1: MinigameRenderer component
-- **No I/D lanes** (no infra, no DB migrations)
+- Client-side only; no backend, auth, or payment changes
+- No new data handling; localStorage unchanged
 
-## Risk Factors
+## Main Risk
 
-| Factor | Status |
-|--------|--------|
-| Auth | Not involved |
-| Crypto/payments | Not involved |
-| New dependencies | None expected |
-| Data loss | None |
-| Privacy | No new identifiers |
+**Drag interaction on touch devices** — Touch drag may behave differently than mouse drag. Mitigation: test on touch-capable devices; ensure keyboard fallback (select-from-list) works when drag is problematic.
 
-## Mitigations
+## Mitigation
 
-- Static content only; no runtime fetch of untrusted data
-- Deterministic serving aids testability and debugging
+- Keyboard fallback for Treasure Dive (Tab + Enter)
+- Reduced motion support (instant state change)
+- 44px+ tap targets for touch accessibility

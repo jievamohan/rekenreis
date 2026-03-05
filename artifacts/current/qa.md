@@ -1,21 +1,22 @@
-# Epic 21.2 — QA Strategy
+# Epic 21.3 — QA
 
-**Source:** docs/design/epic-21.md §7
+**Source:** docs/design/epic-21.md
 
 ## Unit Tests
 
-| Target | Assertions |
-|--------|------------|
-| useMinigameServing | Seed determinism (same seed → same sequence); no-repeat window N=2–3; bag exhaustion/refill |
-| useDifficultyProgression | Math ranges per chapter (ch1–3: max 10, ch4–6: max 15, ch7+: max 20); edge cases |
-| Mapping validation | All levelIds in map → valid minigameIds; resolution order correct |
+- **BubblePop:** Accepts question + onAnswer props; calls onAnswer with correct choice on tap
+- **TreasureDive:** Accepts question + onAnswer props; calls onAnswer with correct choice on drag/select
+- **useMinigame:** Resolves bubble-pop and treasure-dive to correct components
 
-## E2E (Deferred)
+## E2E (Playwright, container-only)
 
-- Epic 21.2 has no visible minigames; E2E smoke deferred to Epic 21.3+.
-- MinigameRenderer fallback path can be unit-tested or manually verified.
+- Play round with Bubble Pop: render, tap correct bubble, answer submits
+- Play round with Treasure Dive: render, drag correct gem to chest, answer submits
+- Keyboard fallback: Treasure Dive playable via Tab + Enter
+- Reduced motion: instant state change (no animation delay)
 
 ## Non-Flaky Assertions
 
+- Use `data-testid` for element presence
 - Deterministic seeds for reproducible sequences
-- Prefer data-testid, aria-label for selectors
+- Stable selectors: prefer `data-testid`, `aria-label`
