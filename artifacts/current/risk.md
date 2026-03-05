@@ -1,18 +1,8 @@
-# Epic 21.3 — Risk
+# Risk — Epic 21.4
 
-**Source:** docs/design/epic-21.md
+**Overall:** Low risk
 
-## Overall: Low
-
-- Client-side only; no backend, auth, or payment changes
-- No new data handling; localStorage unchanged
-
-## Main Risk
-
-**Drag interaction on touch devices** — Touch drag may behave differently than mouse drag. Mitigation: test on touch-capable devices; ensure keyboard fallback (select-from-list) works when drag is problematic.
-
-## Mitigation
-
-- Keyboard fallback for Treasure Dive (Tab + Enter)
-- Reduced motion support (instant state change)
-- 44px+ tap targets for touch accessibility
+- Client-side Vue components only
+- No new API, DB, auth, or payment changes
+- Static JSON content; no eval or dynamic scripts
+- Standard Gate D sufficient

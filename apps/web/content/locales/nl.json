@@ -274,5 +274,15 @@
     "gemLabel": "Edelsteen {value}",
     "chestLabel": "Schatkist",
     "chestReady": "Sleep of klik om antwoord te geven"
+  },
+  "minigameFishFeed": {
+    "ariaLabel": "Vis voeren — tik op de juiste korrel",
+    "pelletLabel": "Korrel {value}",
+    "timerLabel": "Nog {seconds} seconden"
+  },
+  "minigameCoralBuilder": {
+    "ariaLabel": "Koraal bouwen — tik op het juiste koraalstuk",
+    "pieceLabel": "Koraalstuk {value}",
+    "reefLabel": "Koraalrif"
   }
 }

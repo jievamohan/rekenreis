@@ -1,25 +1,18 @@
-# Epic 21.3 — Art Direction
+# Art Direction — Epic 21.4
 
 **Source:** docs/design/epic-21.md
 
-## Theme
+## Approach
 
-Underwater; extend existing app theme. Reuse `--app-primary`, `--app-secondary`, `--app-correct`, `--app-wrong`, `--app-surface`.
+- Placeholder SVGs for v1 (simple geometric shapes at correct dimensions)
+- Reuse design tokens: --app-primary, --app-secondary, --app-correct, --app-wrong
+- Chunky, rounded, kid-friendly; no sharp edges
+- Per SVG < 2 KB; total new assets < 80 KB
 
-## Placeholder SVGs
+## Fish Feed
 
-- **Budget:** < 2KB each
-- **Style:** Flat SVG, chunky rounded shapes; kid-friendly
-- **Target:** Simple geometric shapes at correct dimensions for v1
+- Fish silhouette, pellet shapes (circles with numbers)
 
-## Constraints
+## Coral Builder
 
-- 44px tap targets minimum
-- No sharp edges, no realistic/scary imagery
-- Optional: `--app-gem` (#b39ddb) for Treasure Dive gems
-
-## Don't
-
-- Realistic imagery, flashing/flickering
-- Gradients that bloat file size
-- Tiny details
+- Coral piece shapes (rounded, organic); reef base
