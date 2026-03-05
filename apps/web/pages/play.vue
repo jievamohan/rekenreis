@@ -25,6 +25,7 @@ import { useLevelProgress } from '~/composables/useLevelProgress'
 import { useMistakes } from '~/composables/useMistakes'
 import ProblemCard from '~/components/play/ProblemCard.vue'
 import Keypad from '~/components/play/Keypad.vue'
+import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
 import levelsClassic from '~/content/levels.classic.v1.json'
 import levelsTimedPop from '~/content/levels.timed-pop.v1.json'
 import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
@@ -91,8 +92,11 @@ const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
 const keypadRef = ref<InstanceType<typeof Keypad> | null>(null)
 const roundIndex = ref(0)
-const { record: recordMistake, clear: clearMistakes, count: mistakeCount } = useMistakes()
+const { record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
 const { completeLevel } = useLevelProgress(profile)
+const showLevelComplete = ref(false)
+const completedStars = ref(0)
+const totalLevels = levelsClassic.length
 
 const feedbackResult = computed<boolean | null>(() => {
   const fb = game.feedback.value
@@ -126,12 +130,33 @@ function advanceRound() {
   if (useKeypadMode.value && roundIndex.value >= ROUNDS_PER_LEVEL) {
     const stars = mistakeCount.value === 0 ? 3 : mistakeCount.value <= 1 ? 2 : 1
     completeLevel(levelParam.value!, stars)
-    router.push('/map')
+    completedStars.value = stars
+    showLevelComplete.value = true
+    sound.playCelebrate()
     return
   }
 
   game.nextQuestion()
   keypadRef.value?.clear()
+}
+
+function onModalNext() {
+  showLevelComplete.value = false
+  const lvl = levelParam.value!
+  if (lvl >= totalLevels) {
+    router.push('/map')
+  } else {
+    router.push({ path: '/play', query: { level: String(lvl + 1) } })
+  }
+}
+
+function onModalReviewMistakes() {
+  showLevelComplete.value = false
+  router.push('/map')
+}
+
+function onModalClose() {
+  showLevelComplete.value = false
 }
 
 const sessionStatsSent = ref(false)
@@ -341,6 +366,18 @@ onUnmounted(() => {
         <component :is="gameMode.component" v-bind="modeProps" />
       </div>
     </template>
+
+    <LevelCompleteModal
+      v-if="useKeypadMode"
+      :open="showLevelComplete"
+      :level="levelParam ?? 1"
+      :stars="completedStars"
+      :has-mistakes="hasMistakes"
+      :is-last-level="(levelParam ?? 1) >= totalLevels"
+      @next="onModalNext"
+      @review-mistakes="onModalReviewMistakes"
+      @close="onModalClose"
+    />
 
     <footer class="privacy-footer">
       <p class="privacy-note">
