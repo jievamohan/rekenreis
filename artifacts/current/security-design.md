@@ -1,20 +1,7 @@
-# Epic 21.3 — Security Design
+# Security Design — Epic 21.4
 
-**Source:** docs/design/epic-21.md
+**N/A:** Client-side only; no new API endpoints, no auth/crypto/payments.
 
-## N/A: Client-Side Only
+**Impact:** None.
 
-- No new API endpoints
-- No new data collection or identifiers
-- No auth, crypto, or payment changes
-- Static JSON content; no eval, no dynamic scripts
-
-## Impact
-
-None. Standard Gate D checks (gitleaks, semgrep, dependency audits) sufficient.
-
-## Checks Required
-
-- gitleaks clean
-- semgrep auto clean (or documented)
-- pnpm audit --prod clean
+**Checks required:** Standard Gate D (gitleaks, semgrep, dependency audit).

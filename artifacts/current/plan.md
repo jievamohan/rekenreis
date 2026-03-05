@@ -1,25 +1,19 @@
-# Epic 21.3 — Plan
+# Epic 21.4 Plan
 
-**Branch:** feat/epic-21.3-bubble-pop-treasure-dive  
-**Source:** docs/design/epic-21.md
+**Branch:** feat/epic-21.4-fish-feed-coral-builder
 
-## Scope
+**Scope:** Fish Feed + Coral Builder minigame components
 
-Implement the first two playable minigames:
+**Reference:** docs/design/epic-21.md
 
-- **Bubble Pop** — tap interaction; floating bubbles with numbers; tap correct answer
-- **Treasure Dive** — drag interaction; gems with numbers; drag correct gem to chest
+## Summary
 
-Both receive `AdditionQuestion` + `onAnswer` from the core loop. Register in `useMinigame`, wire into `play.vue` via `MinigameRenderer`.
+- Add MinigameFishFeed.vue (timed scene, tap correct pellet)
+- Add MinigameCoralBuilder.vue (scene/tap, tap coral piece to build reef)
+- Both receive AdditionQuestion + onAnswer from core loop
+- Placeholder SVGs, i18n keys, unit + E2E tests
 
-## Out of Scope
+## Acceptance
 
-- Fish Feed, Coral Builder, Submarine Sort, Starfish Match
-- Backend changes, new APIs
-- Full asset production (placeholders only)
-
-## Gates
-
-- C: Typecheck clean
-- D: Security baseline (gitleaks, semgrep, audits)
-- F: Bundle budget passes
+- Both minigames render, interact, submit answer
+- Difficulty knobs wired; a11y; reduced motion

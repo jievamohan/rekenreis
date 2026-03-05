@@ -1,29 +1,23 @@
-# Epic 21.3 — UX
+# UX — Epic 21.4
 
 **Source:** docs/design/epic-21.md
 
-## Bubble Pop
+## Fish Feed
 
-- **Pattern:** tap
-- **Mechanic:** Bubbles float up with numbers; tap the bubble showing the correct answer
-- **Targets:** All bubbles ≥ 44px; spacing ≥ 8px
-- **Keyboard:** Tab through bubbles, Enter/Space to select
+- Pellets labeled with numbers drop into scene
+- User taps correct pellet (matches answer) to feed fish
+- Timer (8–20s); pellet flow rate; max pellets visible
+- Tap targets ≥ 44px; keyboard fallback
 
-## Treasure Dive
+## Coral Builder
 
-- **Pattern:** drag
-- **Mechanic:** Gems/shells with numbers; drag the correct one into the chest
-- **Keyboard fallback:** Select-from-list (Tab + Enter/Space) when drag unavailable
-- **Targets:** Gems and chest hitbox ≥ 44px
+- Coral pieces with numbers; tap correct piece to build reef
+- Piece count (3–5); piece reveal delay
+- Scene/tap pattern (no timer)
+- Tap targets ≥ 44px; keyboard fallback
 
-## Layout
+## Shared
 
-- Minigames render within existing GameStageCard/play layout
 - ProblemCard remains canonical math display
-- Fallback: if minigame fails to load, show Keypad
-
-## Accessibility
-
-- Focus states visible on all interactive elements
-- Reduced motion: instant state change under prefers-reduced-motion
-- aria-labels on game objects; decorative SVGs aria-hidden
+- Minigame is interaction wrapper for answering
+- Fallback: Keypad if minigame fails to load

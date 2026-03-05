@@ -1,21 +1,16 @@
-# Epic 21.3 — Game Feel
+# Game Feel — Epic 21.4
 
 **Source:** docs/design/epic-21.md
 
-## Bubble Pop
+## Fish Feed
 
-- **Float animation:** Bubbles translateY loop (2–3s); linear easing
-- **Pop on tap:** Scale + opacity ≤ 300ms, ease-out
-- **Feedback:** Correct → celebrate; wrong → gentle retry/hint
+- **Pellet drop:** translateY animation (~400ms ease-out)
+- **Fish eat pulse:** scale/opacity pulse ≤ 300ms when correct pellet tapped
 
-## Treasure Dive
+## Coral Builder
 
-- **Drag scale-up:** Gem scales to 1.05 on drag start; ≤ 200ms ease-out
-- **Chest open:** Chest opens when gem enters hitbox; ≤ 300ms ease-out
-- **Feedback:** Correct → celebrate; wrong → gentle retry/hint
+- **Piece place bounce:** scale bounce when piece placed on reef (≤ 300ms cubic-bezier)
 
-## General
+## Feedback
 
-- No punitive fail states
-- Hints always available
-- CSS-only; no JS animation libraries
+- Reuse correct/wrong/celebrate SFX via useSound

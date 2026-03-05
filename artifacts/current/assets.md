@@ -1,20 +1,13 @@
-# Epic 21.3 — Assets
+# Assets — Epic 21.4
 
 **Source:** docs/design/epic-21.md
 
-## Locations
+## Directories
 
-- `apps/web/assets/graphics/minigames/bubble-pop/`
-- `apps/web/assets/graphics/minigames/treasure-dive/`
+- `apps/web/assets/graphics/minigames/fish-feed/` — fish, pellets
+- `apps/web/assets/graphics/minigames/coral-builder/` — coral pieces, reef base
 
-## Placeholder SVGs
+## Format
 
-- **Bubble Pop:** Bubble shapes (circles); simple, < 2KB each
-- **Treasure Dive:** Gem shapes, chest; simple geometric, < 2KB each
-- **Budget:** Total < 40KB for both minigames
-
-## Style
-
-- Flat SVG, chunky rounded
-- Underwater themed
-- Consistent with existing assets/graphics/
+- Flat SVG; per file < 2 KB
+- Placeholder geometric shapes acceptable for v1

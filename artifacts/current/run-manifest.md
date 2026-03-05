@@ -1,7 +1,6 @@
-# Epic 21.3 — Run Manifest
+# Run Manifest — Epic 21.4
 
-**Branch:** feat/epic-21.3-bubble-pop-treasure-dive  
-**Source:** docs/design/epic-21.md
+**Run ID:** epic-21.4-planning
 
 ## Required Agents
 
@@ -17,7 +16,3 @@
 | game-designer | OK | game-feel.md |
 | motion-audio-designer | OK | motion-audio.md |
 | illustrator | OK | assets.md |
-
-## Planning Phase
-
-All required planning artifacts produced for Epic 21.3 — First 2 Minigames (Bubble Pop + Treasure Dive).

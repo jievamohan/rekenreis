@@ -1,26 +1,21 @@
-# Epic 21.3 — Discovery
+# Discovery — Epic 21.4
 
 **Source:** docs/design/epic-21.md
 
-## Business Context
+## Business Need
 
-- **Target:** Kleuters (4–6), parents, educators (NL/Flanders)
-- **Goal:** First playable minigames to sustain engagement through varied interaction patterns
+Add two middle minigames to Epic 21:
 
-## Value Proposition
+1. **Fish Feed** — timed scene pattern; pellets with numbers; tap correct pellet to feed fish
+2. **Coral Builder** — scene/tap pattern; coral pieces with numbers; tap correct piece to build reef
 
-1. **First playable minigames** — Bubble Pop and Treasure Dive are the first two of six planned minigames
-2. **Visual variety in sessions** — Players experience tap vs drag mechanics; underwater theme
-3. **Safe, positive practice** — No punitive fail states; gentle retry/hint on wrong answer
+## Context
 
-## Success Criteria
+- Target: Kleuters (4–6), Netherlands/Flanders
+- All minigames are interaction wrappers: AdditionQuestion + onAnswer
+- No duplicated math logic; core loop unchanged
 
-- A play session cycles through Bubble Pop and Treasure Dive automatically
-- Every visible string in Dutch
-- Difficulty gently ramps; no game-over on wrong answer
+## Impact
 
-## Non-Goals
-
-- All 6 minigames at once
-- Backend changes, monetization
-- i18n beyond Dutch
+- Sustains engagement through varied interaction (timed vs scene/tap)
+- Safe, positive math practice; Dutch only
