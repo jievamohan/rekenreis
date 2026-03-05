@@ -1,18 +1,9 @@
-# Art Direction — Epic 21.4
+# Epic 21.5 Art Direction
 
-**Source:** docs/design/epic-21.md
+**Placeholder SVGs:** Simple geometric shapes at correct dimensions for v1.
 
-## Approach
+**Submarine Sort:** Submarine body, compartments, items (e.g. shells/pearls with number labels).
 
-- Placeholder SVGs for v1 (simple geometric shapes at correct dimensions)
-- Reuse design tokens: --app-primary, --app-secondary, --app-correct, --app-wrong
-- Chunky, rounded, kid-friendly; no sharp edges
-- Per SVG < 2 KB; total new assets < 80 KB
+**Starfish Match:** Starfish shapes with number labels; chunky, rounded, kid-friendly.
 
-## Fish Feed
-
-- Fish silhouette, pellet shapes (circles with numbers)
-
-## Coral Builder
-
-- Coral piece shapes (rounded, organic); reef base
+**Constraints:** < 2 KB per SVG; reuse --app-primary, --app-secondary, --app-correct. 44px tap targets.

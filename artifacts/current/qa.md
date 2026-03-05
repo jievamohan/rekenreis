@@ -1,19 +1,13 @@
-# QA — Epic 21.4
+# Epic 21.5 QA
 
-**Source:** docs/design/epic-21.md
+**Unit tests:**
+- SubmarineSort: renders, drag/select submits answer, keyboard fallback
+- StarfishMatch: renders, tap pair submits answer, timer behavior
+- Map validation: submarine-sort, starfish-match resolve in serving
 
-## Unit Tests
+**E2E (docker compose run --rm e2e):**
+- Smoke: both minigames render, interaction works, answer submits
+- Flow: play session cycles through all 6 minigames
+- Reduced motion: animations collapse
 
-- Timer logic (Fish Feed): countdown, expiry, reduced-motion behavior
-- Component rendering: both minigames mount with question + onAnswer
-- Answer submission: correct/incorrect feedback
-
-## E2E (Playwright, container-only)
-
-- Smoke: Fish Feed and Coral Builder render, interaction works, answer submits
-- Flow: map → play → minigame → complete
-
-## Non-flaky
-
-- data-testid for element presence
-- Deterministic seeds for reproducible sequences
+**Non-flaky:** data-testid, deterministic seeds, aria-label selectors.

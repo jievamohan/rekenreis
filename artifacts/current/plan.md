@@ -1,19 +1,12 @@
-# Epic 21.4 Plan
+# Epic 21.5 Plan
 
-**Branch:** feat/epic-21.4-fish-feed-coral-builder
+**Branch:** feat/epic-21.5-submarine-sort-starfish-match
 
-**Scope:** Fish Feed + Coral Builder minigame components
+**Scope:**
+- Submarine Sort minigame (drag item to compartment)
+- Starfish Match minigame (tap pairs)
+- Update minigame-map to include both in serving rotation
 
-**Reference:** docs/design/epic-21.md
+**Reference:** docs/design/epic-21.md (Epic 21.5 slice)
 
-## Summary
-
-- Add MinigameFishFeed.vue (timed scene, tap correct pellet)
-- Add MinigameCoralBuilder.vue (scene/tap, tap coral piece to build reef)
-- Both receive AdditionQuestion + onAnswer from core loop
-- Placeholder SVGs, i18n keys, unit + E2E tests
-
-## Acceptance
-
-- Both minigames render, interact, submit answer
-- Difficulty knobs wired; a11y; reduced motion
+**Out of scope:** i18n beyond existing nl.json keys, backend changes, new math operators

@@ -1,21 +1,11 @@
-# Discovery — Epic 21.4
+# Epic 21.5 Discovery
 
-**Source:** docs/design/epic-21.md
+**Context:** Epic 21 delivers 6 minigames for kleuters (4–6). Epics 21.3 and 21.4 delivered 4 minigames (Bubble Pop, Treasure Dive, Fish Feed, Coral Builder).
 
-## Business Need
+**Epic 21.5 completes the 6-minigame set:**
+- Submarine Sort (#5): drag items with numbers into compartments
+- Starfish Match (#6): tap pairs whose numbers sum to answer
 
-Add two middle minigames to Epic 21:
+**User need:** Varied interaction patterns sustain engagement. Final 2 minigames close the loop.
 
-1. **Fish Feed** — timed scene pattern; pellets with numbers; tap correct pellet to feed fish
-2. **Coral Builder** — scene/tap pattern; coral pieces with numbers; tap correct piece to build reef
-
-## Context
-
-- Target: Kleuters (4–6), Netherlands/Flanders
-- All minigames are interaction wrappers: AdditionQuestion + onAnswer
-- No duplicated math logic; core loop unchanged
-
-## Impact
-
-- Sustains engagement through varied interaction (timed vs scene/tap)
-- Safe, positive math practice; Dutch only
+**Acceptance:** All 6 minigames in serving rotation; no-repeat window working; full variety in play sessions.

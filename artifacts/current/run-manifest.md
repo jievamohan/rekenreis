@@ -1,18 +1,17 @@
-# Run Manifest — Epic 21.4
+# Epic 21.5 Run Manifest
 
-**Run ID:** epic-21.4-planning
+**Run ID:** epic-21.5-planning
 
-## Required Agents
+**Required agents:**
+- business-analyst → discovery.md ✓
+- ux-designer → ux.md ✓
+- principal-architect → architecture.md ✓
+- solution-designer → solution.md ✓
+- qa-strategist → qa.md ✓
+- security-privacy → security-design.md ✓
+- art-director → art-direction.md ✓
+- game-designer → game-feel.md ✓
+- motion-audio-designer → motion-audio.md ✓
+- illustrator → assets.md ✓
 
-| Agent | Status | Artifact |
-|-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
-| art-director | OK | art-direction.md |
-| game-designer | OK | game-feel.md |
-| motion-audio-designer | OK | motion-audio.md |
-| illustrator | OK | assets.md |
+**Status:** All artifacts produced.

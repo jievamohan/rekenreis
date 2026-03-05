@@ -1,19 +1,14 @@
-# Architecture — Epic 21.4
+# Epic 21.5 Architecture
 
-**Source:** docs/design/epic-21.md
+**Pattern:** Two Vue components reusing existing minigame pattern.
 
-## Components
+**Components:**
+- `MinigameSubmarineSort.vue` — receives `question` + `onAnswer`, drag-to-compartment
+- `MinigameStarfishMatch.vue` — receives `question` + `onAnswer`, tap pairs
 
-- `MinigameFishFeed.vue` — timed scene, pellet tap
-- `MinigameCoralBuilder.vue` — scene/tap, coral piece tap
+**Integration:**
+- `useMinigame` registry: add `submarine-sort`, `starfish-match`
+- `MinigameRenderer` lazy-loads via `defineAsyncComponent`
+- `minigame-map.v1.json`: add entries for both minigameIds
 
-## Pattern
-
-- Reuse AdditionQuestion + onAnswer pattern (same as Bubble Pop, Treasure Dive)
-- MinigameRenderer resolves component via useMinigame
-- Minigame receives question + onAnswer, calls onAnswer(choice) on user action
-
-## Location
-
-- `apps/web/components/minigames/`
-- Assets: `apps/web/assets/graphics/minigames/fish-feed/`, `coral-builder/`
+**No new composables.** Reuse `useMinigame`, `useMinigameServing`, `useDifficultyProgression`, `useI18n`.

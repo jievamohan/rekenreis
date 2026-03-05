@@ -1,19 +1,10 @@
-# Motion & Audio — Epic 21.4
+# Epic 21.5 Motion & Audio
 
-**Source:** docs/design/epic-21.md
+**Animations:** CSS transitions only (no JS libraries).
 
-## Animations
+- Submarine Sort: item slide to slot (≤ 300ms ease-out)
+- Starfish Match: match glow (≤ 300ms ease-out), connection line (≤ 400ms)
 
-- CSS transitions only; no JS animation libraries
-- Fish Feed: pellet drop translateY, eat pulse
-- Coral Builder: piece place scale bounce
+**Reduced motion:** Collapse to instant under prefers-reduced-motion: reduce.
 
-## Reduced Motion
-
-- All animations collapse to instant under `prefers-reduced-motion: reduce`
-- Use @media (prefers-reduced-motion: no-preference) or --app-transition: 0s override
-
-## Audio
-
-- Reuse existing correct, wrong, celebrate SFX via useSound
-- No new audio files required
+**Audio:** Reuse existing correct/wrong/celebrate via useSound. No new audio files.
