@@ -62,7 +62,6 @@ function onDownload() {
 
     <p class="privacy">Exports contain no names or IDs. Safe to share with teachers or caregivers.</p>
 
-    <NuxtLink to="/play" class="back">Back to game</NuxtLink>
   </div>
 </template>
 
@@ -112,19 +111,5 @@ h1 {
   font-size: 0.8rem;
   color: var(--app-text-muted);
   margin-bottom: var(--app-space-md);
-}
-.back {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--app-tap-min);
-  padding: var(--app-space-sm) var(--app-space-md);
-  font-family: var(--app-font);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-primary);
-  text-decoration: none;
-}
-.back:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
 }
 </style>

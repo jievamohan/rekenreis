@@ -19,3 +19,9 @@ Final polish pass: fix WCAG AA contrast, add missing focus-visible states, verif
 - Branch: feat/epic-19.5-polish-a11y
 - PR: #47
 - URL: https://github.com/jievamohan/rekenreis/pull/47
+
+## PR Metadata
+- Base: main
+- Branch: feat/epic-21-app-shell-flow
+- PR: #54
+- URL: https://github.com/jievamohan/rekenreis/pull/54

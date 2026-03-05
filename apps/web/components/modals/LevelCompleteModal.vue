@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
+  backToMap: []
   next: []
   reviewMistakes: []
   close: []
@@ -111,8 +112,16 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <p class="modal-message">{{ MESSAGES[stars] ?? MESSAGES[1] }}</p>
 
           <div class="modal-actions">
-            <button type="button" class="cta-primary" @click="emit('next')">
-              {{ isLastLevel ? 'Back to Map' : 'Next Level' }}
+            <button type="button" class="cta-primary" @click="emit('backToMap')">
+              Back to Map
+            </button>
+            <button
+              v-if="!isLastLevel"
+              type="button"
+              class="cta-secondary"
+              @click="emit('next')"
+            >
+              Next Level
             </button>
             <button
               v-if="hasMistakes"

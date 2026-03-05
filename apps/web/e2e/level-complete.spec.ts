@@ -51,7 +51,7 @@ test.describe('level complete modal', () => {
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible()
-    await page.locator('.cta-primary').click()
+    await page.getByRole('button', { name: 'Next Level' }).click()
 
     await expect(page).toHaveURL(/level=2/)
   })

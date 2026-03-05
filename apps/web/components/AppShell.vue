@@ -5,11 +5,14 @@ import { useAppShell } from '~/composables/useAppShell'
 import ProfileSelector from '~/components/ProfileSelector.vue'
 import bubblePattern from '~/assets/graphics/backgrounds/bubble-pattern.svg'
 import waveOverlay from '~/assets/graphics/backgrounds/wave-overlay.svg'
+
 const profile = useProfile()
 const { getChooseGameHandler } = useAppShell()
 const router = useRouter()
 const route = useRoute()
 const showProfileSelector = ref(false)
+
+const canGoBackToMap = computed(() => route.path !== '/map')
 
 defineProps<{ noCard?: boolean }>()
 
@@ -20,6 +23,8 @@ const navItems = [
   { to: '/settings', label: 'Settings', icon: 'gear-coral' },
 ]
 
+const hasChooseGameHandler = computed(() => !!getChooseGameHandler())
+
 function onChooseGame() {
   const handler = getChooseGameHandler()
   if (handler) {
@@ -27,6 +32,10 @@ function onChooseGame() {
   } else {
     router.push('/play')
   }
+}
+
+function goToMap() {
+  router.push('/map')
 }
 
 function onProfileSwitch(id: string) {
@@ -53,14 +62,26 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
       >
         {{ profile.activeProfile.value?.name ?? 'Player 1' }}
       </button>
-      <button
-        type="button"
-        class="choose-game-btn"
-        aria-label="Choose game"
-        @click="onChooseGame"
-      >
-        Choose game
-      </button>
+      <div class="top-bar-actions">
+        <button
+          v-if="canGoBackToMap"
+          type="button"
+          class="back-to-map-btn"
+          aria-label="Back to Map"
+          @click="goToMap"
+        >
+          ← Map
+        </button>
+        <button
+          v-if="hasChooseGameHandler"
+          type="button"
+          class="choose-game-btn"
+          aria-label="Choose game"
+          @click="onChooseGame"
+        >
+          Choose game
+        </button>
+      </div>
     </header>
 
     <div v-if="showProfileSelector" class="profile-overlay">
@@ -161,6 +182,37 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
 }
 
 .profile-pill:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-sm);
+}
+
+.back-to-map-btn {
+  min-height: var(--app-tap-min);
+  min-width: var(--app-tap-min);
+  padding: var(--app-space-sm) var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-base);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-primary);
+  background: var(--app-surface);
+  border: 2px solid var(--app-primary);
+  border-radius: var(--app-radius-md);
+  box-shadow: var(--app-shadow-sm);
+  cursor: pointer;
+  transition: background var(--app-transition);
+}
+
+.back-to-map-btn:hover {
+  background: rgba(0, 188, 212, 0.15);
+}
+
+.back-to-map-btn:focus-visible {
   outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }

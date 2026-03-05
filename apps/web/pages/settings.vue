@@ -66,8 +66,6 @@ onMounted(() => {
         <span>Sound effects</span>
       </label>
     </div>
-    <NuxtLink to="/summary" class="back">Progress summary</NuxtLink>
-    <NuxtLink to="/play" class="back">Back to game</NuxtLink>
   </div>
 </template>
 
@@ -102,22 +100,6 @@ h1 {
 }
 .field select:focus-visible,
 .field input:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
-}
-.back {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--app-tap-min);
-  padding: var(--app-space-sm) var(--app-space-md);
-  margin-top: var(--app-space-md);
-  margin-right: var(--app-space-sm);
-  font-family: var(--app-font);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-primary);
-  text-decoration: none;
-}
-.back:focus-visible {
   outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
