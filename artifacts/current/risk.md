@@ -1,15 +1,24 @@
-# Risk — Epic 21.1: i18n Foundation + Dutch UI Copy
+# Epic 21.2 — Risk Assessment
 
-## Risk Assessment: LOW
+## Risk Level: LOW
 
-| Risk | Level | Mitigation |
-|------|-------|------------|
-| Missing strings | LOW | E2E Dutch check + lint script |
-| Breaking existing tests | LOW | Update assertions from English to Dutch |
-| Bundle size | NEGLIGIBLE | Single JSON file, ~5KB |
+## Lanes Touched
 
-## High-Risk Flags
-- auth/permissions/crypto/payments: NOT INVOLVED
-- deps changes: NONE
-- docker/CI changes: NONE
-- db migrations: NONE
+- W2: composables/types
+- W1: MinigameRenderer component
+- **No I/D lanes** (no infra, no DB migrations)
+
+## Risk Factors
+
+| Factor | Status |
+|--------|--------|
+| Auth | Not involved |
+| Crypto/payments | Not involved |
+| New dependencies | None expected |
+| Data loss | None |
+| Privacy | No new identifiers |
+
+## Mitigations
+
+- Static content only; no runtime fetch of untrusted data
+- Deterministic serving aids testability and debugging

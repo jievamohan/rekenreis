@@ -1,5 +1,7 @@
-# Art Direction — Epic 21.1
+# Epic 21.2 — Art Direction
 
-N/A: No UI/visual/look-and-feel changes in this slice (text-only changes).
-Impact: none
-Checks still required: no
+## N/A: No Visual Assets Yet
+
+- **Reason:** Epic 21.2 is foundation only—types, composables, MinigameRenderer, mapping table.
+- **Impact:** None. No new SVGs, colors, or layout changes.
+- **Checks still required:** No art-direction checks for this epic.

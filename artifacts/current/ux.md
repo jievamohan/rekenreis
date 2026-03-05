@@ -1,7 +1,30 @@
-# UX — Epic 21.1
+# Epic 21.2 — UX Notes
 
-**PlanRef:** artifacts/archive/epic-21.0/latest/ux.md
-**Slice:** 21.1 — i18n Foundation + Dutch UI Copy
+**Source:** docs/design/epic-21.md §3
 
-No UX layout changes. Text-only replacement: all visible English → Dutch via useI18n composable.
-Navigation labels, feedback messages, aria-labels all translated.
+## UI Component: MinigameRenderer
+
+- **Single new UI surface:** MinigameRenderer.vue
+- **Placement:** Renders within existing play page (GameStageCard/play layout)
+- **Role:** Dynamic component loader (lazy via defineAsyncComponent)
+
+## Flow
+
+```
+Map → Play → [ProblemCard] → [Minigame Scene] → [Answer] → Feedback → Next
+```
+
+- ProblemCard remains canonical math display.
+- Minigame is the interaction wrapper for answering.
+- **Fallback:** If minigame fails to load → show Keypad.
+
+## UX Constraints (from design)
+
+- Tap targets ≥ 44px (deferred to minigame implementations).
+- Keyboard: Tab, Enter/Space, arrow keys (deferred).
+- No user choice of minigame—system auto-selects via mapping + serving.
+
+## Epic 21.2 Scope
+
+- MinigameRenderer: loading state, error state, a11y fallback to Keypad.
+- No minigame visuals yet—foundation only.

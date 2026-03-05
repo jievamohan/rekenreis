@@ -1,10 +1,31 @@
-# Architecture — Epic 21.1
+# Epic 21.2 — Architecture
 
-**PlanRef:** artifacts/archive/epic-21.0/latest/architecture.md
-**Slice:** 21.1 — i18n Foundation + Dutch UI Copy
+**Source:** docs/design/epic-21.md §6
 
-Architecture:
-- apps/web/content/locales/nl.json: flat/nested key-value for all UI strings
-- apps/web/composables/useI18n.ts: t(key, params?) composable, static import, fallback to key
-- No vue-i18n dependency; custom composable sufficient for single locale
-- ESLint custom rule or script for no-hardcoded English in templates
+## Type System
+
+| Type | Purpose |
+|------|---------|
+| `MinigameId` | Union: 'bubble-pop' \| 'treasure-dive' \| 'fish-feed' \| 'coral-builder' \| 'submarine-sort' \| 'starfish-match' |
+| `MinigameDefinition` | id, component, requiredAssets, difficultyKnobs, a11yFallback |
+| `MinigameMap` | version + entries (direct or weighted pool per level range) |
+| `DifficultyProgression` | math ranges per chapter + minigame params per chapter |
+
+## Composables
+
+| Composable | Purpose |
+|------------|---------|
+| `useMinigame` | Registry + resolution (id → component) |
+| `useMinigameServing` | Shuffle bag, no-repeat window N=2–3, deterministic seed via createSeededRng |
+| `useDifficultyProgression` | operandMin/Max/choiceCount from chapter + minigame params |
+
+## Component
+
+- **MinigameRenderer.vue:** defineAsyncComponent loader; loading/error states; a11y fallback to Keypad.
+
+## File Layout
+
+- Types: `apps/web/types/minigame.ts`, `apps/web/types/difficulty.ts`
+- Composables: `apps/web/composables/useMinigame.ts`, `useMinigameServing.ts`, `useDifficultyProgression.ts`
+- Component: `apps/web/components/minigames/MinigameRenderer.vue`
+- Content: `apps/web/content/minigame-map.v1.json`
