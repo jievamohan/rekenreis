@@ -48,6 +48,27 @@
   --app-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --app-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
 
+  /* Map — level path & nodes */
+  --app-map-path: rgba(178, 223, 219, 0.85);
+  --app-map-path-edge: #80cbc4;
+  --app-node-unlocked: #fff8e1;
+  --app-node-locked: rgba(178, 223, 219, 0.5);
+
+  /* Keypad */
+  --app-keypad-key: var(--app-surface);
+  --app-keypad-key-active: var(--app-primary);
+
+  /* Typography — screen-specific sizes */
+  --app-font-size-problem: 2.5rem;
+  --app-font-size-keypad: 1.75rem;
+  --app-font-size-cta: 1.5rem;
+
+  /* Easing — motion presets */
+  --app-ease-micro: 0.1s ease-out;
+  --app-ease-enter: 0.25s ease-out;
+  --app-ease-celebrate: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --app-ease-loop: 1.5s ease-in-out;
+
   /* Reduced motion */
   --app-transition: 0.2s ease;
 }

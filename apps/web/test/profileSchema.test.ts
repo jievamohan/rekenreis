@@ -50,7 +50,7 @@ describe('profileSchema', () => {
     expect(result.profiles[0].progress.bestScore).toBe(7)
   })
 
-  it('loads valid v1 schema', () => {
+  it('loads valid v1 schema and migrates level progress fields', () => {
     const profile = createDefaultProfile()
     const data: ProfileSchemaV1 = {
       version: 1,
@@ -61,7 +61,11 @@ describe('profileSchema', () => {
       key === STORAGE_KEY ? JSON.stringify(data) : null
     )
     const result = loadProfiles()
-    expect(result).toEqual(data)
+    expect(result.version).toBe(1)
+    expect(result.activeProfileId).toBe(profile.id)
+    expect(result.profiles).toHaveLength(1)
+    expect(result.profiles[0].progress.currentLevel).toBe(1)
+    expect(result.profiles[0].progress.levelProgress).toEqual({})
   })
 
   it('saveProfiles writes to localStorage', () => {
