@@ -634,7 +634,8 @@ Screenshot targets:
 ---
 
 ## Epic 20.5 — Mistakes Review + Polish
-- [ ]
+- [x]
+Merged: PR #53
 PlanRef:
 - design: docs/design/epic-20.md
 - archive: artifacts/archive/epic-20.0/latest
