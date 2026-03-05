@@ -26,6 +26,7 @@ import { useMistakes } from '~/composables/useMistakes'
 import ProblemCard from '~/components/play/ProblemCard.vue'
 import Keypad from '~/components/play/Keypad.vue'
 import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
+import MistakesReview from '~/components/review/MistakesReview.vue'
 import levelsClassic from '~/content/levels.classic.v1.json'
 import levelsTimedPop from '~/content/levels.timed-pop.v1.json'
 import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
@@ -92,9 +93,10 @@ const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
 const keypadRef = ref<InstanceType<typeof Keypad> | null>(null)
 const roundIndex = ref(0)
-const { record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
+const { mistakes, record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
 const { completeLevel } = useLevelProgress(profile)
 const showLevelComplete = ref(false)
+const showReview = ref(false)
 const completedStars = ref(0)
 const totalLevels = levelsClassic.length
 
@@ -152,6 +154,19 @@ function onModalNext() {
 
 function onModalReviewMistakes() {
   showLevelComplete.value = false
+  showReview.value = true
+}
+
+function onRetryLevel() {
+  showReview.value = false
+  clearMistakes()
+  roundIndex.value = 0
+  game.nextQuestion()
+  keypadRef.value?.clear()
+}
+
+function onBackToMap() {
+  showReview.value = false
   router.push('/map')
 }
 
@@ -288,8 +303,18 @@ onUnmounted(() => {
   <div class="play-page">
     <a href="#game-main" class="skip-link">Skip to game</a>
 
+    <!-- Mistakes review -->
+    <template v-if="useKeypadMode && showReview">
+      <MistakesReview
+        :mistakes="[...mistakes]"
+        :level="levelParam ?? 1"
+        @retry="onRetryLevel"
+        @back-to-map="onBackToMap"
+      />
+    </template>
+
     <!-- Keypad mode: ProblemCard + Keypad -->
-    <template v-if="useKeypadMode && game.question.value">
+    <template v-else-if="useKeypadMode && game.question.value">
       <div class="play-header">
         <StatPill label="Score" :value="game.score.value" />
         <span class="progress-indicator" role="status" aria-label="Round progress">
