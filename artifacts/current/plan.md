@@ -1,22 +1,32 @@
-# Plan — Epic 21.1: i18n Foundation + Dutch UI Copy
+# Epic 21.2 — Minigame Types + Serving + Difficulty Foundation
 
-Branch: `feat/epic-21.1-i18n-dutch-ui`
-PlanRef: docs/design/epic-21.md (Section 6: i18n architecture, Section 9: Slice Map 21.1)
+**Branch:** `feat/epic-21.2-minigame-foundation`  
+**Source:** docs/design/epic-21.md (Epic 21.2 slice)
 
-## Objective
-Replace all hardcoded English UI strings with Dutch via a new `useI18n` composable and `nl.json` locale file.
+## Summary
+
+Foundation layer for the 6 minigames: type system, serving logic, difficulty scaling, and MinigameRenderer. No minigame implementations yet—only the plumbing.
 
 ## Scope
-- Create `apps/web/content/locales/nl.json` (single source of truth)
-- Create `apps/web/composables/useI18n.ts` (`t(key, params?)` with interpolation)
-- Replace English strings in all 7 pages and ~20+ components
-- Add ESLint rule / lint script for `no-hardcoded-ui-strings`
-- Unit tests for useI18n; E2E for Dutch text verification
-- Keep all functionality identical; only text changes
 
-## Tasks (max 5)
-1. i18n foundation (composable + nl.json + unit tests)
-2. Dutch strings in pages (all 7 pages)
-3. Dutch strings in components batch 1 (shell, nav, modals, forms, play)
-4. Dutch strings in components batch 2 (skins, modes, hints, map, config)
-5. ESLint lint script + E2E Dutch verification + final typecheck
+- **In:** Types (MinigameId, MinigameDefinition, MinigameMap, DifficultyProgression), composables (useMinigame, useMinigameServing, useDifficultyProgression), MinigameRenderer.vue, minigame-map.v1.json
+- **Out:** Actual minigame components (Bubble Pop, etc.), i18n, animations, new assets
+
+## Lanes
+
+- W2: types, composables
+- W1: MinigameRenderer component
+
+## Gates
+
+- C: typecheck clean
+- D: gitleaks/semgrep clean
+- F: bundle budget passes
+
+## Deliverables
+
+1. Types in `apps/web/types/minigame.ts`, `difficulty.ts`
+2. Composables in `apps/web/composables/`
+3. MinigameRenderer.vue with lazy load + Keypad fallback
+4. minigame-map.v1.json mapping table
+5. Unit tests for serving determinism, difficulty scaling, mapping validation

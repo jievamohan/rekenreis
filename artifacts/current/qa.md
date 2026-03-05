@@ -1,10 +1,21 @@
-# QA — Epic 21.1
+# Epic 21.2 — QA Strategy
 
-**PlanRef:** artifacts/archive/epic-21.0/latest/qa.md
-**Slice:** 21.1 — i18n Foundation + Dutch UI Copy
+**Source:** docs/design/epic-21.md §7
 
-Testing:
-- Unit: useI18n key resolution, interpolation with params, missing key fallback
-- E2E: verify Dutch text on /map, /play, /settings (no English visible)
-- Lint gate: verify script catches hardcoded English in templates
-- Regression: existing Playwright smoke tests must still pass (text selectors may need updating)
+## Unit Tests
+
+| Target | Assertions |
+|--------|------------|
+| useMinigameServing | Seed determinism (same seed → same sequence); no-repeat window N=2–3; bag exhaustion/refill |
+| useDifficultyProgression | Math ranges per chapter (ch1–3: max 10, ch4–6: max 15, ch7+: max 20); edge cases |
+| Mapping validation | All levelIds in map → valid minigameIds; resolution order correct |
+
+## E2E (Deferred)
+
+- Epic 21.2 has no visible minigames; E2E smoke deferred to Epic 21.3+.
+- MinigameRenderer fallback path can be unit-tested or manually verified.
+
+## Non-Flaky Assertions
+
+- Deterministic seeds for reproducible sequences
+- Prefer data-testid, aria-label for selectors

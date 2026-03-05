@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "defaultEntry": {
+    "type": "weighted",
+    "pool": [
+      { "minigameId": "bubble-pop", "weight": 2 },
+      { "minigameId": "treasure-dive", "weight": 2 },
+      { "minigameId": "fish-feed", "weight": 1 },
+      { "minigameId": "coral-builder", "weight": 1 },
+      { "minigameId": "submarine-sort", "weight": 1 },
+      { "minigameId": "starfish-match", "weight": 1 }
+    ]
+  },
+  "rules": [
+    {
+      "levelMin": 1,
+      "levelMax": 5,
+      "entry": {
+        "type": "weighted",
+        "pool": [
+          { "minigameId": "bubble-pop", "weight": 3 },
+          { "minigameId": "treasure-dive", "weight": 2 }
+        ]
+      }
+    },
+    {
+      "levelMin": 6,
+      "levelMax": 12,
+      "entry": {
+        "type": "weighted",
+        "pool": [
+          { "minigameId": "bubble-pop", "weight": 2 },
+          { "minigameId": "treasure-dive", "weight": 2 },
+          { "minigameId": "fish-feed", "weight": 2 },
+          { "minigameId": "coral-builder", "weight": 2 }
+        ]
+      }
+    },
+    {
+      "levelMin": 13,
+      "levelMax": 999,
+      "entry": {
+        "type": "weighted",
+        "pool": [
+          { "minigameId": "bubble-pop", "weight": 2 },
+          { "minigameId": "treasure-dive", "weight": 2 },
+          { "minigameId": "fish-feed", "weight": 2 },
+          { "minigameId": "coral-builder", "weight": 2 },
+          { "minigameId": "submarine-sort", "weight": 2 },
+          { "minigameId": "starfish-match", "weight": 2 }
+        ]
+      }
+    }
+  ]
+}

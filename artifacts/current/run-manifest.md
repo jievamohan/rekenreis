@@ -1,33 +1,29 @@
-# Run Manifest — Epic 21.1
+# Epic 21.2 — Run Manifest
 
-Run ID: epic-21.1
-Branch: feat/epic-21.1-i18n-dutch-ui
+**Run:** Epic 21.2 — Minigame Types + Serving + Difficulty Foundation  
+**Branch:** feat/epic-21.2-minigame-foundation
 
-## Required Agents
-
-| Agent | Status | Artifact |
-|-------|--------|----------|
-| business-analyst | OK | artifacts/current/discovery.md |
-| ux-designer | OK | artifacts/current/ux.md |
-| principal-architect | OK | artifacts/current/architecture.md |
-| solution-designer | OK (N/A) | artifacts/current/solution.md |
-| qa-strategist | OK | artifacts/current/qa.md |
-| security-privacy | OK | artifacts/current/security-design.md |
-
-## Feature-Conditional Agents
+## Required Planning Agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
-| art-director | N/A (text-only) | artifacts/current/art-direction.md |
-| game-designer | N/A (no gameplay) | artifacts/current/game-feel.md |
-| motion-audio-designer | N/A (no animation) | artifacts/current/motion-audio.md |
-| illustrator | N/A (no assets) | artifacts/current/assets.md |
+| business-analyst | OK | discovery.md |
+| ux-designer | OK | ux.md |
+| principal-architect | OK | architecture.md |
+| solution-designer | OK | solution.md |
+| qa-strategist | OK | qa.md |
+| security-privacy | OK | security-design.md |
 
-## Delivery
+## Feature-Conditional Agents (N/A for 21.2)
 
-| Step | Status |
-|------|--------|
-| Planning | COMPLETE |
-| Task generation | COMPLETE |
-| Execution | COMPLETE |
-| Finalize | IN PROGRESS |
+| Agent | Status | Artifact |
+|-------|--------|----------|
+| art-director | N/A (no visual assets yet) | art-direction.md |
+| game-designer | N/A (foundation layer, no animations) | game-feel.md |
+| motion-audio-designer | N/A (no animations/audio) | motion-audio.md |
+| illustrator | N/A (no new assets) | assets.md |
+
+## Checks
+
+- All required artifacts present: YES
+- N/A artifacts include reason: YES
