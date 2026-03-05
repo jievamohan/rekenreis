@@ -2,6 +2,7 @@
 import NavIconFish from '~/components/icons/NavIconFish.vue'
 import NavIconChartBubbles from '~/components/icons/NavIconChartBubbles.vue'
 import NavIconGearCoral from '~/components/icons/NavIconGearCoral.vue'
+import NavIconMap from '~/components/icons/NavIconMap.vue'
 
 defineProps<{
   items: { to: string; label: string; icon: string }[]
@@ -12,6 +13,7 @@ const iconComponents: Record<string, typeof NavIconFish> = {
   fish: NavIconFish,
   'chart-bubbles': NavIconChartBubbles,
   'gear-coral': NavIconGearCoral,
+  map: NavIconMap,
 }
 </script>
 
