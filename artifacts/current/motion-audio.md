@@ -1,10 +1,7 @@
-# Epic 21.5 Motion & Audio
+# Motion & Audio — Epic 21.6
 
-**Animations:** CSS transitions only (no JS libraries).
+## Verify Reduced Motion
 
-- Submarine Sort: item slide to slot (≤ 300ms ease-out)
-- Starfish Match: match glow (≤ 300ms ease-out), connection line (≤ 400ms)
-
-**Reduced motion:** Collapse to instant under prefers-reduced-motion: reduce.
-
-**Audio:** Reuse existing correct/wrong/celebrate via useSound. No new audio files.
+- All 6 minigames respect `prefers-reduced-motion: reduce`
+- Animations collapse to instant state change
+- Timed minigames: extend or disable timer under reduced motion

@@ -1,5 +1,5 @@
-# Epic 21.5 Backlog
+# Backlog — Epic 21.6
 
-1. **Submarine Sort** — MinigameSubmarineSort.vue, drag-to-compartment, keyboard fallback, SVGs
-2. **Starfish Match** — MinigameStarfishMatch.vue, tap pairs, optional timer, SVGs
-3. **Map + integration** — minigame-map.v1.json, useMinigame registry, E2E smoke
+1. **play integration** — Wire MinigameRenderer into play.vue, useMinigameServing
+2. **a11y/polish** — WCAG AA, reduced motion, Dutch copy verification
+3. **tests** — E2E full flow, bundle check

@@ -1,12 +1,14 @@
-# Epic 21.5 Plan
+# Epic 21.6 — Integration, Polish & a11y Hardening
 
-**Branch:** feat/epic-21.5-submarine-sort-starfish-match
+**Branch:** feat/epic-21.6-integration-polish
 
-**Scope:**
-- Submarine Sort minigame (drag item to compartment)
-- Starfish Match minigame (tap pairs)
-- Update minigame-map to include both in serving rotation
+## Scope
 
-**Reference:** docs/design/epic-21.md (Epic 21.5 slice)
+- Wire MinigameRenderer into play.vue
+- a11y audit (WCAG AA, reduced motion)
+- Verify Dutch copy across flow
+- Bundle size check (budget passes)
 
-**Out of scope:** i18n beyond existing nl.json keys, backend changes, new math operators
+## Reference
+
+- docs/design/epic-21.md

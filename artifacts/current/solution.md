@@ -1,10 +1,7 @@
-# Epic 21.5 Solution
+# Solution — Epic 21.6
 
-**Implementation order:**
-1. Submarine Sort — MinigameSubmarineSort.vue, compartmentCount/itemCount knobs
-2. Starfish Match — MinigameStarfishMatch.vue, pairCount/timerSeconds knobs
-3. SVGs — placeholder assets in submarine-sort/ and starfish-match/
-4. i18n — nl.json keys for labels/hints (if any new)
-5. Map update — minigame-map.v1.json entries for both
+## Order of Work
 
-**Files:** `components/minigames/`, `assets/graphics/minigames/`, `content/minigame-map.v1.json`, `content/locales/nl.json`
+1. **play.vue integration** — Wire MinigameRenderer, useMinigameServing
+2. **a11y fixes** — WCAG AA, reduced motion, keyboard/focus
+3. **Performance check** — Bundle budget, lazy-load verification

@@ -1,7 +1,5 @@
-# Epic 21.5 Security Design
+# Security Design — Epic 21.6
 
-**N/A:** Client-side only; no new API endpoints, auth, crypto, or payments.
+**N/A:** Client-side only; no new API endpoints, no auth/crypto/payments.
 
-**Impact:** None. Static JSON content; no eval or dynamic scripts.
-
-**Checks required:** Gate D (gitleaks, semgrep, dependency audit) — standard baseline.
+Standard Gate D checks sufficient per Epic 21 design bible.
