@@ -1,14 +1,14 @@
-# Epic 21.5 Architecture
+# Architecture — Epic 21.6
 
-**Pattern:** Two Vue components reusing existing minigame pattern.
+## play.vue Integration
 
-**Components:**
-- `MinigameSubmarineSort.vue` — receives `question` + `onAnswer`, drag-to-compartment
-- `MinigameStarfishMatch.vue` — receives `question` + `onAnswer`, tap pairs
+- Uses `useMinigameServing` to pick minigame per round
+- MinigameRenderer replaces Keypad optionally
+- Fallback: Keypad when minigame fails or unavailable
 
-**Integration:**
-- `useMinigame` registry: add `submarine-sort`, `starfish-match`
-- `MinigameRenderer` lazy-loads via `defineAsyncComponent`
-- `minigame-map.v1.json`: add entries for both minigameIds
+## Data Flow
 
-**No new composables.** Reuse `useMinigame`, `useMinigameServing`, `useDifficultyProgression`, `useI18n`.
+1. usePlayGame generates question
+2. useMinigameServing.pick(levelId, seed) → minigameId
+3. MinigameRenderer resolves component via useMinigame
+4. Minigame receives question + onAnswer

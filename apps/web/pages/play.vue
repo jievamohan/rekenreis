@@ -24,8 +24,13 @@ import { applyPacing } from '~/utils/pacingEngine'
 import { useLevelProgress } from '~/composables/useLevelProgress'
 import { useMistakes } from '~/composables/useMistakes'
 import { useI18n } from '~/composables/useI18n'
+import { useMinigame } from '~/composables/useMinigame'
+import { useMinigameServing } from '~/composables/useMinigameServing'
+import { useDifficultyProgression } from '~/composables/useDifficultyProgression'
+import type { MinigameId } from '~/types/minigame'
 import ProblemCard from '~/components/play/ProblemCard.vue'
 import Keypad from '~/components/play/Keypad.vue'
+import MinigameRenderer from '~/components/minigames/MinigameRenderer.vue'
 import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
 import MistakesReview from '~/components/review/MistakesReview.vue'
 import levelsClassic from '~/content/levels.classic.v1.json'
@@ -61,6 +66,28 @@ const levelParam = computed(() => {
   return q ? Number(q) : null
 })
 const useKeypadMode = computed(() => levelParam.value !== null)
+const useMinigameMode = computed(() => route.query.minigame === '1' && useKeypadMode.value)
+
+const minigameTools = useMinigame()
+const minigameServing = useMinigameServing({ noRepeatWindow: 2 })
+const difficultyProg = useDifficultyProgression()
+const currentMinigameId = ref<MinigameId | null>(null)
+const currentMinigameParams = ref<Record<string, number>>({})
+
+const minigameQuestion = computed(() => {
+  const q = game.question.value
+  if (!q) return null
+  return { a: q.a, b: q.b, correctAnswer: q.correctAnswer, choices: [...q.choices] }
+})
+
+function pickNextMinigame() {
+  const level = levelParam.value ?? 1
+  const entry = minigameTools.getMapEntry(level)
+  const seed = level * 1000 + roundIndex.value
+  const id = minigameServing.pick(entry, seed)
+  currentMinigameId.value = id
+  currentMinigameParams.value = difficultyProg.getMinigameParams(id, level)
+}
 
 const playSource = computed(() => {
   if (useKeypadMode.value) return 'pack' as const
@@ -142,6 +169,7 @@ function advanceRound() {
 
   game.nextQuestion()
   keypadRef.value?.clear()
+  if (useMinigameMode.value) pickNextMinigame()
 }
 
 function onModalBackToMap() {
@@ -170,6 +198,7 @@ function onRetryLevel() {
   roundIndex.value = 0
   game.nextQuestion()
   keypadRef.value?.clear()
+  if (useMinigameMode.value) pickNextMinigame()
 }
 
 function onBackToMap() {
@@ -286,6 +315,7 @@ onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
   clearMistakes()
   roundIndex.value = 0
+  if (useMinigameMode.value) pickNextMinigame()
   const qm = route.query.mode as string | undefined
   if (!qm || qm === 'pack') {
     const needsSync = lastMode.value !== 'classic' || lastSkin.value !== 'classic'
@@ -364,8 +394,15 @@ onUnmounted(() => {
           </button>
         </div>
 
+        <MinigameRenderer
+          v-if="useMinigameMode && currentMinigameId && minigameQuestion && !game.feedback.value"
+          :minigame-id="currentMinigameId"
+          :question="minigameQuestion"
+          :difficulty-params="currentMinigameParams"
+          @answer="onKeypadAnswer"
+        />
         <Keypad
-          v-show="!game.feedback.value"
+          v-else-if="!game.feedback.value"
           ref="keypadRef"
           :disabled="!!game.feedback.value"
           @answer="onKeypadAnswer"

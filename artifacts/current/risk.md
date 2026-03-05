@@ -1,10 +1,9 @@
-# Epic 21.5 Risk
+# Risk — Epic 21.6
 
-**Overall:** Low risk.
+## Medium
 
-**Tags:** none (no auth, payments, crypto, data-loss, privacy)
+**play.vue integration** is the biggest change.
 
-**Mitigations:**
-- Static content only; no new network/data
-- Reuse existing patterns from Epics 21.3/21.4
-- Gate D baseline sufficient
+- MinigameRenderer + useMinigameServing wiring
+- Fallback to Keypad must work
+- No destructive DB; no auth changes

@@ -1,11 +1,15 @@
-# Epic 21.5 Discovery
+# Discovery — Epic 21.6
 
-**Context:** Epic 21 delivers 6 minigames for kleuters (4–6). Epics 21.3 and 21.4 delivered 4 minigames (Bubble Pop, Treasure Dive, Fish Feed, Coral Builder).
+## Full Flow
 
-**Epic 21.5 completes the 6-minigame set:**
-- Submarine Sort (#5): drag items with numbers into compartments
-- Starfish Match (#6): tap pairs whose numbers sum to answer
+1. **Map** — User selects level
+2. **Play** — Minigame rotation per round (useMinigameServing)
+3. **Complete** — Session ends, feedback shown
+4. **Map** — Return to level selection
 
-**User need:** Varied interaction patterns sustain engagement. Final 2 minigames close the loop.
+## Key Behaviors
 
-**Acceptance:** All 6 minigames in serving rotation; no-repeat window working; full variety in play sessions.
+- MinigameRenderer replaces Keypad when minigame loads
+- Fallback to Keypad if minigame fails
+- All strings in Dutch
+- Deterministic minigame sequence via seed
