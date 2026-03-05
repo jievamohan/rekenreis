@@ -30,10 +30,15 @@ test.describe('minigame mode', () => {
       `[data-testid^="minigame-"] button:has-text("${correctAnswer}")`
     ).first()
 
-    if (await correctButton.isVisible()) {
-      await correctButton.click()
-      await expect(page.locator('.keypad-feedback')).toBeVisible()
+    await expect(correctButton).toBeVisible()
+    await correctButton.click()
+
+    const chestZone = page.locator('.chest-zone')
+    if (await chestZone.isVisible()) {
+      await chestZone.click()
     }
+
+    await expect(page.locator('.keypad-feedback')).toBeVisible()
   })
 
   test('without ?minigame=1 shows keypad', async ({ page }) => {
