@@ -1,13 +1,10 @@
-# Security Gate (D)
+# Security — Epic 22.1
 
-Planning-only run (`/epicify`), no executable production logic changed.
+**Status:** PASS
+**Risk level:** Low
 
-Status: N/A for this snapshot stage; Gate D checks required during delivery slices (`22.1`..`22.6`).
-# Security — Epic 21.1
-
-Status: PASS (LOW risk)
-- No new API endpoints
-- No new data collection
 - No auth/crypto/payments changes
-- Static JSON content file only
-- No secrets in committed files
+- No API changes
+- No database changes
+- No new dependencies
+- Only type-level metadata and validation utilities added

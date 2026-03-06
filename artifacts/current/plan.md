@@ -1,13 +1,15 @@
-# Epic 22 Planning Plan
+# Plan — Epic 22.1
 
-- Run id: `20260306T085127Z`
-- Mode: `/epicify` planning-only
-- Major epic: `22`
-- Branch: `feat/22.0-minigame-mechanics-overhaul`
-- Outputs:
-  - `docs/design/epic-22.md`
-  - `docs/epics.md` slices `22.1`..`22.6`
-  - `artifacts/current/*` planning artifacts
-  - `artifacts/archive/epic-22.0/latest`
+**Branch:** feat/22.1-contract-v2-foundation
 
-No app/runtime code changes are included in this planning run.
+## Goal
+
+Introduce Minigame Contract v2 metadata types and annotate all 6 enabled minigames with interaction metadata. Add validation and smoke E2E.
+
+## Tasks (max 5)
+
+1. Define v2 types/enums
+2. Annotate registry with v2 metadata
+3. Contract validation + unit tests
+4. Wire v2 metadata through renderer/serving
+5. E2E smoke assertion

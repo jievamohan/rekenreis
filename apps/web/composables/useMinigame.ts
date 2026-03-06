@@ -16,6 +16,17 @@ registerMinigame({
     bubbleCount: { min: 3, max: 6 },
     floatSpeed: { min: 2, max: 4 },
   },
+  contractV2: {
+    interactionType: 'tap-choice',
+    requiredInputs: ['pointer', 'keyboard'],
+    timerPolicy: null,
+    uniqueDifficultyKnobs: [
+      { key: 'bubbleCount', min: 3, max: 6, description: 'Number of floating bubbles' },
+      { key: 'floatSpeed', min: 2, max: 4, description: 'Vertical float speed (px/frame)' },
+    ],
+    layoutClass: 'layout-float-field',
+    isNew: false,
+  },
 })
 
 registerMinigame({
@@ -23,6 +34,16 @@ registerMinigame({
   component: () => import('~/components/minigames/MinigameTreasureDive.vue'),
   difficultyKnobs: {
     gemCount: { min: 3, max: 5 },
+  },
+  contractV2: {
+    interactionType: 'drag-drop',
+    requiredInputs: ['pointer', 'drag', 'keyboard'],
+    timerPolicy: null,
+    uniqueDifficultyKnobs: [
+      { key: 'gemCount', min: 3, max: 5, description: 'Number of draggable gems' },
+    ],
+    layoutClass: 'layout-dnd-dualzone',
+    isNew: false,
   },
 })
 
@@ -33,6 +54,22 @@ registerMinigame({
     timerSeconds: { min: 8, max: 20 },
     pelletCount: { min: 3, max: 5 },
   },
+  contractV2: {
+    interactionType: 'timed-pop',
+    requiredInputs: ['pointer', 'keyboard', 'timed-response'],
+    timerPolicy: {
+      enabledByDefault: true,
+      allowDisableInSettings: true,
+      timeoutBehavior: 'hint-continue',
+      reducedMotionBehavior: 'degrade',
+    },
+    uniqueDifficultyKnobs: [
+      { key: 'timerSeconds', min: 8, max: 20, description: 'Countdown duration in seconds' },
+      { key: 'pelletCount', min: 3, max: 5, description: 'Number of pellet choices' },
+    ],
+    layoutClass: 'layout-pop-field',
+    isNew: false,
+  },
 })
 
 registerMinigame({
@@ -40,6 +77,16 @@ registerMinigame({
   component: () => import('~/components/minigames/MinigameCoralBuilder.vue'),
   difficultyKnobs: {
     pieceCount: { min: 3, max: 5 },
+  },
+  contractV2: {
+    interactionType: 'tap-choice',
+    requiredInputs: ['pointer', 'keyboard'],
+    timerPolicy: null,
+    uniqueDifficultyKnobs: [
+      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces to choose from' },
+    ],
+    layoutClass: 'layout-tap-scene',
+    isNew: false,
   },
 })
 
@@ -50,6 +97,17 @@ registerMinigame({
     compartmentCount: { min: 2, max: 3 },
     itemCount: { min: 3, max: 5 },
   },
+  contractV2: {
+    interactionType: 'sort-into-bins',
+    requiredInputs: ['pointer', 'drag', 'keyboard'],
+    timerPolicy: null,
+    uniqueDifficultyKnobs: [
+      { key: 'compartmentCount', min: 2, max: 3, description: 'Number of sorting compartments' },
+      { key: 'itemCount', min: 3, max: 5, description: 'Number of items to sort' },
+    ],
+    layoutClass: 'layout-sort-bins',
+    isNew: false,
+  },
 })
 
 registerMinigame({
@@ -58,6 +116,22 @@ registerMinigame({
   difficultyKnobs: {
     pairCount: { min: 2, max: 4 },
     timerSeconds: { min: 10, max: 25 },
+  },
+  contractV2: {
+    interactionType: 'timed-pop',
+    requiredInputs: ['pointer', 'keyboard', 'timed-response'],
+    timerPolicy: {
+      enabledByDefault: true,
+      allowDisableInSettings: true,
+      timeoutBehavior: 'hint-continue',
+      reducedMotionBehavior: 'degrade',
+    },
+    uniqueDifficultyKnobs: [
+      { key: 'pairCount', min: 2, max: 4, description: 'Number of starfish pairs' },
+      { key: 'timerSeconds', min: 10, max: 25, description: 'Match timer duration in seconds' },
+    ],
+    layoutClass: 'layout-match-grid',
+    isNew: false,
   },
 })
 
@@ -91,5 +165,9 @@ export function useMinigame() {
     return MINIGAME_IDS
   }
 
-  return { getDefinition, getAsyncComponent, getMapEntry, getAllIds }
+  function getAllDefinitions(): MinigameDefinition[] {
+    return Array.from(registry.values())
+  }
+
+  return { getDefinition, getAsyncComponent, getMapEntry, getAllIds, getAllDefinitions }
 }

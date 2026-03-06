@@ -1,33 +1,19 @@
-# Review Notes
+# Review — Epic 22.1
 
-Internal planning review completed for Epic 22 outputs:
+## Changes
 
-- Required planning artifacts are present and non-empty.
-- Design bible created for major epic 22.
-- Micro-epics `22.1..22.6` appended with explicit acceptance criteria and E2E points.
-- Archive snapshot created at `artifacts/archive/epic-22.0/latest`.
-# Review — Epic 21.1
+1. **types/minigame.ts**: Added Contract v2 types (InteractionType, RequiredInput, LayoutClass, TimerPolicy, UniqueDifficultyKnob, MinigameContractV2). Extended MinigameDefinition to include `contractV2` field.
 
-## Summary
-- Created `useI18n` composable + `nl.json` locale file
-- Replaced all English strings across 7 pages, ~20 components
-- Added useI18n unit tests (9 tests)
-- Added hardcoded-string lint script
-- All gates pass: typecheck, build, tests, lint
+2. **composables/useMinigame.ts**: Annotated all 6 minigames with v2 metadata. Added `getAllDefinitions()` helper.
 
-## Files Changed
-- New: `apps/web/content/locales/nl.json`
-- New: `apps/web/composables/useI18n.ts`
-- New: `apps/web/test/useI18n.test.ts`
-- New: `apps/web/scripts/check-hardcoded-strings.sh`
-- Modified: `apps/web/vitest.config.ts` (added ~ alias)
-- Modified: 7 pages (index, start, map, play, summary, stickers, settings)
-- Modified: ~20 components (AppShell, NavTabs, ParentGate, ProfileCreate, ProfileSelector, PlayModeSelector, LevelCompleteModal, MistakesReview, ProblemCard, Keypad, MapNode, MapAvatar, HintDots, HintNumberLine, SkinClassic, SkinSpace, SkinPirate, SkinMonsterFeed, ModeTimedPop, ModeBuildBridge)
-- Modified: `utils/rewardsConfig.ts`, `utils/profileSchema.ts`
-- Modified: test files (profileSchema.test, useProfile.test)
+3. **utils/minigame/validateContractV2.ts**: New validation utility for per-minigame and collection-level contract checks.
 
-## Acceptance Criteria
-- [x] 100% of visible UI strings come from nl.json via useI18n
-- [x] Lint script catches new hardcoded English strings
-- [x] No English text visible in the app
-- [x] Typecheck clean, build passes
+4. **components/minigames/MinigameRenderer.vue**: Refactored to use registry (`useMinigame().getDefinition`) instead of duplicated component map.
+
+5. **test/contractV2.test.ts**: 20 unit tests covering validation, registry completeness, and enum correctness.
+
+## Verification
+
+- Typecheck: PASS
+- Unit tests: 219/219 PASS
+- Build: PASS
