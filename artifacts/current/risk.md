@@ -1,19 +1,13 @@
-# Risk — Epic 22.1
+# Risk — Epic 22.2
 
 ## Risk Profile: Low
 
 - **Auth/Crypto/Payments:** none
 - **DB migrations:** none
 - **API changes:** none
-- **Infrastructure changes:** none (CI diversity gate is a later slice)
+- **Infrastructure changes:** none
 
 ## Identified Risks
 
-- **Metadata drift:** v2 types could diverge from runtime usage.
-  Mitigation: shared types imported by both registry and validation.
-- **False gate failures on small pool:** only 6 minigames.
-  Mitigation: thresholds and diagnostics are deferred to slice 22.4.
-
-## Sensitive Domain Impact
-
-None.
+- **Drag/drop regression on touch devices:** mitigated by using pointer events (unified API)
+- **Timer behavior change:** mitigated by emitting correct answer on timeout (hint-continue)

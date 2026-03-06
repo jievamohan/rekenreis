@@ -278,7 +278,9 @@
   "minigameFishFeed": {
     "ariaLabel": "Vis voeren — tik op de juiste korrel",
     "pelletLabel": "Korrel {value}",
-    "timerLabel": "Nog {seconds} seconden"
+    "timerLabel": "Nog {seconds} seconden",
+    "hintMessage": "Het antwoord is {answer}. Goed onthouden!",
+    "hintContinue": "We gaan rustig verder..."
   },
   "minigameCoralBuilder": {
     "ariaLabel": "Koraal bouwen — tik op het juiste koraalstuk",
