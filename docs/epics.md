@@ -938,3 +938,192 @@ Acceptance:
 - Bundle budget passes; lazy-load verified
 - No English text visible anywhere
 - All E2E tests green
+
+---
+
+## Epic 22.1 — Minigame Contract v2 Foundation
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.1: introduce Minigame Contract v2 and annotate enabled minigames with interaction metadata.
+
+Requirements:
+- Extend minigame types to include:
+  - interactionType enum:
+    - tap-choice, drag-drop, swipe-match, timed-pop, sort-into-bins, memory-flip, trace-numberline, build-sequence
+  - requiredInputs (pointer/drag/keyboard fallback expectations)
+  - optional timeSensitivity with kid-safe behavior metadata
+  - mechanic-unique difficulty knobs
+  - layoutClass and optional duplication justification metadata
+- Annotate enabled minigames in registry/map with v2 metadata
+- Add validation unit tests for required metadata and allowed enum values
+- Keep Dutch copy and existing behavior stable
+- Add one E2E smoke assertion proving play route remains functional after migration
+
+Acceptance:
+- Enabled minigames compile with Contract v2 metadata
+- Validation tests fail on missing/invalid interaction metadata
+- At least one E2E smoke path passes in container
+- Typecheck clean, Gate D unchanged, build/perf gate passes
+
+---
+
+## Epic 22.2 — Drag/Drop + Timed-Kind Mechanic Upgrades
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.2: upgrade two minigames to genuinely distinct drag/drop and timed-kind interactions.
+
+Requirements:
+- Upgrade at least one minigame to drag/drop-first interaction with explicit keyboard fallback
+- Upgrade at least one minigame to timed-but-kind behavior:
+  - timer is gentle
+  - timeout shows hint and continues
+  - no fail-state/punishment
+- Ensure both minigames have distinct layoutClass values and non-shared unique knobs
+- Keep reduced-motion behavior and Dutch UI copy
+- Add E2E:
+  - drag/drop completes one round
+  - timed game timeout continues gracefully
+
+Acceptance:
+- Drag/drop and timed-kind interactions are visibly and mechanically distinct
+- Timeout path shows hint + continue without reset punishment
+- Keyboard fallback exists for drag/drop flow
+- Required E2E scenarios pass via docker compose e2e service
+
+---
+
+## Epic 22.3 — Sorting + Sequence/Spatial Mechanic Upgrades
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.3: upgrade two additional minigames for sorting/categorization and sequence/spatial gameplay.
+
+Requirements:
+- Add/upgrade one sorting minigame (`sort-into-bins`) with keyboard-first fallback path
+- Add/upgrade one sequence/spatial minigame (`build-sequence` or `trace-numberline`) with distinct UI composition
+- Ensure both declare unique layoutClass metadata
+- Keep Dutch copy and a11y constraints
+- Add E2E:
+  - sorting round completed with keyboard fallback
+  - sequence/spatial round completed
+
+Acceptance:
+- Sorting and sequence/spatial minigames are not reskins of tap-choice
+- Keyboard sorting flow works end-to-end
+- Both minigames pass reduced-motion checks
+- E2E scenarios pass in container-only Playwright
+
+---
+
+## Epic 22.4 — Diversity Gate Rubric + CI Enforcement
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.4: implement the hard Diversity Gate and wire it into CI.
+
+Requirements:
+- Add rubric + automated check requiring each minigame metadata includes interactionType
+- CI fails if `>= 60%` of enabled minigames share the same interactionType
+- CI fails if minigame marked `new` duplicates `interactionType + layoutClass` without justification
+- Expose clear machine- and human-readable failure diagnostics
+- Add unit tests for threshold boundary and duplicate-rule behavior
+- Add one integration/E2E assertion that gate script runs in CI pipeline path
+
+Acceptance:
+- Diversity Gate executes in CI and fails invalid metadata distributions
+- Threshold and duplication rules are test-covered
+- CI output pinpoints offending minigames
+- Gate C/D/F remain green on valid config
+
+---
+
+## Epic 22.5 — Kid-safe Timer Policy + Settings Integration
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.5: unify timer safety rules and expose global timer-disable behavior in settings.
+
+Requirements:
+- Implement optional timer policy in minigame runtime:
+  - timeout always hint + continue
+  - no punitive timeout state
+- Add settings control to disable timers globally
+- Ensure reduced-motion path degrades timer visuals and motion-heavy cues
+- Keep Dutch copy for new settings/help text
+- Add E2E:
+  - enable timer disable -> timed minigame runs without countdown pressure
+  - reduced-motion run behaves correctly
+
+Acceptance:
+- Timer toggle works across timed minigames
+- Timeout remains non-punitive in all timed paths
+- Reduced-motion behavior verified
+- E2E and typecheck/build gates pass
+
+---
+
+## Epic 22.6 — Container-only E2E Proof + Final Hardening
+- [ ]
+PlanRef:
+- design: docs/design/epic-22.md
+- archive: artifacts/archive/epic-22.0/latest
+- slice: 22.6
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 22.6: finalize Epic 22 with deterministic interaction-diversity E2E coverage and hardening checks.
+
+Requirements:
+- Consolidate/extend Playwright suite to prove interaction diversity requirements:
+  - drag/drop complete round
+  - timed timeout continues gracefully
+  - sorting keyboard fallback
+- Ensure all Playwright invocations use docker compose e2e service only
+- Add Dutch copy assertions for new hint/timer/settings strings
+- Run final a11y and reduced-motion smoke checks
+- Verify CI gates and archive evidence in artifacts
+
+Acceptance:
+- Required interaction-diversity E2E scenarios are green in container
+- No host-side Playwright usage in scripts/docs/workflows
+- Dutch copy and accessibility checks pass
+- CI stays green with Gate C/D/F + Diversity Gate

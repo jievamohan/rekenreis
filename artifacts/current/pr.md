@@ -1,3 +1,17 @@
+# PR Draft Notes (Epic 22.0 Planning Snapshot)
+
+## Scope
+
+Planning-only `/epicify` output for Epic 22:
+
+- Created planning artifacts in `artifacts/current`.
+- Added design bible `docs/design/epic-22.md`.
+- Added micro-epics `22.1..22.6` to `docs/epics.md`.
+- Archived planning snapshot to `artifacts/archive/epic-22.0/latest`.
+
+## Test Plan
+
+- N/A for runtime changes in this planning-only commit.
 ## Summary
 
 Epic 21.1: i18n Foundation + Dutch UI Copy
