@@ -893,7 +893,7 @@ Acceptance:
 ---
 
 ## Epic 21.6 — Integration, Polish & a11y Hardening
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-21.md
 - archive: artifacts/archive/epic-21.0/latest

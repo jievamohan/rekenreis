@@ -1,21 +1,19 @@
-# Epic 22 Risk Register
+# Risk — Epic 22.1
 
-## Top Risks
+## Risk Profile: Low
 
-- **Metadata drift risk:** Contract v2 fields omitted or inconsistent across minigames.
-- **Diversity gate brittleness:** false positives without clear diagnostics.
-- **Timer safety regressions:** punitive timeout behavior introduced during refactor.
-- **Accessibility regression:** keyboard and reduced-motion paths diverge from pointer path.
+- **Auth/Crypto/Payments:** none
+- **DB migrations:** none
+- **API changes:** none
+- **Infrastructure changes:** none (CI diversity gate is a later slice)
 
-## Mitigations
+## Identified Risks
 
-- Type-safe contract + validation tests.
-- Deterministic CI gate with explicit failure messages.
-- E2E coverage for timeout hint+continue and keyboard sorting fallback.
-- Reduced-motion checks in unit/E2E.
+- **Metadata drift:** v2 types could diverge from runtime usage.
+  Mitigation: shared types imported by both registry and validation.
+- **False gate failures on small pool:** only 6 minigames.
+  Mitigation: thresholds and diagnostics are deferred to slice 22.4.
 
-## Sensitive Domains
+## Sensitive Domain Impact
 
-- Auth: none
-- Crypto: none
-- Payments: none
+None.
