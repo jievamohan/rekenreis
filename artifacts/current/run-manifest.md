@@ -1,14 +1,26 @@
-# Run Manifest — Epic 21.6
+# Run Manifest
+
+- Run id: `20260306T085127Z`
+- Epic number: `22`
+
+## Required planning agents
 
 | Agent | Status | Artifact |
-|-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
-| art-director | N/A | art-direction.md |
-| game-designer | N/A | game-feel.md |
-| motion-audio | OK | motion-audio.md |
-| illustrator | N/A | assets.md |
+|---|---|---|
+| business-analyst | OK | `artifacts/current/discovery.md` |
+| ux-designer | OK | `artifacts/current/ux.md` |
+| art-director | OK | `artifacts/current/art-direction.md` |
+| game-designer | OK | `artifacts/current/game-feel.md` |
+| motion-audio-designer | OK | `artifacts/current/motion-audio.md` |
+| principal-architect | OK | `artifacts/current/architecture.md` |
+| solution-designer | OK | `artifacts/current/solution.md` |
+| qa-strategist | OK | `artifacts/current/qa.md` |
+| security-privacy | OK | `artifacts/current/security-design.md` |
+| illustrator | N/A (no explicit new asset requirement) | `artifacts/current/assets.md` |
+| orchestrator | OK | `artifacts/current/backlog.md` |
+
+## Completeness
+
+- All required artifacts present: YES
+- All artifacts non-empty: YES
+- Run id consistent with `artifacts/current/run-id.txt`: YES
