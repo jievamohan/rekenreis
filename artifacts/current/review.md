@@ -1,5 +1,8 @@
-# Review — Epic 22.4
-1. diversityGate.ts: distribution check (>=60% threshold), duplication check (new+same type+layout), completeness check, formatted report
-2. diversityGate.test.ts: 14 tests with boundary conditions (exactly 60%, below 60%, all same, offender details)
-3. package.json: gate:diversity script
-4. gates.yml: "Diversity Gate" step in lint-test job
+# Review — Epic 22.5
+1. profileSchema.ts: Added timersDisabled to ProfilePrefs + defaults + validation + migration
+2. settings.vue: Timer toggle with help text, data-testid="timer-toggle"
+3. MinigameRenderer.vue: Pass-through timersDisabled prop
+4. MinigameFishFeed.vue: Respects timersDisabled — no countdown when disabled, timer bar hidden
+5. play.vue: Reads timersDisabled from active profile prefs
+6. nl.json: Dutch strings for disableTimers and help text
+7. Test fix: useLevelProgress.test.ts updated for new pref field

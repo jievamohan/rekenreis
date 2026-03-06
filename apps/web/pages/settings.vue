@@ -29,6 +29,13 @@ const soundOn = computed({
     if (id) profile.updateProfile(id, { prefs: { ...profile.activeProfile.value!.prefs, soundOn: v } })
   },
 })
+const timersDisabled = computed({
+  get: () => profile.activeProfile.value?.prefs.timersDisabled ?? false,
+  set: (v: boolean) => {
+    const id = profile.activeProfile.value?.id
+    if (id) profile.updateProfile(id, { prefs: { ...profile.activeProfile.value!.prefs, timersDisabled: v } })
+  },
+})
 
 function onUnlocked() {
   unlocked.value = true
@@ -67,6 +74,13 @@ onMounted(() => {
         <input v-model="soundOn" type="checkbox" />
         <span>{{ t('settings.soundEffects') }}</span>
       </label>
+      <label class="field" data-testid="timer-toggle">
+        <input v-model="timersDisabled" type="checkbox" />
+        <span>{{ t('settings.disableTimers') }}</span>
+      </label>
+      <p v-if="timersDisabled" class="timer-help">
+        {{ t('settings.disableTimersHelp') }}
+      </p>
     </div>
   </div>
 </template>
@@ -104,5 +118,11 @@ h1 {
 .field input:focus-visible {
   outline: 2px solid var(--app-primary);
   outline-offset: 2px;
+}
+.timer-help {
+  font-size: 0.85rem;
+  color: var(--app-text-muted, #78909c);
+  margin: 0;
+  padding-left: var(--app-space-sm);
 }
 </style>

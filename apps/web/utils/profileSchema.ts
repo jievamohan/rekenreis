@@ -36,6 +36,7 @@ export interface ProfilePrefs {
   difficultyCeiling: GameMode
   hintsOn: boolean
   soundOn: boolean
+  timersDisabled: boolean
 }
 
 export interface ProfileData {
@@ -68,6 +69,7 @@ function defaultPrefs(): ProfilePrefs {
     difficultyCeiling: 'upTo10',
     hintsOn: true,
     soundOn: true,
+    timersDisabled: false,
   }
 }
 
@@ -191,6 +193,7 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
       typeof p.prefs.difficultyCeiling === 'string' &&
       typeof p.prefs.hintsOn === 'boolean' &&
       (typeof p.prefs.soundOn === 'boolean' || p.prefs.soundOn === undefined) &&
+      (typeof p.prefs.timersDisabled === 'boolean' || p.prefs.timersDisabled === undefined) &&
       typeof p.telemetryOptOut === 'boolean'
   )
 }
@@ -207,6 +210,9 @@ export function loadProfiles(): ProfileSchemaV1 {
       for (const p of data.profiles) {
         if (p.prefs && p.prefs.soundOn === undefined) {
           p.prefs.soundOn = true
+        }
+        if (p.prefs && p.prefs.timersDisabled === undefined) {
+          p.prefs.timersDisabled = false
         }
         if (p.progress.currentLevel === undefined) {
           p.progress.currentLevel = 1

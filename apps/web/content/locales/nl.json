@@ -111,7 +111,9 @@
     "upTo10": "Tot 10",
     "upTo20": "Tot 20",
     "showHints": "Hints tonen als je vastzit",
-    "soundEffects": "Geluidseffecten"
+    "soundEffects": "Geluidseffecten",
+    "disableTimers": "Tijddruk uitschakelen",
+    "disableTimersHelp": "Spellen met een timer worden rustig gespeeld, zonder aftellen."
   },
   "modes": {
     "classic": "Klassiek",

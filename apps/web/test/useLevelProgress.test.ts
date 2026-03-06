@@ -20,6 +20,7 @@ function makeProfile(overrides: Partial<ProfileProgress> = {}): ProfileData {
       difficultyCeiling: 'upTo10',
       hintsOn: true,
       soundOn: true,
+      timersDisabled: false,
     },
     telemetryOptOut: true,
   }
