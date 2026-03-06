@@ -1,2 +1,2 @@
-# Performance — Epic 22.5
-**Status:** PASS — No new dependencies.
+# Performance — Epic 22.6
+**Status:** PASS — Test-only changes, no bundle impact.

@@ -1,8 +1,5 @@
-# Review — Epic 22.5
-1. profileSchema.ts: Added timersDisabled to ProfilePrefs + defaults + validation + migration
-2. settings.vue: Timer toggle with help text, data-testid="timer-toggle"
-3. MinigameRenderer.vue: Pass-through timersDisabled prop
-4. MinigameFishFeed.vue: Respects timersDisabled — no countdown when disabled, timer bar hidden
-5. play.vue: Reads timersDisabled from active profile prefs
-6. nl.json: Dutch strings for disableTimers and help text
-7. Test fix: useLevelProgress.test.ts updated for new pref field
+# Review — Epic 22.6
+1. interaction-diversity.spec.ts: consolidated E2E proving all 4 mechanic types
+2. Dutch copy assertions: hint overlay, aria labels, sequence hint, sort label
+3. a11y smoke: heading structure, minimum tap target size (44x44px)
+4. Verified: all Playwright runs in docker compose e2e container (no host-side usage)

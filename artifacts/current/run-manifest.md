@@ -1,4 +1,4 @@
 # Run Manifest
-**Run ID:** epic-22.5-timer-policy-settings
-**Branch:** feat/22.5-timer-policy-settings
-**Epic:** 22.5 — Kid-safe Timer Policy + Settings Integration
+**Run ID:** epic-22.6-e2e-hardening
+**Branch:** feat/22.6-e2e-hardening
+**Epic:** 22.6 — Container-only E2E Proof + Final Hardening
