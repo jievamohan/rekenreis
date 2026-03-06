@@ -1,51 +1,63 @@
 import { test, expect } from '@playwright/test'
 
+async function findAnswerButtonByExactLabel(
+  page: import('@playwright/test').Page,
+  answer: number
+) {
+  const buttons = page.locator('[data-testid^="minigame-"] button')
+  await expect.poll(async () => await buttons.count()).toBeGreaterThan(0)
+  const total = await buttons.count()
+  const target = String(answer)
+  for (let i = 0; i < total; i++) {
+    const text = (await buttons.nth(i).innerText()).trim()
+    if (text === target) return buttons.nth(i)
+  }
+  return null
+}
+
 test.describe('minigame mode', () => {
-  test('renders minigame component when ?minigame=1', async ({ page }) => {
-    await page.goto('/play?level=1&minigame=1')
+  test('renders minigame component on level play', async ({ page }) => {
+    await page.goto('/play?level=1')
 
     await expect(page.locator('.problem-card')).toBeVisible()
-
-    const minigame = page.locator('.minigame-renderer')
-    await expect(minigame).toBeVisible()
-
-    const hasMinigameComponent = await page.locator(
-      '[data-testid^="minigame-"]'
-    ).isVisible()
-    expect(hasMinigameComponent).toBe(true)
+    await expect(page.locator('.minigame-renderer')).toBeVisible()
+    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
   })
 
-  test('minigame buttons submit answer and show feedback', async ({ page }) => {
-    await page.goto('/play?level=1&minigame=1')
+  test('minigame buttons submit answer and advance progress', async ({ page }) => {
+    await page.goto('/play?level=1')
 
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid^="minigame-"]')).toBeVisible()
+    await expect(page.locator('.round-progress')).toBeVisible()
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '0')
+    await expect(page.locator('.round-progress-node-current')).toHaveText('1')
 
     const operandEls = page.locator('.problem-card .operand')
     const a = Number(await operandEls.nth(0).textContent())
     const b = Number(await operandEls.nth(1).textContent())
     const correctAnswer = a + b
 
-    const correctButton = page.locator(
-      `[data-testid^="minigame-"] button:has-text("${correctAnswer}")`
-    ).first()
+    const correctButton = await findAnswerButtonByExactLabel(page, correctAnswer)
+    expect(correctButton).not.toBeNull()
+    await expect(correctButton!).toBeVisible()
+    await correctButton!.click({ force: true })
 
-    await expect(correctButton).toBeVisible()
-    await correctButton.click()
-
-    const chestZone = page.locator('.chest-zone')
+    const chestZone = page.locator('.chest-zone').first()
     if (await chestZone.isVisible()) {
-      await chestZone.click()
+      await chestZone.click({ force: true })
     }
 
-    await expect(page.locator('.keypad-feedback')).toBeVisible()
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
+    await expect(page.locator('.round-progress-node-current')).toHaveText('2')
+    await expect(page.locator('.keypad-feedback')).toHaveCount(0)
   })
 
-  test('without ?minigame=1 shows keypad', async ({ page }) => {
+  test('numeric keypad is not shown on level play', async ({ page }) => {
     await page.goto('/play?level=1')
 
     await expect(page.locator('.problem-card')).toBeVisible()
-    await expect(page.locator('.keypad')).toBeVisible()
-    await expect(page.locator('.minigame-renderer')).toHaveCount(0)
+    await expect(page.locator('.minigame-renderer')).toBeVisible()
+    await expect(page.locator('.keypad')).toHaveCount(0)
   })
 })

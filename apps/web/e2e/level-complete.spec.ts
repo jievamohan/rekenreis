@@ -1,28 +1,30 @@
 import { test, expect } from '@playwright/test'
 
+const ROUNDS_PER_LEVEL = 10
+
+async function answerCurrentQuestion(page: import('@playwright/test').Page, answer: number) {
+  const correctButton = page.locator(
+    `[data-testid^="minigame-"] button:has-text("${answer}")`
+  ).first()
+  await expect(correctButton).toBeVisible()
+  await correctButton.click({ force: true })
+
+  const chestZone = page.locator('.chest-zone')
+  if (await chestZone.isVisible()) {
+    await chestZone.click({ force: true })
+  }
+}
+
 test.describe('level complete modal', () => {
   test('modal appears after completing all rounds', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card')).toBeVisible()
 
-    for (let round = 0; round < 5; round++) {
+    for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       const operandEls = page.locator('.problem-card .operand')
       const a = Number(await operandEls.nth(0).textContent())
       const b = Number(await operandEls.nth(1).textContent())
-      const answer = String(a + b)
-
-      for (const d of answer.split('')) {
-        await page.keyboard.press(d)
-      }
-      await page.keyboard.press('Enter')
-
-      await expect(page.locator('.keypad-feedback, .modal-dialog')).toBeVisible()
-
-      const modalVisible = await page.locator('.modal-dialog').isVisible()
-      if (modalVisible) break
-
-      await page.locator('.next-btn').click()
-      await expect(page.locator('.problem-card')).toBeVisible()
+      await answerCurrentQuestion(page, a + b)
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible()
@@ -34,20 +36,11 @@ test.describe('level complete modal', () => {
   test('Next Level button navigates to next level', async ({ page }) => {
     await page.goto('/play?level=1')
 
-    for (let round = 0; round < 5; round++) {
+    for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       const operandEls = page.locator('.problem-card .operand')
       const a = Number(await operandEls.nth(0).textContent())
       const b = Number(await operandEls.nth(1).textContent())
-
-      for (const d of String(a + b).split('')) {
-        await page.keyboard.press(d)
-      }
-      await page.keyboard.press('Enter')
-
-      const modalVisible = await page.locator('.modal-dialog').isVisible()
-      if (modalVisible) break
-
-      await page.locator('.next-btn').click()
+      await answerCurrentQuestion(page, a + b)
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible()

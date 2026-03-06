@@ -44,6 +44,13 @@ describe('useDifficultyProgression', () => {
       expect(range.operandMax).toBe(20)
     })
 
+    test('very high levels increase operandMin for tougher sums', () => {
+      const early = getMathRange(10)
+      const late = getMathRange(100)
+      expect(late.operandMax).toBe(20)
+      expect(late.operandMin).toBeGreaterThan(early.operandMin)
+    })
+
     test('difficulty ceiling caps operandMax', () => {
       const range = getMathRange(30, 10)
       expect(range.operandMax).toBe(10)

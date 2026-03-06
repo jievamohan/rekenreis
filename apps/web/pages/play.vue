@@ -29,7 +29,6 @@ import { useMinigameServing } from '~/composables/useMinigameServing'
 import { useDifficultyProgression } from '~/composables/useDifficultyProgression'
 import type { MinigameId } from '~/types/minigame'
 import ProblemCard from '~/components/play/ProblemCard.vue'
-import Keypad from '~/components/play/Keypad.vue'
 import MinigameRenderer from '~/components/minigames/MinigameRenderer.vue'
 import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
 import MistakesReview from '~/components/review/MistakesReview.vue'
@@ -50,13 +49,23 @@ const MODE_OPTIONS = computed(() => [
   { id: 'build-bridge' as const, label: t('modes.buildBridge') },
 ])
 
-const ROUNDS_PER_LEVEL = 5
+const ROUNDS_PER_LEVEL = 10
+const currentRoundDisplay = computed(() =>
+  Math.min(ROUNDS_PER_LEVEL, roundIndex.value + 1)
+)
+const completedProgressPercent = computed(() =>
+  Math.min(100, (roundIndex.value / ROUNDS_PER_LEVEL) * 100)
+)
+const currentRoundPercent = computed(() => {
+  if (ROUNDS_PER_LEVEL <= 1) return 100
+  return ((currentRoundDisplay.value - 1) / (ROUNDS_PER_LEVEL - 1)) * 100
+})
 
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
 const profile = useProfile()
-const { telemetryOptOut, setOptOut } = useTelemetry(profile)
+const { telemetryOptOut } = useTelemetry(profile)
 const { lastMode, lastSkin, setPreferences } = usePlayPreferences(profile)
 const { setChooseGameHandler } = useAppShell()
 const showModeSelector = ref(false)
@@ -66,13 +75,16 @@ const levelParam = computed(() => {
   return q ? Number(q) : null
 })
 const useKeypadMode = computed(() => levelParam.value !== null)
-const useMinigameMode = computed(() => route.query.minigame === '1' && useKeypadMode.value)
+const useMinigameMode = computed(() => useKeypadMode.value)
+const packSessionSeed = ref(0)
+const initialPackIndex = computed(() => Math.max(0, (levelParam.value ?? 1) - 1))
 
 const minigameTools = useMinigame()
 const minigameServing = useMinigameServing({ noRepeatWindow: 2 })
 const difficultyProg = useDifficultyProgression()
 const currentMinigameId = ref<MinigameId | null>(null)
 const currentMinigameParams = ref<Record<string, number>>({})
+const minigameSessionSeed = ref(0)
 
 const minigameQuestion = computed(() => {
   const q = game.question.value
@@ -83,7 +95,7 @@ const minigameQuestion = computed(() => {
 function pickNextMinigame() {
   const level = levelParam.value ?? 1
   const entry = minigameTools.getMapEntry(level)
-  const seed = level * 1000 + roundIndex.value
+  const seed = minigameSessionSeed.value + level * 1000 + roundIndex.value
   const id = minigameServing.pick(entry, seed)
   currentMinigameId.value = id
   currentMinigameParams.value = difficultyProg.getMinigameParams(id, level)
@@ -105,7 +117,22 @@ const interactionMode = computed(() =>
 )
 const gameMode = computed(() => useMode(interactionMode.value))
 const levelPack = computed(() =>
-  playSource.value === 'pack' ? PACK_BY_MODE[interactionMode.value] : []
+  playSource.value === 'pack'
+    ? (() => {
+        const pack = PACK_BY_MODE[interactionMode.value]
+        if (!useKeypadMode.value || pack.length === 0) return pack
+        const currentLevel = levelParam.value ?? 1
+        const ceiling = mode.value === 'upTo10' ? 10 : 20
+        const mathRange = difficultyProg.getMathRange(currentLevel, ceiling)
+        const template = pack[(currentLevel - 1) % pack.length]!
+        return [{
+          ...template,
+          operandMin: mathRange.operandMin,
+          operandMax: mathRange.operandMax,
+          choiceCount: mathRange.choiceCount,
+        }]
+      })()
+    : []
 )
 
 const mode = ref<GameMode>(profile.activeProfile.value?.prefs.difficultyCeiling ?? 'upTo10')
@@ -116,11 +143,12 @@ const strugglingRoundsLeft = ref(0)
 const game = usePlayGame(mode, {
   source: playSource,
   levelPack,
+  initialPackIndex,
+  packSeed: packSessionSeed,
   strugglingRoundsLeft,
 })
 const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
-const keypadRef = ref<InstanceType<typeof Keypad> | null>(null)
 const roundIndex = ref(0)
 const { mistakes, record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
 const { completeLevel } = useLevelProgress(profile)
@@ -129,16 +157,10 @@ const showReview = ref(false)
 const completedStars = ref(0)
 const totalLevels = levelsClassic.length
 
-const feedbackResult = computed<boolean | null>(() => {
-  const fb = game.feedback.value
-  if (!fb) return null
-  if (isCorrectFeedback(fb)) return fb.correct
-  return false
-})
-
 function onKeypadAnswer(answer: number) {
+  if (game.feedback.value || !game.question.value) return
   game.selectAnswer(answer)
-  if (game.question.value && answer !== game.question.value.correctAnswer) {
+  if (answer !== game.question.value.correctAnswer) {
     recordMistake({
       a: game.question.value.a,
       b: game.question.value.b,
@@ -146,6 +168,7 @@ function onKeypadAnswer(answer: number) {
       selectedAnswer: answer,
     })
   }
+  advanceRound()
 }
 
 function advanceRound() {
@@ -168,7 +191,6 @@ function advanceRound() {
   }
 
   game.nextQuestion()
-  keypadRef.value?.clear()
   if (useMinigameMode.value) pickNextMinigame()
 }
 
@@ -197,7 +219,6 @@ function onRetryLevel() {
   clearMistakes()
   roundIndex.value = 0
   game.nextQuestion()
-  keypadRef.value?.clear()
   if (useMinigameMode.value) pickNextMinigame()
 }
 
@@ -238,7 +259,7 @@ watch(dailyGoal.isGoalReached, (reached) => {
 }, { immediate: true })
 
 watch(game.feedback, (fb) => {
-  if (!fb) return
+  if (!fb || useKeypadMode.value) return
   if ('correct' in fb) {
     if (fb.correct) sound.playCorrect()
     else sound.playWrong()
@@ -315,6 +336,8 @@ onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
   clearMistakes()
   roundIndex.value = 0
+  packSessionSeed.value = Math.floor(Math.random() * 1_000_000)
+  minigameSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   if (useMinigameMode.value) pickNextMinigame()
   const qm = route.query.mode as string | undefined
   if (!qm || qm === 'pack') {
@@ -363,48 +386,47 @@ onUnmounted(() => {
     <!-- Keypad mode: ProblemCard + Keypad -->
     <template v-else-if="useKeypadMode && game.question.value">
       <div class="play-header">
-        <StatPill :label="t('play.score')" :value="game.score.value" />
-        <span class="progress-indicator" role="status" :aria-label="t('play.roundProgress')">
-          {{ roundIndex + 1 }} / {{ ROUNDS_PER_LEVEL }}
-        </span>
-        <StatPill :label="t('play.streak')" :value="game.streak.value" />
+        <div class="progress-wrap">
+          <div
+            class="round-progress"
+            role="progressbar"
+            :aria-valuemin="0"
+            :aria-valuemax="ROUNDS_PER_LEVEL"
+            :aria-valuenow="roundIndex"
+            :aria-label="t('play.roundProgress')"
+          >
+            <div
+              class="round-progress-fill"
+              :style="{ width: `${completedProgressPercent}%` }"
+            />
+            <div
+              class="round-progress-node"
+              :class="'round-progress-node-current'"
+              :style="{ left: `${currentRoundPercent}%` }"
+              aria-hidden="true"
+            >
+              {{ currentRoundDisplay }}
+            </div>
+            <div class="round-progress-node round-progress-node-target" aria-hidden="true">
+              {{ ROUNDS_PER_LEVEL }}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="game-main" class="keypad-stage" tabindex="-1">
         <ProblemCard
           :a="game.question.value.a"
           :b="game.question.value.b"
-          :answer="keypadRef?.input ?? ''"
-          :is-correct="feedbackResult"
+          :answer="''"
+          :is-correct="null"
         />
 
-        <div
-          v-if="game.feedback.value"
-          class="keypad-feedback"
-          :class="feedbackResult ? 'feedback-correct' : 'feedback-wrong'"
-          role="status"
-          aria-live="polite"
-        >
-          <p v-if="feedbackResult">{{ t('play.correct') }}</p>
-          <p v-else>
-            {{ t('play.wrong', { answer: game.question.value.correctAnswer }) }}
-          </p>
-          <button type="button" class="next-btn" @click="advanceRound">
-            {{ roundIndex + 1 >= ROUNDS_PER_LEVEL ? t('common.finish') : t('common.next') }}
-          </button>
-        </div>
-
         <MinigameRenderer
-          v-if="useMinigameMode && currentMinigameId && minigameQuestion && !game.feedback.value"
+          v-if="useMinigameMode && currentMinigameId && minigameQuestion"
           :minigame-id="currentMinigameId"
           :question="minigameQuestion"
           :difficulty-params="currentMinigameParams"
-          @answer="onKeypadAnswer"
-        />
-        <Keypad
-          v-else-if="!game.feedback.value"
-          ref="keypadRef"
-          :disabled="!!game.feedback.value"
           @answer="onKeypadAnswer"
         />
       </div>
@@ -459,20 +481,6 @@ onUnmounted(() => {
       @close="onModalClose"
     />
 
-    <footer class="privacy-footer">
-      <p class="privacy-note">
-        {{ t('privacy.statsNote') }}
-      </p>
-      <label class="opt-out">
-        <input
-          type="checkbox"
-          :checked="telemetryOptOut"
-          :aria-label="t('privacy.optOut')"
-          @change="setOptOut(($event.target as HTMLInputElement).checked)"
-        />
-        {{ t('privacy.optOut') }}
-      </label>
-    </footer>
   </div>
 </template>
 
@@ -483,42 +491,118 @@ onUnmounted(() => {
 }
 
 .exit-to-map-btn {
+  position: relative;
+  overflow: hidden;
   min-height: var(--app-tap-min);
-  padding: var(--app-space-sm) var(--app-space-md);
+  padding: 0.65rem 1.15rem;
   font-family: var(--app-font);
   font-size: var(--app-font-size-base);
   font-weight: var(--app-font-weight-bold);
-  color: var(--app-primary);
-  background: var(--app-surface);
-  border: 2px solid var(--app-primary);
-  border-radius: var(--app-radius-md);
+  letter-spacing: 0.01em;
+  color: #053344;
+  background: linear-gradient(180deg, #8cf3ff 0%, #5ce2f5 55%, #37cbe5 100%);
+  border: 2px solid rgba(5, 51, 68, 0.28);
+  border-radius: 1rem;
   cursor: pointer;
   margin-bottom: var(--app-space-sm);
-  transition: background var(--app-transition);
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  box-shadow:
+    0 4px 0 rgba(5, 51, 68, 0.22),
+    0 8px 14px rgba(4, 60, 82, 0.2);
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .exit-to-map-btn:hover {
-  background: rgba(0, 188, 212, 0.15);
+  transform: translateY(-1px) scale(1.01);
+  filter: saturate(1.05) brightness(1.02);
+  box-shadow:
+    0 5px 0 rgba(5, 51, 68, 0.2),
+    0 12px 18px rgba(4, 60, 82, 0.24);
+}
+
+.exit-to-map-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 rgba(5, 51, 68, 0.2),
+    0 6px 10px rgba(4, 60, 82, 0.18);
 }
 
 .exit-to-map-btn:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
+  outline: 3px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 1px;
 }
 
 .play-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--app-space-sm);
-  margin-bottom: var(--app-space-md);
+  margin-bottom: 2.25rem;
 }
 
-.progress-indicator {
+.progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  min-width: min(92vw, 440px);
+}
+
+.round-progress {
+  position: relative;
+  width: min(92vw, 440px);
+  height: 1rem;
+  background: #ffffff !important;
+  border-radius: 999px;
+  overflow: visible;
+  border: 1px solid rgba(1, 36, 43, 0.22);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.round-progress-fill {
+  height: calc(100% - 4px);
+  margin: 2px;
+  background: var(--app-primary);
+  border-radius: 999px;
+  transition: width 180ms ease-out;
+}
+
+.round-progress-node {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: #00bcd4;
+  color: #01242b;
   font-family: var(--app-font);
-  font-size: var(--app-font-size-lg);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border: 2px solid rgba(1, 36, 43, 0.22);
+}
+
+.round-progress-node-current {
+  z-index: 2;
+  background: linear-gradient(180deg, #41e3ff 0%, #00bcd4 100%);
+  border-color: rgba(1, 36, 43, 0.28);
+}
+
+.round-progress-node-target {
+  left: 100%;
+  z-index: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #f3fbff 100%);
+  color: rgba(1, 36, 43, 0.3);
+  border-color: rgba(1, 36, 43, 0.24);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
 }
 
 .keypad-stage {
@@ -528,48 +612,7 @@ onUnmounted(() => {
   align-items: center;
   max-width: 400px;
   margin: 0 auto;
-}
-
-.keypad-feedback {
-  text-align: center;
-  padding: var(--app-space-md);
-  border-radius: var(--app-radius-md);
-  font-family: var(--app-font);
-  font-size: var(--app-font-size-lg);
-  font-weight: var(--app-font-weight-bold);
-}
-
-.feedback-correct {
-  color: var(--app-correct);
-}
-
-.feedback-wrong {
-  color: var(--app-wrong);
-}
-
-.next-btn {
-  margin-top: var(--app-space-sm);
-  min-height: var(--app-tap-min);
-  min-width: 120px;
-  padding: var(--app-space-sm) var(--app-space-lg);
-  font-family: var(--app-font);
-  font-size: var(--app-font-size-lg);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
-  background: var(--app-primary);
-  border: none;
-  border-radius: var(--app-radius-md);
-  cursor: pointer;
-  transition: background var(--app-transition);
-}
-
-.next-btn:hover {
-  background: var(--app-primary-hover);
-}
-
-.next-btn:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
+  padding-top: 0.75rem;
 }
 
 .skin-picker {
@@ -606,26 +649,6 @@ onUnmounted(() => {
 }
 .skin-btn .lock {
   margin-left: 0.25rem;
-}
-.privacy-footer {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  font-size: 0.8rem;
-  color: var(--app-text-muted);
-  border-top: 1px solid var(--app-muted);
-}
-.privacy-note {
-  margin: 0 0 0.5rem;
-}
-.opt-out {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-.opt-out input:focus-visible {
-  outline: 2px solid var(--app-primary);
-  outline-offset: 2px;
 }
 .skip-link {
   position: absolute;

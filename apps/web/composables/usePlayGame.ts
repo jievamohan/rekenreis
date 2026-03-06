@@ -23,6 +23,10 @@ export type PlayFeedback = PlayFeedbackCorrect | PlayFeedbackTimeout
 export interface UsePlayGameOptions {
   source?: 'infinite' | 'pack' | Ref<'infinite' | 'pack'>
   levelPack?: Level[] | Ref<Level[]>
+  /** Initial index into level pack (e.g. derived from map level). */
+  initialPackIndex?: number | Ref<number>
+  /** Seed for pack-mode RNG; allows session-level variety. */
+  packSeed?: number | Ref<number>
   /** When > 0, prefer next easy level from pack (pack mode only). Ref is decremented when easy level is served. */
   strugglingRoundsLeft?: Ref<number>
 }
@@ -33,6 +37,8 @@ export function usePlayGame(
 ) {
   const sourceRef = isRef(options.source) ? options.source : ref(options.source ?? 'infinite')
   const levelPackRef = isRef(options.levelPack) ? options.levelPack : ref(options.levelPack ?? [])
+  const initialPackIndexRef = isRef(options.initialPackIndex) ? options.initialPackIndex : ref(options.initialPackIndex ?? 0)
+  const packSeedRef = isRef(options.packSeed) ? options.packSeed : ref(options.packSeed ?? 42)
   const strugglingRef = options.strugglingRoundsLeft ?? ref(0)
   const modeRef = isRef(mode) ? mode : ref(mode)
   const question = ref<AdditionQuestion | null>(null)
@@ -41,9 +47,8 @@ export function usePlayGame(
   const feedback = ref<PlayFeedback | null>(null)
 
   // Pack mode: index into level pack; cycle when exhausted.
-  // Fixed seed for reproducibility (same level+index -> same question).
-  const packIndex = ref(0)
-  const packRng = createSeededRng(42)
+  const packIndex = ref(Math.max(0, initialPackIndexRef.value))
+  let packRng = createSeededRng(packSeedRef.value)
 
   function loadQuestion() {
     const source = sourceRef.value
@@ -73,10 +78,11 @@ export function usePlayGame(
     feedback.value = null
   }
 
-  watch([modeRef, sourceRef, levelPackRef], () => {
+  watch([modeRef, sourceRef, levelPackRef, initialPackIndexRef, packSeedRef], () => {
     score.value = 0
     streak.value = 0
-    packIndex.value = 0
+    packIndex.value = Math.max(0, initialPackIndexRef.value)
+    packRng = createSeededRng(packSeedRef.value)
     loadQuestion()
   }, { deep: true })
 

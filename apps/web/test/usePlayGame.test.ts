@@ -140,5 +140,42 @@ describe('usePlayGame', () => {
       game.nextQuestion()
       expect(game.question.value).not.toBeNull()
     })
+
+    it('uses initialPackIndex to pick the starting level config', () => {
+      const customPack: Level[] = [
+        {
+          operator: 'addition',
+          operandMin: 0,
+          operandMax: 0,
+          choiceCount: 3,
+          hintMode: 'none',
+          difficultyTag: 'easy',
+        },
+        {
+          operator: 'addition',
+          operandMin: 9,
+          operandMax: 9,
+          choiceCount: 3,
+          hintMode: 'none',
+          difficultyTag: 'easy',
+        },
+      ]
+
+      const gameFromStart = usePlayGame('upTo10', {
+        source: 'pack',
+        levelPack: customPack,
+        initialPackIndex: 0,
+        packSeed: 1234,
+      })
+      const gameFromSecond = usePlayGame('upTo10', {
+        source: 'pack',
+        levelPack: customPack,
+        initialPackIndex: 1,
+        packSeed: 1234,
+      })
+
+      expect(gameFromStart.question.value!.correctAnswer).toBe(0)
+      expect(gameFromSecond.question.value!.correctAnswer).toBe(18)
+    })
   })
 })
