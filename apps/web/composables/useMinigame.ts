@@ -79,13 +79,14 @@ registerMinigame({
     pieceCount: { min: 3, max: 5 },
   },
   contractV2: {
-    interactionType: 'tap-choice',
+    interactionType: 'build-sequence',
     requiredInputs: ['pointer', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces to choose from' },
+      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces on the track' },
+      { key: 'trackLength', min: 8, max: 15, description: 'Length of the number track' },
     ],
-    layoutClass: 'layout-tap-scene',
+    layoutClass: 'layout-sequence-track',
     isNew: false,
   },
 })

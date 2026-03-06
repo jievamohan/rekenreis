@@ -977,7 +977,8 @@ Acceptance:
 ---
 
 ## Epic 22.2 — Drag/Drop + Timed-Kind Mechanic Upgrades
-- [ ]
+- [x]
+Merged: PR #67
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest

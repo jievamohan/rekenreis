@@ -283,9 +283,11 @@
     "hintContinue": "We gaan rustig verder..."
   },
   "minigameCoralBuilder": {
-    "ariaLabel": "Koraal bouwen — tik op het juiste koraalstuk",
+    "ariaLabel": "Koraal bouwen — kies de juiste plek op de getallenlijn",
     "pieceLabel": "Koraalstuk {value}",
-    "reefLabel": "Koraalrif"
+    "reefLabel": "Koraalrif",
+    "sequenceHint": "Plaats het koraal op de juiste plek!",
+    "trackLabel": "Getallenlijn"
   },
   "minigameSubmarineSort": {
     "ariaLabel": "Onderzeeër sorteren — sleep het juiste item naar het compartiment",
