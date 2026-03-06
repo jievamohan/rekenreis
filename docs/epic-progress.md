@@ -37,3 +37,4 @@
 | Epic 21.4 — Fish Feed + Coral Builder | done | PR #61 merged |
 | Epic 21.5 — Submarine Sort + Starfish Match | done | PR #62 merged |
 | Epic 21.6 — Integration, Polish & a11y Hardening | done | PR merged |
+| Epic 22.1 — Minigame Contract v2 Foundation | done | PR #66 merged |

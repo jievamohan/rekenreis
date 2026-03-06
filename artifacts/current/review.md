@@ -1,19 +1,8 @@
-# Review — Epic 22.1
+# Review — Epic 22.2
 
 ## Changes
 
-1. **types/minigame.ts**: Added Contract v2 types (InteractionType, RequiredInput, LayoutClass, TimerPolicy, UniqueDifficultyKnob, MinigameContractV2). Extended MinigameDefinition to include `contractV2` field.
-
-2. **composables/useMinigame.ts**: Annotated all 6 minigames with v2 metadata. Added `getAllDefinitions()` helper.
-
-3. **utils/minigame/validateContractV2.ts**: New validation utility for per-minigame and collection-level contract checks.
-
-4. **components/minigames/MinigameRenderer.vue**: Refactored to use registry (`useMinigame().getDefinition`) instead of duplicated component map.
-
-5. **test/contractV2.test.ts**: 20 unit tests covering validation, registry completeness, and enum correctness.
-
-## Verification
-
-- Typecheck: PASS
-- Unit tests: 219/219 PASS
-- Build: PASS
+1. **MinigameTreasureDive.vue**: Rewritten with pointer-event drag/drop (touch+mouse), dual-zone layout (source gems + drop chest), keyboard fallback (Enter to select gem, Enter on chest to submit).
+2. **MinigameFishFeed.vue**: Timeout now shows hint overlay with correct answer ("Het antwoord is X. Goed onthouden!") and auto-continues after 2.5s. No punishment on timeout.
+3. **nl.json**: Added `hintMessage` and `hintContinue` keys under `minigameFishFeed`.
+4. **e2e/mechanic-upgrades.spec.ts**: 4 E2E tests covering drag/drop round, keyboard fallback, timeout hint-continue, and normal pellet selection.

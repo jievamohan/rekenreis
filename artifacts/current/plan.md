@@ -1,15 +1,15 @@
-# Plan — Epic 22.1
+# Plan — Epic 22.2
 
-**Branch:** feat/22.1-contract-v2-foundation
+**Branch:** feat/22.2-drag-timed-upgrades
 
 ## Goal
 
-Introduce Minigame Contract v2 metadata types and annotate all 6 enabled minigames with interaction metadata. Add validation and smoke E2E.
+Upgrade TreasureDive to genuine drag/drop-first interaction with pointer events and keyboard fallback. Upgrade FishFeed to timed-but-kind with hint-continue on timeout (no punishment).
 
-## Tasks (max 5)
+## Tasks
 
-1. Define v2 types/enums
-2. Annotate registry with v2 metadata
-3. Contract validation + unit tests
-4. Wire v2 metadata through renderer/serving
-5. E2E smoke assertion
+1. Upgrade TreasureDive: pointer-event drag, dual-zone layout, keyboard fallback
+2. Upgrade FishFeed: gentle timer with hint-continue on timeout
+3. Add Dutch i18n keys for new hint/timeout states
+4. Unit tests for timeout and drag logic
+5. E2E tests: drag/drop round + timed timeout graceful continuation

@@ -1,5 +1,2 @@
-# Typecheck — Epic 22.1
-
+# Typecheck — Epic 22.2
 **Status:** PASS
-**Command:** `docker compose exec web pnpm run typecheck`
-**Result:** Clean, no errors.

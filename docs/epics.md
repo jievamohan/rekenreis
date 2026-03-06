@@ -942,7 +942,8 @@ Acceptance:
 ---
 
 ## Epic 22.1 — Minigame Contract v2 Foundation
-- [ ]
+- [x]
+Merged: PR #66
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest
