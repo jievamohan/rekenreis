@@ -72,4 +72,14 @@ describe('minigame-map.v1.json validation', () => {
       }
     }
   })
+
+  test('levels 1 to 100 have explicit direct minigame mapping', () => {
+    for (let level = 1; level <= 100; level++) {
+      const rule = map.rules.find((r) => level >= r.levelMin && level <= r.levelMax)
+      expect(rule, `Missing rule for level ${level}`).toBeDefined()
+      expect(rule!.entry.type, `Level ${level} should use direct mapping`).toBe('direct')
+      expect(rule!.levelMin).toBe(level)
+      expect(rule!.levelMax).toBe(level)
+    }
+  })
 })

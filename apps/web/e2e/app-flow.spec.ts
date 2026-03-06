@@ -1,26 +1,60 @@
 import { test, expect } from '@playwright/test'
 
+const ROUNDS_PER_LEVEL = 10
+
+async function findAnswerButtonByExactLabel(
+  page: import('@playwright/test').Page,
+  answer: number
+) {
+  const buttons = page.locator('[data-testid^="minigame-"] button')
+  await expect.poll(async () => await buttons.count()).toBeGreaterThan(0)
+  const total = await buttons.count()
+  const target = String(answer)
+  for (let i = 0; i < total; i++) {
+    const text = (await buttons.nth(i).innerText()).trim()
+    if (text === target) return buttons.nth(i)
+  }
+  return null
+}
+
+async function answerCurrentQuestion(page: import('@playwright/test').Page, answer: number, beforeProgress: number) {
+  await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
+  const correctButton = await findAnswerButtonByExactLabel(page, answer)
+  expect(correctButton).not.toBeNull()
+  await expect(correctButton!).toBeVisible()
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await correctButton!.click({ force: true })
+
+    const chestZone = page.locator('.chest-zone').first()
+    if (await chestZone.isVisible()) {
+      await chestZone.click({ force: true })
+    }
+
+    const progressNow = Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '0')
+    if (progressNow > beforeProgress) {
+      return
+    }
+    await page.waitForTimeout(120)
+  }
+}
+
 async function completeLevel(page: import('@playwright/test').Page) {
   await expect(page.locator('.problem-card')).toBeVisible()
 
-  for (let round = 0; round < 5; round++) {
+  for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
+    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
     const operandEls = page.locator('.problem-card .operand')
     const a = Number(await operandEls.nth(0).textContent())
     const b = Number(await operandEls.nth(1).textContent())
-    const answer = String(a + b)
+    const before = Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '0')
+    await answerCurrentQuestion(page, a + b, before)
 
-    for (const d of answer.split('')) {
-      await page.keyboard.press(d)
+    if (round < ROUNDS_PER_LEVEL - 1) {
+      await expect.poll(
+        async () => Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '-1'),
+      ).toBeGreaterThan(before)
+      await expect(page.locator('.problem-card')).toBeVisible()
     }
-    await page.keyboard.press('Enter')
-
-    await expect(page.locator('.keypad-feedback, .modal-dialog')).toBeVisible()
-
-    const modalVisible = await page.locator('.modal-dialog').isVisible()
-    if (modalVisible) break
-
-    await page.locator('.next-btn').click()
-    await expect(page.locator('.problem-card')).toBeVisible()
   }
 
   await expect(page.locator('.modal-dialog')).toBeVisible()

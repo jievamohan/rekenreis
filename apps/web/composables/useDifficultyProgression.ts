@@ -6,7 +6,11 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
     { chapterMin: 1, chapterMax: 3, mathRange: { operandMin: 0, operandMax: 5, choiceCount: 3 } },
     { chapterMin: 4, chapterMax: 6, mathRange: { operandMin: 0, operandMax: 10, choiceCount: 3 } },
     { chapterMin: 7, chapterMax: 9, mathRange: { operandMin: 0, operandMax: 15, choiceCount: 4 } },
-    { chapterMin: 10, chapterMax: 999, mathRange: { operandMin: 0, operandMax: 20, choiceCount: 4 } },
+    { chapterMin: 10, chapterMax: 12, mathRange: { operandMin: 0, operandMax: 20, choiceCount: 4 } },
+    { chapterMin: 13, chapterMax: 16, mathRange: { operandMin: 1, operandMax: 20, choiceCount: 4 } },
+    { chapterMin: 17, chapterMax: 20, mathRange: { operandMin: 2, operandMax: 20, choiceCount: 4 } },
+    { chapterMin: 21, chapterMax: 24, mathRange: { operandMin: 3, operandMax: 20, choiceCount: 4 } },
+    { chapterMin: 25, chapterMax: 999, mathRange: { operandMin: 4, operandMax: 20, choiceCount: 4 } },
   ],
   minigameParams: {
     'bubble-pop': {
