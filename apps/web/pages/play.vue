@@ -427,6 +427,7 @@ onUnmounted(() => {
           :minigame-id="currentMinigameId"
           :question="minigameQuestion"
           :difficulty-params="currentMinigameParams"
+          :timers-disabled="profile.activeProfile.value?.prefs.timersDisabled ?? false"
           @answer="onKeypadAnswer"
         />
       </div>

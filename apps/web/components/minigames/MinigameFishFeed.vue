@@ -6,6 +6,7 @@ import { useI18n } from '~/composables/useI18n'
 const props = defineProps<{
   question: AdditionQuestion
   difficultyParams?: Record<string, number>
+  timersDisabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -76,7 +77,9 @@ const timerColor = computed(() => {
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  startTimer()
+  if (!props.timersDisabled) {
+    startTimer()
+  }
 })
 
 onUnmounted(() => {
@@ -91,7 +94,7 @@ onUnmounted(() => {
     role="group"
     :aria-label="t('minigameFishFeed.ariaLabel')"
   >
-    <div class="timer-bar" role="timer" :aria-label="t('minigameFishFeed.timerLabel', { seconds: timeLeft })">
+    <div v-if="!timersDisabled" class="timer-bar" role="timer" :aria-label="t('minigameFishFeed.timerLabel', { seconds: timeLeft })">
       <div
         class="timer-fill"
         :style="{ width: `${timerFraction * 100}%`, background: timerColor }"

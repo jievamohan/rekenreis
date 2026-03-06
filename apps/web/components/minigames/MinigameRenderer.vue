@@ -8,6 +8,7 @@ const props = defineProps<{
   minigameId: MinigameId
   question: AdditionQuestion
   difficultyParams?: Record<string, number>
+  timersDisabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -43,6 +44,7 @@ function handleAnswer(choice: number) {
         :is="activeComponent"
         :question="props.question"
         :difficulty-params="props.difficultyParams"
+        :timers-disabled="props.timersDisabled"
         @answer="handleAnswer"
       />
       <template #fallback>

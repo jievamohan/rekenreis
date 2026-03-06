@@ -1,16 +1,16 @@
-# PR — Epic 22.4: Diversity Gate Rubric + CI Enforcement
+# PR — Epic 22.5: Kid-safe Timer Policy + Settings Integration
 
 ## Summary
-Implement hard Diversity Gate: distribution threshold (>=60% fails), duplication guard for new minigames, and wire into CI pipeline.
+Add global timer-disable setting: when enabled, timed minigames run without countdown pressure. Timer bar is hidden and no timeout occurs.
 
 ## Tasks
-- [ ] T1: Create diversityGate utility with distribution + duplication checks
-- [ ] T2: Add 14 unit tests with boundary conditions
-- [ ] T3: Add gate:diversity npm script
-- [ ] T4: Wire Diversity Gate step into CI workflow
+- [ ] T1: Add timersDisabled to ProfilePrefs + migration
+- [ ] T2: Timer toggle in settings page
+- [ ] T3: Pass timersDisabled through MinigameRenderer to FishFeed
+- [ ] T4: FishFeed respects timersDisabled
 
 ## PR Metadata
 - Base: main
-- Branch: feat/22.4-diversity-gate
-- PR: #69
-- URL: https://github.com/jievamohan/rekenreis/pull/69
+- Branch: feat/22.5-timer-policy-settings
+- PR: #70
+- URL: https://github.com/jievamohan/rekenreis/pull/70

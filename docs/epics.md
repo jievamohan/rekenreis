@@ -1042,7 +1042,8 @@ Acceptance:
 ---
 
 ## Epic 22.4 — Diversity Gate Rubric + CI Enforcement
-- [ ]
+- [x]
+Merged: PR #69
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest

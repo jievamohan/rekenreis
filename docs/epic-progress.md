@@ -40,3 +40,4 @@
 | Epic 22.1 — Minigame Contract v2 Foundation | done | PR #66 merged |
 | Epic 22.2 — Drag/Drop + Timed-Kind Upgrades | done | PR #67 merged |
 | Epic 22.3 — Sorting + Sequence/Spatial Upgrades | done | PR #68 merged |
+| Epic 22.4 — Diversity Gate Rubric + CI Enforcement | done | PR #69 merged |

@@ -1,3 +1,3 @@
-# Risk — Epic 22.4
-**Risk Profile:** Low — CI workflow change (Lane I).
+# Risk — Epic 22.5
+**Risk Profile:** Low — Profile schema change (additive, backward-compatible).
 No auth/crypto/payments/DB changes.
