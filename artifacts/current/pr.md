@@ -8,3 +8,9 @@ Consolidated interaction-diversity E2E suite proving all 4 mechanic types work e
 - [ ] T2: Dutch copy assertions for new hint/timer/settings strings
 - [ ] T3: A11y smoke checks (heading structure, tap size)
 - [ ] T4: Verify no host-side Playwright in scripts/workflows
+
+## PR Metadata
+- Base: main
+- Branch: feat/22.6-e2e-hardening
+- PR: #71
+- URL: https://github.com/jievamohan/rekenreis/pull/71
