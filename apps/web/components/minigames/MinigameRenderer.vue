@@ -42,6 +42,7 @@ function handleAnswer(choice: number) {
     <Suspense>
       <component
         :is="activeComponent"
+        :key="`${props.minigameId}-${props.question.a}-${props.question.b}`"
         :question="props.question"
         :difficulty-params="props.difficultyParams"
         :timers-disabled="props.timersDisabled"

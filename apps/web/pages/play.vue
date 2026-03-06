@@ -424,6 +424,7 @@ onUnmounted(() => {
 
         <MinigameRenderer
           v-if="useMinigameMode && currentMinigameId && minigameQuestion"
+          :key="roundIndex"
           :minigame-id="currentMinigameId"
           :question="minigameQuestion"
           :difficulty-params="currentMinigameParams"

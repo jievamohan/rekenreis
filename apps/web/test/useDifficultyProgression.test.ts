@@ -70,6 +70,15 @@ describe('useDifficultyProgression', () => {
       expect(late.bubbleCount).toBeGreaterThanOrEqual(early.bubbleCount)
     })
 
+    test('bubble-pop timer is 0 below level 50, active from level 50+', () => {
+      const before = getMinigameParams('bubble-pop', 49)
+      const at = getMinigameParams('bubble-pop', 50)
+      const high = getMinigameParams('bubble-pop', 120)
+      expect(before.timerSeconds).toBe(0)
+      expect(at.timerSeconds).toBeGreaterThan(0)
+      expect(high.timerSeconds).toBeLessThan(at.timerSeconds)
+    })
+
     test('fish-feed timer decreases with level', () => {
       const early = getMinigameParams('fish-feed', 1, 30)
       const late = getMinigameParams('fish-feed', 30, 30)

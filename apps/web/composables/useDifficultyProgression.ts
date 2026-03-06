@@ -14,8 +14,9 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
   ],
   minigameParams: {
     'bubble-pop': {
-      bubbleCount: { min: 3, max: 6 },
+      bubbleCount: { min: 4, max: 8 },
       floatSpeed: { min: 2, max: 4 },
+      timerSeconds: { min: 0, max: 10 },
     },
     'treasure-dive': {
       gemCount: { min: 3, max: 5 },
@@ -80,8 +81,23 @@ export function useDifficultyProgression(progression?: DifficultyProgression) {
     const params = config.minigameParams[minigameId]
     if (!params) return {}
 
-    const t = Math.min(1, Math.max(0, (level - 1) / Math.max(1, totalLevels - 1)))
     const result: Record<string, number> = {}
+
+    if (minigameId === 'bubble-pop') {
+      const designMaxLevel = 120
+      const tBubble = Math.min(1, (level - 1) / Math.max(1, designMaxLevel - 1))
+      result.bubbleCount = Math.round(lerp(4, 8, tBubble))
+      result.floatSpeed = Math.round(lerp(2, 4, tBubble))
+      if (level < 50) {
+        result.timerSeconds = 0
+      } else {
+        const tTimer = Math.min(1, (level - 50) / Math.max(1, designMaxLevel - 50))
+        result.timerSeconds = Math.round(lerp(20, 10, tTimer))
+      }
+      return result
+    }
+
+    const t = Math.min(1, Math.max(0, (level - 1) / Math.max(1, totalLevels - 1)))
     for (const [key, range] of Object.entries(params)) {
       result[key] = Math.round(lerp(range.min, range.max, t))
     }
