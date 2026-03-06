@@ -1105,7 +1105,8 @@ Acceptance:
 ---
 
 ## Epic 22.6 — Container-only E2E Proof + Final Hardening
-- [ ]
+- [x]
+Merged: PR #71
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest
