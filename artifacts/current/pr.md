@@ -1,16 +1,10 @@
-# PR — Epic 22.5: Kid-safe Timer Policy + Settings Integration
+# PR — Epic 22.6: Container-only E2E Proof + Final Hardening
 
 ## Summary
-Add global timer-disable setting: when enabled, timed minigames run without countdown pressure. Timer bar is hidden and no timeout occurs.
+Consolidated interaction-diversity E2E suite proving all 4 mechanic types work end-to-end. Added Dutch copy assertions, a11y smoke checks, and verified container-only Playwright usage.
 
 ## Tasks
-- [ ] T1: Add timersDisabled to ProfilePrefs + migration
-- [ ] T2: Timer toggle in settings page
-- [ ] T3: Pass timersDisabled through MinigameRenderer to FishFeed
-- [ ] T4: FishFeed respects timersDisabled
-
-## PR Metadata
-- Base: main
-- Branch: feat/22.5-timer-policy-settings
-- PR: #70
-- URL: https://github.com/jievamohan/rekenreis/pull/70
+- [ ] T1: Consolidated E2E spec for interaction diversity
+- [ ] T2: Dutch copy assertions for new hint/timer/settings strings
+- [ ] T3: A11y smoke checks (heading structure, tap size)
+- [ ] T4: Verify no host-side Playwright in scripts/workflows

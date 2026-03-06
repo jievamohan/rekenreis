@@ -1072,7 +1072,8 @@ Acceptance:
 ---
 
 ## Epic 22.5 — Kid-safe Timer Policy + Settings Integration
-- [ ]
+- [x]
+Merged: PR #70
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest
