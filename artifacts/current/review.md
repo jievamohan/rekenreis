@@ -1,6 +1,5 @@
-# Review — Epic 22.3
-1. SubmarineSort: rewritten as bin-sorting with 2 labeled bins, keyboard-first (Tab+Enter), gentle shake on wrong bin
-2. CoralBuilder: rewritten as number-track sequence mechanic, choice positions highlighted on track, keyboard Tab+Enter
-3. Contract v2 updated: coral-builder now build-sequence/layout-sequence-track
-4. Dutch i18n: added sequenceHint, trackLabel keys
-5. E2E: 3 tests for sorting keyboard, wrong bin feedback, sequence round
+# Review — Epic 22.4
+1. diversityGate.ts: distribution check (>=60% threshold), duplication check (new+same type+layout), completeness check, formatted report
+2. diversityGate.test.ts: 14 tests with boundary conditions (exactly 60%, below 60%, all same, offender details)
+3. package.json: gate:diversity script
+4. gates.yml: "Diversity Gate" step in lint-test job

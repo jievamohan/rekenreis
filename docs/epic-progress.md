@@ -39,3 +39,4 @@
 | Epic 21.6 — Integration, Polish & a11y Hardening | done | PR merged |
 | Epic 22.1 — Minigame Contract v2 Foundation | done | PR #66 merged |
 | Epic 22.2 — Drag/Drop + Timed-Kind Upgrades | done | PR #67 merged |
+| Epic 22.3 — Sorting + Sequence/Spatial Upgrades | done | PR #68 merged |

@@ -347,6 +347,9 @@ jobs:
       - name: Web test
         run: cd apps/web && pnpm run test
 
+      - name: Diversity Gate
+        run: cd apps/web && pnpm run gate:diversity
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

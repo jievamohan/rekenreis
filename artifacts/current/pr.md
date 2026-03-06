@@ -1,16 +1,16 @@
-# PR — Epic 22.3: Sorting + Sequence/Spatial Mechanic Upgrades
+# PR — Epic 22.4: Diversity Gate Rubric + CI Enforcement
 
 ## Summary
-Upgrade SubmarineSort to genuine bin-sorting with labeled bins and keyboard-first fallback. Upgrade CoralBuilder to number-track sequence mechanic.
+Implement hard Diversity Gate: distribution threshold (>=60% fails), duplication guard for new minigames, and wire into CI pipeline.
 
 ## Tasks
-- [ ] T1: Upgrade SubmarineSort to bin-sorting
-- [ ] T2: Upgrade CoralBuilder to sequence/spatial number-track
-- [ ] T3: Update Contract v2 metadata
-- [ ] T4: E2E tests for sorting and sequence
+- [ ] T1: Create diversityGate utility with distribution + duplication checks
+- [ ] T2: Add 14 unit tests with boundary conditions
+- [ ] T3: Add gate:diversity npm script
+- [ ] T4: Wire Diversity Gate step into CI workflow
 
 ## PR Metadata
 - Base: main
-- Branch: feat/22.3-sorting-sequence-upgrades
-- PR: #68
-- URL: https://github.com/jievamohan/rekenreis/pull/68
+- Branch: feat/22.4-diversity-gate
+- PR: #69
+- URL: https://github.com/jievamohan/rekenreis/pull/69

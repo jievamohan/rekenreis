@@ -1011,7 +1011,8 @@ Acceptance:
 ---
 
 ## Epic 22.3 — Sorting + Sequence/Spatial Mechanic Upgrades
-- [ ]
+- [x]
+Merged: PR #68
 PlanRef:
 - design: docs/design/epic-22.md
 - archive: artifacts/archive/epic-22.0/latest
