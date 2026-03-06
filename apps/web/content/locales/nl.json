@@ -275,7 +275,8 @@
     "ariaLabel": "Schatduik — sleep de juiste edelsteen naar de schatkist",
     "gemLabel": "Edelsteen {value}",
     "chestLabel": "Schatkist",
-    "chestReady": "Sleep of klik om antwoord te geven"
+    "chestReady": "Sleep of klik om antwoord te geven",
+    "correctFeedback": "Goed zo!"
   },
   "minigameFishFeed": {
     "ariaLabel": "Vis voeren — tik op de juiste korrel",

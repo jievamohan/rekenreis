@@ -56,10 +56,8 @@ const currentRoundDisplay = computed(() =>
 const completedProgressPercent = computed(() =>
   Math.min(100, (roundIndex.value / ROUNDS_PER_LEVEL) * 100)
 )
-const currentRoundPercent = computed(() => {
-  if (ROUNDS_PER_LEVEL <= 1) return 100
-  return ((currentRoundDisplay.value - 1) / (ROUNDS_PER_LEVEL - 1)) * 100
-})
+/** Node position aligned with fill so the current-round indicator sits at the leading edge. */
+const currentRoundPercent = computed(() => completedProgressPercent.value)
 
 const route = useRoute()
 const router = useRouter()

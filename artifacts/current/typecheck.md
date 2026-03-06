@@ -1,2 +1,6 @@
-# Typecheck — Epic 22.6
-**Status:** PASS
+# Typecheck — PASS
+
+```
+pnpm run typecheck
+✓ nuxt typecheck
+```

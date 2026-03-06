@@ -1,10 +1,22 @@
-# PR — Epic 22.6: Container-only E2E Proof + Final Hardening
+# PR — Treasure Dive Creatiever
 
 ## Summary
-Consolidated interaction-diversity E2E suite proving all 4 mechanic types work end-to-end. Added Dutch copy assertions, a11y smoke checks, and verified container-only Playwright usage.
+
+Level 14 (Treasure Dive) voelt als "1 van 3 aanklikken". Deze PR maakt Treasure Dive creatiever met:
+- Kist open/close animatie bij correcte drop
+- Wrong-drop: edelsteen springt terug, kist schudt
+- Edelstenen zweven subtiel in de pool
+- Zeebodem-strook rond de kist
+
+Drag-drop en keyboard flows blijven werken. Reduced motion gerespecteerd.
 
 ## Tasks
-- [ ] T1: Consolidated E2E spec for interaction diversity
-- [ ] T2: Dutch copy assertions for new hint/timer/settings strings
-- [ ] T3: A11y smoke checks (heading structure, tap size)
-- [ ] T4: Verify no host-side Playwright in scripts/workflows
+
+- [x] T1: Treasure Dive visuele + animatie-upgrade
+- [x] T2: Typecheck, diversity gate, build PASS (E2E: env-afhankelijk)
+
+## PR Metadata
+- Base: main
+- Branch: feat/treasure-dive-creative
+- PR: #73
+- URL: https://github.com/jievamohan/rekenreis/pull/73

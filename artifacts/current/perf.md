@@ -1,2 +1,5 @@
-# Performance — Epic 22.6
-**Status:** PASS — Test-only changes, no bundle impact.
+# Perf — PASS
+
+- Bundle build: SUCCESS
+- Geen nieuwe dependencies
+- CSS-animaties licht; reduced-motion fallback aanwezig
