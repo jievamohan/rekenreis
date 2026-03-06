@@ -12,7 +12,8 @@
     "generate:sfx": "node scripts/generate-sfx.mjs",
     "size": "nuxt build && du -sh .output",
     "test:e2e": "playwright test",
-    "test:visual": "playwright test --project=visual"
+    "test:visual": "playwright test --project=visual",
+    "gate:diversity": "vitest run test/diversityGate.test.ts"
   },
   "dependencies": {
     "nuxt": "3.13.2",

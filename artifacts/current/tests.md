@@ -1,3 +1,3 @@
-# Tests — Epic 22.3
-**Status:** PASS (219 unit tests)
-New E2E: sorting-sequence.spec.ts (3 tests)
+# Tests — Epic 22.4
+**Status:** PASS (233 tests, 29 files)
+New: diversityGate.test.ts (14 tests) — distribution threshold, duplication, completeness, registry validation.
