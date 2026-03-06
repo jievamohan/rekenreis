@@ -13,133 +13,202 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const placedPiece = ref<number | null>(null)
+const selectedPosition = ref<number | null>(null)
+const placed = ref(false)
 
-const pieces = computed(() =>
-  props.question.choices.map((choice) => ({
-    value: choice,
-  }))
-)
+const maxValue = computed(() => {
+  const choices = props.question.choices
+  return Math.max(...choices, props.question.correctAnswer) + 2
+})
 
-function selectPiece(value: number) {
-  placedPiece.value = value
-  emit('answer', value)
+const trackPositions = computed(() => {
+  const positions: number[] = []
+  for (let i = 0; i <= maxValue.value; i++) {
+    positions.push(i)
+  }
+  return positions
+})
+
+const isChoice = computed(() => {
+  const choiceSet = new Set(props.question.choices)
+  return (pos: number) => choiceSet.has(pos)
+})
+
+function selectPosition(pos: number) {
+  if (placed.value) return
+  if (!isChoice.value(pos)) return
+  selectedPosition.value = pos
+  placed.value = true
+  emit('answer', pos)
+}
+
+function onPositionKeydown(pos: number, e: KeyboardEvent) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault()
+    selectPosition(pos)
+  }
 }
 </script>
 
 <template>
   <div
-    class="coral-builder-scene"
+    class="coral-sequence-scene"
     data-testid="minigame-coral-builder"
     role="group"
-    :aria-label="t('problemCard.ariaLabel', { a: question.a, b: question.b, answer: question.correctAnswer })"
+    :aria-label="t('minigameCoralBuilder.ariaLabel')"
   >
-    <div class="reef-area" aria-hidden="true">
-      <span class="reef-emoji">🪸</span>
-      <span v-if="placedPiece !== null" class="placed-piece">{{ placedPiece }}</span>
+    <div class="reef-header" aria-hidden="true">
+      <span class="reef-icon">🪸</span>
     </div>
 
-    <div class="pieces-row" role="group" aria-label="Koraalstukken">
-      <button
-        v-for="piece in pieces"
-        :key="piece.value"
-        class="coral-piece"
-        :aria-label="String(piece.value)"
-        @click="selectPiece(piece.value)"
+    <p class="sequence-instruction">
+      {{ t('minigameCoralBuilder.sequenceHint') }}
+    </p>
+
+    <div class="number-track" role="group" :aria-label="t('minigameCoralBuilder.trackLabel')">
+      <div
+        v-for="pos in trackPositions"
+        :key="pos"
+        class="track-position"
+        :class="{
+          'is-choice': isChoice(pos),
+          'is-selected': selectedPosition === pos,
+          'is-correct': placed && pos === question.correctAnswer,
+        }"
+        :role="isChoice(pos) ? 'button' : 'presentation'"
+        :tabindex="isChoice(pos) ? 0 : -1"
+        :aria-label="isChoice(pos) ? t('minigameCoralBuilder.pieceLabel', { value: pos }) : undefined"
+        @click="selectPosition(pos)"
+        @keydown="onPositionKeydown(pos, $event)"
       >
-        <span class="piece-number">{{ piece.value }}</span>
-      </button>
+        <span class="track-marker" :class="{ 'marker-choice': isChoice(pos) }">
+          {{ isChoice(pos) ? pos : '·' }}
+        </span>
+        <span class="track-number">{{ pos }}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.coral-builder-scene {
+.coral-sequence-scene {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1rem;
   min-height: 260px;
 }
 
-.reef-area {
-  position: relative;
-  font-size: 3rem;
-  padding: 1rem;
+.reef-header {
+  font-size: 2.5rem;
 }
 
-.placed-piece {
-  position: absolute;
-  top: 0;
-  right: -8px;
-  background: var(--app-correct, #66bb6a);
-  color: #fff;
-  width: 32px;
-  height: 32px;
+.sequence-instruction {
+  font-family: var(--app-font, sans-serif);
+  font-size: 0.9rem;
+  color: var(--app-text-muted, #b0bec5);
+  margin: 0;
+  text-align: center;
+}
+
+.number-track {
+  display: flex;
+  gap: 0;
+  align-items: flex-end;
+  overflow-x: auto;
+  padding: 0.5rem;
+  max-width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.track-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 32px;
+  padding: 0.25rem;
+  scroll-snap-align: center;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.track-position.is-choice {
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.track-position.is-choice:hover,
+.track-position.is-choice:focus-visible {
+  background: rgba(255, 138, 101, 0.15);
+}
+
+.track-position.is-choice:focus-visible {
+  outline: 3px solid var(--app-primary, #4fc3f7);
+  outline-offset: 2px;
+}
+
+.track-position.is-selected {
+  background: rgba(102, 187, 106, 0.2);
+}
+
+.track-position.is-correct {
+  background: rgba(102, 187, 106, 0.3);
+}
+
+.track-marker {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  font-weight: 700;
-  animation: piece-place 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.pieces-row {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.coral-piece {
-  width: 56px;
-  height: 56px;
-  min-width: 48px;
-  min-height: 48px;
-  border-radius: 8px;
-  border: 2px solid #ff8a65;
-  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.coral-piece:hover,
-.coral-piece:focus-visible {
-  transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(255, 138, 101, 0.3);
-}
-
-.coral-piece:focus-visible {
-  outline: 2px solid var(--app-primary, #4fc3f7);
-  outline-offset: 3px;
-}
-
-.piece-number {
   font-family: var(--app-font, sans-serif);
-  font-size: 1.5rem;
+  font-size: 0.7rem;
+  color: var(--app-text-muted, #546e7a);
+  background: var(--app-surface, #e0f2f1);
+  border: 2px solid transparent;
+}
+
+.track-marker.marker-choice {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #bf360c;
-  pointer-events: none;
+  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
+  border: 2px solid #ff8a65;
+  cursor: pointer;
 }
 
-@keyframes piece-place {
-  0% { transform: scale(0); }
+.is-selected .track-marker.marker-choice {
+  background: var(--app-correct, #66bb6a);
+  border-color: var(--app-correct, #66bb6a);
+  color: #fff;
+  animation: coral-place 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.track-number {
+  font-family: var(--app-font, sans-serif);
+  font-size: 0.65rem;
+  color: var(--app-text-muted, #90a4ae);
+}
+
+@keyframes coral-place {
+  0% { transform: scale(0.5); }
   70% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .placed-piece {
-    animation: none;
-  }
-  .coral-piece {
+  .track-position {
     transition: none;
+  }
+  .is-selected .track-marker.marker-choice {
+    animation: none;
   }
 }
 </style>

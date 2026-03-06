@@ -1,18 +1,16 @@
-# PR — Epic 22.2: Drag/Drop + Timed-Kind Mechanic Upgrades
+# PR — Epic 22.3: Sorting + Sequence/Spatial Mechanic Upgrades
 
 ## Summary
-
-Upgrade TreasureDive to genuine pointer-event drag/drop with keyboard fallback. Upgrade FishFeed with hint-continue timeout behavior (no punishment on timeout).
+Upgrade SubmarineSort to genuine bin-sorting with labeled bins and keyboard-first fallback. Upgrade CoralBuilder to number-track sequence mechanic.
 
 ## Tasks
-
-- [ ] T1: Upgrade TreasureDive drag/drop interaction
-- [ ] T2: Upgrade FishFeed timed-but-kind behavior
-- [ ] T3: Add Dutch i18n keys for hint/timeout states
-- [ ] T4: E2E tests for drag/drop and timeout continuation
+- [ ] T1: Upgrade SubmarineSort to bin-sorting
+- [ ] T2: Upgrade CoralBuilder to sequence/spatial number-track
+- [ ] T3: Update Contract v2 metadata
+- [ ] T4: E2E tests for sorting and sequence
 
 ## PR Metadata
 - Base: main
-- Branch: feat/22.2-drag-timed-upgrades
-- PR: #67
-- URL: https://github.com/jievamohan/rekenreis/pull/67
+- Branch: feat/22.3-sorting-sequence-upgrades
+- PR: #68
+- URL: https://github.com/jievamohan/rekenreis/pull/68
