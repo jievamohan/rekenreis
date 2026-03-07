@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? 'html' : 'list',
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
@@ -15,6 +15,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: ['**/e2e/visual/**'],
     },
     {
       name: 'visual',
@@ -22,6 +23,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 720 },
       },
+      testMatch: ['**/e2e/visual/**/*.spec.ts'],
     },
   ],
 })
