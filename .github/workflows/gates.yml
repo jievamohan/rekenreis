@@ -226,22 +226,25 @@ jobs:
         run: docker load -i /tmp/docker-cache/playwright/playwright.tar
 
       - name: Build images (cached)
-        uses: docker/bake-action@v6
-        with:
-          source: .
-          files: docker-bake.hcl
-          load: true
-          targets: web,api
-          set: |
-            web.cache-from=type=gha,scope=web
-            web.cache-to=type=gha,mode=max,scope=web
-            api.cache-from=type=gha,scope=api
-            api.cache-to=type=gha,mode=max,scope=api
+        run: |
+          echo "## e2e-container step timing" >> "$GITHUB_STEP_SUMMARY"
+          START=$(date +%s)
+          docker buildx bake -f docker-bake.hcl --load \
+            --set web.cache-from=type=gha,scope=web \
+            --set web.cache-to=type=gha,mode=max,scope=web \
+            --set api.cache-from=type=gha,scope=api \
+            --set api.cache-to=type=gha,mode=max,scope=api \
+            web api
+          END=$(date +%s)
+          echo "- **Build images:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Start stack (no rebuild)
         run: |
+          START=$(date +%s)
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d web api mysql
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait web api mysql
+          END=$(date +%s)
+          echo "- **Start stack:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run Playwright tests (inside e2e container)
         run: bash scripts/ci/e2e-benchmark.sh

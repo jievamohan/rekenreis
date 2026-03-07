@@ -22,9 +22,9 @@ echo "Playwright e2e duration: ${DURATION}s"
 
 if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
   {
-    echo "## Playwright e2e benchmark"
-    echo "- **Duration:** ${DURATION}s"
-    echo "- **Baseline:** See docs/runbooks/e2e-benchmark.md"
+    echo "- **Run Playwright:** ${DURATION}s"
+    echo ""
+    echo "See docs/runbooks/e2e-benchmark.md for baseline."
   } >> "$GITHUB_STEP_SUMMARY"
 fi
 

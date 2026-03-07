@@ -1,5 +1,17 @@
 # Playwright e2e Benchmark
 
+## Step Timing (Epic 24.1)
+
+The e2e-container job outputs duration per step to the job summary:
+
+| Step | Description | Typical (cache hit) |
+|------|-------------|---------------------|
+| Build images | docker buildx bake (web, api) | ~30–90s |
+| Start stack | docker compose up + wait | ~20–60s |
+| Run Playwright | e2e tests in container | ~30–60s |
+
+**Spinup** = Build images + Start stack. **Target (Epic 24):** spinup nagenoeg instantaan via cache.
+
 ## Baseline (Epic 23.1)
 
 - **Metric:** Duration of the "Run Playwright tests" step in the e2e-container CI job.
