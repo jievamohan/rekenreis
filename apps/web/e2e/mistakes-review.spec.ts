@@ -18,7 +18,7 @@ async function findAnswerButtonByExactLabel(
 }
 
 async function answerCurrentQuestion(page: import('@playwright/test').Page, answer: number) {
-  await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
+  await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 8000 })
   const correctButton = await findAnswerButtonByExactLabel(page, answer)
   expect(correctButton).not.toBeNull()
   await expect(correctButton!).toBeVisible()
@@ -31,7 +31,7 @@ async function answerCurrentQuestion(page: import('@playwright/test').Page, answ
 }
 
 async function answerWrongQuestion(page: import('@playwright/test').Page, correctAnswer: number) {
-  await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
+  await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 8000 })
   const allButtons = page.locator('[data-testid^="minigame-"] button')
   await expect.poll(async () => await allButtons.count()).toBeGreaterThan(0)
   const total = await allButtons.count()
@@ -71,17 +71,17 @@ test.describe('mistakes review', () => {
       }
     }
 
-    await expect(page.locator('.modal-dialog')).toBeVisible()
+    await expect(page.locator('.modal-dialog')).toBeVisible({ timeout: 5000 })
 
     const reviewBtn = page.locator('.cta-secondary:has-text("Fouten bekijken")')
-    await expect(reviewBtn).toBeVisible()
+    await expect(reviewBtn).toBeVisible({ timeout: 3000 })
     await reviewBtn.click()
 
-    await expect(page.locator('.mistakes-review')).toBeVisible()
+    await expect(page.locator('.mistakes-review')).toBeVisible({ timeout: 3000 })
     await expect(page.locator('.review-title')).toContainText('Laten we deze nog eens bekijken')
     await expect(page.locator('.mistake-card')).toHaveCount(1)
 
-    await expect(page.locator('.cta-primary:has-text("Opnieuw proberen")')).toBeVisible()
-    await expect(page.locator('.cta-secondary:has-text("Naar de kaart")')).toBeVisible()
+    await expect(page.locator('.cta-primary:has-text("Opnieuw proberen")')).toBeVisible({ timeout: 2000 })
+    await expect(page.locator('.cta-secondary:has-text("Naar de kaart")')).toBeVisible({ timeout: 2000 })
   })
 })
