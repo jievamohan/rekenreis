@@ -1,6 +1,9 @@
 # CI override: web uses built image directly (no volume binds, no pnpm install at runtime)
-# Override-by-target: anonymous volumes replace dev binds so we use image contents in /app.
+# e2e: use custom image with pnpm pre-installed (Epic 25.2)
 services:
+  e2e:
+    image: rekenreis-e2e:latest
+
   web:
     user: "1000:1000"  # node user (override base root for CI least-privilege)
     working_dir: /app

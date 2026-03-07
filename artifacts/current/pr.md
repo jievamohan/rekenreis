@@ -1,7 +1,7 @@
-# Epic 25.1 — Benchmark e2e Install Timing
+# Epic 25.2 — Custom e2e Image met pnpm
 
-Meet en documenteer baseline voor e2e install-stap.
+Custom e2e image met pnpm pre-installed en GHA cache.
 
 ## Tasks
 
-- [ ] 0130-epic25-1-benchmark-install
+- [ ] 0131-epic25-2-custom-e2e-image
