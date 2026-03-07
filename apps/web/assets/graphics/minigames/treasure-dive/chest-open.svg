@@ -1,18 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 96">
-  <!-- Wooden chest body -->
   <path d="M12 64 Q60 52 108 64 L108 84 Q60 92 12 84 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="2"/>
   <path d="M12 64 L12 84 Q60 76 108 84 L108 64" fill="#6d4c41"/>
-  <!-- Lid with curved top -->
-  <path d="M8 48 Q60 28 112 48 L108 64 Q60 52 12 64 Z" fill="#a1887f" stroke="#5d4037" stroke-width="2"/>
-  <path d="M20 54 Q60 40 100 54" fill="#8d6e63" opacity="0.5"/>
-  <!-- Metal bands -->
+  <path d="M12 64 Q60 44 108 64 L100 58 Q60 42 20 58 Z" fill="#a1887f" stroke="#5d4037" stroke-width="2"/>
   <rect x="12" y="58" width="96" height="6" rx="1" fill="#b8860b" stroke="#8b6914" stroke-width="1"/>
   <rect x="12" y="72" width="96" height="6" rx="1" fill="#b8860b" stroke="#8b6914" stroke-width="1"/>
-  <rect x="52" y="42" width="16" height="24" rx="1" fill="#b8860b" stroke="#8b6914" stroke-width="1"/>
-  <!-- Lock -->
-  <ellipse cx="60" cy="58" rx="10" ry="8" fill="#daa520" stroke="#b8860b" stroke-width="1.5"/>
-  <rect x="56" y="58" width="8" height="12" rx="2" fill="#8b6914"/>
-  <!-- Hinges -->
   <rect x="20" y="48" width="12" height="6" rx="1" fill="#b8860b" stroke="#8b6914"/>
   <rect x="88" y="48" width="12" height="6" rx="1" fill="#b8860b" stroke="#8b6914"/>
+  <ellipse cx="60" cy="68" rx="28" ry="12" fill="#ffd54f" opacity="0.4"/>
 </svg>

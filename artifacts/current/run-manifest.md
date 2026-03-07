@@ -1,4 +1,16 @@
-# Run Manifest
-**Run ID:** epic-22.6-e2e-hardening
-**Branch:** feat/22.6-e2e-hardening
-**Epic:** 22.6 — Container-only E2E Proof + Final Hardening
+# Run Manifest — Treasure Dive Creatiever
+
+**Run ID:** treasure-dive-creative-2025-03
+
+## Required Agents
+
+| Agent | Status | Artifact |
+|-------|--------|----------|
+| business-analyst | OK | discovery.md |
+| ux-designer | OK | ux.md |
+| principal-architect | OK | architecture.md |
+| solution-designer | OK | solution.md |
+| qa-strategist | OK | qa.md |
+| security-privacy | OK | security-design.md |
+| game-designer | OK | game-feel.md |
+| art-director | OK | art-direction.md |
