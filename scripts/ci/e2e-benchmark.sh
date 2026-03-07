@@ -5,11 +5,12 @@ set -euo pipefail
 
 mkdir -p artifacts/ci
 
-# When node_modules exists (e.g. from CI cache), skip pnpm install to save time
+# Custom e2e image has pnpm pre-installed (Epic 25.2); no npm install -g pnpm.
+# When node_modules exists (e.g. from CI cache), skip pnpm install to save time.
 if [[ -d apps/web/node_modules ]] && [[ -f apps/web/node_modules/.pnpm/lock ]]; then
   CMD='
     INSTALL_START=$(date +%s)
-    npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store
+    pnpm config set store-dir /pnpm-store
     INSTALL_END=$(date +%s)
     echo $((INSTALL_END - INSTALL_START)) > /repo/artifacts/ci/install-seconds.txt
     TEST_START=$(date +%s)
@@ -22,7 +23,7 @@ if [[ -d apps/web/node_modules ]] && [[ -f apps/web/node_modules/.pnpm/lock ]]; 
 else
   CMD='
     INSTALL_START=$(date +%s)
-    npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store && pnpm install --frozen-lockfile
+    pnpm config set store-dir /pnpm-store && pnpm install --frozen-lockfile
     INSTALL_END=$(date +%s)
     echo $((INSTALL_END - INSTALL_START)) > /repo/artifacts/ci/install-seconds.txt
     TEST_START=$(date +%s)
