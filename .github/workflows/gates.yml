@@ -206,21 +206,6 @@ jobs:
         if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: cd apps/web && pnpm install --frozen-lockfile
 
-      - name: Cache Playwright image
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: /tmp/docker-cache/playwright
-          key: docker-playwright-v1.49.0-jammy
-          restore-keys: docker-playwright-
-
-      - name: Pull Playwright image
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          docker pull mcr.microsoft.com/playwright:v1.49.0-jammy
-          mkdir -p /tmp/docker-cache/playwright
-          docker save mcr.microsoft.com/playwright:v1.49.0-jammy -o /tmp/docker-cache/playwright/playwright.tar
-
       - name: Cache mysql image
         uses: actions/cache@v4
         id: mysql-cache
@@ -236,16 +221,9 @@ jobs:
           mkdir -p /tmp/docker-cache/mysql
           docker save mysql:8.0 -o /tmp/docker-cache/mysql/mysql.tar
 
-      - name: Load cached images (parallel when both hit)
-        if: steps.playwright-cache.outputs.cache-hit == 'true' || steps.mysql-cache.outputs.cache-hit == 'true'
-        run: |
-          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ]; then
-            docker load -i /tmp/docker-cache/playwright/playwright.tar &
-          fi
-          if [ "${{ steps.mysql-cache.outputs.cache-hit }}" = "true" ]; then
-            docker load -i /tmp/docker-cache/mysql/mysql.tar &
-          fi
-          wait
+      - name: Load mysql image (when cache hit)
+        if: steps.mysql-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/docker-cache/mysql/mysql.tar
 
       - name: Build images (cached)
         run: |
@@ -256,7 +234,9 @@ jobs:
             --set web.cache-to=type=gha,mode=max,scope=web \
             --set api.cache-from=type=gha,scope=api \
             --set api.cache-to=type=gha,mode=max,scope=api \
-            web api
+            --set e2e.cache-from=type=gha,scope=e2e \
+            --set e2e.cache-to=type=gha,mode=max,scope=e2e \
+            web api e2e
           END=$(date +%s)
           echo "- **Build images:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
 
