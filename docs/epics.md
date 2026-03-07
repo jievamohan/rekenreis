@@ -1307,7 +1307,8 @@ Acceptance:
 ---
 
 ## Epic 24.3 — Build Cache Fix
-- [ ]
+- [x]
+Merged: PR #86
 PlanRef:
 - design: docs/design/epic-24.md
 - archive: artifacts/archive/epic-24.0/latest
