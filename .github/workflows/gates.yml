@@ -221,9 +221,15 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up --wait web api mysql
 
       - name: Run Playwright tests (inside e2e container)
-        run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm e2e sh -lc \
-            "npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store && pnpm install --frozen-lockfile && pnpm test:e2e"
+        run: bash scripts/ci/e2e-benchmark.sh
+
+      - name: Upload e2e benchmark (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-benchmark
+          path: artifacts/ci/e2e-duration-seconds.txt
+          if-no-files-found: ignore
 
       - name: Upload Playwright report (always)
         if: always()

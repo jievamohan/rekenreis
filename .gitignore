@@ -3,4 +3,5 @@
 # CI-generated ZAP reports and artifact lifecycle
 artifacts/archive/
 artifacts/zap/
+artifacts/ci/
 artifacts/*.md
