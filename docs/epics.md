@@ -1389,7 +1389,7 @@ Acceptance:
 ---
 
 ## Epic 25.2 — Custom e2e Image met pnpm
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-25.md
 - archive: artifacts/archive/epic-25.0/latest
