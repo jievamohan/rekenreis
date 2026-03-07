@@ -1,26 +1,27 @@
-# QA — Fish Feed Creatiever
+# QA Strategy — Epic 23: Playwright CI Speed
 
-**Run ID:** fish-feed-creative-2025-03  
-**Agent:** qa-strategist
+## Test Strategy
 
-## Teststrategie
+### Regression Prevention
 
-### Unit
-- Geen nieuwe unit tests; bestaande minigame flow blijft
+- **Invariant:** All existing Playwright tests must remain green after each optimization.
+- **No test logic changes** unless deduplication explicitly removes redundant coverage.
 
-### E2E
-- Bestaande interaction-diversity.spec.ts: "timed-kind (FishFeed): timeout shows hint and continues"
-- Mechanic-upgrades.spec.ts: FishFeed flow
-- **Verificatie:** E2E moet blijven slagen na layout- en visuele wijzigingen
+### Benchmark Validation
 
-### Handmatig
-- Tap correct → feedback correct
-- Tap wrong → retry mogelijk
-- Timeout → hint + continue
-- Reduced motion → geen storende animaties
-- Keyboard → Tab + Enter werkt
+- Add CI step or script to record e2e-container job duration.
+- Document baseline in artifacts/current or docs/runbooks.
+- Target: job duration < 60s.
 
-### Gates
-- C: typecheck
-- D: security
-- F: build + bundle budget
+### Acceptance Criteria per Slice
+
+- **23.1:** Benchmark script runs; baseline documented.
+- **23.2:** Workers/project changes; all tests pass; duration reduced.
+- **23.3:** pnpm cache/slow-test optimizations; all tests pass; duration reduced.
+- **23.4:** Final fine-tuning; job < 60s; all tests pass.
+
+### Non-Flaky Assertions
+
+- Optimizations must not introduce flakiness.
+- If workers > 1: verify no shared state between tests (e.g. localStorage, session).
+- Retries (1) remain acceptable for transient failures.

@@ -1,10 +1,19 @@
-# Security Design — Fish Feed Creatiever
+# Security Design — Epic 23: Playwright CI Speed
 
-**Run ID:** fish-feed-creative-2025-03  
-**Agent:** security-privacy
+## Risk Assessment
 
-## N/A: Geen security-impact
+- **Scope:** CI/infrastructure only. No application code, auth, or data handling changes.
+- **New risks:** Low. Caching and parallelization are standard CI practices.
 
-**Impact:** geen
+## Considerations
 
-**Checks:** Geen auth, geen crypto, geen data-lever; alleen UI/layout wijzigingen in MinigameFishFeed.vue.
+1. **Cache integrity:** pnpm/composer caches must not weaken dependency integrity. Use hash-based cache keys (already in place).
+2. **Secrets:** No new secrets. Existing GITHUB_TOKEN usage unchanged.
+3. **Container isolation:** Playwright runs in container; no change to isolation model.
+4. **SAST/DAST:** Unaffected. Gates remain as configured.
+
+## Checks Required
+
+- Gate D (security) must remain green.
+- No new dependencies with security implications.
+- Cache keys must include lockfile hash (already: `hashFiles('apps/web/pnpm-lock.yaml')`).

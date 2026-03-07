@@ -1,16 +1,21 @@
-# Run Manifest — Fish Feed Creatiever
+# Run Manifest — Epic 23
 
-**Run ID:** fish-feed-creative-2025-03
+- **Run id:** 20260307154005
+- **Epic number:** 23
+- **Intent:** Improve GitHub Actions Playwright CI run time. Benchmark first, then fine-tune until under 1 minute.
 
-## Required Agents
+## Required Planning Agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
 | business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
+| ux-designer | N/A | ux.md (infra-only epic) |
+| art-director | N/A | art-direction.md (no UI) |
+| game-designer | N/A | game-feel.md (no gameplay) |
+| motion-audio-designer | N/A | motion-audio.md (no motion/audio) |
 | principal-architect | OK | architecture.md |
 | solution-designer | OK | solution.md |
 | qa-strategist | OK | qa.md |
 | security-privacy | OK | security-design.md |
-| game-designer | OK | game-feel.md |
-| art-director | OK | art-direction.md |
+| illustrator | N/A | assets.md (no new assets) |
+| backlog | OK | backlog.md |
