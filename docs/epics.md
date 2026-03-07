@@ -1245,3 +1245,114 @@ Acceptance:
 - e2e-container job completes in < 60 seconds
 - All tests green
 - Final config documented
+
+---
+
+## Epic 24.1 — Benchmark & Stap-timing
+- [ ]
+PlanRef:
+- design: docs/design/epic-24.md
+- archive: artifacts/archive/epic-24.0/latest
+- slice: 24.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 24.1: Meet duur per CI-stap (Build images, Start stack, Run Playwright) en documenteer baseline.
+
+Requirements:
+- Voeg stap-timing toe aan e2e-container job: output duur per stap (build, start, e2e)
+- Documenteer huidige baseline in docs/runbooks/e2e-benchmark.md (incl. spinup vs test-runtime)
+- CI job summary toont duur per stap
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Baseline per stap gedocumenteerd
+- CI output toont duur per stap
+- Runbook bijgewerkt
+- Alle tests green
+
+---
+
+## Epic 24.2 — MySQL Image Cache
+- [ ]
+PlanRef:
+- design: docs/design/epic-24.md
+- archive: artifacts/archive/epic-24.0/latest
+- slice: 24.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 24.2: Voeg MySQL image cache toe aan e2e-container job (zoals zap-baseline).
+
+Requirements:
+- Voeg MySQL image cache toe aan e2e-container job in .github/workflows/gates.yml
+- Gebruikzelfde patroon als zap-baseline: cache path, pull-if-miss, load-if-hit
+- Plaats cache-stappen vóór "Build images (cached)"
+- Bij cache hit: geen mysql pull bij "Start stack (no rebuild)"
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- MySQL cache toegevoegd aan e2e-container
+- Start stack stap geen mysql pull bij cache hit
+- Alle tests green
+
+---
+
+## Epic 24.3 — Build Cache Fix
+- [ ]
+PlanRef:
+- design: docs/design/epic-24.md
+- archive: artifacts/archive/epic-24.0/latest
+- slice: 24.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 24.3: Onderzoek en fix docker/bake cache zodat Build images (cached) effectief cache hit gebruikt.
+
+Requirements:
+- Analyseer waarom docker/bake-action cache miss geeft (indien van toepassing)
+- Pas cache-from/cache-to of bake config aan voor betere cache hits
+- Documenteer wijzigingen in docs/runbooks
+- Bij cache hit: geen volledige rebuild van web/api images
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Bake cache hit effectief (geen rebuild bij hit)
+- Config gedocumenteerd
+- Alle tests green
+
+---
+
+## Epic 24.4 — Fine-tune Spinup
+- [ ]
+PlanRef:
+- design: docs/design/epic-24.md
+- archive: artifacts/archive/epic-24.0/latest
+- slice: 24.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 24.4: Fine-tune tot spinup (Build + Start) nagenoeg instantaan.
+
+Requirements:
+- Pas eventuele extra optimalisaties toe (volgorde, parallelisatie, etc.)
+- Doel: spinup Build + Start significant korter dan ~1m30s
+- Documenteer finale config in docs/runbooks/e2e-benchmark.md
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Spinup nagenoeg instantaan (target bereikt)
+- Finale config gedocumenteerd
+- Alle tests green
