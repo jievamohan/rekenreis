@@ -63,3 +63,14 @@ bash scripts/ci/e2e-benchmark.sh
 - **Projects:** chromium (functional, excludes visual), visual (e2e/visual/* only)
 - **node_modules:** Cached; e2e skips install when present
 - **mistakes-review:** Reduced timeouts
+
+## Epic 24 — Spinup Optimization (Final)
+
+| Slice | Change | Status |
+|-------|--------|--------|
+| 24.1 | Step timing in job summary | Done |
+| 24.2 | MySQL image cache (no pull on hit) | Done |
+| 24.3 | Build cache config documented | Done |
+| 24.4 | Final config documented | Done |
+
+**Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache).
