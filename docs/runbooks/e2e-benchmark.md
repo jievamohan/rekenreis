@@ -74,3 +74,12 @@ bash scripts/ci/e2e-benchmark.sh
 | 24.4 | Parallel load Playwright + MySQL when both caches hit | Done |
 
 **Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache). Image loads run in parallel when both Playwright and MySQL caches hit.
+
+## Epic 25 — Install Optimization (Baseline)
+
+| Substep | Description | Typical (cache hit) | Typical (cache miss) |
+|---------|-------------|---------------------|----------------------|
+| Install (pnpm) | npm install -g pnpm + pnpm install (when needed) | ~5–15s | ~30–60s |
+| Run Playwright | pnpm test:e2e | ~30–60s | ~30–60s |
+
+**Baseline (Epic 25.1):** Install vs test substeps are reported in the e2e-container job summary. When node_modules cache hits, install is minimal (~5–15s). When cache misses, full pnpm install runs (~30–60s).
