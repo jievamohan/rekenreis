@@ -1132,4 +1132,116 @@ Acceptance:
 - Required interaction-diversity E2E scenarios are green in container
 - No host-side Playwright usage in scripts/docs/workflows
 - Dutch copy and accessibility checks pass
-- CI stays green with Gate C/D/F + Diversity Gate 
+- CI stays green with Gate C/D/F + Diversity Gate
+
+---
+
+## Epic 23.1 — Benchmark & Baseline
+- [ ]
+PlanRef:
+- design: docs/design/epic-23.md
+- archive: artifacts/archive/epic-23.0/latest
+- slice: 23.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 23.1: Add Playwright CI benchmark and document baseline.
+
+Requirements:
+- Add benchmark script or CI step that records e2e-container job duration
+- Document current baseline (Playwright run time) in docs/runbooks or scripts/ci
+- CI job outputs duration (e.g. via job summary or artifact)
+- All existing Playwright tests must remain green
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Benchmark script or step exists and runs in CI
+- Baseline documented (current ~2+ min)
+- e2e-container job reports duration
+- All tests pass
+
+---
+
+## Epic 23.2 — Workers & Project Consolidation
+- [ ]
+PlanRef:
+- design: docs/design/epic-23.md
+- archive: artifacts/archive/epic-23.0/latest
+- slice: 23.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 23.2: Increase Playwright workers and restrict visual project to visual specs only.
+
+Requirements:
+- In playwright.config.ts: increase workers from 1 to 2 or 4 when CI=true
+- Restrict visual project to run only e2e/visual/*.spec.ts (not all specs)
+- Ensure chromium project runs all functional specs
+- Verify no shared state between tests (localStorage, session) if workers > 1
+- All Playwright tests must pass
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- workers: 2 or 4 in CI
+- visual project runs only visual specs
+- Duration reduced by ~40–50%
+- All tests green
+
+---
+
+## Epic 23.3 — pnpm Cache & Slow Test Optimization
+- [ ]
+PlanRef:
+- design: docs/design/epic-23.md
+- archive: artifacts/archive/epic-23.0/latest
+- slice: 23.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 23.3: Cache pnpm in e2e path and optimize slow tests (e.g. mistakes-review.spec.ts).
+
+Requirements:
+- Improve pnpm install caching in e2e container (e.g. mount/store from job cache, or bake deps into e2e image)
+- Optimize mistakes-review.spec.ts: reduce timeouts, faster assertions, or split if needed
+- All Playwright tests must pass
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- pnpm install time reduced in e2e run
+- mistakes-review.spec.ts no longer slowest file
+- Additional 15–25s saved vs 23.2
+- All tests green
+
+---
+
+## Epic 23.4 — Fine-Tune to <60s
+- [ ]
+PlanRef:
+- design: docs/design/epic-23.md
+- archive: artifacts/archive/epic-23.0/latest
+- slice: 23.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 23.4: Final fine-tuning to achieve Playwright CI job < 60 seconds.
+
+Requirements:
+- If still >60s: deduplicate overlapping tests (interaction-diversity, mechanic-upgrades, sorting-sequence, minigame)
+- Apply any remaining optimizations (sharding, timeout tweaks, etc.)
+- Document final config in docs/runbooks
+- e2e-container job duration < 60 seconds
+- All Playwright tests must pass
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- e2e-container job completes in < 60 seconds
+- All tests green
+- Final config documented
