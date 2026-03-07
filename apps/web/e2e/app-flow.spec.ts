@@ -30,6 +30,11 @@ async function answerCurrentQuestion(page: import('@playwright/test').Page, answ
       await chestZone.click({ force: true })
     }
 
+    // Level complete modal appears when last round is done (game area is hidden)
+    const modal = page.locator('.modal-dialog')
+    if (await modal.isVisible()) {
+      return
+    }
     const progressNow = Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '0')
     if (progressNow > beforeProgress) {
       return
@@ -43,17 +48,22 @@ async function completeLevel(page: import('@playwright/test').Page) {
 
   for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
     await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const before = Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '0')
     await answerCurrentQuestion(page, a + b, before)
 
     if (round < ROUNDS_PER_LEVEL - 1) {
-      await expect.poll(
-        async () => Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '-1'),
-      ).toBeGreaterThan(before)
-      await expect(page.locator('.problem-card')).toBeVisible()
+      await expect
+        .poll(async () => {
+          const modal = page.locator('.modal-dialog')
+          if (await modal.isVisible()) return before + 1
+          return Number(await page.locator('.round-progress').getAttribute('aria-valuenow') ?? '-1')
+        })
+        .toBeGreaterThan(before)
+      if (!(await page.locator('.modal-dialog').isVisible())) {
+        await expect(page.locator('.problem-card')).toBeVisible()
+      }
     }
   }
 

@@ -1,24 +1,22 @@
-# Solution — Treasure Dive Creatiever
+# Solution — Fish Feed Creatiever
 
-**Run ID:** treasure-dive-creative-2025-03  
+**Run ID:** fish-feed-creative-2025-03  
 **Agent:** solution-designer
 
 ## Aanpak
 
-Enhancement van `MinigameTreasureDive.vue` met:
-1. **Visuele versterking** — kist en edelstenen meer "onderwater"
-2. **Animatie-feedback** — correct: kist opent, gloed; wrong: edelsteen springt terug, kist schudt
-3. **Drag-first affordance** — cursor grab/grabbing; edelsteen schaal bij drag; kist highlight bij drag-over
-4. **Float-effect** — edelstenen subtiele CSS animatie (zweven); kist op bodem-strook
+1. **Layout:** Aquarium-scene met vis centraal
+2. **Timer:** In-scene: waterniveau dat daalt OF zandloper in hoek
+3. **Pellets:** Verspreid in het water (niet horizontale rij)
+4. **Feedback:** CSS-animaties voor correct/wrong
 
-## Technische details
+## Technische Keuzes
 
-- **Component:** MinigameTreasureDive.vue
-- **Styling:** Scoped CSS; keyframes voor chest-open, wrong-bounce, float
-- **State:** Bestaande refs (draggedGem, selectedGem, chestHighlight) uitbreiden indien nodig
-- **A11y:** Geen wijziging in ARIA/keyboard flow; reduced motion: animaties → `animation: none` of `transition: none`
-- **Assets:** Alleen CSS; geen nieuwe SVGs als niet strikt noodzakelijk (budget < 2KB per minigame)
+- **CSS-first:** Geen nieuwe assets; CSS/SVG voor waterniveau of zandloper
+- **Timer visueel:** Waterniveau in aquarium: `height` of `clip-path` op basis van `timerFraction`
+- **Pellets:** `position: absolute` of flex met random-ish offsets; seeded voor determinisme
+- **Vis:** Emoji of grotere SVG; animatie bij correct
 
-## Ops/config
+## Ops/Config
 
-N/A — geen configuratie of env wijzigingen.
+- N/A: geen config wijzigingen

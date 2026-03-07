@@ -8,9 +8,8 @@ test.describe('drag/drop mechanic (TreasureDive)', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     // Click the gem with the correct answer
@@ -38,9 +37,8 @@ test.describe('drag/drop mechanic (TreasureDive)', () => {
 
     await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     // Tab through gems to find the correct one
@@ -65,23 +63,15 @@ test.describe('drag/drop mechanic (TreasureDive)', () => {
 })
 
 test.describe('timed-kind mechanic (FishFeed)', () => {
-  test('timeout shows hint and continues without punishment', async ({ page }) => {
+  test('timeout advances without feedback', async ({ page }) => {
     // Level 3 maps to fish-feed
     await page.goto('/play?level=3')
 
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
 
-    // Wait for the timer to expire (default ~15s, but difficulty may vary)
-    // The hint overlay should appear
-    await expect(page.locator('.hint-overlay')).toBeVisible({ timeout: 25000 })
-
-    // Verify hint card content
-    await expect(page.locator('.hint-card')).toBeVisible()
-    await expect(page.locator('.hint-text')).toBeVisible()
-
-    // After ~2.5s, the round should auto-advance
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 5000 })
+    // Wait for the timer to expire (~15s); round advances immediately without hint overlay
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
   })
 
   test('selecting a pellet before timeout works normally', async ({ page }) => {
@@ -89,9 +79,8 @@ test.describe('timed-kind mechanic (FishFeed)', () => {
 
     await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     const pellets = page.locator('[data-testid="minigame-fish-feed"] .pellet')
@@ -104,7 +93,7 @@ test.describe('timed-kind mechanic (FishFeed)', () => {
       }
     }
 
-    // No hint shown — direct answer
+    // No feedback overlay — direct advance
     await expect(page.locator('.hint-overlay')).toHaveCount(0)
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })

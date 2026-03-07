@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { MistakeItem } from '~/composables/useMistakes'
 import { useI18n } from '~/composables/useI18n'
-import mascotSrc from '~/assets/graphics/characters/mascot.svg'
 import HintDots from '~/components/hints/HintDots.vue'
+import MascotIcon from '~/components/graphics/MascotIcon.vue'
 
 const { t } = useI18n()
 defineProps<{
@@ -19,7 +19,7 @@ defineEmits<{
 <template>
   <div class="mistakes-review">
     <div class="review-header">
-      <img :src="mascotSrc" alt="" class="review-mascot" aria-hidden="true" />
+      <MascotIcon id-prefix="mistakes-review" class="review-mascot" />
       <h2 class="review-title">{{ t('mistakesReview.title') }}</h2>
       <p class="review-subtitle">{{ t('mistakesReview.subtitle', { level, count: mistakes.length }) }}</p>
     </div>

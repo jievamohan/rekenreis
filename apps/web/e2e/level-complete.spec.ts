@@ -21,9 +21,8 @@ test.describe('level complete modal', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
-      const operandEls = page.locator('.problem-card .operand')
-      const a = Number(await operandEls.nth(0).textContent())
-      const b = Number(await operandEls.nth(1).textContent())
+      const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+      const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
       await answerCurrentQuestion(page, a + b)
     }
 
@@ -37,9 +36,8 @@ test.describe('level complete modal', () => {
     await page.goto('/play?level=1')
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
-      const operandEls = page.locator('.problem-card .operand')
-      const a = Number(await operandEls.nth(0).textContent())
-      const b = Number(await operandEls.nth(1).textContent())
+      const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+      const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
       await answerCurrentQuestion(page, a + b)
     }
 

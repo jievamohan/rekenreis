@@ -2,33 +2,55 @@
 import { useI18n } from '~/composables/useI18n'
 
 const { t } = useI18n()
-defineProps<{
-  a: number
-  b: number
-  answer: string
-  isCorrect: boolean | null
-}>()
+withDefaults(
+  defineProps<{
+    a: number
+    b: number
+    answer: string
+    isCorrect: boolean | null
+    /** Minigame variant: subtler, integrated look for level play */
+    variant?: 'default' | 'minigame'
+  }>(),
+  { variant: 'default' }
+)
 </script>
 
 <template>
   <div
     class="problem-card"
-    :class="{
-      'problem-correct': isCorrect === true,
-      'problem-wrong': isCorrect === false,
-    }"
+    :class="[
+      {
+        'problem-correct': isCorrect === true && variant !== 'minigame',
+        'problem-wrong': isCorrect === false && variant !== 'minigame',
+      },
+      variant === 'minigame' ? 'problem-card-minigame' : '',
+    ]"
     role="group"
     :aria-label="t('problemCard.ariaLabel', { a, b, answer: answer || t('problemCard.blank') })"
   >
-    <span class="operand">{{ a }}</span>
-    <span class="operator" aria-hidden="true">+</span>
-    <span class="operand">{{ b }}</span>
-    <span class="equals" aria-hidden="true">=</span>
-    <span
-      class="answer-display"
-      :class="{ empty: !answer }"
-      aria-live="polite"
-    >{{ answer || '?' }}</span>
+    <template v-if="variant === 'minigame'">
+      <p class="minigame-challenge">{{ t('problemCard.rekenUit') }}</p>
+      <div class="minigame-sum">
+        <span class="minigame-bubble operand-bubble" data-testid="operand-a">{{ a }}</span>
+        <span class="minigame-op" aria-hidden="true">+</span>
+        <span class="minigame-bubble operand-bubble" data-testid="operand-b">{{ b }}</span>
+        <span class="minigame-op" aria-hidden="true">=</span>
+        <span class="minigame-bubble answer-bubble" :class="{ empty: !answer }">
+          {{ answer || '?' }}
+        </span>
+      </div>
+    </template>
+    <template v-else>
+      <span class="operand" data-testid="operand-a">{{ a }}</span>
+      <span class="operator" aria-hidden="true">+</span>
+      <span class="operand" data-testid="operand-b">{{ b }}</span>
+      <span class="equals" aria-hidden="true">=</span>
+      <span
+        class="answer-display"
+        :class="{ empty: !answer }"
+        aria-live="polite"
+      >{{ answer || '?' }}</span>
+    </template>
   </div>
 </template>
 
@@ -99,5 +121,67 @@ defineProps<{
 .answer-display.empty {
   color: var(--app-text-muted-on-surface);
   border-color: var(--app-text-muted-on-surface);
+}
+
+/* Minigame variant: game challenge — distinct from classic quiz */
+.problem-card-minigame {
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(178, 223, 219, 0.15) 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.minigame-challenge {
+  margin: 0;
+  font-family: var(--app-font);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.minigame-sum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.minigame-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--app-font);
+  font-size: 1.75rem;
+  font-weight: 800;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff 0%, #e0f7fa 100%);
+  color: #004d40;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.minigame-bubble.answer-bubble.empty {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(224, 247, 250, 0.3) 100%);
+  color: rgba(0, 77, 64, 0.6);
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+}
+
+.minigame-op {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 </style>

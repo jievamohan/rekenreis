@@ -1132,4 +1132,4 @@ Acceptance:
 - Required interaction-diversity E2E scenarios are green in container
 - No host-side Playwright usage in scripts/docs/workflows
 - Dutch copy and accessibility checks pass
-- CI stays green with Gate C/D/F + Diversity Gate
+- CI stays green with Gate C/D/F + Diversity Gate 

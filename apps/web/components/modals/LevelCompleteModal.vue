@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import mascotSrc from '~/assets/graphics/characters/mascot.svg'
 import Confetti from '~/components/effects/Confetti.vue'
+import MascotIcon from '~/components/graphics/MascotIcon.vue'
 import { useI18n } from '~/composables/useI18n'
 
 const { t } = useI18n()
@@ -33,7 +33,7 @@ watch(() => props.open, async (isOpen) => {
     await nextTick()
     dialogRef.value?.focus()
 
-    for (let i = 0; i < props.stars; i++) {
+    for (let i = 0; i < 3; i++) {
       setTimeout(() => {
         starVisible.value = [...starVisible.value, true]
         if (i === props.stars - 1 && props.stars >= 2) {
@@ -87,7 +87,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           :aria-label="t('levelComplete.ariaLabel')"
           tabindex="-1"
         >
-          <img :src="mascotSrc" :alt="t('levelComplete.mascotAlt')" class="mascot" />
+          <MascotIcon id-prefix="level-complete" class="mascot" :aria-label="t('levelComplete.mascotAlt')" />
 
           <h2 class="modal-title">{{ t('levelComplete.title', { level }) }}</h2>
 
@@ -201,13 +201,21 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 .star-svg {
   width: 40px;
   height: 40px;
-  fill: var(--app-muted);
-  transition: fill 0.2s ease;
+  transition: fill 0.2s ease, stroke 0.2s ease;
   transform: scale(0);
 }
 
 .star-svg.earned {
   fill: #FFC107;
+  stroke: none;
+}
+
+.star-svg:not(.earned) {
+  fill: none;
+  stroke: var(--app-muted);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 @media (prefers-reduced-motion: no-preference) {

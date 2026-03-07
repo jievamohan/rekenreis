@@ -17,13 +17,9 @@ const emit = defineEmits<{
 
 const { getDefinition } = useMinigame()
 
-const FallbackKeypad = defineAsyncComponent(
-  () => import('~/components/play/Keypad.vue')
-)
-
 const activeComponent = computed(() => {
   const def = getDefinition(props.minigameId)
-  if (!def) return FallbackKeypad
+  if (!def) return null
   return defineAsyncComponent({
     loader: def.component,
     loadingComponent: undefined,
@@ -39,21 +35,26 @@ function handleAnswer(choice: number) {
 
 <template>
   <div class="minigame-renderer" role="group" aria-label="Minigame">
-    <Suspense>
-      <component
-        :is="activeComponent"
-        :key="`${props.minigameId}-${props.question.a}-${props.question.b}`"
-        :question="props.question"
-        :difficulty-params="props.difficultyParams"
-        :timers-disabled="props.timersDisabled"
-        @answer="handleAnswer"
-      />
-      <template #fallback>
-        <div class="minigame-loading" aria-live="polite">
-          Laden...
-        </div>
-      </template>
-    </Suspense>
+    <template v-if="activeComponent">
+      <Suspense>
+        <component
+          :is="activeComponent"
+          :key="`${props.minigameId}-${props.question.a}-${props.question.b}`"
+          :question="props.question"
+          :difficulty-params="props.difficultyParams"
+          :timers-disabled="props.timersDisabled"
+          @answer="handleAnswer"
+        />
+        <template #fallback>
+          <div class="minigame-loading" aria-live="polite">
+            Laden...
+          </div>
+        </template>
+      </Suspense>
+    </template>
+    <div v-else class="minigame-loading" role="alert">
+      Minigame niet beschikbaar.
+    </div>
   </div>
 </template>
 

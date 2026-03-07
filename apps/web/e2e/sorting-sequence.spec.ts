@@ -8,9 +8,8 @@ test.describe('sorting mechanic (SubmarineSort)', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid="minigame-submarine-sort"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     // Select the correct item via keyboard
@@ -40,14 +39,13 @@ test.describe('sorting mechanic (SubmarineSort)', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 
-  test('wrong bin shows gentle feedback without punishment', async ({ page }) => {
+  test('wrong bin advances round without punishment', async ({ page }) => {
     await page.goto('/play?level=5')
 
     await expect(page.locator('[data-testid="minigame-submarine-sort"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     // Select the correct item
@@ -61,7 +59,7 @@ test.describe('sorting mechanic (SubmarineSort)', () => {
       }
     }
 
-    // Click the WRONG bin
+    // Click the WRONG bin — round advances (no blocking punishment)
     const bins = page.locator('[data-testid="minigame-submarine-sort"] .sort-bin')
     const binCount = await bins.count()
     for (let i = 0; i < binCount; i++) {
@@ -72,8 +70,7 @@ test.describe('sorting mechanic (SubmarineSort)', () => {
       }
     }
 
-    // Round should NOT advance
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '0')
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 })
 
@@ -85,9 +82,8 @@ test.describe('sequence/spatial mechanic (CoralBuilder)', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     // Find the correct position on the number track

@@ -1,21 +1,19 @@
-# Plan — Treasure Dive Creatiever
+# Plan — Fish Feed Creatiever
 
-**Branch:** feat/treasure-dive-creative
+**Run ID:** fish-feed-creative-2025-03  
+**Branch:** feat/0124-fish-feed-creative
 
-## Summary
+## Samenvatting
 
-Level 14 = Treasure Dive. De speler ervaart het als "1 van 3 aanklikken". We maken Treasure Dive creatiever door visuele versterking en animatie-feedback, terwijl de bestaande drag-drop en keyboard flows behouden blijven.
+Fish Feed (Level 15) is creatiever gemaakt met:
+- **Aquarium-scene:** Vis centraal, pellets verspreid in het water
+- **Timer in-scene:** Waterniveau daalt als de tijd verstrijkt (geen generieke balk)
+- **Correct tap:** Pellet vliegt naar vis, vis "eet"
+- **Wrong tap:** Pellet bounce, vis schudt; retry mogelijk
+- **Reduced motion:** Alle animaties uit bij prefers-reduced-motion
 
-## Scope
+## Wijzigingen
 
-- **In:** MinigameTreasureDive.vue — kist-animaties, wrong-drop feedback, edelstenen float, zeebodem-strook
-- **Out:** Andere minigames, level-map, API, nieuwe minigames
-
-## Lanes
-
-- W1: components/minigames/MinigameTreasureDive.vue
-
-## Tasks
-
-- T1: Visuele + animatie-upgrade
-- T2: E2E + gate verificatie
+- `MinigameFishFeed.vue`: Volledige redesign
+- Typecheck: PASS
+- Build: PASS

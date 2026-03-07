@@ -5,9 +5,8 @@ test.describe('interaction diversity — E2E proof', () => {
     await page.goto('/play?level=2')
     await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correct = a + b
 
     const gems = page.locator('[data-testid="minigame-treasure-dive"] .gem')
@@ -21,21 +20,19 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 
-  test('timed-kind (FishFeed): timeout shows hint and continues', async ({ page }) => {
+  test('timed-kind (FishFeed): timeout advances without feedback', async ({ page }) => {
     await page.goto('/play?level=3')
     await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
-    await expect(page.locator('.hint-overlay')).toBeVisible({ timeout: 25000 })
-    await expect(page.locator('.hint-text')).toBeVisible()
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 5000 })
+    // Timer expires (~15s); round advances immediately without hint overlay
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
   })
 
   test('sorting (SubmarineSort): keyboard select + sort into bin', async ({ page }) => {
     await page.goto('/play?level=5')
     await expect(page.locator('[data-testid="minigame-submarine-sort"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correct = a + b
 
     const items = page.locator('[data-testid="minigame-submarine-sort"] .sort-item')
@@ -63,9 +60,8 @@ test.describe('interaction diversity — E2E proof', () => {
     await page.goto('/play?level=4')
     await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correct = a + b
 
     const positions = page.locator('[data-testid="minigame-coral-builder"] .track-position.is-choice')
@@ -81,15 +77,12 @@ test.describe('interaction diversity — E2E proof', () => {
 })
 
 test.describe('Dutch copy assertions', () => {
-  test('hint overlay shows Dutch text on fish-feed timeout', async ({ page }) => {
+  test('fish-feed timeout advances without feedback overlay', async ({ page }) => {
     await page.goto('/play?level=3')
     await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
-    await expect(page.locator('.hint-overlay')).toBeVisible({ timeout: 25000 })
-    const hintText = await page.locator('.hint-text').textContent()
-    expect(hintText).toContain('Het antwoord is')
-    expect(hintText).toContain('Goed onthouden')
-    const continueText = await page.locator('.hint-continue').textContent()
-    expect(continueText).toContain('rustig verder')
+    // No hint overlay on timeout; round advances directly
+    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
+    await expect(page.locator('.hint-overlay')).toHaveCount(0)
   })
 
   test('treasure-dive shows Dutch aria labels', async ({ page }) => {

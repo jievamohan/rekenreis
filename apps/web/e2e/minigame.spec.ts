@@ -33,9 +33,8 @@ test.describe('minigame mode', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '0')
     await expect(page.locator('.round-progress-node-current')).toHaveText('1')
 
-    const operandEls = page.locator('.problem-card .operand')
-    const a = Number(await operandEls.nth(0).textContent())
-    const b = Number(await operandEls.nth(1).textContent())
+    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
     const correctButton = await findAnswerButtonByExactLabel(page, correctAnswer)

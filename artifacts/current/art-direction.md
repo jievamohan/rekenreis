@@ -1,27 +1,22 @@
-# Art Direction — Treasure Dive Creatiever
+# Art Direction — Fish Feed Creatiever
 
-**Run ID:** treasure-dive-creative-2025-03  
+**Run ID:** fish-feed-creative-2025-03  
 **Agent:** art-director
 
-## Visuele versterking
+## Visueel Doel
 
-### Kist
-- Huidig: dashed border, emoji icoon
-- **Voorstel:** Kist als duidelijk drop-doel; grotere hitbox; bij correcte drop: korte open-animatie; bij wrong: subtiele shake
-- Kleuren: blijf binnen `--app-correct`, `--app-wrong`, `--app-primary`
+- **Aquarium-scene:** Vis centraal, pellets in het water
+- **Timer:** Geïntegreerd (waterniveau of zandloper)
+- **Onderwater-thema:** Consistent met rest van de app
 
-### Edelstenen
-- Huidig: ronde rechthoeken met gradient
-- **Voorstel:** Subtiele float (translateY) zolang ze in pool zitten; bij drag: scale-up, cursor grabbing
-- Geen realistische textuur; plat, chunky, kid-friendly
+## Do / Don't
 
-### Omgeving
-- Licht "zeebodem"-effect onder kist: donkere gradient of lichte strook
-- Optioneel: kleine bubbles als decoratie (CSS only)
-- Tap targets ≥ 48px
+- **Do:** Gebruik bestaande tokens (--app-correct, --app-primary, etc.)
+- **Do:** Grote tap targets
+- **Don't:** Zware assets; CSS/SVG-first
+- **Don't:** Storende animaties; reduced motion respecteren
 
-### Motion
-- Correct drop: chest "opent" (scale/transform) ≤ 300ms
-- Wrong drop: gem bounce-back, chest wobble ≤ 300ms
-- Float: 2–3s loop, ease-in-out
-- `prefers-reduced-motion: reduce` → alle animaties uit
+## Budget
+
+- Geen nieuwe assets > 2KB
+- CSS animaties ≤ 400ms

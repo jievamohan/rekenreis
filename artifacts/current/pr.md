@@ -1,22 +1,13 @@
-# PR — Treasure Dive Creatiever
+# Fish Feed (Level 15) Creatiever
 
-## Summary
-
-Level 14 (Treasure Dive) voelt als "1 van 3 aanklikken". Deze PR maakt Treasure Dive creatiever met:
-- Kist open/close animatie bij correcte drop
-- Wrong-drop: edelsteen springt terug, kist schudt
-- Edelstenen zweven subtiel in de pool
-- Zeebodem-strook rond de kist
-
-Drag-drop en keyboard flows blijven werken. Reduced motion gerespecteerd.
+Layout en gameplay van Fish Feed lijken te veel op andere minigames. Deze PR maakt het minigame creatiever met een aquarium-scene, timer in-scene, en visuele feedback.
 
 ## Tasks
 
-- [x] T1: Treasure Dive visuele + animatie-upgrade
-- [x] T2: Typecheck, diversity gate, build PASS (E2E: env-afhankelijk)
+- [ ] 0124 — fish-feed-creative: MinigameFishFeed.vue creatieve redesign
 
 ## PR Metadata
 - Base: main
-- Branch: feat/treasure-dive-creative
-- PR: #73
-- URL: https://github.com/jievamohan/rekenreis/pull/73
+- Branch: feat/0124-fish-feed-creative
+- PR: #74
+- URL: https://github.com/jievamohan/rekenreis/pull/74

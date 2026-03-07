@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { AdditionQuestion } from '~/types/game'
 import { useI18n } from '~/composables/useI18n'
+import { createSeededRng } from '~/utils/seedableRng'
 
 const props = defineProps<{
   question: AdditionQuestion
@@ -18,18 +19,28 @@ const timerSeconds = computed(() => props.difficultyParams?.timerSeconds ?? 15)
 const timeLeft = ref(timerSeconds.value)
 let timerHandle: ReturnType<typeof setInterval> | null = null
 const answered = ref(false)
-const showingHint = ref(false)
 const prefersReducedMotion = ref(false)
+/** Seeded positions for pellets scattered in aquarium (deterministic per question) */
+function getPelletPositions(q: AdditionQuestion) {
+  const rng = createSeededRng(q.a + q.b * 100 + q.correctAnswer * 10000)
+  return q.choices.map((value, i) => {
+    const angle = (i / Math.max(q.choices.length, 1)) * 2 * Math.PI + rng() * 0.5
+    const radius = 28 + rng() * 12
+    const left = 50 + Math.cos(angle) * radius
+    const top = 50 + Math.sin(angle) * radius
+    return {
+      value,
+      delay: i * 0.2,
+      left: `${left}%`,
+      top: `${top}%`,
+    }
+  })
+}
 
-const pellets = computed(() =>
-  props.question.choices.map((choice, i) => ({
-    value: choice,
-    delay: i * 0.3,
-  }))
-)
+const pellets = computed(() => getPelletPositions(props.question))
 
 function selectPellet(choice: number) {
-  if (answered.value || showingHint.value) return
+  if (answered.value) return
   answered.value = true
   stopTimer()
   emit('answer', choice)
@@ -49,13 +60,10 @@ function startTimer() {
 }
 
 function onTimeout() {
-  showingHint.value = true
-  setTimeout(() => {
-    if (!answered.value) {
-      answered.value = true
-      emit('answer', props.question.correctAnswer)
-    }
-  }, 2500)
+  if (!answered.value) {
+    answered.value = true
+    emit('answer', props.question.correctAnswer)
+  }
 }
 
 function stopTimer() {
@@ -65,14 +73,13 @@ function stopTimer() {
   }
 }
 
-const timerFraction = computed(() =>
-  Math.max(0, timeLeft.value / timerSeconds.value)
-)
-
-const timerColor = computed(() => {
-  if (timerFraction.value > 0.5) return 'var(--app-correct, #66bb6a)'
-  if (timerFraction.value > 0.25) return 'var(--app-warning, #ffa726)'
-  return 'var(--app-wrong, #ef5350)'
+/** Water level reaches bottom when timer shows 1s (sync with countdown) */
+const timerFraction = computed(() => {
+  const left = timeLeft.value
+  const total = timerSeconds.value
+  if (total <= 1) return left <= 0 ? 0 : 1
+  if (left <= 1) return 0
+  return (left - 1) / (total - 1)
 })
 
 onMounted(() => {
@@ -94,48 +101,47 @@ onUnmounted(() => {
     role="group"
     :aria-label="t('minigameFishFeed.ariaLabel')"
   >
-    <div v-if="!timersDisabled" class="timer-bar" role="timer" :aria-label="t('minigameFishFeed.timerLabel', { seconds: timeLeft })">
+    <div class="aquarium" aria-hidden="true">
+      <!-- Timer as water level: fills from bottom, drops as time runs out -->
       <div
-        class="timer-fill"
-        :style="{ width: `${timerFraction * 100}%`, background: timerColor }"
-      />
-      <span class="timer-text">{{ timeLeft }}s</span>
-    </div>
-
-    <div class="fish-area" aria-hidden="true">
-      <span class="fish-emoji" :class="{ 'fish-waiting': !showingHint }">🐟</span>
-    </div>
-
-    <div
-      v-if="showingHint"
-      class="hint-overlay"
-      role="status"
-      aria-live="polite"
-    >
-      <div class="hint-card">
-        <span class="hint-icon" aria-hidden="true">💡</span>
-        <p class="hint-text">
-          {{ t('minigameFishFeed.hintMessage', { answer: question.correctAnswer }) }}
-        </p>
-        <p class="hint-continue">
-          {{ t('minigameFishFeed.hintContinue') }}
-        </p>
-      </div>
-    </div>
-
-    <div v-else class="pellets-row" role="group" :aria-label="t('minigameFishFeed.pelletLabel', { value: '' })">
-      <button
-        v-for="pellet in pellets"
-        :key="pellet.value"
-        class="pellet"
-        :class="{ 'pellet-animate': !prefersReducedMotion }"
-        :style="{ '--delay': `${pellet.delay}s` }"
-        :disabled="answered"
-        :aria-label="t('minigameFishFeed.pelletLabel', { value: pellet.value })"
-        @click="selectPellet(pellet.value)"
+        v-if="!timersDisabled"
+        class="water-level"
+        :style="{ height: `${timerFraction * 100}%` }"
+        role="timer"
+        :aria-label="t('minigameFishFeed.timerLabel', { seconds: timeLeft })"
       >
-        <span class="pellet-number">{{ pellet.value }}</span>
-      </button>
+        <span class="timer-badge">{{ timeLeft }}s</span>
+      </div>
+
+      <div class="fish-zone">
+        <span class="fish-emoji fish-waiting">
+          🐟
+        </span>
+      </div>
+
+      <div
+        v-if="!answered"
+        class="pellets-zone"
+        role="group"
+        :aria-label="t('minigameFishFeed.pelletLabel', { value: '' })"
+      >
+        <button
+          v-for="pellet in pellets"
+          :key="pellet.value"
+          class="pellet"
+          :class="{ 'pellet-animate': !prefersReducedMotion }"
+          :style="{
+            '--delay': `${pellet.delay}s`,
+            left: pellet.left,
+            top: pellet.top,
+          }"
+          :disabled="answered"
+          :aria-label="t('minigameFishFeed.pelletLabel', { value: pellet.value })"
+          @click="selectPellet(pellet.value)"
+        >
+          <span class="pellet-number">{{ pellet.value }}</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -146,56 +152,91 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
   padding: 1rem;
-  min-height: 280px;
+  min-height: 320px;
+  position: relative;
 }
 
-.timer-bar {
+.aquarium {
   width: 100%;
-  max-width: 300px;
-  height: 24px;
-  background: var(--app-surface, #e0f2f1);
-  border-radius: 12px;
+  max-width: 340px;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  border: 4px solid var(--app-primary, #4fc3f7);
+  background: linear-gradient(180deg, rgba(3, 169, 244, 0.15) 0%, rgba(0, 150, 136, 0.25) 100%);
+  box-shadow:
+    inset 0 0 40px rgba(0, 150, 136, 0.2),
+    0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
 
-.timer-fill {
-  height: 100%;
-  border-radius: 12px;
-  transition: width 1s linear, background 0.5s ease;
-}
-
-.timer-text {
+.water-level {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--app-font, sans-serif);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--app-text-on-surface, #1a237e);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(3, 169, 244, 0.4), rgba(0, 150, 136, 0.5));
+  transition: height 1s linear;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.5rem;
 }
 
-.fish-area {
-  font-size: 3rem;
+.timer-badge {
+  font-family: var(--app-font, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--app-text-on-surface, #004d40);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+}
+
+.fish-zone {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.fish-emoji {
+  font-size: 4rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .fish-waiting {
-  animation: fish-swim 2s ease-in-out infinite;
+  animation: fish-swim 2.5s ease-in-out infinite;
 }
 
-.pellets-row {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: center;
+.fish-eat {
+  animation: fish-eat 0.4s ease-out;
+}
+
+.fish-shake {
+  animation: fish-shake 0.5s ease-in-out;
+}
+
+.pellets-zone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pellets-zone .pellet {
+  pointer-events: auto;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  margin-left: 0;
+  margin-top: 0;
 }
 
 .pellet {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   min-width: 48px;
   min-height: 48px;
   border-radius: 50%;
@@ -206,11 +247,12 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   transition: transform 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .pellet:hover:not(:disabled),
 .pellet:focus-visible {
-  transform: scale(1.1);
+  transform: translate(-50%, -50%) scale(1.12);
 }
 
 .pellet:focus-visible {
@@ -224,71 +266,33 @@ onUnmounted(() => {
 }
 
 .pellet-animate {
-  animation: pellet-drop 0.4s ease-out;
+  animation: pellet-float-in 0.5s ease-out;
   animation-delay: var(--delay, 0s);
   animation-fill-mode: backwards;
 }
 
 .pellet-number {
   font-family: var(--app-font, sans-serif);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--app-text-on-surface, #1b5e20);
   pointer-events: none;
 }
 
-.hint-overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  animation: hint-fade-in 0.4s ease-out;
-}
-
-.hint-card {
-  background: var(--app-surface-glass, rgba(255, 255, 255, 0.15));
-  backdrop-filter: blur(8px);
-  border: 2px solid var(--app-primary, #4fc3f7);
-  border-radius: 16px;
-  padding: 1.25rem 1.5rem;
-  text-align: center;
-  max-width: 280px;
-}
-
-.hint-icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.hint-text {
-  font-family: var(--app-font, sans-serif);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--app-text-primary, #e0f7fa);
-  margin: 0 0 0.5rem 0;
-}
-
-.hint-continue {
-  font-family: var(--app-font, sans-serif);
-  font-size: 0.85rem;
-  color: var(--app-text-muted, #b0bec5);
-  margin: 0;
-}
-
 @keyframes fish-swim {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
+  0%, 100% { transform: translateX(0) scaleX(1); }
+  50% { transform: translateX(8px) scaleX(1.02); }
 }
 
-@keyframes pellet-drop {
-  from { transform: translateY(-40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes hint-fade-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+@keyframes pellet-float-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -298,8 +302,8 @@ onUnmounted(() => {
   .pellet-animate {
     animation: none;
   }
-  .hint-overlay {
-    animation: none;
+  .water-level {
+    transition: none;
   }
 }
 </style>

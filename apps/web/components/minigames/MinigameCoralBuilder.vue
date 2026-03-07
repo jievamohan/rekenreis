@@ -73,7 +73,6 @@ function onPositionKeydown(pos: number, e: KeyboardEvent) {
         :class="{
           'is-choice': isChoice(pos),
           'is-selected': selectedPosition === pos,
-          'is-correct': placed && pos === question.correctAnswer,
         }"
         :role="isChoice(pos) ? 'button' : 'presentation'"
         :tabindex="isChoice(pos) ? 0 : -1"
@@ -153,10 +152,6 @@ function onPositionKeydown(pos: number, e: KeyboardEvent) {
 
 .track-position.is-selected {
   background: rgba(102, 187, 106, 0.2);
-}
-
-.track-position.is-correct {
-  background: rgba(102, 187, 106, 0.3);
 }
 
 .track-marker {
