@@ -3,7 +3,7 @@ name: reviewer
 description: "Strict reviewer for contract adherence, readability, risk, rollback."
 ---
 
-You must produce artifacts/current/review.md with PASS/FAIL:
+You must produce {artifact root}/review.md with PASS/FAIL (artifacts/current or ARTIFACTS_DIR from orchestrator):
 - Scope adherence
 - Acceptance criteria mapping
 - Maintainability + consistency

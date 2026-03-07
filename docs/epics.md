@@ -1,12 +1,12 @@
 # Epics
 
 > Run with: /run-epics
-> Each epic uses /feature --ci --max-tasks=5 (default FORCE autopilot).
+> Each epic uses /feature --epic-id=<N>.<k> --ci --max-tasks=5 (default FORCE autopilot). For single epics use --epic-id=N.
 > Pipeline: plan -> tasks -> execute -> finalize -> wait for manual merge -> next epic.
 
 ## Epic 2 — Skin System + 1 Skin
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=2 --ci --max-tasks=5
 Build Epic 2: Minigame Skin System (rendering layer) + implement ONE skin (Monster Feed).
 Requirements:
 - Skin contract (TS) for rendering a round + callbacks
@@ -18,7 +18,7 @@ Requirements:
 
 ## Epic 3 — More Skins + Rewards
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=3 --ci --max-tasks=5
 Build Epic 3: Add 2 additional skins + simple rewards.
 Requirements:
 - add 2 skins reusing Skin contract
@@ -28,7 +28,7 @@ Requirements:
 
 ## Epic 4 — Persistence (Local) + Optional API Telemetry
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=4 --ci --max-tasks=5
 Build Epic 4: Persistence + optional telemetry.
 Requirements:
 - persist progress locally (localStorage) with versioning/migration
@@ -38,7 +38,7 @@ Requirements:
 
 ## Epic 5 — Polish / Hardening
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=5 --ci --max-tasks=5
 Build Epic 5: Polish, accessibility, reliability, performance hardening.
 Requirements:
 - a11y pass for /play (keyboard/focus states)
@@ -48,7 +48,7 @@ Requirements:
 
 ## Epic 6 — Game Modes Framework + 1 New Mode
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=6 --ci --max-tasks=5
 Build Epic 6: Game Modes framework + timed-pop mode.
 Requirements:
 - GameMode contract (InteractionModeId, ModeDefinition)
@@ -61,7 +61,7 @@ Requirements:
 
 ## Epic 7 — Second Mode (Drag & Drop) + Mode Selector UI
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=7 --ci --max-tasks=5  
 Build Epic 7: Add a second game mode using drag & drop interaction and a kid-friendly mode selector UI.
 
 Requirements:
@@ -90,7 +90,7 @@ Non-goals:
 
 ## Epic 8 — Content Packs per Mode + Pacing Rules
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=8 --ci --max-tasks=5  
 Build Epic 8: Introduce content packs per mode plus pacing rules to keep sessions varied and frustration-free.
 
 Requirements:
@@ -120,7 +120,7 @@ Non-goals:
 
 ## Epic 9 — Adaptive Assistance (Hints, Anti-Guessing, Confidence Gate)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=9 --ci --max-tasks=5  
 Build Epic 9: Add adaptive assistance so kids don’t get stuck or spam-guess.
 
 Requirements:
@@ -146,7 +146,7 @@ Non-goals:
 
 ## Epic 10 — Child Profiles (Local) + Parent Gate
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=10 --ci --max-tasks=5  
 Build Epic 10: Add local child profiles so multiple kids can use the same device, with a simple parent gate.
 
 Requirements:
@@ -172,7 +172,7 @@ Non-goals:
 
 ## Epic 11 — Audio & Micro-Animations (Optional Toggle)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=11 --ci --max-tasks=5  
 Build Epic 11: Add optional sound effects and micro-animations to make the game more playful.
 
 Requirements:
@@ -199,7 +199,7 @@ Non-goals:
 
 ## Epic 12 — Rewards Expansion (Sticker Book, Daily Goal)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=12 --ci --max-tasks=5  
 Build Epic 12: Expand rewards into a sticker book and optional daily goal.
 
 Requirements:
@@ -223,7 +223,7 @@ Non-goals:
 
 ## Epic 13 — Share/Print Progress Summary (Parent-friendly, Local)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=13 --ci --max-tasks=5  
 Build Epic 13: Provide a parent-friendly local summary screen (no accounts).
 
 Requirements:
@@ -244,7 +244,7 @@ Non-goals:
 
 ## Epic 14 — Production Hardening 2 (DAST, Security Regression, CI Speed)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=14 --ci --max-tasks=5  
 Build Epic 14: Strengthen security/testing hardening and CI speed.
 
 Requirements:
@@ -261,7 +261,7 @@ Non-goals:
 
 ## Epic 15 — Release Prep (UX pass, Copy pass, Bug bash automation)
 - [x]
-/feature --ci --max-tasks=5  
+/feature --epic-id=15 --ci --max-tasks=5  
 Build Epic 15: Prepare for release-quality UX and stability.
 
 Requirements:
@@ -283,7 +283,7 @@ Non-goals:
 
 ## Epic 16 — Release Prep (UX Pass, Copy Pass, Bug Bash Automation)
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=16 --ci --max-tasks=5
 Build Epic 16: Prepare for release-quality UX and stability.
 
 Requirements:
@@ -305,7 +305,7 @@ Non-goals:
 
 ## Epic 17 — Graphics v1
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=17 --ci --max-tasks=5
 Build Epic 17 (Graphics v1): create a truly kid-friendly GRAPHICAL minigame (not a styled form).
 
 Definition of "graphical" (non-negotiable):
@@ -328,7 +328,7 @@ Non-goals:
 
 ## Epic 18 — Global Kid-Friendly Look & Feel v2
 - [x]
-/feature --ci --max-tasks=5
+/feature --epic-id=18 --ci --max-tasks=5
 Build Epic 18: Transform the entire app (not just the minigame) into a playful kindergarten-friendly look-and-feel.
 
 Goal:
@@ -352,7 +352,7 @@ PlanRef:
 - archive: artifacts/archive/epic-19.0/latest
 - slice: 19.1
 
-/feature --ci --max-tasks=5
+/feature --epic-id=19.1 --ci --max-tasks=5
 Build Epic 19.1: Replace white app look with underwater design tokens.
 
 Requirements:
@@ -378,7 +378,7 @@ PlanRef:
 - archive: artifacts/archive/epic-19.0/latest
 - slice: 19.2
 
-/feature --ci --max-tasks=5
+/feature --epic-id=19.2 --ci --max-tasks=5
 Build Epic 19.2: New app shell and nav tabs with underwater theme and playful typography/iconography.
 
 Requirements:
@@ -404,7 +404,7 @@ PlanRef:
 - archive: artifacts/archive/epic-19.0/latest
 - slice: 19.3
 
-/feature --ci --max-tasks=5
+/feature --epic-id=19.3 --ci --max-tasks=5
 Build Epic 19.3: Add 10+ underwater SVG assets and background patterns.
 
 Requirements:
@@ -430,7 +430,7 @@ PlanRef:
 - archive: artifacts/archive/epic-19.0/latest
 - slice: 19.4
 
-/feature --ci --max-tasks=5
+/feature --epic-id=19.4 --ci --max-tasks=5
 Build Epic 19.4: Unify all pages visually with underwater theme.
 
 Requirements:
@@ -453,7 +453,7 @@ PlanRef:
 - archive: artifacts/archive/epic-19.0/latest
 - slice: 19.5
 
-/feature --ci --max-tasks=5
+/feature --epic-id=19.5 --ci --max-tasks=5
 Build Epic 19.5: Final polish, a11y audit, reduced motion verification.
 
 Requirements:
@@ -481,7 +481,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=20.1 --ci --max-tasks=5
 Build Epic 20.1: Playwright foundation + design tokens + data model for level map UI.
 
 Requirements:
@@ -516,7 +516,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=20.2 --ci --max-tasks=5
 Build Epic 20.2: Level map page with winding path, nodes, avatar, and Play CTA.
 
 Requirements:
@@ -559,7 +559,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=20.3 --ci --max-tasks=5
 Build Epic 20.3: Replace multiple-choice with numeric keypad and big problem card.
 
 Requirements:
@@ -600,7 +600,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=20.4 --ci --max-tasks=5
 Build Epic 20.4: Level complete celebration with modal, stars, mascot, confetti.
 
 Requirements:
@@ -644,7 +644,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=20.5 --ci --max-tasks=5
 Build Epic 20.5: Friendly mistakes review and final polish pass.
 
 Requirements:
@@ -688,7 +688,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.1 --ci --max-tasks=5
 Build Epic 21.1: Create Dutch i18n infrastructure and replace all English UI strings with Dutch.
 
 Requirements:
@@ -722,7 +722,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.2 --ci --max-tasks=5
 Build Epic 21.2: Create minigame type system, serving infrastructure, difficulty progression, and MinigameRenderer.
 
 Requirements:
@@ -759,7 +759,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.3 --ci --max-tasks=5
 Build Epic 21.3: Implement Bubble Pop (tap) and Treasure Dive (drag) minigames with SVG placeholders.
 
 Requirements:
@@ -809,7 +809,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.4 --ci --max-tasks=5
 Build Epic 21.4: Implement Fish Feed (timed scene) and Coral Builder (scene/tap) minigames.
 
 Requirements:
@@ -855,7 +855,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.5 --ci --max-tasks=5
 Build Epic 21.5: Implement Submarine Sort (drag) and Starfish Match (tap/timed) minigames.
 
 Requirements:
@@ -902,7 +902,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=21.6 --ci --max-tasks=5
 Build Epic 21.6: Full integration, accessibility audit, visual regression, and performance verification.
 
 Requirements:
@@ -952,7 +952,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.1 --ci --max-tasks=5
 Build Epic 22.1: introduce Minigame Contract v2 and annotate enabled minigames with interaction metadata.
 
 Requirements:
@@ -987,7 +987,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.2 --ci --max-tasks=5
 Build Epic 22.2: upgrade two minigames to genuinely distinct drag/drop and timed-kind interactions.
 
 Requirements:
@@ -1021,7 +1021,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.3 --ci --max-tasks=5
 Build Epic 22.3: upgrade two additional minigames for sorting/categorization and sequence/spatial gameplay.
 
 Requirements:
@@ -1052,7 +1052,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.4 --ci --max-tasks=5
 Build Epic 22.4: implement the hard Diversity Gate and wire it into CI.
 
 Requirements:
@@ -1082,7 +1082,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.5 --ci --max-tasks=5
 Build Epic 22.5: unify timer safety rules and expose global timer-disable behavior in settings.
 
 Requirements:
@@ -1115,7 +1115,7 @@ Rules:
 - Use PlanRef as source of truth.
 - Do NOT regenerate planning unless a referenced PlanRef file is missing.
 
-/feature --ci --max-tasks=5
+/feature --epic-id=22.6 --ci --max-tasks=5
 Build Epic 22.6: finalize Epic 22 with deterministic interaction-diversity E2E coverage and hardening checks.
 
 Requirements:

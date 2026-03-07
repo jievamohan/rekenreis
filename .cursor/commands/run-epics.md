@@ -24,17 +24,18 @@ Protocol:
 2) For each epic (starting from first pending):
    a) Skip if epic has `- [x]` (already done).
    b) Execute exactly the /feature block shown under that epic (including --ci and --max-tasks).
-   c) /feature must:
+   c) If the epic has a PlanRef with slice: <N>.<k>, pass --epic-id=<N>.<k> to /feature for artifact isolation.
+   d) /feature must:
       - bootstrap a single PR
       - run tasks
       - finalize (squash + CI watch)
-   d) Confirm PR exists by reading artifacts/current/pr-number.txt (or infer via gh).
-   e) Ensure CI is green for the PR:
-      - scripts/ci/gh_watch.sh host <PR_NUM>
-   f) Enter WAIT MODE until merged:
+   e) Confirm PR exists by reading $ARTIFACTS_DIR/pr-number.txt (or infer via gh). If --epic-id was used, ARTIFACTS_DIR=artifacts/epic-<N>.<k>.
+   f) Ensure CI is green for the PR:
+      - ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}" scripts/ci/gh_watch.sh host <PR_NUM>
+   g) Enter WAIT MODE until merged:
       - TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
-   g) Once merged: update epic checkbox to `- [x]` in docs/epics.md.
-   h) Run BRANCH SYNC again (checkout main, pull); then move on to next epic.
+   h) Once merged: update epic checkbox to `- [x]` in docs/epics.md.
+   i) Run BRANCH SYNC again (checkout main, pull); then move on to next epic.
 
 Stop conditions:
 - If any epic becomes BLOCKED, stop immediately and summarize blockers.

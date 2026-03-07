@@ -4,12 +4,12 @@ alwaysApply: true
 ---
 
 General:
-- artifacts/current is ephemeral and must be reset at the start of /feature and /epicify runs.
+- Artifact root (ARTIFACTS_DIR, default artifacts/current) is ephemeral and must be reset at the start of /feature and /epicify runs. With --epic-id=<N>.<k>: ARTIFACTS_DIR=artifacts/epic-<N>.<k>.
 - Required agents must produce their artifact for the CURRENT run-id, not rely on old files.
 - Empty files are forbidden. If an agent is not applicable, it must write an explicit N/A section with reason.
 
 Planning runs (/feature, /epicify):
-Required planning agents and outputs (written under artifacts/current):
+Required planning agents and outputs (written under artifact root):
 - business-analyst -> discovery.md
 - ux-designer -> ux.md
 - principal-architect -> architecture.md (N/A allowed if no architecture changes)
@@ -30,7 +30,7 @@ N/A policy:
   - "Checks still required: <yes/no + short list>"
 
 Run manifest (hard requirement):
-- The orchestrator must maintain artifacts/current/run-manifest.md that includes:
+- The orchestrator must maintain {artifact root}/run-manifest.md that includes:
   - run id
   - required agents list
   - for each agent: status OK or N/A with reason + artifact path

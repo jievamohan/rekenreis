@@ -44,7 +44,7 @@ PR_URL="$(gh pr view --json url -q .url)"
 echo "$PR_NUM" > "$ARTIFACTS_DIR/pr-number.txt"
 echo "$PR_URL" > "$ARTIFACTS_DIR/pr-url.txt"
 
-# Append PR metadata to artifacts/current/pr.md (idempotency not required; it's an audit trail)
+# Append PR metadata to $ARTIFACTS_DIR/pr.md (idempotency not required; it's an audit trail)
 {
   echo ""
   echo "## PR Metadata"

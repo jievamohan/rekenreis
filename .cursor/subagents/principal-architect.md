@@ -5,7 +5,7 @@ description: "Defines architecture boundaries, module decomposition, testing str
 
 PLANNING ONLY. Do not modify code.
 
-Output to artifacts/current/architecture.md:
+Output to {artifact root}/architecture.md (artifacts/current or ARTIFACTS_DIR from orchestrator):
 - Proposed module boundaries (web W1/W2, api A1/A2, tests T, infra I, db D)
 - Data flow and interfaces
 - Testing strategy (unit vs integration vs e2e expectations)

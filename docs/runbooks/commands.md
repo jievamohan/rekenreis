@@ -4,6 +4,8 @@ Commands used by CI gates and local development. All paths relative to repo root
 
 **Quick start:** See [docs/quick-start.md](../quick-start.md).
 
+**Parallel epics:** See [docs/runbooks/parallel-epics.md](parallel-epics.md) for running multiple agents on different epics simultaneously.
+
 ## Local development: pnpm in container
 
 **pnpm and npm commands MUST run inside the Docker container, never locally.** Use:

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DIR="artifacts/current"
+DIR="${ARTIFACTS_DIR:-artifacts/current}"
 mkdir -p "$DIR"
 
-# Safety: refuse to delete if DIR is empty or weird
-if [[ "$DIR" != "artifacts/current" ]]; then
-  echo "Refusing to reset unexpected dir: $DIR"
+# Safety: only allow artifacts/current, artifacts/epic-*, or artifacts/epicify-*
+if [[ "$DIR" != "artifacts/current" && ! "$DIR" =~ ^artifacts/epic(-[0-9]+(\.[0-9]+)?|ify-[0-9]+)$ ]]; then
+  echo "Refusing to reset unexpected dir: $DIR (use artifacts/current, artifacts/epic-<N>.<k>, or artifacts/epicify-<N>)"
   exit 2
 fi
 
@@ -20,4 +20,4 @@ rm -rf \
   "$DIR"/pr-url.txt || true
 
 mkdir -p "$DIR"
-echo "Reset artifacts/current"
+echo "Reset $DIR"

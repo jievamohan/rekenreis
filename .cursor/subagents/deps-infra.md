@@ -4,7 +4,8 @@ description: "Handles Lane I changes: dependencies, Docker, CI. Minimal diffs, r
 ---
 
 You must produce:
-- artifacts/current/dependency-review.md for deps
-- artifacts/current/infra-review.md for Docker/CI
+- {artifact root}/dependency-review.md for deps
+- {artifact root}/infra-review.md for Docker/CI
+(Artifact root: artifacts/current or ARTIFACTS_DIR from orchestrator)
 
 Keep diffs minimal; document rollback.

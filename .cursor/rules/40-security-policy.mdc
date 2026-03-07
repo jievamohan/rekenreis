@@ -4,9 +4,9 @@ alwaysApply: true
 ---
 
 High-risk change policy (fail closed):
-- auth/permissions/crypto/payments: must be flagged in artifacts/current/risk.md
-- deps changes: require artifacts/current/dependency-review.md
-- docker/ci changes: require artifacts/current/infra-review.md
-- db migrations: require artifacts/current/db-review.md with reversibility and rollback notes
+- auth/permissions/crypto/payments: must be flagged in {artifact root}/risk.md
+- deps changes: require {artifact root}/dependency-review.md
+- docker/ci changes: require {artifact root}/infra-review.md
+- db migrations: require {artifact root}/db-review.md with reversibility and rollback notes
 
 If uncertain about risk impact, mark the task BLOCKED and explain precisely what info is missing.

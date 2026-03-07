@@ -4,3 +4,6 @@
 artifacts/archive/
 artifacts/zap/
 artifacts/*.md
+# Ephemeral per-epic artifact dirs (parallel runs)
+artifacts/epic-*/
+artifacts/epicify-*/

@@ -5,6 +5,10 @@ Micro-epics are numbered as: Epic <N>.<k> (e.g. 18.1, 18.2, 18.3).
 Master plan snapshot is: artifacts/archive/epic-<N>.0/latest
 Design bible is: docs/design/epic-<N>.md
 
+Usage:
+- /epicify <description>                 (default)
+- /epicify --epic-id=<N> <description>   (artifact isolation; ARTIFACTS_DIR=artifacts/epicify-<N>)
+
 Protocol:
 1) Read docs/epics.md (current state).
 
@@ -13,10 +17,11 @@ Protocol:
 - Set N = highest + 1, unless the user explicitly says a specific epic number (e.g. "Use major epic number: 21.").
 
 3) RESET_CURRENT_ARTIFACTS + RUN MANIFEST (hard requirement)
-- Run: scripts/ci/reset_current_artifacts.sh
+- Set ARTIFACTS_DIR=artifacts/epicify-<N> if --epic-id=<N>; else ARTIFACTS_DIR=artifacts/current.
+- Run: ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}" scripts/ci/reset_current_artifacts.sh
 - Create a run id (UTC timestamp) and write:
-  - artifacts/current/run-id.txt
-- Initialize: artifacts/current/run-manifest.md with:
+  - $ARTIFACTS_DIR/run-id.txt
+- Initialize: $ARTIFACTS_DIR/run-manifest.md with:
   - Run id
   - Epic number N
   - Required planning agents list (see below) with placeholders for OK/N/A + artifact path
@@ -34,18 +39,18 @@ Dispatch planning subagents:
 - security-privacy
 - illustrator (only if the intent explicitly requests new assets; otherwise must output N/A)
 
-Write planning artifacts to artifacts/current:
-- artifacts/current/discovery.md
-- artifacts/current/ux.md
-- artifacts/current/art-direction.md
-- artifacts/current/game-feel.md
-- artifacts/current/motion-audio.md
-- artifacts/current/architecture.md
-- artifacts/current/solution.md
-- artifacts/current/qa.md
-- artifacts/current/security-design.md
-- artifacts/current/assets.md (OK or N/A)
-- artifacts/current/backlog.md
+Write planning artifacts to $ARTIFACTS_DIR:
+- $ARTIFACTS_DIR/discovery.md
+- $ARTIFACTS_DIR/ux.md
+- $ARTIFACTS_DIR/art-direction.md
+- $ARTIFACTS_DIR/game-feel.md
+- $ARTIFACTS_DIR/motion-audio.md
+- $ARTIFACTS_DIR/architecture.md
+- $ARTIFACTS_DIR/solution.md
+- $ARTIFACTS_DIR/qa.md
+- $ARTIFACTS_DIR/security-design.md
+- $ARTIFACTS_DIR/assets.md (OK or N/A)
+- $ARTIFACTS_DIR/backlog.md
 
 N/A policy (no empty files):
 - If a discipline does not apply, the artifact MUST include:
@@ -55,8 +60,8 @@ N/A policy (no empty files):
 
 5) PLANNING_COMPLETENESS_CHECK (hard stop)
 - Verify:
-  - artifacts/current/run-id.txt exists
-  - artifacts/current/run-manifest.md exists and includes the same run id
+  - $ARTIFACTS_DIR/run-id.txt exists
+  - $ARTIFACTS_DIR/run-manifest.md exists and includes the same run id
   - Each required artifact file exists
 - If any required artifact is missing, mark BLOCKED and stop (no slicing, no epics appended).
 
@@ -93,7 +98,7 @@ Rules:
 Then include a /feature block (explicit prompt) and acceptance criteria.
 
 9) Archive the master plan snapshot:
-- Run: scripts/ci/archive_current_artifacts.sh "<N>.0"
+- Run: EPIC_ID="epic-<N>.0" ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}" scripts/ci/gh_archive_artifacts.sh
 - Commit:
   - docs/epics.md
   - docs/design/epic-<N>.md

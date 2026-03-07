@@ -4,6 +4,7 @@ Input: a single message describing desired functionality.
 
 Usage:
 - /feature <description>                 (DEFAULT: FORCE autopilot, bounded)
+- /feature --epic-id=<N>.<k> <description> (artifact isolation for parallel runs; ARTIFACTS_DIR=artifacts/epic-<N>.<k>)
 - /feature --safe <description>          (SAFE mode: enforce Complexity Gate; plan-only if gate fails)
 - /feature --plan <description>          (PLAN_ONLY: always stop after backlog + tasks)
 - /feature --max-tasks=5 <description>   (override bound; capped by mode)
@@ -22,11 +23,12 @@ Defaults:
 Important invariants:
 - One feature run = one branch + one PR.
 - Do NOT create a new branch per task during /feature delivery. Stack tasks onto the current feature branch.
-- artifacts/current is ephemeral and MUST be reset at the start of every /feature run.
+- Artifact root is ephemeral and MUST be reset at the start of every /feature run. Default: artifacts/current. With --epic-id=<N>.<k>: ARTIFACTS_DIR=artifacts/epic-<N>.<k>.
 
 Protocol:
 
 0) Parse flags
+- If --epic-id=<N>.<k>: set ARTIFACTS_DIR=artifacts/epic-<N>.<k> for this run. Otherwise ARTIFACTS_DIR=artifacts/current.
 - If --plan: MODE=PLAN_ONLY
 - Else if --safe: MODE=SAFE
 - Else: MODE=FORCE
@@ -39,10 +41,10 @@ Protocol:
 - Else: FINALIZE=true (default)
 
 0.5) RESET_CURRENT_ARTIFACTS + RUN MANIFEST (hard requirement)
-- Run: scripts/ci/reset_current_artifacts.sh
+- Run: ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}" scripts/ci/reset_current_artifacts.sh
 - Create a run id (UTC timestamp) and write:
-  - artifacts/current/run-id.txt
-- Initialize: artifacts/current/run-manifest.md with:
+  - $ARTIFACTS_DIR/run-id.txt
+- Initialize: $ARTIFACTS_DIR/run-manifest.md with:
   - Run id
   - Feature title (first line of user input)
   - Required planning agents list with placeholders for OK/N/A + artifact path
@@ -55,13 +57,13 @@ PlanRef override:
   - Use the referenced design doc + archive directory as the single source of truth.
   - Generate tasks only for the specified slice (e.g. 18.2).
 
-Dispatch planning subagents and produce (write under artifacts/current):
-- artifacts/current/discovery.md
-- artifacts/current/ux.md
-- artifacts/current/architecture.md
-- artifacts/current/solution.md
-- artifacts/current/qa.md
-- artifacts/current/security-design.md
+Dispatch planning subagents and produce (write under $ARTIFACTS_DIR):
+- $ARTIFACTS_DIR/discovery.md
+- $ARTIFACTS_DIR/ux.md
+- $ARTIFACTS_DIR/architecture.md
+- $ARTIFACTS_DIR/solution.md
+- $ARTIFACTS_DIR/qa.md
+- $ARTIFACTS_DIR/security-design.md
 - Plus any feature-specific planning artifacts if required (e.g. art-direction.md, game-feel.md, motion-audio.md, assets.md)
 
 N/A policy (no empty files):
@@ -72,14 +74,14 @@ N/A policy (no empty files):
 
 2) PLANNING_COMPLETENESS_CHECK (hard stop)
 - Verify:
-  - artifacts/current/run-id.txt exists
-  - artifacts/current/run-manifest.md exists and includes the same run id
+  - $ARTIFACTS_DIR/run-id.txt exists
+  - $ARTIFACTS_DIR/run-manifest.md exists and includes the same run id
   - All required artifacts for this run exist (per manifest)
 - If anything is missing: mark BLOCKED and stop (no tasks).
 
 3) Backlog synthesis (no code changes)
 Create:
-- artifacts/current/backlog.md:
+- $ARTIFACTS_DIR/backlog.md:
   - Epic summary
   - Scope_in / Scope_out
   - Risks + mitigations (tags: deps/infra/db/auth/security/perf/payments/crypto/data-loss/privacy)
@@ -89,9 +91,9 @@ Generate concrete tasks:
 - tasks/00xx-*.md (contract-first YAML frontmatter + body)
 
 3.1) PR_BODY_SEED (no code changes)
-- Ensure artifacts/current/pr.md exists and includes a task checklist for this feature run.
+- Ensure $ARTIFACTS_DIR/pr.md exists and includes a task checklist for this feature run.
 - Generate the checklist from the task files created in /tasks for this feature (ordered).
-- Append (or create) this section in artifacts/current/pr.md BEFORE PR bootstrap so the PR body contains it.
+- Append (or create) this section in $ARTIFACTS_DIR/pr.md BEFORE PR bootstrap so the PR body contains it.
 - Format:
   ## Tasks
   - [ ] <task-id>-<task-slug>
@@ -111,20 +113,21 @@ If SAFE gate fails:
 - Ensure you are NOT on main/master; create or reuse a feature branch for this feature run.
 - Push the branch to origin.
 - Bootstrap a SINGLE PR for this feature branch by running:
-  - scripts/ci/gh_pr_bootstrap.sh
+  - ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}" scripts/ci/gh_pr_bootstrap.sh
 - After this step:
-  - artifacts/current/pr-number.txt and artifacts/current/pr-url.txt MUST exist.
+  - $ARTIFACTS_DIR/pr-number.txt and $ARTIFACTS_DIR/pr-url.txt MUST exist.
 
 Hard stop:
 - If PR cannot be created (auth/permissions or command blocked), stop and report BLOCKED.
 
 6) Delivery execution (FORCE/SAFE only, bounded)
-- Select tasks in priority order from artifacts/current/backlog.md.
+- Select tasks in priority order from $ARTIFACTS_DIR/backlog.md.
 - Execute /orchestrate-task for each selected task sequentially, up to MAX_TASKS.
 
 Critical instruction to /orchestrate-task:
 - Use the CURRENT branch; do not create a new branch for each task.
 - If /orchestrate-task attempts branch creation, it must keep working on the same PR branch (no PR sprawl).
+- Pass ARTIFACTS_DIR to /orchestrate-task context so it uses the same artifact root (artifacts/current or artifacts/epic-<N>.<k>).
 
 - If CI is ON:
   - require CI success for each executed task before proceeding to next (orchestrator already does CI watch/autofix).
@@ -134,7 +137,7 @@ Critical instruction to /orchestrate-task:
 
 FORCE safety floor (always enforced):
 - no destructive DB operations; prefer reversible changes only
-- high-risk areas must be explicitly flagged in task risks + artifacts/current/risk.md
+- high-risk areas must be explicitly flagged in task risks + $ARTIFACTS_DIR/risk.md
 - keep diffs minimal and reversible
 
 7) FINALIZE (automatic by default)
@@ -153,8 +156,8 @@ Optional flags:
 
 8) Output
 - Always output:
-  - artifacts/current/backlog.md location
+  - $ARTIFACTS_DIR/backlog.md location
   - list of generated task files
-  - PR number + URL (from artifacts/current/pr-*.txt) if PR exists
+  - PR number + URL (from $ARTIFACTS_DIR/pr-*.txt) if PR exists
 - If executed:
   - list executed tasks + final status (DONE/BLOCKED)

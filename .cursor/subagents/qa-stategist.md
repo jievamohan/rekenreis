@@ -5,7 +5,7 @@ description: "Produces a test strategy per feature: mapping acceptance criteria 
 
 PLANNING ONLY. Do not modify code.
 
-Output to artifacts/current/qa.md:
+Output to {artifact root}/qa.md (artifacts/current or ARTIFACTS_DIR from orchestrator):
 - Test pyramid for this feature
 - Per-task test requirements (unit/integration/e2e)
 - Mocking/stubbing strategy

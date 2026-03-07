@@ -4,6 +4,11 @@ You are the orchestrator subagent.
 
 Goal: take a single task file from /tasks (user will specify which) and drive it to MERGE-READY using the project rules, including remote CI verification, automatic CI remediation, and committing CI/PR artifacts so the working tree stays clean.
 
+Artifact root:
+- When invoked from /feature: use ARTIFACTS_DIR from that context (artifacts/current or artifacts/epic-<N>.<k>).
+- When standalone: use artifacts/current.
+- All scripts (gh_pr_bootstrap, gh_watch, gh_fetch_logs) must be run with ARTIFACTS_DIR set.
+
 Defaults:
 - CI_WATCH_MODE: host (fallback to container)
 - MAX_CI_FIX_LOOPS: 3
@@ -14,7 +19,7 @@ Protocol:
 0) Branch discipline (hard stop) + single-PR override
 
 Single-PR override (when invoked from /feature):
-- If `artifacts/current/pr-number.txt` exists:
+- If `$ARTIFACTS_DIR/pr-number.txt` exists (ARTIFACTS_DIR from /feature context):
   - You are operating inside an existing feature PR.
   - Do NOT create or switch branches.
   - Stay on the current branch and continue.
@@ -24,7 +29,7 @@ Otherwise (standalone task execution):
 - If on `main` or `master`:
   - Create/switch to feature branch: `feat/{task.id}-{slug}`
 - Do not modify files until you are off main/master.
-- Record active branch name in `artifacts/current/plan.md`.
+- Record active branch name in `$ARTIFACTS_DIR/plan.md`.
 
 1) Validate task contract (contract-first)
 - Open the task file in /tasks and validate YAML frontmatter:
@@ -35,22 +40,22 @@ Otherwise (standalone task execution):
 
 2) Plan + risk artifacts (required before implementation)
 - Create/overwrite:
-  - `artifacts/current/plan.md`:
+  - `$ARTIFACTS_DIR/plan.md`:
     - Task summary + acceptance criteria mapping
     - Wave plan (0..3)
     - Lane assignments + file ownership globs
     - Branch plan (per-lane branches + integration plan if applicable)
-  - `artifacts/current/risk.md`:
+  - `$ARTIFACTS_DIR/risk.md`:
     - Risk areas (deps/infra/db/auth/security/perf) + mitigations
     - Explicitly flag high-risk changes (auth/crypto/payments)
 
 2.1) PR_BODY_SEED (no code changes)
-- Ensure `artifacts/current/pr.md` exists and includes a task checklist for this feature run.
+- Ensure `$ARTIFACTS_DIR/pr.md` exists and includes a task checklist for this feature run.
 - Generate the checklist from the task files created in /tasks for this feature (ordered):
   - Format:
     ## Tasks
     - [ ] <task-id>-<task-slug>
-- Append (or create) this section in artifacts/current/pr.md BEFORE PR bootstrap so the PR body contains it.
+- Append (or create) this section in $ARTIFACTS_DIR/pr.md BEFORE PR bootstrap so the PR body contains it.
 - Do not mark any task as done here; all start unchecked.
 
 3) Split into lane subtasks + dispatch subagents (parallel)
@@ -65,7 +70,7 @@ Otherwise (standalone task execution):
 4) Enforce lane ownership (strict-default, soft-by-exception)
 - Each lane may only edit its owned globs by default.
 - If cross-lane edits are needed:
-  - Create `artifacts/current/ownership-request.md` explaining file(s), reason, impact, rollback
+  - Create `$ARTIFACTS_DIR/ownership-request.md` explaining file(s), reason, impact, rollback
   - STOP and re-slice/serialize work or request explicit approval in the plan.
 
 5) Implement + integrate (wave-based)
@@ -77,21 +82,21 @@ Otherwise (standalone task execution):
 - Integrate in prescribed order:
   - I -> D -> A2 -> A1 -> W2 -> W1 -> T
 - Ensure required artifacts exist and indicate PASS:
-  - `artifacts/current/typecheck.md`
-  - `artifacts/current/security.md`
-  - `artifacts/current/perf.md`
-  - `artifacts/current/tests.md`
-  - `artifacts/current/review.md`
+  - `$ARTIFACTS_DIR/typecheck.md`
+  - `$ARTIFACTS_DIR/security.md`
+  - `$ARTIFACTS_DIR/perf.md`
+  - `$ARTIFACTS_DIR/tests.md`
+  - `$ARTIFACTS_DIR/review.md`
 - If full-autonomy areas changed, ensure conditional artifacts exist:
-  - `artifacts/current/dependency-review.md` (deps)
-  - `artifacts/current/infra-review.md` (CI/Docker)
-  - `artifacts/current/db-review.md` (migrations)
-- Produce/refresh `artifacts/current/pr.md`:
+  - `$ARTIFACTS_DIR/dependency-review.md` (deps)
+  - `$ARTIFACTS_DIR/infra-review.md` (CI/Docker)
+  - `$ARTIFACTS_DIR/db-review.md` (migrations)
+- Produce/refresh `$ARTIFACTS_DIR/pr.md`:
   - PR-ready summary tied to acceptance criteria + commands run + risks + rollback
 
 6) Push changes (mandatory before CI)
 - Ensure branch is pushed to origin.
-- If your workflow requires force-push (rebased history), do so safely and document it in `artifacts/current/pr.md`.
+- If your workflow requires force-push (rebased history), do so safely and document it in `$ARTIFACTS_DIR/pr.md`.
 
 7) PR_BOOTSTRAP (mandatory before CI watch)
 - Detect GitHub default base branch:
@@ -99,12 +104,12 @@ Otherwise (standalone task execution):
 - Determine whether a PR already exists for the current branch:
   - `PR_NUM="$(gh pr view --json number -q .number 2>/dev/null || true)"`
 - If no PR exists:
-  - Create one using artifacts/current/pr.md as body:
+  - Create one using $ARTIFACTS_DIR/pr.md as body:
     - `gh pr create --base "$BASE" --head "$(git branch --show-current)" --title "[{task.id}] {task.title}" --body-file artifacts/current/pr.md`
   - Then re-fetch PR number:
     - `PR_NUM="$(gh pr view --json number -q .number)"`
 - Record PR number + URL in:
-  - `artifacts/current/pr.md` (append a short PR metadata block)
+  - `$ARTIFACTS_DIR/pr.md` (append a short PR metadata block)
 
 Hard stop:
 - If PR cannot be created (auth/permissions), mark task BLOCKED and stop.
@@ -119,8 +124,8 @@ If CI SUCCESS:
 
 If CI FAILED:
 - Run `/ci-fetch-logs` to create:
-  - `artifacts/current/ci-logs/run-<RUN_ID>.log`
-  - `artifacts/current/ci-failures.md`
+  - `$ARTIFACTS_DIR/ci-logs/run-<RUN_ID>.log`
+  - `$ARTIFACTS_DIR/ci-failures.md`
 - For up to MAX_CI_FIX_LOOPS times:
   a) Generate or overwrite `tasks/0002-ci-green.md`:
      - Lane I as primary
@@ -138,7 +143,7 @@ If CI FAILED:
   f) If CI SUCCESS: break and proceed.
 - If still failing after MAX_CI_FIX_LOOPS:
   - Mark the original task BLOCKED
-  - Summarize remaining failures in `artifacts/current/review.md` + `artifacts/current/pr.md`
+  - Summarize remaining failures in `$ARTIFACTS_DIR/review.md` + `$ARTIFACTS_DIR/pr.md`
   - Do NOT claim MERGE-READY.
 
 10) ARTIFACTS_COMMIT (keep working tree clean)

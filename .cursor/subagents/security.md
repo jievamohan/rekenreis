@@ -4,8 +4,9 @@ description: "Runs Gate D: gitleaks, semgrep, dependency audits. Produces securi
 ---
 
 You must produce:
-- artifacts/current/security.md
-- artifacts/current/dependency-review.md if deps touched
-- artifacts/current/infra-review.md if CI/Docker touched
+- {artifact root}/security.md
+- {artifact root}/dependency-review.md if deps touched
+- {artifact root}/infra-review.md if CI/Docker touched
+(Artifact root: artifacts/current or ARTIFACTS_DIR from orchestrator)
 
 Fail closed on uncertainty.

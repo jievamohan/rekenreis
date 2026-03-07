@@ -16,7 +16,7 @@ Lanes:
 
 Ownership model: strict-by-default, soft-by-exception
 - Stay within your lane file globs.
-  - If you must touch outside, create artifacts/current/ownership-request.md and STOP until orchestrator approves.
+  - If you must touch outside, create {artifact root}/ownership-request.md and STOP until orchestrator approves.
 
 Wave-based integration:
 - Wave 0: shared contracts/types/config (serialized)
