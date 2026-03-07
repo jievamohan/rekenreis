@@ -1416,7 +1416,7 @@ Acceptance:
 ---
 
 ## Epic 25.3 — Elimineer Runtime Installs
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-25.md
 - archive: artifacts/archive/epic-25.0/latest
