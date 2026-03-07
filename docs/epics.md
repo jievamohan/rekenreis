@@ -1137,7 +1137,7 @@ Acceptance:
 ---
 
 ## Epic 23.1 — Benchmark & Baseline
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-23.md
 - archive: artifacts/archive/epic-23.0/latest
