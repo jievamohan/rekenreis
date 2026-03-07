@@ -1,7 +1,6 @@
-# Assets — Epic 23
+# Assets — Epic 24
 
-N/A: No new assets required. CI/infrastructure only.
+N/A: Geen nieuwe assets of illustraties gevraagd.
 
-Impact: none.
-
-Checks still required: no.
+- **Impact:** none
+- **Checks still required:** no

@@ -1,7 +1,6 @@
-# Game Feel — Epic 23
+# Game Feel — Epic 24
 
-N/A: No gameplay changes. CI/infrastructure only.
+N/A: Infra-only. Geen gameplay-gerelateerde wijzigingen.
 
-Impact: none.
-
-Checks still required: no.
+- **Impact:** none
+- **Checks still required:** no

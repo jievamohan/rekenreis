@@ -1,26 +1,28 @@
-# Discovery — Epic 23: Playwright CI Speed
+# Discovery — Epic 24 (Business Analyst)
 
-## Business Context
+## Problem Statement
 
-- **Intent:** Improve GitHub Actions Playwright CI run time. First do a benchmark, then fine-tune until under 1 minute.
-- **Current state:** Playwright e2e job runs in ~2+ minutes (benchmark: ~2m 10s total including stack startup; Playwright reported "20 passed (2.0m)").
-- **Target:** Total Playwright CI run time < 60 seconds.
+Bij het runnen van een merge request (GitHub Actions) duurt de Playwright e2e-container job te lang door:
 
-## Stakeholder Needs
+1. **Build images (cached):** Ondanks "cached" in de naam worden images toch gebouwd — GHA cache lijkt niet effectief te worden gebruikt.
+2. **Start stack (no rebuild):** De MySQL image wordt elke run opnieuw gepulled (alle layers), terwijl zap-baseline job wel MySQL cached.
 
-- **Developers:** Faster feedback on PRs; shorter CI cycles.
-- **CI/CD:** Reduced runner minutes; cost efficiency.
-- **Quality:** No regression in test coverage or reliability.
+Deze twee stappen alleen al duren ~1m30s. De gebruiker wil dat Playwright tests **nagenoeg instantaan** runnen, zonder al te veel spinup en scaffolding.
+
+## Target Audience
+
+- Developers die PRs openen en snel feedback willen
+- CI pipeline efficiency
 
 ## Success Criteria
 
-- Playwright job (e2e-container) completes in < 60 seconds.
-- All existing tests remain green.
-- No reduction in test coverage or reliability.
-- Benchmark documented before/after.
+- Build images (cached) stap: cache hit → geen rebuild (of minimale rebuild)
+- Start stack (no rebuild) stap: MySQL image uit cache → geen pull
+- Totale spinup (build + start) significant korter dan huidige ~1m30s
+- Playwright tests zelf blijven container-only (policy 64)
 
 ## Non-Goals
 
-- Changing test logic or assertions.
-- Adding new tests.
-- Migrating to another CI provider.
+- Migreren naar andere CI provider
+- Playwright test logic wijzigen
+- Nieuwe tests toevoegen
