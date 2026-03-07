@@ -75,13 +75,23 @@ bash scripts/ci/e2e-benchmark.sh
 
 **Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache). Image loads run in parallel when both Playwright and MySQL caches hit.
 
-## Epic 25 — Install Optimization (Baseline)
+## Epic 25 — Install Optimization (Final)
+
+| Slice | Change | Status |
+|-------|--------|--------|
+| 25.1 | Step timing (install vs test substeps) | Done |
+| 25.2 | Custom e2e image with pnpm pre-installed | Done |
+| 25.3 | Remove runtime npm install -g pnpm | Done |
+| 25.4 | Fine-tune & document final config | Done |
 
 | Substep | Description | Typical (cache hit) | Typical (cache miss) |
 |---------|-------------|---------------------|----------------------|
-| Install (pnpm) | npm install -g pnpm + pnpm install (when needed) | ~5–15s | ~30–60s |
+| Install (pnpm) | pnpm config + pnpm install (when needed) | ~0–2s | ~30–60s |
 | Run Playwright | pnpm test:e2e | ~30–60s | ~30–60s |
 
-**Baseline (Epic 25.1):** Install vs test substeps are reported in the e2e-container job summary. When node_modules cache hits, install is minimal (~5–15s). When cache misses, full pnpm install runs (~30–60s).
+**Final Config (Epic 25.4):**
 
-**Epic 25.2–25.3:** Custom e2e image has pnpm pre-installed; no `npm install -g pnpm` at runtime. Install substep is near-instant on cache hit (config only); on cache miss, only `pnpm install` runs.
+- **e2e image:** Custom `rekenreis-e2e:latest` (FROM playwright + pnpm@9); built via bake, GHA cache `scope=e2e`
+- **Runtime:** No `npm install -g pnpm`; pnpm pre-installed in image
+- **node_modules:** Cached at job level; on cache hit, install substep is config-only (~0–2s)
+- **Target achieved:** Install substep nagenoeg instant on cache hit
