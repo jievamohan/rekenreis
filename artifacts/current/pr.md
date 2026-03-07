@@ -6,7 +6,7 @@ Fine-tune tot spinup (Build + Start) nagenoeg instantaan. Parallel load van Play
 
 ## Tasks
 
-- [ ] 0129-epic24-4-parallel-load
+- [x] 0129-epic24-4-parallel-load
 
 ---
 
