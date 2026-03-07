@@ -1359,3 +1359,110 @@ Acceptance:
 - Spinup nagenoeg instantaan (target bereikt)
 - Finale config gedocumenteerd
 - Alle tests green
+
+---
+
+## Epic 25.1 — Benchmark e2e Install Timing
+- [ ]
+PlanRef:
+- design: docs/design/epic-25.md
+- archive: artifacts/archive/epic-25.0/latest
+- slice: 25.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 25.1: Meet en documenteer baseline voor e2e install-stap.
+
+Requirements:
+- Voeg stap-timing toe aan e2e-benchmark.sh of gates.yml voor install-stap
+- Documenteer baseline in docs/runbooks/e2e-benchmark.md
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- CI output toont duur per substap (install vs test)
+- Baseline gedocumenteerd
+- Alle tests green
+
+---
+
+## Epic 25.2 — Custom e2e Image met pnpm
+- [ ]
+PlanRef:
+- design: docs/design/epic-25.md
+- archive: artifacts/archive/epic-25.0/latest
+- slice: 25.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 25.2: Custom e2e image met pnpm pre-installed en GHA cache.
+
+Requirements:
+- Dockerfile voor e2e (FROM playwright + RUN pnpm install -g pnpm@9)
+- Bake target e2e in docker-bake.hcl
+- GHA cache voor e2e image (key op lockfile hash)
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- e2e image gebouwd en gecached
+- Cache hit bij lockfile ongewijzigd
+- Alle tests green
+
+---
+
+## Epic 25.3 — Elimineer Runtime Installs
+- [ ]
+PlanRef:
+- design: docs/design/epic-25.md
+- archive: artifacts/archive/epic-25.0/latest
+- slice: 25.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 25.3: Verwijder npm install -g pnpm uit e2e run; gebruik custom image.
+
+Requirements:
+- e2e service gebruikt custom image (build) in plaats van upstream playwright image
+- e2e-benchmark.sh: geen npm install -g pnpm@9 meer; direct pnpm
+- pnpm install alleen bij node_modules cache miss (of pre-baked in image)
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Geen pnpm install in container bij cache hit
+- Install-stap significant korter
+- Alle tests green
+
+---
+
+## Epic 25.4 — Fine-tune & Documenteer
+- [ ]
+PlanRef:
+- design: docs/design/epic-25.md
+- archive: artifacts/archive/epic-25.0/latest
+- slice: 25.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 25.4: Fine-tune e2e install optimalisatie en documenteer finale config.
+
+Requirements:
+- Pas eventuele extra optimalisaties toe (node_modules pre-bake, cache keys, etc.)
+- Doel: install-stap nagenoeg geëlimineerd
+- Documenteer finale config in docs/runbooks/e2e-benchmark.md
+- Alle Playwright tests blijven groen
+- Playwright runs container-only via docker compose e2e
+
+Acceptance:
+- Target bereikt (install nagenoeg instant)
+- Finale config gedocumenteerd
+- Alle tests green
