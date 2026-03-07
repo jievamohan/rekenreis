@@ -73,6 +73,7 @@ docker compose up --build
 - Run e2e:
   - docker compose run --rm e2e pnpm install
   - docker compose run --rm e2e pnpm playwright test
+- **Benchmark:** See [e2e-benchmark.md](e2e-benchmark.md). CI uses `scripts/ci/e2e-benchmark.sh`; baseline ~2+ min.
 - Run e2e with UI (optional):
   - docker compose run --rm -p 9323:9323 e2e pnpm playwright test --ui --host 0.0.0.0
 
