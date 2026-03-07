@@ -49,8 +49,6 @@ const isDragging = ref(false)
 const dragPos = ref({ x: 0, y: 0 })
 const selectedGem = ref<number | null>(null)
 const chestHighlight = ref(false)
-const feedbackState = ref<'idle' | 'correct' | 'wrong'>('idle')
-const lastAttemptedGem = ref<number | null>(null)
 
 function assignUniqueGems(
   choices: number[],
@@ -82,23 +80,13 @@ const draggedGemData = computed(() => {
 })
 
 const showChestOpen = computed(
-  () =>
-    (chestHighlight.value && isDragging.value && feedbackState.value === 'idle') ||
-    feedbackState.value === 'correct'
+  () => chestHighlight.value && isDragging.value
 )
 
 let pointerCleanup: (() => void) | null = null
 
 function submitAnswer(value: number) {
-  const correct = value === props.question.correctAnswer
-  lastAttemptedGem.value = value
-  feedbackState.value = correct ? 'correct' : 'wrong'
-  const delay = correct ? 900 : 450
-  setTimeout(() => {
-    emit('answer', value)
-    feedbackState.value = 'idle'
-    lastAttemptedGem.value = null
-  }, delay)
+  emit('answer', value)
 }
 
 function handlePointerMove(e: PointerEvent) {
@@ -146,7 +134,6 @@ function cleanupPointer() {
 }
 
 function onPointerDown(value: number, e: PointerEvent) {
-  if (feedbackState.value !== 'idle') return
   e.preventDefault()
   draggedGem.value = value
   selectedGem.value = value
@@ -181,7 +168,7 @@ function onGemKeydown(value: number) {
 }
 
 function onChestKeydown(e: KeyboardEvent) {
-  if ((e.key === 'Enter' || e.key === ' ') && selectedGem.value !== null && feedbackState.value === 'idle') {
+  if ((e.key === 'Enter' || e.key === ' ') && selectedGem.value !== null) {
     e.preventDefault()
     submitAnswer(selectedGem.value)
     selectedGem.value = null
@@ -189,7 +176,7 @@ function onChestKeydown(e: KeyboardEvent) {
 }
 
 function onChestClick() {
-  if (selectedGem.value !== null && feedbackState.value === 'idle') {
+  if (selectedGem.value !== null) {
     submitAnswer(selectedGem.value)
     selectedGem.value = null
   }
@@ -220,8 +207,6 @@ function onChestClick() {
         :class="{
           selected: selectedGem === gem.value,
           dragging: isDragging && draggedGem === gem.value,
-          'gem-wrong': feedbackState === 'wrong' && lastAttemptedGem === gem.value,
-          'gem-used': feedbackState === 'correct' && lastAttemptedGem === gem.value,
         }"
         :style="{ '--sparkle-delay': `${i * 0.3}s` }"
         :aria-label="t('minigameTreasureDive.gemLabel', { value: gem.value })"
@@ -240,10 +225,6 @@ function onChestClick() {
 
     <div
       class="chest-zone"
-      :class="{
-        'chest-success': feedbackState === 'correct',
-        'chest-wrong': feedbackState === 'wrong',
-      }"
       data-drop-target="chest"
       role="button"
       tabindex="0"
@@ -257,14 +238,6 @@ function onChestClick() {
         alt=""
         aria-hidden="true"
       />
-      <span
-        v-if="feedbackState === 'correct'"
-        class="correct-feedback"
-        role="status"
-        aria-live="polite"
-      >
-        {{ t('minigameTreasureDive.correctFeedback') }}
-      </span>
     </div>
   </div>
 </template>
@@ -360,16 +333,6 @@ function onChestClick() {
   animation: none;
 }
 
-.gem.gem-wrong {
-  animation: gem-wrong-shake 0.4s ease-out;
-}
-
-.gem.gem-used {
-  opacity: 0.45;
-  cursor: default;
-  pointer-events: none;
-}
-
 .gem .gem-img {
   position: absolute;
   inset: 0;
@@ -419,29 +382,6 @@ function onChestClick() {
   object-fit: contain;
 }
 
-.chest-zone.chest-success {
-  animation: chest-success-open 0.3s ease-out forwards;
-}
-
-.correct-feedback {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 0.5rem;
-  font-family: var(--app-font, sans-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--app-correct, #66bb6a);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  animation: correct-feedback-in 0.25s ease-out;
-  white-space: nowrap;
-}
-
-.chest-zone.chest-wrong {
-  animation: chest-wrong-wobble 0.45s ease-in-out;
-}
-
 @keyframes arrow-bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
@@ -452,45 +392,12 @@ function onChestClick() {
   50% { filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.25)); }
 }
 
-@keyframes gem-wrong-shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
-}
-
-@keyframes chest-success-open {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1.05); }
-}
-
-@keyframes correct-feedback-in {
-  0% { opacity: 0; transform: translateX(-50%) translateY(4px); }
-  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
-@keyframes chest-wrong-wobble {
-  0%, 100% { transform: rotate(0); }
-  15% { transform: rotate(-3deg); }
-  30% { transform: rotate(3deg); }
-  45% { transform: rotate(-2deg); }
-  60% { transform: rotate(2deg); }
-  75% { transform: rotate(-1deg); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .gem,
   .chest-zone {
     transition: none;
   }
   .gem .gem-img {
-    animation: none !important;
-  }
-  .gem.gem-wrong,
-  .chest-zone.chest-success,
-  .chest-zone.chest-wrong {
     animation: none !important;
   }
   .drop-arrow {

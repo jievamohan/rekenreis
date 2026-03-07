@@ -1,15 +1,10 @@
-# Security Design — Treasure Dive Creatiever
+# Security Design — Fish Feed Creatiever
 
-**Run ID:** treasure-dive-creative-2025-03  
+**Run ID:** fish-feed-creative-2025-03  
 **Agent:** security-privacy
 
-## N/A: Geen security/privacy impact
+## N/A: Geen security-impact
 
-**Impact:** none  
-**Checks still required:** yes — Gate D (gitleaks, audit) moet slagen
+**Impact:** geen
 
-De wijzigingen betreffen alleen:
-- Frontend component (Vue)
-- CSS animaties
-- Geen user input buiten bestaande flow
-- Geen auth, payments, of PII
+**Checks:** Geen auth, geen crypto, geen data-lever; alleen UI/layout wijzigingen in MinigameFishFeed.vue.

@@ -86,7 +86,7 @@ export function usePlayGame(
     loadQuestion()
   }, { deep: true })
 
-  function selectAnswer(choice: number) {
+  function selectAnswer(choice: number, opts?: { silent?: boolean }) {
     if (!question.value || feedback.value) return
     const correct = choice === question.value.correctAnswer
     if (correct) {
@@ -95,7 +95,9 @@ export function usePlayGame(
     } else {
       streak.value = 0
     }
-    feedback.value = { correct, selectedAnswer: choice }
+    if (!opts?.silent) {
+      feedback.value = { correct, selectedAnswer: choice }
+    }
   }
 
   function nextQuestion() {

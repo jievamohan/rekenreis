@@ -15,7 +15,6 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const selectedItem = ref<number | null>(null)
 const sortedItems = ref<Map<string, number[]>>(new Map())
-const wrongBin = ref<string | null>(null)
 
 const items = computed(() =>
   props.question.choices.map((choice) => ({ value: choice }))
@@ -41,16 +40,9 @@ function sortIntoBin(binId: string) {
   const bin = bins.value.find((b) => b.id === binId)
   if (!bin) return
 
-  if (bin.label === selectedItem.value) {
-    const existing = sortedItems.value.get(binId) ?? []
-    existing.push(selectedItem.value)
-    sortedItems.value.set(binId, existing)
-    emit('answer', selectedItem.value)
-    selectedItem.value = null
-  } else {
-    wrongBin.value = binId
-    setTimeout(() => { wrongBin.value = null }, 600)
-  }
+  const isCorrect = bin.label === selectedItem.value
+  emit('answer', isCorrect ? selectedItem.value : bin.label)
+  selectedItem.value = null
 }
 
 function onBinKeydown(binId: string, e: KeyboardEvent) {
@@ -91,10 +83,7 @@ function onBinKeydown(binId: string, e: KeyboardEvent) {
         v-for="bin in bins"
         :key="bin.id"
         class="sort-bin"
-        :class="{
-          'bin-ready': selectedItem !== null,
-          'bin-wrong': wrongBin === bin.id,
-        }"
+        :class="{ 'bin-ready': selectedItem !== null }"
         role="button"
         tabindex="0"
         :aria-label="t('minigameSubmarineSort.compartmentLabel') + ' ' + bin.label"
@@ -210,11 +199,6 @@ function onBinKeydown(binId: string, e: KeyboardEvent) {
   background: rgba(102, 187, 106, 0.08);
 }
 
-.sort-bin.bin-wrong {
-  animation: bin-shake 0.4s ease;
-  border-color: var(--app-wrong, #ef5350);
-  background: rgba(239, 83, 80, 0.08);
-}
 
 .bin-emoji {
   font-size: 1.5rem;
@@ -253,9 +237,6 @@ function onBinKeydown(binId: string, e: KeyboardEvent) {
   .sort-item,
   .sort-bin {
     transition: none;
-  }
-  .sort-bin.bin-wrong {
-    animation: none;
   }
 }
 </style>

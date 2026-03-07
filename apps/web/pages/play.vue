@@ -157,8 +157,9 @@ const totalLevels = levelsClassic.length
 
 function onKeypadAnswer(answer: number) {
   if (game.feedback.value || !game.question.value) return
-  game.selectAnswer(answer)
-  if (answer !== game.question.value.correctAnswer) {
+  const correct = answer === game.question.value.correctAnswer
+  game.selectAnswer(answer, { silent: true })
+  if (!correct) {
     recordMistake({
       a: game.question.value.a,
       b: game.question.value.b,
@@ -166,14 +167,14 @@ function onKeypadAnswer(answer: number) {
       selectedAnswer: answer,
     })
   }
-  advanceRound()
+  advanceRound(correct ? 'correct' : 'wrong')
 }
 
-function advanceRound() {
+function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
   const fb = game.feedback.value
-  if (fb) {
-    const outcome = isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')
-    roundOutcome.recordRoundOutcome(outcome, interactionMode.value)
+  const resolved = outcome ?? (fb ? (isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')) : null)
+  if (resolved) {
+    roundOutcome.recordRoundOutcome(resolved, interactionMode.value)
     dailyGoal.incrementRound()
   }
 
@@ -381,9 +382,14 @@ onUnmounted(() => {
       />
     </template>
 
-    <!-- Keypad mode: ProblemCard + Keypad -->
+    <!-- Level complete: hide game so timer stops, modal overlays -->
+    <template v-else-if="useKeypadMode && showLevelComplete">
+      <div class="play-page-level-complete" aria-hidden="true" />
+    </template>
+
+    <!-- Minigame mode: ProblemCard + MinigameRenderer -->
     <template v-else-if="useKeypadMode && game.question.value">
-      <div class="play-header">
+      <div class="play-header play-header-minigame">
         <div class="progress-wrap">
           <div
             class="round-progress"
@@ -398,8 +404,7 @@ onUnmounted(() => {
               :style="{ width: `${completedProgressPercent}%` }"
             />
             <div
-              class="round-progress-node"
-              :class="'round-progress-node-current'"
+              class="round-progress-node round-progress-node-current"
               :style="{ left: `${currentRoundPercent}%` }"
               aria-hidden="true"
             >
@@ -418,6 +423,7 @@ onUnmounted(() => {
           :b="game.question.value.b"
           :answer="''"
           :is-correct="null"
+          variant="minigame"
         />
 
         <MinigameRenderer
@@ -603,6 +609,10 @@ onUnmounted(() => {
   color: rgba(1, 36, 43, 0.3);
   border-color: rgba(1, 36, 43, 0.24);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.play-header-minigame {
+  margin-bottom: 2.25rem;
 }
 
 .keypad-stage {

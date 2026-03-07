@@ -1,19 +1,16 @@
-# Architecture — Treasure Dive Creatiever
+# Architecture — Fish Feed Creatiever
 
-**Run ID:** treasure-dive-creative-2025-03  
+**Run ID:** fish-feed-creative-2025-03  
 **Agent:** principal-architect
 
 ## N/A: Geen architectuurwijzigingen
 
-**Impact:** none  
-**Checks still required:** yes — Lane W1 only; MinigameTreasureDive.vue + mogelijk shared CSS/animaties
+**Impact:** geen
 
-De wijzigingen zijn lokaal binnen:
-- `apps/web/components/minigames/MinigameTreasureDive.vue`
-- Optioneel: design tokens of shared keyframes (binnen apps/web)
+**Checks:** MinigameFishFeed.vue blijft binnen contract; geen nieuwe API, geen shared state.
 
-Geen:
-- API changes
-- DB migrations
-- Nieuwe dependencies
-- Contract v2 wijzigingen (interactionType blijft drag-drop)
+## Scope
+
+- **Enige wijziging:** `apps/web/components/minigames/MinigameFishFeed.vue`
+- **Contract:** Minigame contract v2 (interactionType: timed-pop) ongewijzigd
+- **Props/emit:** Zelfde interface (question, difficultyParams, timersDisabled → answer)

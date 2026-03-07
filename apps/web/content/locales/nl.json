@@ -196,7 +196,8 @@
   },
   "problemCard": {
     "ariaLabel": "{a} plus {b} is {answer}",
-    "blank": "leeg"
+    "blank": "leeg",
+    "rekenUit": "Reken uit!"
   },
   "mapNode": {
     "ariaLabel": "Level {level}",

@@ -1,28 +1,26 @@
-# QA — Treasure Dive Creatiever
+# QA — Fish Feed Creatiever
 
-**Run ID:** treasure-dive-creative-2025-03  
+**Run ID:** fish-feed-creative-2025-03  
 **Agent:** qa-strategist
 
-## Test Strategie
+## Teststrategie
 
 ### Unit
-- MinigameTreasureDive: render, onAnswer correct/wrong, keyboard flow
-- Geen nieuwe unit tests vereist als bestaande coverage voldoende
+- Geen nieuwe unit tests; bestaande minigame flow blijft
 
 ### E2E
-- **mechanic-upgrades.spec.ts:** Treasure Dive (level 2/14) — drag en click-select + chest submit blijven werken
-- **interaction-diversity.spec.ts:** treasure-dive nog steeds drag-drop proof
-- Visual regression: screenshot van treasure-dive scene (indien baselines bestaan)
+- Bestaande interaction-diversity.spec.ts: "timed-kind (FishFeed): timeout shows hint and continues"
+- Mechanic-upgrades.spec.ts: FishFeed flow
+- **Verificatie:** E2E moet blijven slagen na layout- en visuele wijzigingen
+
+### Handmatig
+- Tap correct → feedback correct
+- Tap wrong → retry mogelijk
+- Timeout → hint + continue
+- Reduced motion → geen storende animaties
+- Keyboard → Tab + Enter werkt
 
 ### Gates
 - C: typecheck
-- D: gitleaks, audit
-- F: bundle budget
-
-### Acceptance
-- Drag correcte edelsteen naar kist → correct feedback, volgende ronde
-- Click edelsteen + click kist → idem
-- Keyboard: Tab → select → Enter on chest → idem
-- Wrong drop → gentle feedback, retry mogelijk
-- Reduced motion: geen storende animaties
-- Geen regressie op andere minigames
+- D: security
+- F: build + bundle budget
