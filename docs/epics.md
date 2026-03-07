@@ -1221,7 +1221,7 @@ Acceptance:
 ---
 
 ## Epic 23.4 — Fine-Tune to <60s
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-23.md
 - archive: artifacts/archive/epic-23.0/latest
