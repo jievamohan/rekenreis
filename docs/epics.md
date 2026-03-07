@@ -1278,7 +1278,8 @@ Acceptance:
 ---
 
 ## Epic 24.2 — MySQL Image Cache
-- [ ]
+- [x]
+Merged: PR #85
 PlanRef:
 - design: docs/design/epic-24.md
 - archive: artifacts/archive/epic-24.0/latest

@@ -12,6 +12,14 @@ The e2e-container job outputs duration per step to the job summary:
 
 **Spinup** = Build images + Start stack. **Target (Epic 24):** spinup nagenoeg instantaan via cache.
 
+### Build cache config (Epic 24.3)
+
+- **Backend:** `type=gha` (GitHub Actions cache)
+- **Scope:** Separate per target (`scope=web`, `scope=api`) to avoid overwrites
+- **Mode:** `mode=max` exports all layers for better cache hits
+- Cache hit: layers show `CACHED` in build output; Build images step ~20–40s
+- Cache miss: full rebuild; first run on new branch typically misses
+
 ## Baseline (Epic 23.1)
 
 - **Metric:** Duration of the "Run Playwright tests" step in the e2e-container CI job.
