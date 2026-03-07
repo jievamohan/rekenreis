@@ -71,6 +71,6 @@ bash scripts/ci/e2e-benchmark.sh
 | 24.1 | Step timing in job summary | Done |
 | 24.2 | MySQL image cache (no pull on hit) | Done |
 | 24.3 | Build cache config documented | Done |
-| 24.4 | Final config documented | Done |
+| 24.4 | Parallel load Playwright + MySQL when both caches hit | Done |
 
-**Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache).
+**Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache). Image loads run in parallel when both Playwright and MySQL caches hit.
