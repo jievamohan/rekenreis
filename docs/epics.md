@@ -1249,7 +1249,8 @@ Acceptance:
 ---
 
 ## Epic 24.1 — Benchmark & Stap-timing
-- [ ]
+- [x]
+Merged: PR #84
 PlanRef:
 - design: docs/design/epic-24.md
 - archive: artifacts/archive/epic-24.0/latest
