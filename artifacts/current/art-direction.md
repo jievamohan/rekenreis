@@ -1,7 +1,6 @@
-# Art Direction — Epic 23
+# Art Direction — Epic 24
 
-N/A: No visual changes. CI/infrastructure only.
+N/A: Infra-only. Geen visuele wijzigingen.
 
-Impact: none.
-
-Checks still required: no.
+- **Impact:** none
+- **Checks still required:** no

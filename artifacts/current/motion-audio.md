@@ -1,7 +1,6 @@
-# Motion & Audio — Epic 23
+# Motion & Audio — Epic 24
 
-N/A: No motion or audio changes. CI/infrastructure only.
+N/A: Infra-only. Geen motion of audio.
 
-Impact: none.
-
-Checks still required: no.
+- **Impact:** none
+- **Checks still required:** no

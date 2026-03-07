@@ -1,45 +1,26 @@
-# Architecture — Epic 23: Playwright CI Speed
+# Architecture — Epic 24 (Principal Architect)
 
-## Current Architecture
+## Current State
 
-### CI Pipeline (.github/workflows/gates.yml)
+### e2e-container job (.github/workflows/gates.yml)
 
-- **e2e-container job:** Runs Playwright tests inside Docker.
-- **Flow:**
-  1. Checkout
-  2. Docker Buildx
-  3. Cache pnpm store
-  4. Cache Playwright image (mcr.microsoft.com/playwright:v1.49.0-jammy)
-  5. Build web + api images (docker/bake-action)
-  6. Start stack (web, api, mysql)
-  7. Run e2e: `docker compose run --rm e2e` → pnpm install + pnpm test:e2e
-  8. Upload report, tear down
+1. **Cache pnpm store** — key: pnpm-store-{os}-{lockfile hash}
+2. **Cache node_modules** — key: node-modules-{os}-{lockfile hash}
+3. **Cache Playwright image** — key: docker-playwright-v1.49.0-jammy
+4. **Build images (cached)** — docker/bake-action, targets web+api, GHA cache scope=web, scope=api
+5. **Start stack (no rebuild)** — `docker compose up --no-build -d web api mysql` + `up --wait`
+6. **Run Playwright** — scripts/ci/e2e-benchmark.sh
 
-### Playwright Config (apps/web/playwright.config.ts)
+### Gap Analysis
 
-- `workers: 1` in CI (sequential execution)
-- `projects: chromium, visual` — tests run twice (once per project)
-- `fullyParallel: true` (but workers=1 negates parallelism)
-- `retries: 1` in CI
+- **MySQL image:** e2e-container heeft GEEN MySQL cache. zap-baseline job WEL (lines 278–291). Bij `docker compose up` wordt mysql:8.0 elke keer gepulled.
+- **Build cache:** docker/bake-action gebruikt `cache-from=type=gha,scope=web` etc. Mogelijke oorzaken van cache miss:
+  - Cache key niet stabiel tussen PRs/branches
+  - Bake cache-to/cache-from scope mismatch
+  - GHA cache eviction (7-day policy)
 
-### Test Suite
+## Constraints
 
-- ~11 spec files, ~35+ test cases
-- Two projects → ~70 test runs
-- Slow file: mistakes-review.spec.ts (~30s)
-- Visual project duplicates functional tests with different viewport
-
-### Bottlenecks (from benchmark)
-
-1. **Workers=1:** All tests run sequentially.
-2. **Dual projects:** chromium + visual run same tests twice.
-3. **pnpm install:** Inside e2e container every run (no layer caching of node_modules).
-4. **Stack startup:** web, api, mysql healthchecks add latency.
-5. **Docker image pulls:** Playwright base image ~1.5GB.
-6. **Build:** web/api images built each run (GH cache helps but cold cache is slow).
-
-## Target Architecture
-
-- Playwright job wall-clock < 60s.
-- Preserve test coverage and reliability.
-- Container-only execution (policy: 64-container-only-playwright).
+- Container-only Playwright (policy 64)
+- Gate C/D/F moeten groen blijven
+- Geen wijziging aan test logic

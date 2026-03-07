@@ -1,7 +1,6 @@
-# UX — Epic 23
+# UX — Epic 24
 
-N/A: Infra-only epic. No user-facing changes or UX impact.
+N/A: Infra-only. Geen user-facing changes.
 
-Impact: none.
-
-Checks still required: no (CI/DevOps only).
+- **Impact:** none
+- **Checks still required:** no

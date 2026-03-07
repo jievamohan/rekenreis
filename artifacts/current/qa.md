@@ -1,27 +1,18 @@
-# QA Strategy — Epic 23: Playwright CI Speed
+# QA — Epic 24 (QA Strategist)
 
 ## Test Strategy
 
-### Regression Prevention
+- **Invariant:** Alle bestaande Playwright tests blijven groen.
+- **Geen wijziging aan test logic** — alleen CI-infra.
 
-- **Invariant:** All existing Playwright tests must remain green after each optimization.
-- **No test logic changes** unless deduplication explicitly removes redundant coverage.
+## Regression Plan
 
-### Benchmark Validation
+1. Na elke slice: CI run op PR; e2e-container job moet slagen.
+2. Verifieer dat `docker compose run --rm e2e` lokaal nog werkt (policy 64).
+3. Geen nieuwe flakiness door cache — bij cache miss moet job nog steeds slagen (fallback naar pull/build).
 
-- Add CI step or script to record e2e-container job duration.
-- Document baseline in artifacts/current or docs/runbooks.
-- Target: job duration < 60s.
+## Checks Required
 
-### Acceptance Criteria per Slice
-
-- **23.1:** Benchmark script runs; baseline documented.
-- **23.2:** Workers/project changes; all tests pass; duration reduced.
-- **23.3:** pnpm cache/slow-test optimizations; all tests pass; duration reduced.
-- **23.4:** Final fine-tuning; job < 60s; all tests pass.
-
-### Non-Flaky Assertions
-
-- Optimizations must not introduce flakiness.
-- If workers > 1: verify no shared state between tests (e.g. localStorage, session).
-- Retries (1) remain acceptable for transient failures.
+- e2e-container job: alle Playwright specs pass
+- Gate C, D, F: ongewijzigd groen
+- Runbook bijgewerkt met nieuwe timings

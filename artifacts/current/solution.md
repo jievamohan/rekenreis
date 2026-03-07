@@ -1,60 +1,58 @@
-# Solution — Epic 23: Playwright CI Speed
+# Solution — Epic 24 (Solution Designer)
 
-## Benchmark Baseline (to be documented in Epic 23.1)
+## Levers
 
-- **Metric:** Total e2e-container job duration.
-- **Current:** ~2+ minutes (Playwright "20 passed (2.0m)").
-- **Target:** < 60 seconds.
+### 1. MySQL Image Cache (hoogste impact)
 
-## Solution Levers (ordered by impact)
+**Probleem:** e2e-container pulled mysql:8.0 elke run.
 
-### 1. Increase Playwright Workers (high impact)
+**Oplossing:** Voeg MySQL image cache toe aan e2e-container job (zelfde patroon als zap-baseline):
 
-- **Current:** `workers: 1` in CI.
-- **Change:** `workers: 2` or `workers: 4` (CPU-bound; 2–4 is typical for CI).
-- **Risk:** Low. May need to ensure tests are isolated (no shared state).
-- **Expected gain:** ~40–60% reduction in test execution time.
+```yaml
+- name: Cache mysql image
+  uses: actions/cache@v4
+  id: mysql-cache
+  with:
+    path: /tmp/docker-cache/mysql
+    key: docker-mysql-8.0
+    restore-keys: docker-mysql-
 
-### 2. Consolidate or Shard Projects (high impact)
+- name: Pull mysql image
+  if: steps.mysql-cache.outputs.cache-hit != 'true'
+  run: docker pull mysql:8.0 && mkdir -p /tmp/docker-cache/mysql && docker save mysql:8.0 -o /tmp/docker-cache/mysql/mysql.tar
 
-- **Current:** `chromium` + `visual` projects run all tests twice.
-- **Change A:** Run visual tests only for visual specs (e.g. `e2e/visual/*.spec.ts`).
-- **Change B:** Merge into single project; visual specs use viewport override.
-- **Expected gain:** ~50% fewer test runs if visual runs only visual specs.
+- name: Load mysql image
+  if: steps.mysql-cache.outputs.cache-hit == 'true'
+  run: docker load -i /tmp/docker-cache/mysql/mysql.tar
+```
 
-### 3. Cache pnpm/node_modules in E2E Container (medium impact)
+Plaats vóór "Build images (cached)" zodat MySQL beschikbaar is bij `docker compose up`.
 
-- **Current:** `pnpm install --frozen-lockfile` inside e2e container every run.
-- **Change:** Pre-install in web image or use a dedicated e2e image with deps baked in.
-- **Alternative:** Mount pnpm store from job cache; reuse across runs.
-- **Expected gain:** 10–30s per run.
+### 2. Build Images Cache Verbeteren
 
-### 4. Reduce Test Count / Deduplication (medium impact)
+**Probleem:** Bake-action bouwt ondanks cache.
 
-- **Current:** interaction-diversity, mechanic-upgrades, sorting-sequence, minigame overlap.
-- **Change:** Consolidate overlapping tests; keep one canonical suite per interaction type.
-- **Expected gain:** 20–40% fewer tests.
+**Opties:**
+- **A:** Voeg `pull: false` of `pull-policy` toe waar van toepassing
+- **B:** Gebruik `cache-from` met fallback: `type=registry` als backup (indien images gepusht)
+- **C:** Bake cache key verfijnen — bv. `scope=web-${{ hashFiles('apps/web/Dockerfile', 'apps/web/package.json') }}` — nee, dat breekt sharing
+- **D:** Eerste run benchmarken; mogelijk is cache wel OK maar duurt restore lang
+- **E:** Overweeg `docker/build-push-action` met expliciete cache opts
 
-### 5. Optimize Slow Tests (medium impact)
+Praktisch: eerst benchmarken. Als cache-hit duurt restore nog ~30s, dan is dat acceptabel. Als er geen hit is, dan cache-key/cache-from onderzoeken.
 
-- **Current:** mistakes-review.spec.ts ~30s.
-- **Change:** Reduce wait timeouts, use faster assertions, or split.
-- **Expected gain:** 10–20s.
+### 3. Volgorde Optimaliseren
 
-### 6. Parallelize e2e with Other Gates (low impact for Playwright itself)
+- MySQL cache + load vóór build, zodat bij `docker compose up` alle images lokaal zijn.
+- Eventueel: build en mysql-load parallel (niet triviaal in GHA).
 
-- e2e-container already runs in parallel with gate-c, gate-d, gate-f, zap-baseline, lint-test.
-- No change needed for Playwright job itself.
+### 4. Optioneel: Registry Cache
 
-### 7. Shard Playwright Across Multiple Jobs (advanced)
+Als GHA cache onbetrouwbaar is: push web/api images naar GHCR op main, pull in PRs. Verhoogt complexiteit; alleen als GHA cache echt faalt.
 
-- Split specs across 2–3 jobs; run in parallel.
-- Requires CI config changes; more complex.
-- Defer to later slice if <60s not achieved.
+## Aanbevolen Volgorde
 
-## Recommended Order
-
-1. **23.1:** Benchmark + document baseline; add timing to CI output.
-2. **23.2:** Increase workers to 2–4; consolidate projects (visual-only for visual specs).
-3. **23.3:** Cache pnpm in e2e path; optimize slow tests.
-4. **23.4:** Deduplicate tests if still >60s; fine-tune.
+1. **24.1:** Benchmark — meet huidige duur per stap (build, start, e2e)
+2. **24.2:** MySQL cache — voeg toe aan e2e-container (copy from zap-baseline)
+3. **24.3:** Build cache — analyseer + fix bake cache; documenteer
+4. **24.4:** Fine-tune — eventuele extra optimalisaties tot target bereikt
