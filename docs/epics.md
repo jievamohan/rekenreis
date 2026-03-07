@@ -1194,7 +1194,7 @@ Acceptance:
 ---
 
 ## Epic 23.3 — pnpm Cache & Slow Test Optimization
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-23.md
 - archive: artifacts/archive/epic-23.0/latest
