@@ -1,7 +1,7 @@
-# Epic 25.2 — Custom e2e Image met pnpm
+# Epic 25.3 — Elimineer Runtime Installs
 
-Custom e2e image met pnpm pre-installed en GHA cache.
+Verwijder npm install -g pnpm uit e2e run; gebruik custom image.
 
 ## Tasks
 
-- [ ] 0131-epic25-2-custom-e2e-image
+- [ ] 0132-epic25-3-elimineer-runtime-installs

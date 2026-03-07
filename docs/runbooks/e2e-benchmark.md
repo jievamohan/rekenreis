@@ -83,3 +83,5 @@ bash scripts/ci/e2e-benchmark.sh
 | Run Playwright | pnpm test:e2e | ~30–60s | ~30–60s |
 
 **Baseline (Epic 25.1):** Install vs test substeps are reported in the e2e-container job summary. When node_modules cache hits, install is minimal (~5–15s). When cache misses, full pnpm install runs (~30–60s).
+
+**Epic 25.2–25.3:** Custom e2e image has pnpm pre-installed; no `npm install -g pnpm` at runtime. Install substep is near-instant on cache hit (config only); on cache miss, only `pnpm install` runs.
