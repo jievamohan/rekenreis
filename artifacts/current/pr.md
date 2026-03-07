@@ -1,7 +1,7 @@
-# Epic 23.3: pnpm Cache & Slow Test Optimization
+# Epic 23.4: Fine-Tune to <60s
 
-Improve pnpm install caching and optimize mistakes-review.spec.ts.
+Final Playwright CI optimization to achieve < 60 seconds.
 
 ## Tasks
 
-- [ ] 0127-epic23-3-pnpm-cache-slow-tests
+- [ ] 0128-epic23-4-fine-tune-under-60s

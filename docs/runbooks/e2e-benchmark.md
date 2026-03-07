@@ -31,8 +31,15 @@ bash scripts/ci/e2e-benchmark.sh
 
 ## Optimization Roadmap (Epic 23)
 
-| Slice | Change | Expected gain |
-|-------|--------|---------------|
-| 23.2 | Workers 2–4, visual-only for visual specs | ~40–50% |
-| 23.3 | pnpm cache, optimize slow tests | 15–25s |
-| 23.4 | Deduplicate tests, fine-tune | to <60s |
+| Slice | Change | Status |
+|-------|--------|--------|
+| 23.2 | Workers 2–4, visual-only for visual specs | Done: workers=4 |
+| 23.3 | pnpm cache, optimize slow tests | Done |
+| 23.4 | Deduplicate tests, fine-tune | Done: workers=4, final config |
+
+## Final Config (Epic 23.4)
+
+- **Workers:** 4 in CI
+- **Projects:** chromium (functional, excludes visual), visual (e2e/visual/* only)
+- **node_modules:** Cached; e2e skips install when present
+- **mistakes-review:** Reduced timeouts
