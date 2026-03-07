@@ -225,6 +225,25 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: docker load -i /tmp/docker-cache/playwright/playwright.tar
 
+      - name: Cache mysql image
+        uses: actions/cache@v4
+        id: mysql-cache
+        with:
+          path: /tmp/docker-cache/mysql
+          key: docker-mysql-8.0
+          restore-keys: docker-mysql-
+
+      - name: Pull mysql image
+        if: steps.mysql-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull mysql:8.0
+          mkdir -p /tmp/docker-cache/mysql
+          docker save mysql:8.0 -o /tmp/docker-cache/mysql/mysql.tar
+
+      - name: Load mysql image
+        if: steps.mysql-cache.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/docker-cache/mysql/mysql.tar
+
       - name: Build images (cached)
         run: |
           echo "## e2e-container step timing" >> "$GITHUB_STEP_SUMMARY"
