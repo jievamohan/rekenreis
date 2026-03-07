@@ -221,10 +221,6 @@ jobs:
           mkdir -p /tmp/docker-cache/playwright
           docker save mcr.microsoft.com/playwright:v1.49.0-jammy -o /tmp/docker-cache/playwright/playwright.tar
 
-      - name: Load Playwright image
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: docker load -i /tmp/docker-cache/playwright/playwright.tar
-
       - name: Cache mysql image
         uses: actions/cache@v4
         id: mysql-cache
@@ -240,9 +236,16 @@ jobs:
           mkdir -p /tmp/docker-cache/mysql
           docker save mysql:8.0 -o /tmp/docker-cache/mysql/mysql.tar
 
-      - name: Load mysql image
-        if: steps.mysql-cache.outputs.cache-hit == 'true'
-        run: docker load -i /tmp/docker-cache/mysql/mysql.tar
+      - name: Load cached images (parallel when both hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true' || steps.mysql-cache.outputs.cache-hit == 'true'
+        run: |
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ]; then
+            docker load -i /tmp/docker-cache/playwright/playwright.tar &
+          fi
+          if [ "${{ steps.mysql-cache.outputs.cache-hit }}" = "true" ]; then
+            docker load -i /tmp/docker-cache/mysql/mysql.tar &
+          fi
+          wait
 
       - name: Build images (cached)
         run: |

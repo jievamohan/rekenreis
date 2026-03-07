@@ -1,13 +1,25 @@
-# Backlog — Epic 24
+# Backlog — Epic 24.4 Fine-tune Spinup
 
-## Micro-epics (voor slice)
+## Epic Summary
 
-1. **24.1 — Benchmark & Stap-timing** — Meet duur per stap (build, start, e2e); documenteer baseline.
-2. **24.2 — MySQL Image Cache** — Voeg MySQL cache toe aan e2e-container (zoals zap-baseline).
-3. **24.3 — Build Cache Fix** — Onderzoek en fix docker/bake cache; zorg dat cache hit effectief is.
-4. **24.4 — Fine-tune** — Extra optimalisaties tot spinup nagenoeg instantaan.
+Fine-tune tot spinup (Build + Start) nagenoeg instantaan. Slices 24.1–24.3 gedaan (benchmark, MySQL cache, build cache).
 
-## Post-Epic (optioneel)
+## Scope
 
-- Overweeg registry-based cache als GHA cache onvoldoende.
-- Documenteer in docs/runbooks/e2e-benchmark.md.
+**In:** e2e-container job optimalisatie; docs/runbooks/e2e-benchmark.md
+**Out:** Andere gates; test logic; nieuwe tests
+
+## Risks
+
+- Lane I (infra): low risk. Standard CI.
+- Mitigation: Gate D groen; cache miss fallback getest
+
+## Tasks
+
+1. **0129-epic24-4-parallel-load** — Parallel load Playwright + MySQL images when both caches hit; document final config
+
+## NFRs
+
+- Perf: spinup < ~1m30s (target: nagenoeg instantaan)
+- Security: Gate D groen
+- Playwright: container-only (policy 64)
