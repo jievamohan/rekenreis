@@ -1363,7 +1363,7 @@ Acceptance:
 ---
 
 ## Epic 25.1 — Benchmark e2e Install Timing
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-25.md
 - archive: artifacts/archive/epic-25.0/latest
