@@ -4,8 +4,14 @@
 set -euo pipefail
 
 START=$(date +%s)
-docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm e2e sh -lc \
-  "npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store && pnpm install --frozen-lockfile && pnpm test:e2e"
+# When node_modules exists (e.g. from CI cache), skip pnpm install to save time
+if [[ -d apps/web/node_modules ]] && [[ -f apps/web/node_modules/.pnpm/lock ]]; then
+  docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm e2e sh -lc \
+    "npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store && pnpm test:e2e"
+else
+  docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm e2e sh -lc \
+    "npm install -g pnpm@9 && pnpm config set store-dir /pnpm-store && pnpm install --frozen-lockfile && pnpm test:e2e"
+fi
 EXIT=$?
 END=$(date +%s)
 DURATION=$((END - START))

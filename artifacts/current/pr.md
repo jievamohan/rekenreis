@@ -1,7 +1,7 @@
-# Epic 23.2: Workers & Project Consolidation
+# Epic 23.3: pnpm Cache & Slow Test Optimization
 
-Increase Playwright workers and restrict visual project to visual specs only.
+Improve pnpm install caching and optimize mistakes-review.spec.ts.
 
 ## Tasks
 
-- [ ] 0126-epic23-2-workers-project-consolidation
+- [ ] 0127-epic23-3-pnpm-cache-slow-tests
