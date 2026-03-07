@@ -1165,7 +1165,7 @@ Acceptance:
 ---
 
 ## Epic 23.2 — Workers & Project Consolidation
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-23.md
 - archive: artifacts/archive/epic-23.0/latest
