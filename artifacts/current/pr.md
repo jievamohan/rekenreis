@@ -1,7 +1,7 @@
-# Epic 23.1: Benchmark & Baseline
+# Epic 23.2: Workers & Project Consolidation
 
-Add Playwright CI benchmark and document baseline.
+Increase Playwright workers and restrict visual project to visual specs only.
 
 ## Tasks
 
-- [ ] 0125-epic23-1-benchmark-baseline
+- [ ] 0126-epic23-2-workers-project-consolidation
