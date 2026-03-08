@@ -1,37 +1,26 @@
-# UX Design — Epic 28: New Minigame (Replace Coral)
+# UX — Epic 28 (UX Designer)
 
 ## Primary Screens Impacted
 
-- `/play` — minigame area within the play flow
+- `/play` — level complete flow
+- `LevelCompleteModal` — star display
+- `/map` — node star display
+- `MistakesReview` — retry CTA (unchanged)
 
-## Layout Diversity Requirement
+## UX Changes
 
-**Current pattern (all minigames):**
-- Progress bar at top
-- ProblemCard (a + b = ?) below
-- Minigame area with answer choices/objects
-
-**Target for new minigame:**
-- Break the visual monotony. Options:
-  1. **Embedded problem:** The sum is woven into the game narrative (e.g. "Find the two shells that add up to 5") — no separate ProblemCard dominance
-  2. **Full-bleed scene:** Minigame occupies more vertical space; problem is subtle or integrated
-  3. **Different composition:** e.g. grid of cards, number line, or path — not "row of answer buttons"
+1. **Star display:** Modal and map show 0–3 stars (0 when below threshold). No change to visual layout; only the value changes.
+2. **Feedback copy:** LevelCompleteModal messages (perfect/great/good) may need a 0-star variant (e.g. "Probeer opnieuw").
+3. **Retry flow:** Already present; player can retry from MistakesReview or replay from map. No change.
+4. **Progress bar:** No change; rounds completed as today.
 
 ## Component Catalog
 
-- **New component:** Replaces MinigameCoralBuilder.vue (e.g. MinigameMemoryMatch.vue or MinigameNumberLineLeap.vue)
-- **MinigameRenderer:** Unchanged; loads new component by id
-- **useMinigame:** coral-builder id replaced or repurposed; new definition registered
-- **play.vue:** May support optional "layout variant" for minigames that request different shell treatment (e.g. hide ProblemCard for immersive games) — if justified
+- `LevelCompleteModal` — accept stars 0–3; optional 0-star message
+- `MapNode` — display 0–3 stars (already supports 0 via starsFor)
+- `useLevelProgress` — allow 0 stars in schema (or keep 1–3 if threshold guarantees ≥1)
+- `play.vue` — compute stars from correctCount + thresholds
 
 ## Tap Targets & Accessibility
 
-- All interactive elements ≥ 44px
-- Keyboard: Tab through options, Enter/Space to select
-- Focus states visible
-- Reduced motion: animations degrade to instant
-
-## Navigation Model
-
-- Same as current: map → play → minigame round → feedback → next round
-- No new routes or modals
+No new interactive elements. Existing CTAs unchanged.

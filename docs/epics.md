@@ -1590,3 +1590,61 @@ Acceptance:
 - Visual baseline committed
 - Bundle budget passes
 - CI green
+
+---
+
+## Epic 29.1 — Star Scoring Logic + Session Stats
+- [ ]
+PlanRef:
+- design: docs/design/epic-29.md
+- archive: artifacts/archive/epic-29.0/latest
+- slice: 29.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 29.1: Star scoring based on correct answers with configurable thresholds.
+
+Requirements:
+- Track correctCount per session (ref incremented on advanceRound('correct'))
+- Create computeStars(correctCount, totalRounds, thresholds?) → 0–3; default thresholds [3, 6, 9] for 10 rounds
+- Replace mistake-based star logic in play.vue with computeStars(correctCount, roundsPerLevel)
+- useLevelProgress.completeLevel: accept stars 0–3; keep best = max(prev, stars)
+- Unit tests: computeStars boundary cases; useLevelProgress (0 stars, best-only on replay)
+- Typecheck, build green
+
+Acceptance:
+- Stars computed from correct answers, not mistakes
+- Threshold: <3 correct = 0 stars; 3–5 = 1; 6–8 = 2; 9–10 = 3 (configurable)
+- Replay keeps best score (never decreases)
+- Unit tests pass
+
+---
+
+## Epic 29.2 — Schema + Persistence + UI Polish
+- [ ]
+PlanRef:
+- design: docs/design/epic-29.md
+- archive: artifacts/archive/epic-29.0/latest
+- slice: 29.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 29.2: Schema update for 0 stars, LevelCompleteModal 0-star message, E2E.
+
+Requirements:
+- profileSchema: allow stars 0–3 in levelProgress validation (currently 1–3)
+- useLevelProgress: remove min-1 clamp when accepting stars
+- LevelCompleteModal: show "Probeer opnieuw" (or similar) for 0 stars; add nl.json key
+- MapNode: verify 0 stars display correctly
+- E2E: level complete with mixed correct/wrong → correct star count; replay improves; replay does not decrease
+- Typecheck, build, smoke green
+
+Acceptance:
+- 0 stars displayed when below threshold
+- Replay improves score when player does better
+- Replay never decreases stored score
+- E2E passes
