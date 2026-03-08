@@ -12,6 +12,7 @@ import {
   computeMapHeight,
   MAP_VIEW_WIDTH,
 } from '~/utils/mapWaypoints'
+import { nextTick, onMounted, ref } from 'vue'
 
 definePageMeta({ layout: 'bare' })
 
@@ -19,6 +20,9 @@ const router = useRouter()
 const { t } = useI18n()
 const profile = useProfile()
 const { currentLevel, isUnlocked, starsFor, levelProgress } = useLevelProgress(profile)
+
+const mapScrollRef = ref<HTMLElement | null>(null)
+const currentNodeRef = ref<HTMLElement | null>(null)
 
 const totalLevels = levelsData.length
 const waypoints = generateWaypoints(totalLevels)
@@ -60,6 +64,26 @@ function selectLevel(level: number) {
 }
 
 const mapHeight = computed(() => computeMapHeight(waypoints))
+
+function setCurrentNodeRef(el: unknown, level: number) {
+  if (level === currentLevel.value) {
+    currentNodeRef.value = el instanceof HTMLElement ? el : null
+  }
+}
+
+function scrollToCurrentNode() {
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  currentNodeRef.value?.scrollIntoView({
+    block: 'center',
+    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+  })
+}
+
+onMounted(() => {
+  nextTick(() => scrollToCurrentNode())
+})
 </script>
 
 <template>
@@ -78,13 +102,20 @@ const mapHeight = computed(() => computeMapHeight(waypoints))
     >
       {{ t('map.playLevel', { n: currentLevel }) }}
     </button>
-    <div class="map-scroll" role="list" :aria-label="t('map.levelMap')">
-      <div class="map-container" :style="{ height: `${mapHeight}px` }">
-        <MapDecor :waypoints="waypoints" :map-height="mapHeight" />
-        <MapPath :node-count="totalLevels" />
+    <div ref="mapScrollRef" class="map-scroll" role="list" :aria-label="t('map.levelMap')">
+      <div class="map-inner" :style="{ height: `${mapHeight}px` }">
+        <div class="map-decor-layer">
+          <MapDecor :waypoints="waypoints" :map-height="mapHeight" />
+        </div>
+        <div class="map-container" :style="{ height: `${mapHeight}px` }">
+          <MapPath :node-count="totalLevels" />
 
         <template v-for="i in totalLevels" :key="i">
-          <div :style="nodeStyle(i - 1)" role="listitem">
+          <div
+            :ref="(el) => setCurrentNodeRef(el, i)"
+            :style="nodeStyle(i - 1)"
+            role="listitem"
+          >
             <MapNode
               :level="i"
               :stars="starsFor(i)"
@@ -100,6 +131,7 @@ const mapHeight = computed(() => computeMapHeight(waypoints))
             />
           </div>
         </template>
+        </div>
       </div>
     </div>
   </div>
@@ -183,6 +215,19 @@ const mapHeight = computed(() => computeMapHeight(waypoints))
     radial-gradient(ellipse 70% 100px at 30% 50%, rgba(178, 223, 219, 0.06) 0%, transparent 70%),
     radial-gradient(ellipse 55% 140px at 75% 70%, rgba(77, 208, 225, 0.07) 0%, transparent 70%),
     radial-gradient(ellipse 45% 110px at 20% 88%, rgba(0, 188, 212, 0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.map-inner {
+  position: relative;
+  width: 100%;
+}
+
+.map-decor-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   pointer-events: none;
   z-index: 0;
 }

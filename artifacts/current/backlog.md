@@ -1,16 +1,24 @@
-# Backlog — Epic 26
+# Epic 26.1 Backlog
 
-## Orchestrator Output
+## Epic summary
 
-### Slice summary
-Two main work items, can be combined into 1–2 micro-epics:
+Map scroll-to-current on load + full-width dense background decoration.
 
-1. **Scroll-to-current on map load** — UX improvement
-2. **Full-width dense decoration** — Visual improvement
+## Scope_in
 
-### Recommended slicing
-- **Epic 26.1:** Scroll-to-current + full-width dense decoration (single cohesive map UX/visual pass)
-  - Tasks: scroll logic, MapDecor full-width + density, E2E update
-  - Each task ≤ 5; total ≤ 5 tasks for one micro-epic.
+- apps/web/pages/map.vue
+- apps/web/components/map/MapDecor.vue
+- apps/web/e2e/
 
-Alternative: split into 26.1 (scroll) and 26.2 (decor) if we want smaller PRs. Given the small scope, one micro-epic is sufficient.
+## Scope_out
+
+- apps/api
+- new assets
+
+## Risks
+
+None. No auth, data, or external changes.
+
+## Tasks
+
+1. **0134-epic26-1-map-scroll-decor** — Map scroll-to-current + full-width dense decor (W1, T)
