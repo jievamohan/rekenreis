@@ -48,3 +48,4 @@
 | Epic 27.2 — Coral Minigame: Polish + Feedback | done | PR #102 merged |
 | Epic 27.3 — Coral Minigame: Integration + E2E | done | PR #104 merged |
 | Epic 28.1 — Replace Coral with Memory-Match | done | PR #106 merged |
+| Epic 29.1 — Star Scoring Logic + Session Stats | done | PR #108 merged |
