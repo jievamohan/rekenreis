@@ -1,24 +1,30 @@
-# Epic 26.1 Backlog
+# Backlog — Epic 27
 
-## Epic summary
+## Micro-Epics (Slices)
 
-Map scroll-to-current on load + full-width dense background decoration.
+Each slice ≤ 5 tasks, visible milestone.
 
-## Scope_in
+### Epic 27.1 — Coral Minigame: Core Mechanic + Assets
+- **Milestone:** Drag-to-place coral on reef works; reef + pieces visible
+- **Tasks:** New MinigameCoralBuilder (drag), reef + coral SVGs, basic layout
+- **Acceptance:** Drag correct piece → answer; keyboard fallback
 
-- apps/web/pages/map.vue
-- apps/web/components/map/MapDecor.vue
-- apps/web/e2e/
+### Epic 27.2 — Coral Minigame: Polish + Feedback
+- **Milestone:** Animations, wrong-answer feedback, hint after 2 wrong
+- **Tasks:** Snap-in, wobble-return, hint logic, reduced motion
+- **Acceptance:** Feels like a kids' game; a11y and reduced-motion pass
 
-## Scope_out
+### Epic 27.3 — Coral Minigame: Integration + E2E
+- **Milestone:** Registry update, Dutch copy, E2E green
+- **Tasks:** useMinigame contractV2, nl.json, E2E updates, visual baseline
+- **Acceptance:** Full flow works; CI green; bundle budget passes
 
-- apps/api
-- new assets
+## Order
 
-## Risks
+- 27.1 → 27.2 → 27.3 (foundation → polish → integration)
 
-None. No auth, data, or external changes.
+## Out of Scope
 
-## Tasks
-
-1. **0134-epic26-1-map-scroll-decor** — Map scroll-to-current + full-width dense decor (W1, T)
+- Other minigames
+- Map scroll / decoration (Epic 26)
+- New math operators
