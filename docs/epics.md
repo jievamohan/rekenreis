@@ -1590,3 +1590,96 @@ Acceptance:
 - Visual baseline committed
 - Bundle budget passes
 - CI green
+
+---
+
+## Epic 28.1 — Memory-Match: Core Mechanic + Assets
+- [ ]
+PlanRef:
+- design: docs/design/epic-28.md
+- archive: artifacts/archive/epic-28.0/latest
+- slice: 28.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 28.1: Replace coral-builder with memory-match minigame — core mechanic and assets.
+
+Requirements:
+- Create MinigameMemoryMatch.vue: grid of face-down cards (6–8), flip two to find pair that sums to correctAnswer
+- Card back SVG in assets/graphics/minigames/memory-match/
+- Correct pair → emit answer; wrong pair → flip back after short delay
+- Keyboard: Tab through cards, Enter to flip
+- Add memory-match to MinigameId; remove coral-builder from types and registry
+- Delete MinigameCoralBuilder.vue
+- Update minigame-map.v1.json: replace coral-builder with memory-match in all rules and default pool
+- Same props (question, difficultyParams) and emit (answer) contract
+- Tests: unit test for render + flip + answer emit; E2E smoke for memory-match round
+
+Acceptance:
+- Memory-match renders card grid, flip pair, correct match submits answer
+- Keyboard flow works (Tab + Enter)
+- Coral-builder removed; map updated
+- SVG assets < 10 KB total
+- Typecheck, build, smoke green
+
+---
+
+## Epic 28.2 — Memory-Match: Polish + Feedback
+- [ ]
+PlanRef:
+- design: docs/design/epic-28.md
+- archive: artifacts/archive/epic-28.0/latest
+- slice: 28.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 28.2: Add animations, wrong-pair feedback, and hint after 2 wrong.
+
+Requirements:
+- Card flip animation (3D flip or scale-y, 200ms)
+- Match found: glow pulse (300ms)
+- Wrong pair: gentle shake, flip back (400ms)
+- After 2 wrong: reveal hint (e.g. highlight correct pair)
+- Reduced motion: instant state changes, no shake/bounce
+- playCelebrate on correct
+- Dutch copy in nl.json (e.g. "Vind het paar dat samen het antwoord geeft!")
+- Accessibility: focus states, contrast check
+
+Acceptance:
+- Animations feel satisfying
+- Wrong pair flips back gently
+- Hint appears after 2 wrong
+- Reduced motion respected
+- WCAG AA contrast
+- Typecheck, build, smoke green
+
+---
+
+## Epic 28.3 — Memory-Match: Integration + E2E
+- [ ]
+PlanRef:
+- design: docs/design/epic-28.md
+- archive: artifacts/archive/epic-28.0/latest
+- slice: 28.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 28.3: Update E2E, visual regression, and verify Diversity Gate.
+
+Requirements:
+- E2E: update minigame.spec.ts, interaction-diversity.spec.ts for memory-match (remove coral-builder refs)
+- Visual regression: screenshot baseline for memory-match
+- Bundle budget must pass
+- Diversity Gate: verify memory-flip improves interaction distribution (no longer 2× drag-drop)
+
+Acceptance:
+- E2E passes (memory-match round via flip + match)
+- Visual baseline committed
+- Bundle budget passes
+- CI green
