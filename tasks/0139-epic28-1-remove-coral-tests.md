@@ -1,5 +1,6 @@
 ---
 id: "0139"
+status: "done"
 title: "epic28-1-remove-coral-tests"
 scope_in:
   - "Delete MinigameCoralBuilder.vue"

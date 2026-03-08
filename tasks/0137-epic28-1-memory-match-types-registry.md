@@ -1,5 +1,6 @@
 ---
 id: "0137"
+status: "done"
 title: "epic28-1-memory-match-types-registry"
 scope_in:
   - "apps/web/types/minigame.ts"

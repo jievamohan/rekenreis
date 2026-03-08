@@ -1,5 +1,6 @@
 ---
 id: "0138"
+status: "done"
 title: "epic28-1-memory-match-component"
 scope_in:
   - "apps/web/components/minigames/MinigameMemoryMatch.vue"
