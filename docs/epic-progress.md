@@ -43,3 +43,4 @@
 | Epic 22.4 — Diversity Gate Rubric + CI Enforcement | done | PR #69 merged |
 | Epic 22.5 — Kid-safe Timer Policy + Settings | done | PR #70 merged |
 | Epic 22.6 — E2E Proof + Final Hardening | done | PR #71 merged |
+| Epic 26.1 — Map Scroll-to-Current + Full-Width Dense Decoration | done | PR #97 merged |
