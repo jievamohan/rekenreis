@@ -1,36 +1,49 @@
-# Solution Design — Epic 28: New Minigame (Replace Coral)
+# Solution — Epic 28 (Solution Designer)
 
-## Approach
+## Implementation Plan
 
-1. **Remove** MinigameCoralBuilder.vue (or rename/repurpose)
-2. **Create** MinigameMemoryMatch.vue (or chosen mechanic)
-3. **Register** in useMinigame.ts with id `coral-builder` (slot reuse) OR introduce new id and update map
-4. **Update** minigame-map.v1.json to use new minigame in same level ranges as coral-builder
+### 1. Session Correct Count
 
-## Option A: Slot Reuse (coral-builder → memory-match)
+- Extend `useMistakes` or add `useSessionStats` to track:
+  - `correctCount` (increment on correct)
+  - `totalRounds` (from roundsPerLevel)
+- Alternative: derive from `roundOutcome` if it exposes correct count; or track in play.vue via ref that increments on `advanceRound('correct')`.
 
-- Keep MinigameId `coral-builder` but swap component to memory-match
-- Pros: No map/type changes
-- Cons: Id is misleading
+### 2. Star Computation
 
-## Option B: New Id (memory-match)
+- Create `computeStars(correctCount: number, totalRounds: number, thresholds?: [number, number, number]): number`
+- Default thresholds: [3, 6, 9] for 10 rounds
+- Returns 0–3
 
-- Add `memory-match` to MinigameId union
-- Remove `coral-builder` from registry and map
-- Update map rules to use memory-match where coral-builder was
-- Pros: Clear naming
-- Cons: More files to touch (types, map, MINIGAME_IDS)
+### 3. play.vue
 
-## Recommendation
+- Replace `mistakeCount.value === 0 ? 3 : ...` with `computeStars(correctCount.value, roundsPerLevel.value)`
+- Ensure `correctCount` is tracked (e.g. ref incremented in advanceRound when outcome === 'correct')
 
-**Option B** — introduce `memory-match`, remove `coral-builder`. Cleaner long-term.
+### 4. useLevelProgress
 
-## Files to Touch
+- `completeLevel`: accept stars 0–3; remove clamp to min 1 (currently `Math.max(1, Math.min(3, ...))`)
+- Keep `best = Math.max(prev, stars)` — no downward overwrite
 
-- `apps/web/types/minigame.ts` — add memory-match, remove coral-builder
-- `apps/web/components/minigames/MinigameMemoryMatch.vue` — new
-- `apps/web/components/minigames/MinigameCoralBuilder.vue` — delete
-- `apps/web/composables/useMinigame.ts` — register memory-match, remove coral-builder
-- `apps/web/content/minigame-map.v1.json` — replace coral-builder with memory-match in pool
-- `apps/web/content/locales/nl.json` — new strings for memory-match
-- E2E specs — update references from coral-builder to memory-match
+### 5. profileSchema
+
+- `isValidV1`: allow `stars >= 0 && stars <= 3` for levelProgress
+
+### 6. LevelCompleteModal
+
+- Support stars === 0: show "Probeer opnieuw" or similar
+- nl.json: add `levelComplete.tryAgain` for 0 stars
+
+### 7. MapNode
+
+- Already uses `starsFor(level)` — 0 will display as no stars (verify)
+
+## Files
+
+- `apps/web/utils/starScoring.ts` (or composable)
+- `apps/web/pages/play.vue`
+- `apps/web/composables/useLevelProgress.ts`
+- `apps/web/composables/useMistakes.ts` or new `useSessionStats`
+- `apps/web/utils/profileSchema.ts`
+- `apps/web/components/modals/LevelCompleteModal.vue`
+- `apps/web/content/locales/nl.json`

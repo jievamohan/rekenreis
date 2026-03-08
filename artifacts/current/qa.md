@@ -1,27 +1,23 @@
-# QA Strategy — Epic 28: New Minigame (Replace Coral)
+# QA — Epic 28 (QA Strategist)
 
 ## Unit Tests
 
-- New minigame component: renders, accepts question/difficultyParams
-- Flip logic: correct pair emits answer; wrong pair flips back, no emit
-- Keyboard: Tab through cards, Enter flips; pair match emits
-- Reduced motion: no animations, instant state change
+1. **computeStars:** All threshold boundaries (0, 1, 2, 3 stars for given correctCount/totalRounds)
+2. **useLevelProgress.completeLevel:** Accept stars 0; keep best on replay; never decrease
+3. **profileSchema:** Accept stars 0 in levelProgress validation
 
-## E2E Smoke Updates
+## E2E
 
-- Replace coral-builder scenarios with memory-match
-- `minigame.spec.ts`: play round with memory-match, verify answer submission
-- `interaction-diversity.spec.ts`: update if coral was referenced
-- `mechanic-upgrades.spec.ts`: update if needed
+1. **Level complete:** Play level with mixed correct/wrong → verify star count in modal
+2. **Replay:** Complete level with 1 star, replay and get 3 stars → map shows 3
+3. **Replay no regression:** Complete with 3 stars, replay with 1 star → map still shows 3
 
-## Non-Flaky UI Assertions
+## Non-Flaky Assertions
 
-- Wait for cards to be visible before interaction
-- Use data-testid or role for card elements
-- Avoid timing-dependent assertions (use waitFor)
+- Use deterministic correct/wrong sequence (e.g. answer first 3 wrong, rest correct → verify 1 star)
+- Avoid timing-dependent checks
 
 ## Visual Regression
 
-- Screenshot baseline for memory-match initial state
-- Screenshot of matched pair state
-- Remove coral-builder baselines
+- LevelCompleteModal with 0 stars (if UI differs)
+- Map node with 0 stars (if different from 1 star)

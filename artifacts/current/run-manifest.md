@@ -1,8 +1,8 @@
-# Run Manifest — Epic 28.1 Memory-Match Core
+# Run Manifest — Epic 28
 
-- **Run id:** 20260308123726
-- **Slice:** 28.1
-- **Intent:** Replace coral-builder with memory-match minigame — core mechanic and assets.
+**Run id:** 20260308T232325Z  
+**Epic number:** 28  
+**Intent:** Fix star scoring: based on correct answers, threshold before first star, replay to improve, score never lower than best.
 
 ## Required Planning Agents
 
@@ -10,12 +10,11 @@
 |-------|--------|----------|
 | business-analyst | OK | discovery.md |
 | ux-designer | OK | ux.md |
-| art-director | OK | art-direction.md |
+| art-director | N/A | art-direction.md (no visual redesign) |
 | game-designer | OK | game-feel.md |
-| motion-audio-designer | OK | motion-audio.md |
+| motion-audio-designer | N/A | motion-audio.md (no new motion/audio) |
 | principal-architect | OK | architecture.md |
 | solution-designer | OK | solution.md |
 | qa-strategist | OK | qa.md |
 | security-privacy | OK | security-design.md |
-| illustrator | OK | assets.md |
-| orchestrator | OK | backlog.md |
+| illustrator | N/A | assets.md (no new assets) |

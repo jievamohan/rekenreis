@@ -1,50 +1,32 @@
-# Game Feel — Epic 28: New Minigame (Replace Coral)
+# Game Feel — Epic 28 (Game Designer)
 
-## Mechanic Options (Pick One)
+## Goal
 
-We need a mechanic **not** currently used:
+Stars must feel earned based on **correct answers**, not punishment for mistakes. A threshold before the first star avoids rewarding very low performance while still allowing improvement through replay.
 
-| Mechanic | Used By | Candidate |
-|----------|---------|-----------|
-| tap-choice | bubble-pop | — |
-| drag-drop | treasure-dive, coral-builder | **No** (replacing coral) |
-| timed-pop | fish-feed, starfish-match | — |
-| sort-into-bins | submarine-sort | — |
-| **memory-flip** | — | **Yes** |
-| **trace-numberline** | — | **Yes** |
-| **build-sequence** | — | **Yes** |
-| swipe-match | — | Yes (touch-heavy; consider a11y) |
+## Star Formula (Proposed)
 
-## Recommended: Memory-Flip
+- **Input:** `correctCount`, `totalRounds` (e.g. 10 per level)
+- **Threshold:** Minimum correct for 1 star (e.g. 3 of 10 = 30%)
+- **Mapping:**
+  - 0 stars: correctCount < threshold
+  - 1 star: threshold ≤ correctCount < tier2
+  - 2 stars: tier2 ≤ correctCount < tier3
+  - 3 stars: correctCount ≥ tier3
 
-**Gameplay:**
-- Grid of face-down cards (e.g. 6–8 cards)
-- Each card has a number (from question.choices: correctAnswer + distractors)
-- Two cards sum to correctAnswer; others are distractors
-- Player flips two cards. If they sum to correctAnswer → match! (cards stay face-up, glow). Otherwise → flip back after short delay
-- Win when the correct pair is found
+Example thresholds (configurable):
+- 1 star: ≥3 correct (30%)
+- 2 stars: ≥6 correct (60%)
+- 3 stars: ≥9 correct (90%)
 
-**Why it fits:**
-- Universally recognized (memory game)
-- No drag-drop; distinct from Treasure Dive
-- Layout is a grid of cards — not "row of answer buttons"
-- Kid-friendly, low frustration (no timer pressure by default)
-- Keyboard: Tab through cards, Enter to flip; second Enter on another card to flip pair
+## Replay
 
-## Alternative: Trace-Numberline
+- Player can retry level from MistakesReview or replay from map
+- New stars = computeStars(correctCount, totalRounds)
+- Stored stars = max(previousBest, newStars)
+- Score never decreases
 
-**Gameplay:**
-- Number line from 0 to max(a+b, 10)
-- Start at `a`, "jump" `b` steps to land on answer
-- Tap/click each step or drag along path
-- Correct landing → celebration
+## Kid-Safe
 
-**Why it fits:**
-- Spatial, visual, supports number sense
-- No drag-drop
-- Different layout (linear path vs grid/buttons)
-
-## Recommendation
-
-**Primary:** memory-flip — highest differentiation, proven kid appeal.
-**Fallback:** trace-numberline — if memory-flip proves too complex for kleuters.
+- No punitive messaging for 0 stars; encourage "probeer opnieuw"
+- Positive framing: "Je hebt X van Y goed!"

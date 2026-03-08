@@ -1,21 +1,10 @@
-# Security & Privacy — Epic 28: New Minigame (Replace Coral)
+# Security/Privacy — Epic 28
 
-## New Risks Introduced
+**New risks:** None.
 
-**None.** No new auth, payments, external APIs, or data collection.
+- No new auth, payments, or external APIs
+- No new PII or sensitive data
+- Local storage schema change: allow stars 0–3 (backward compatible)
+- No config injection; thresholds are code/content, not user input
 
-## Config Constraints
-
-- Minigame receives question (a, b, correctAnswer, choices) — same as existing
-- No new config or env vars
-
-## Data Handling
-
-- No new persistence
-- Same session/local state as other minigames
-
-## Checks Required
-
-- No secrets or PII in new code
-- Dependency audit unchanged (no new deps)
-- SAST/gitleaks: no new findings
+**Checks still required:** yes — ensure no user-controlled values affect star computation (only session outcomes).

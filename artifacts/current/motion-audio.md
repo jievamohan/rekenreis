@@ -1,29 +1,8 @@
-# Motion & Audio — Epic 28: New Minigame (Replace Coral)
+# Motion & Audio — Epic 28
 
-## Animations (Memory-Flip)
+**N/A: No new motion or audio.**
 
-| Event | Animation | Duration |
-|-------|-----------|----------|
-| Card flip (reveal) | 3D flip / scale-y 0→1 | 200ms |
-| Card flip (hide) | Scale-y 1→0 | 150ms |
-| Match found | Glow pulse, slight scale 1.05 | 300ms |
-| Wrong pair | Gentle shake, then flip back | 400ms |
+Scoring logic change only. Existing confetti, star animations, and sound remain unchanged.
 
-## Timing / Easing
-
-- Flip: ease-out
-- Match: bounce easing
-- Wrong: ease-in-out
-
-## Reduced Motion
-
-- Flip: instant opacity/visibility change
-- No shake, no bounce
-- Match: static glow, no scale
-
-## Sound Rules
-
-- Reuse `playCelebrate()` on correct match
-- Optional: soft "flip" SFX on card turn
-- Optional: gentle "wrong" cue (non-punitive) on mismatch
-- Respect global sound toggle
+**Impact:** none  
+**Checks still required:** yes — verify confetti still triggers for 2+ stars; reduced-motion unchanged.
