@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import type { AdditionQuestion } from '~/types/game'
 import { useI18n } from '~/composables/useI18n'
+import { createSeededRng } from '~/utils/seedableRng'
+
+import reefBaseSrc from '~/assets/graphics/minigames/coral-builder/reef-base.svg'
+import coralPiece1Src from '~/assets/graphics/minigames/coral-builder/coral-piece-1.svg'
+import coralPiece2Src from '~/assets/graphics/minigames/coral-builder/coral-piece-2.svg'
+
+const CORAL_SRCS = [coralPiece1Src, coralPiece2Src]
 
 const props = defineProps<{
   question: AdditionQuestion
@@ -13,98 +20,238 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const selectedPosition = ref<number | null>(null)
-const placed = ref(false)
 
-const maxValue = computed(() => {
-  const choices = props.question.choices
-  return Math.max(...choices, props.question.correctAnswer) + 2
-})
+const draggedPiece = ref<number | null>(null)
+const isDragging = ref(false)
+const dragPos = ref({ x: 0, y: 0 })
+const selectedPiece = ref<number | null>(null)
+const reefHighlight = ref(false)
 
-const trackPositions = computed(() => {
-  const positions: number[] = []
-  for (let i = 0; i <= maxValue.value; i++) {
-    positions.push(i)
+function assignCoralPieces(
+  choices: number[],
+  q: AdditionQuestion
+): { value: number; pieceSrc: string }[] {
+  const rng = createSeededRng(q.a + q.b * 100 + q.correctAnswer * 10000)
+  const indices = [0, 1, 2, 3, 4]
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[indices[i], indices[j]] = [indices[j], indices[i]]
   }
-  return positions
-})
-
-const isChoice = computed(() => {
-  const choiceSet = new Set(props.question.choices)
-  return (pos: number) => choiceSet.has(pos)
-})
-
-function selectPosition(pos: number) {
-  if (placed.value) return
-  if (!isChoice.value(pos)) return
-  selectedPosition.value = pos
-  placed.value = true
-  emit('answer', pos)
+  return choices.map((value, i) => ({
+    value,
+    pieceSrc: CORAL_SRCS[indices[i] % CORAL_SRCS.length],
+  }))
 }
 
-function onPositionKeydown(pos: number, e: KeyboardEvent) {
-  if (e.key === 'Enter' || e.key === ' ') {
+const pieces = computed(() => assignCoralPieces(props.question.choices, props.question))
+
+const draggedPieceData = computed(() => {
+  if (draggedPiece.value === null) return null
+  return pieces.value.find((x) => x.value === draggedPiece.value) ?? null
+})
+
+let pointerCleanup: (() => void) | null = null
+
+function submitAnswer(value: number) {
+  emit('answer', value)
+}
+
+function handlePointerMove(e: PointerEvent) {
+  if (!isDragging.value) return
+  e.preventDefault()
+  dragPos.value = { x: e.clientX, y: e.clientY }
+  const reefEl = document.querySelector('[data-drop-target="reef"]')
+  if (reefEl) {
+    const rect = reefEl.getBoundingClientRect()
+    const pad = 40
+    const inZone =
+      e.clientX >= rect.left - pad &&
+      e.clientX <= rect.right + pad &&
+      e.clientY >= rect.top - pad &&
+      e.clientY <= rect.bottom + pad
+    reefHighlight.value = inZone
+  }
+}
+
+function handlePointerUpOrCancel(e: PointerEvent) {
+  if (!isDragging.value || draggedPiece.value === null) return
+  e.preventDefault()
+  const reefEl = document.querySelector('[data-drop-target="reef"]')
+  if (reefEl) {
+    const rect = reefEl.getBoundingClientRect()
+    const pad = 40
+    const inZone =
+      e.clientX >= rect.left - pad &&
+      e.clientX <= rect.right + pad &&
+      e.clientY >= rect.top - pad &&
+      e.clientY <= rect.bottom + pad
+    if (inZone) {
+      submitAnswer(draggedPiece.value)
+    }
+  }
+  cleanupPointer()
+}
+
+function cleanupPointer() {
+  pointerCleanup?.()
+  pointerCleanup = null
+  isDragging.value = false
+  draggedPiece.value = null
+  reefHighlight.value = false
+}
+
+function onPointerDown(value: number, e: PointerEvent) {
+  e.preventDefault()
+  draggedPiece.value = value
+  selectedPiece.value = value
+  isDragging.value = true
+  dragPos.value = { x: e.clientX, y: e.clientY }
+  ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+
+  const boundMove = (ev: PointerEvent) => handlePointerMove(ev)
+  const boundUp = (ev: PointerEvent) => handlePointerUpOrCancel(ev)
+  const boundCancel = (ev: PointerEvent) => {
+    cleanupPointer()
+    ev.preventDefault()
+  }
+
+  document.addEventListener('pointermove', boundMove, { capture: true })
+  document.addEventListener('pointerup', boundUp, { capture: true })
+  document.addEventListener('pointercancel', boundCancel, { capture: true })
+
+  pointerCleanup = () => {
+    document.removeEventListener('pointermove', boundMove, { capture: true })
+    document.removeEventListener('pointerup', boundUp, { capture: true })
+    document.removeEventListener('pointercancel', boundCancel, { capture: true })
+  }
+}
+
+onUnmounted(() => cleanupPointer())
+
+function onPieceKeydown(value: number) {
+  selectedPiece.value = value
+}
+
+function onReefKeydown(e: KeyboardEvent) {
+  if ((e.key === 'Enter' || e.key === ' ') && selectedPiece.value !== null) {
     e.preventDefault()
-    selectPosition(pos)
+    submitAnswer(selectedPiece.value)
+    selectedPiece.value = null
+  }
+}
+
+function onReefClick() {
+  if (selectedPiece.value !== null) {
+    submitAnswer(selectedPiece.value)
+    selectedPiece.value = null
   }
 }
 </script>
 
 <template>
   <div
-    class="coral-sequence-scene"
+    class="coral-reef-scene"
     data-testid="minigame-coral-builder"
     role="group"
     :aria-label="t('minigameCoralBuilder.ariaLabel')"
   >
-    <div class="reef-header" aria-hidden="true">
-      <span class="reef-icon">🪸</span>
+    <div
+      v-if="isDragging && draggedPiece !== null && draggedPieceData"
+      class="coral-drag-ghost"
+      :style="{ left: `${dragPos.x}px`, top: `${dragPos.y}px` }"
+      aria-hidden="true"
+    >
+      <img :src="draggedPieceData.pieceSrc" class="coral-drag-img" alt="" />
+      <span class="coral-number">{{ draggedPiece }}</span>
     </div>
 
-    <p class="sequence-instruction">
+    <p class="reef-instruction">
       {{ t('minigameCoralBuilder.sequenceHint') }}
     </p>
 
-    <div class="number-track" role="group" :aria-label="t('minigameCoralBuilder.trackLabel')">
-      <div
-        v-for="pos in trackPositions"
-        :key="pos"
-        class="track-position"
+    <div class="source-zone" role="group" :aria-label="t('minigameCoralBuilder.reefLabel')">
+      <button
+        v-for="(piece, i) in pieces"
+        :key="piece.value"
+        class="coral-piece"
         :class="{
-          'is-choice': isChoice(pos),
-          'is-selected': selectedPosition === pos,
+          selected: selectedPiece === piece.value,
+          dragging: isDragging && draggedPiece === piece.value,
         }"
-        :role="isChoice(pos) ? 'button' : 'presentation'"
-        :tabindex="isChoice(pos) ? 0 : -1"
-        :aria-label="isChoice(pos) ? t('minigameCoralBuilder.pieceLabel', { value: pos }) : undefined"
-        @click="selectPosition(pos)"
-        @keydown="onPositionKeydown(pos, $event)"
+        :aria-label="t('minigameCoralBuilder.pieceLabel', { value: piece.value })"
+        :aria-pressed="selectedPiece === piece.value"
+        @pointerdown.prevent="onPointerDown(piece.value, $event)"
+        @click="onPieceKeydown(piece.value)"
+        @keydown.enter.prevent="onPieceKeydown(piece.value)"
+        @keydown.space.prevent="onPieceKeydown(piece.value)"
       >
-        <span class="track-marker" :class="{ 'marker-choice': isChoice(pos) }">
-          {{ isChoice(pos) ? pos : '·' }}
-        </span>
-        <span class="track-number">{{ pos }}</span>
-      </div>
+        <img :src="piece.pieceSrc" class="coral-piece-img" alt="" />
+        <span class="coral-number">{{ piece.value }}</span>
+      </button>
+    </div>
+
+    <div class="drop-arrow" aria-hidden="true">↓</div>
+
+    <div
+      class="reef-zone"
+      data-drop-target="reef"
+      role="button"
+      tabindex="0"
+      :class="{ highlight: reefHighlight }"
+      :aria-label="t('minigameCoralBuilder.reefLabel')"
+      @click="onReefClick"
+      @keydown="onReefKeydown"
+    >
+      <img :src="reefBaseSrc" class="reef-img" alt="" aria-hidden="true" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.coral-sequence-scene {
+.coral-reef-scene {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  min-height: 260px;
+  min-height: 380px;
+  touch-action: none;
+  position: relative;
 }
 
-.reef-header {
-  font-size: 2.5rem;
+.coral-drag-ghost {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  margin-left: -40px;
+  margin-top: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
 }
 
-.sequence-instruction {
+.coral-drag-ghost .coral-drag-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.coral-drag-ghost .coral-number {
+  position: relative;
+  z-index: 1;
+  font-family: var(--app-font, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #bf360c;
+  text-shadow: 0 0 2px #fff, 0 0 4px rgba(255,255,255,0.9);
+}
+
+.reef-instruction {
   font-family: var(--app-font, sans-serif);
   font-size: 0.9rem;
   color: var(--app-text-muted, #b0bec5);
@@ -112,97 +259,117 @@ function onPositionKeydown(pos: number, e: KeyboardEvent) {
   text-align: center;
 }
 
-.number-track {
+.source-zone {
   display: flex;
-  gap: 0;
-  align-items: flex-end;
-  overflow-x: auto;
-  padding: 0.5rem;
-  max-width: 100%;
-  scroll-snap-type: x mandatory;
-}
-
-.track-position {
-  display: flex;
-  flex-direction: column;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 0.25rem;
-  min-width: 32px;
-  padding: 0.25rem;
-  scroll-snap-align: center;
-  border-radius: 8px;
-  transition: background 0.15s ease;
 }
 
-.track-position.is-choice {
-  cursor: pointer;
+.coral-piece {
+  position: relative;
+  width: 72px;
+  height: 72px;
   min-width: 44px;
   min-height: 44px;
-}
-
-.track-position.is-choice:hover,
-.track-position.is-choice:focus-visible {
-  background: rgba(255, 138, 101, 0.15);
-}
-
-.track-position.is-choice:focus-visible {
-  outline: 3px solid var(--app-primary, #4fc3f7);
-  outline-offset: 2px;
-}
-
-.track-position.is-selected {
-  background: rgba(102, 187, 106, 0.2);
-}
-
-.track-marker {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--app-font, sans-serif);
-  font-size: 0.7rem;
-  color: var(--app-text-muted, #546e7a);
-  background: var(--app-surface, #e0f2f1);
-  border: 2px solid transparent;
+  transition: transform 0.15s ease;
+  user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
 }
 
-.track-marker.marker-choice {
-  width: 40px;
-  height: 40px;
-  font-size: 1.1rem;
-  font-weight: 700;
+.coral-piece:hover,
+.coral-piece:focus-visible {
+  transform: scale(1.05);
+}
+
+.coral-piece:focus-visible {
+  outline: 2px solid var(--app-primary, #4fc3f7);
+  outline-offset: 2px;
+}
+
+.coral-piece.selected {
+  transform: scale(1.08);
+}
+
+.coral-piece.dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.coral-piece .coral-piece-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.coral-piece .coral-number {
+  position: relative;
+  z-index: 1;
+  font-family: var(--app-font, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
   color: #bf360c;
-  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
-  border: 2px solid #ff8a65;
+  pointer-events: none;
+}
+
+.drop-arrow {
+  font-size: 1.5rem;
+  color: var(--app-muted, #90a4ae);
+  animation: arrow-bounce 1.2s ease-in-out infinite;
+}
+
+.reef-zone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  outline: none;
+  background: transparent;
+  border-radius: 12px;
 }
 
-.is-selected .track-marker.marker-choice {
-  background: var(--app-correct, #66bb6a);
-  border-color: var(--app-correct, #66bb6a);
-  color: #fff;
-  animation: coral-place 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.reef-zone:focus-visible {
+  outline: 2px solid var(--app-primary, #4fc3f7);
+  outline-offset: 2px;
 }
 
-.track-number {
-  font-family: var(--app-font, sans-serif);
-  font-size: 0.65rem;
-  color: var(--app-text-muted, #90a4ae);
+.reef-zone.highlight {
+  box-shadow: 0 0 0 4px var(--app-primary, #4fc3f7);
 }
 
-@keyframes coral-place {
-  0% { transform: scale(0.5); }
-  70% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+.reef-img {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track-position {
+  .coral-piece,
+  .reef-zone {
     transition: none;
   }
-  .is-selected .track-marker.marker-choice {
+  .drop-arrow {
     animation: none;
   }
 }

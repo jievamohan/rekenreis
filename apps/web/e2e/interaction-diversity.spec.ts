@@ -56,7 +56,7 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 
-  test('sequence/spatial (CoralBuilder): select position on number track', async ({ page }) => {
+  test('sequence/spatial (CoralBuilder): select piece and place on reef', async ({ page }) => {
     await page.goto('/play?level=4')
     await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
 
@@ -64,14 +64,15 @@ test.describe('interaction diversity — E2E proof', () => {
     const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correct = a + b
 
-    const positions = page.locator('[data-testid="minigame-coral-builder"] .track-position.is-choice')
-    for (let i = 0; i < await positions.count(); i++) {
-      const text = (await positions.nth(i).locator('.track-marker').textContent())?.trim()
+    const pieces = page.locator('[data-testid="minigame-coral-builder"] .coral-piece')
+    for (let i = 0; i < await pieces.count(); i++) {
+      const text = (await pieces.nth(i).locator('.coral-number').textContent())?.trim()
       if (text === String(correct)) {
-        await positions.nth(i).click()
+        await pieces.nth(i).click()
         break
       }
     }
+    await page.locator('[data-testid="minigame-coral-builder"] .reef-zone').click()
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 })
@@ -96,7 +97,7 @@ test.describe('Dutch copy assertions', () => {
   test('coral-builder shows Dutch sequence hint', async ({ page }) => {
     await page.goto('/play?level=4')
     await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
-    const instruction = await page.locator('.sequence-instruction').textContent()
+    const instruction = await page.locator('.reef-instruction').textContent()
     expect(instruction).toContain('juiste plek')
   })
 

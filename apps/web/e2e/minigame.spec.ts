@@ -42,9 +42,9 @@ test.describe('minigame mode', () => {
     await expect(correctButton!).toBeVisible()
     await correctButton!.click({ force: true })
 
-    const chestZone = page.locator('.chest-zone').first()
-    if (await chestZone.isVisible()) {
-      await chestZone.click({ force: true })
+    const dropZone = page.locator('.chest-zone, .reef-zone').first()
+    if (await dropZone.isVisible()) {
+      await dropZone.click({ force: true })
     }
 
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
