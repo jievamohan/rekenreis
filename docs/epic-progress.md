@@ -47,3 +47,4 @@
 | Epic 27.1 — Coral Minigame: Core Mechanic + Assets | done | PR #100 merged |
 | Epic 27.2 — Coral Minigame: Polish + Feedback | done | PR #102 merged |
 | Epic 27.3 — Coral Minigame: Integration + E2E | done | PR #104 merged |
+| Epic 28.1 — Replace Coral with Memory-Match | done | PR #106 merged |
