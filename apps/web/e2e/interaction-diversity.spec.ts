@@ -98,7 +98,8 @@ test.describe('Dutch copy assertions', () => {
     await page.goto('/play?level=4')
     await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
     const instruction = await page.locator('.reef-instruction').textContent()
-    expect(instruction).toContain('juiste plek')
+    expect(instruction).toContain('juiste')
+    expect(instruction).toContain('rif')
   })
 
   test('submarine-sort shows Dutch aria label', async ({ page }) => {

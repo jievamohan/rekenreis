@@ -79,14 +79,13 @@ registerMinigame({
     pieceCount: { min: 3, max: 5 },
   },
   contractV2: {
-    interactionType: 'build-sequence',
-    requiredInputs: ['pointer', 'keyboard'],
+    interactionType: 'drag-drop',
+    requiredInputs: ['pointer', 'drag', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces on the track' },
-      { key: 'trackLength', min: 8, max: 15, description: 'Length of the number track' },
+      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces to place on reef' },
     ],
-    layoutClass: 'layout-sequence-track',
+    layoutClass: 'layout-drag-reef',
     isNew: false,
   },
 })

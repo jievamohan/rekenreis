@@ -57,6 +57,7 @@ export const REQUIRED_INPUTS: readonly RequiredInput[] = [
 export type LayoutClass =
   | 'layout-float-field'
   | 'layout-dnd-dualzone'
+  | 'layout-drag-reef'
   | 'layout-pop-field'
   | 'layout-tap-scene'
   | 'layout-sort-bins'
@@ -67,6 +68,7 @@ export type LayoutClass =
 export const LAYOUT_CLASSES: readonly LayoutClass[] = [
   'layout-float-field',
   'layout-dnd-dualzone',
+  'layout-drag-reef',
   'layout-pop-field',
   'layout-tap-scene',
   'layout-sort-bins',
