@@ -4,4 +4,5 @@
 artifacts/archive/
 artifacts/zap/
 artifacts/ci/
+artifacts/current/
 artifacts/*.md

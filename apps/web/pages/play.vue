@@ -24,6 +24,7 @@ import { applyPacing } from '~/utils/pacingEngine'
 import { useLevelProgress } from '~/composables/useLevelProgress'
 import { useMistakes } from '~/composables/useMistakes'
 import { useI18n } from '~/composables/useI18n'
+import { nextTick, ref, watch } from 'vue'
 import { useMinigame } from '~/composables/useMinigame'
 import { useMinigameServing } from '~/composables/useMinigameServing'
 import { useDifficultyProgression } from '~/composables/useDifficultyProgression'
@@ -49,12 +50,14 @@ const MODE_OPTIONS = computed(() => [
   { id: 'build-bridge' as const, label: t('modes.buildBridge') },
 ])
 
-const ROUNDS_PER_LEVEL = 10
+const roundsPerLevel = computed(() =>
+  currentMinigameId.value === 'memory-match' ? 5 : 10
+)
 const currentRoundDisplay = computed(() =>
-  Math.min(ROUNDS_PER_LEVEL, roundIndex.value + 1)
+  Math.min(roundsPerLevel.value, roundIndex.value + 1)
 )
 const completedProgressPercent = computed(() =>
-  Math.min(100, (roundIndex.value / ROUNDS_PER_LEVEL) * 100)
+  Math.min(100, (roundIndex.value / roundsPerLevel.value) * 100)
 )
 /** Node position aligned with fill so the current-round indicator sits at the leading edge. */
 const currentRoundPercent = computed(() => completedProgressPercent.value)
@@ -82,6 +85,7 @@ const minigameServing = useMinigameServing({ noRepeatWindow: 2 })
 const difficultyProg = useDifficultyProgression()
 const currentMinigameId = ref<MinigameId | null>(null)
 const currentMinigameParams = ref<Record<string, number>>({})
+const gameMainRef = ref<HTMLElement | null>(null)
 const minigameSessionSeed = ref(0)
 
 const minigameQuestion = computed(() => {
@@ -95,8 +99,15 @@ function pickNextMinigame() {
   const entry = minigameTools.getMapEntry(level)
   const seed = minigameSessionSeed.value + level * 1000 + roundIndex.value
   const id = minigameServing.pick(entry, seed)
+  const params = difficultyProg.getMinigameParams(id, level)
+  if (id === 'memory-match') {
+    const ceiling = mode.value === 'upTo10' ? 10 : 20
+    const mathRange = difficultyProg.getMathRange(level, ceiling)
+    params.operandMin = mathRange.operandMin
+    params.operandMax = mathRange.operandMax
+  }
   currentMinigameId.value = id
-  currentMinigameParams.value = difficultyProg.getMinigameParams(id, level)
+  currentMinigameParams.value = params
 }
 
 const playSource = computed(() => {
@@ -180,7 +191,7 @@ function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
 
   roundIndex.value += 1
 
-  if (useKeypadMode.value && roundIndex.value >= ROUNDS_PER_LEVEL) {
+  if (useKeypadMode.value && roundIndex.value >= roundsPerLevel.value) {
     const stars = mistakeCount.value === 0 ? 3 : mistakeCount.value <= 1 ? 2 : 1
     completeLevel(levelParam.value!, stars)
     completedStars.value = stars
@@ -331,6 +342,26 @@ function onModeSelectorSelect(mode: InteractionModeId, skin: SkinId) {
   })
 }
 
+watch(
+  () => useMinigameMode.value && currentMinigameId.value && minigameQuestion.value,
+  (show) => {
+    if (show) {
+      nextTick(() => {
+        setTimeout(() => {
+          gameMainRef.value?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        }, 150)
+      })
+    }
+  },
+  { immediate: true }
+)
+
+// immediate: true — pick minigame as soon as levelParam is ready (avoids race where
+// onMounted ran before route was settled, causing levelParam=null → level 1 → wrong minigame)
+watch(levelParam, () => {
+  if (useMinigameMode.value) pickNextMinigame()
+}, { immediate: true })
+
 onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
   clearMistakes()
@@ -387,15 +418,15 @@ onUnmounted(() => {
       <div class="play-page-level-complete" aria-hidden="true" />
     </template>
 
-    <!-- Minigame mode: ProblemCard + MinigameRenderer -->
-    <template v-else-if="useKeypadMode && game.question.value">
-      <div class="play-header play-header-minigame">
+    <!-- Minigame mode: ProblemCard + MinigameRenderer (never fall through to classic when level in URL) -->
+    <template v-else-if="useKeypadMode">
+      <div v-if="game.question.value" class="play-header play-header-minigame">
         <div class="progress-wrap">
           <div
             class="round-progress"
             role="progressbar"
             :aria-valuemin="0"
-            :aria-valuemax="ROUNDS_PER_LEVEL"
+            :aria-valuemax="roundsPerLevel"
             :aria-valuenow="roundIndex"
             :aria-label="t('play.roundProgress')"
           >
@@ -411,30 +442,36 @@ onUnmounted(() => {
               {{ currentRoundDisplay }}
             </div>
             <div class="round-progress-node round-progress-node-target" aria-hidden="true">
-              {{ ROUNDS_PER_LEVEL }}
+              {{ roundsPerLevel }}
             </div>
           </div>
         </div>
       </div>
 
-      <div id="game-main" class="keypad-stage" tabindex="-1">
-        <ProblemCard
-          :a="game.question.value.a"
-          :b="game.question.value.b"
-          :answer="''"
-          :is-correct="null"
-          variant="minigame"
-        />
+      <div ref="gameMainRef" id="game-main" class="keypad-stage" tabindex="-1">
+        <template v-if="game.question.value">
+          <ProblemCard
+            v-if="currentMinigameId !== 'memory-match'"
+            :a="game.question.value.a"
+            :b="game.question.value.b"
+            :answer="''"
+            :is-correct="null"
+            variant="minigame"
+          />
 
-        <MinigameRenderer
-          v-if="useMinigameMode && currentMinigameId && minigameQuestion"
-          :key="roundIndex"
-          :minigame-id="currentMinigameId"
-          :question="minigameQuestion"
-          :difficulty-params="currentMinigameParams"
-          :timers-disabled="profile.activeProfile.value?.prefs.timersDisabled ?? false"
-          @answer="onKeypadAnswer"
-        />
+          <MinigameRenderer
+            v-if="useMinigameMode && currentMinigameId && minigameQuestion"
+            :key="roundIndex"
+            :minigame-id="currentMinigameId"
+            :question="minigameQuestion"
+            :difficulty-params="currentMinigameParams"
+            :timers-disabled="profile.activeProfile.value?.prefs.timersDisabled ?? false"
+            @answer="onKeypadAnswer"
+          />
+        </template>
+        <p v-else class="play-loading" role="status" aria-live="polite">
+          {{ t('play.loading') }}
+        </p>
       </div>
     </template>
 
@@ -612,17 +649,24 @@ onUnmounted(() => {
 }
 
 .play-header-minigame {
-  margin-bottom: 2.25rem;
+  margin-bottom: 1rem;
 }
 
 .keypad-stage {
   display: flex;
   flex-direction: column;
-  gap: var(--app-space-lg);
+  gap: var(--app-space-md);
   align-items: center;
   max-width: 400px;
   margin: 0 auto;
-  padding-top: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.play-loading {
+  margin: 2rem 0;
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-base);
+  color: var(--app-muted);
 }
 
 .skin-picker {

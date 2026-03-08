@@ -1,40 +1,30 @@
-# Architecture — Epic 27 (Principal Architect)
+# Architecture — Epic 28: New Minigame (Replace Coral)
 
-## Scope
+## Component Structure
 
-- **In scope:** Replace `MinigameCoralBuilder.vue` with new implementation
-- **Out of scope:** MinigameRenderer, useMinigame registry, play.vue flow, other minigames
+- **Replace:** `MinigameCoralBuilder.vue` → new component (e.g. `MinigameMemoryMatch.vue`)
+- **Keep:** `MinigameRenderer.vue`, `useMinigame.ts` contract (props: question, difficultyParams; emit: answer)
+- **Update:** `useMinigame.ts` registry — replace coral-builder definition with new minigame
+- **Update:** `minigame-map.v1.json` — coral-builder remains in map (same slot) but points to new component
 
-## Component Boundary
+## Interaction Type
 
-```
-MinigameRenderer
-  └── MinigameCoralBuilder.vue (REPLACED)
-        Props: question (AdditionQuestion), difficultyParams?
-        Emit: answer(choice: number)
-```
-
-## Contract (Unchanged)
-
-- Same props/emit as all minigames
-- Same `coral-builder` id in useMinigame registry
-- MinigameRenderer loads by id; no routing changes
+- **memory-flip** (new in Contract v2)
+- **layoutClass:** `layout-match-grid` (already exists) or new `layout-memory-cards` if we add it
 
 ## Asset Pipeline
 
-- New assets: `assets/graphics/minigames/coral-builder/`
-  - reef-base.svg (or similar)
-  - coral-piece-1.svg, coral-piece-2.svg (or parametric/colored variants)
-- Reuse existing underwater tokens and gradients
+- New assets in `assets/graphics/minigames/memory-match/` (or equivalent)
+- Card back SVG, card face styling
+- Total < 15 KB
 
-## Performance
+## Performance Constraints
 
-- Lazy-loaded via MinigameRenderer (defineAsyncComponent)
-- Asset budget: new SVGs < 15 KB total
+- Lazy-load via defineAsyncComponent (unchanged)
+- Bundle budget must pass
 - No new heavy dependencies
 
-## Integration Points
+## Diversity Gate
 
-- `useMinigame.ts`: Update `contractV2` for coral-builder (interactionType: drag-drop, layoutClass: layout-drag-reef)
-- `minigame-map.v1.json`: No change (coral-builder already in map)
-- E2E: Update coral-builder assertions if interaction changes (drag vs tap)
+- Replacing drag-drop (coral) with memory-flip improves diversity
+- No new duplication; gate should pass
