@@ -45,3 +45,4 @@
 | Epic 22.6 — E2E Proof + Final Hardening | done | PR #71 merged |
 | Epic 26.1 — Map Scroll-to-Current + Full-Width Dense Decoration | done | PR #97 merged |
 | Epic 27.1 — Coral Minigame: Core Mechanic + Assets | done | PR #100 merged |
+| Epic 27.2 — Coral Minigame: Polish + Feedback | done | PR #102 merged |
