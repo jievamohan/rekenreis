@@ -1499,3 +1499,94 @@ Acceptance:
 - Decoration noticeably denser
 - Reduced motion respected
 - E2E passes
+
+---
+
+## Epic 27.1 — Coral Minigame: Core Mechanic + Assets
+- [ ]
+PlanRef:
+- design: docs/design/epic-27.md
+- archive: artifacts/archive/epic-27.0/latest
+- slice: 27.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 27.1: Replace Coral Builder minigame with drag-to-place mechanic and reef scene.
+
+Requirements:
+- Replace MinigameCoralBuilder.vue with new implementation: drag coral piece from source zone to reef target slot
+- Create reef-base.svg and coral-piece SVGs in assets/graphics/minigames/coral-builder/
+- Source zone: coral pieces (choices) as draggable items; reef zone: reef base with drop target
+- Keyboard fallback: Tab through pieces → select; Tab to slot → Enter to place
+- Same props (question, difficultyParams) and emit (answer) contract
+- Tests: unit test for render + answer emit; E2E smoke for coral round
+
+Acceptance:
+- Drag correct piece to reef → answer submitted
+- Keyboard flow works (select piece + slot, Enter)
+- Reef + coral pieces visible as game objects
+- SVG assets < 15 KB total
+- Typecheck, build, smoke green
+
+---
+
+## Epic 27.2 — Coral Minigame: Polish + Feedback
+- [ ]
+PlanRef:
+- design: docs/design/epic-27.md
+- archive: artifacts/archive/epic-27.0/latest
+- slice: 27.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 27.2: Add animations, wrong-answer feedback, and hint after 2 wrong.
+
+Requirements:
+- Correct drop: snap-in animation, reef glow (300ms)
+- Wrong drop: wobble, return to tray (400ms)
+- After 2 wrong: reveal hint (target highlight)
+- Reduced motion: instant state changes, no wobble/bounce
+- Accessibility: focus states, contrast check
+- Optional: playCelebrate on correct, gentle wrong SFX
+
+Acceptance:
+- Animations feel satisfying
+- Wrong answer returns piece gently
+- Hint appears after 2 wrong
+- Reduced motion respected
+- WCAG AA contrast
+- Typecheck, build, smoke green
+
+---
+
+## Epic 27.3 — Coral Minigame: Integration + E2E
+- [ ]
+PlanRef:
+- design: docs/design/epic-27.md
+- archive: artifacts/archive/epic-27.0/latest
+- slice: 27.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 27.3: Update registry, Dutch copy, and E2E coverage.
+
+Requirements:
+- useMinigame.ts: coral-builder contractV2 — interactionType: drag-drop, layoutClass: layout-drag-reef
+- nl.json: update minigameCoralBuilder strings (e.g. "Sleep het juiste koraal naar het rif!")
+- E2E: update minigame.spec.ts, interaction-diversity.spec.ts if needed for coral-builder
+- Visual regression: screenshot baseline for coral minigame
+- Bundle budget must pass
+
+Acceptance:
+- contractV2 reflects drag-drop mechanic
+- Dutch copy correct
+- E2E passes (coral round via drag or keyboard)
+- Visual baseline committed
+- Bundle budget passes
+- CI green
