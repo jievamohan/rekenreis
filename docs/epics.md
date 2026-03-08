@@ -1564,7 +1564,7 @@ Acceptance:
 ---
 
 ## Epic 27.3 — Coral Minigame: Integration + E2E
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-27.md
 - archive: artifacts/archive/epic-27.0/latest
