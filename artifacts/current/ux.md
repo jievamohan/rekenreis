@@ -1,46 +1,37 @@
-# UX Design — Epic 27 (UX Designer)
+# UX Design — Epic 28: New Minigame (Replace Coral)
 
-## Primary Screen Impacted
+## Primary Screens Impacted
 
-- `/play` — minigame rendering area (within GameStageCard)
+- `/play` — minigame area within the play flow
 
-## Current Coral Builder UX Issues
+## Layout Diversity Requirement
 
-1. **Abstract interaction:** Number track with positions — feels like a form, not a game
-2. **Weak visual metaphor:** Coral/reef are decorative (emoji), not core to interaction
-3. **Cognitive load:** User must map "place coral" to "pick number from track" — disconnect
-4. **No tactile feedback:** Tap is instant; no drag, no placement, no growth
+**Current pattern (all minigames):**
+- Progress bar at top
+- ProblemCard (a + b = ?) below
+- Minigame area with answer choices/objects
 
-## Desired UX (New Coral Minigame)
+**Target for new minigame:**
+- Break the visual monotony. Options:
+  1. **Embedded problem:** The sum is woven into the game narrative (e.g. "Find the two shells that add up to 5") — no separate ProblemCard dominance
+  2. **Full-bleed scene:** Minigame occupies more vertical space; problem is subtle or integrated
+  3. **Different composition:** e.g. grid of cards, number line, or path — not "row of answer buttons"
 
-### Core Interaction Model
+## Component Catalog
 
-- **Primary:** User performs a concrete, satisfying action (e.g. drag coral piece onto reef, or tap to grow)
-- **Feedback:** Immediate visual + optional audio feedback on correct answer
-- **Wrong answer:** Gentle feedback (wobble, return) — no punishment, hint after 2 wrong
+- **New component:** Replaces MinigameCoralBuilder.vue (e.g. MinigameMemoryMatch.vue or MinigameNumberLineLeap.vue)
+- **MinigameRenderer:** Unchanged; loads new component by id
+- **useMinigame:** coral-builder id replaced or repurposed; new definition registered
+- **play.vue:** May support optional "layout variant" for minigames that request different shell treatment (e.g. hide ProblemCard for immersive games) — if justified
 
-### Layout Principles
+## Tap Targets & Accessibility
 
-- **Scene-first:** Clear scene (reef, ocean floor) with coral pieces as game objects
-- **Tap targets:** All interactive elements ≥ 44px
-- **Spacing:** ≥ 8px between elements
-- **Keyboard:** Tab through choices, Enter/Space to select; drag minigames need keyboard fallback (select + place)
+- All interactive elements ≥ 44px
+- Keyboard: Tab through options, Enter/Space to select
+- Focus states visible
+- Reduced motion: animations degrade to instant
 
-### Flow
+## Navigation Model
 
-```
-ProblemCard (a + b = ?) → Coral Scene loads → User interacts (e.g. drag/tap) → Answer submitted → Feedback
-```
-
-### Component Catalog
-
-- **MinigameCoralBuilder.vue** (replacement): New scene, new mechanic, same props/emit contract
-- **MinigameRenderer.vue:** No change; loads component by id
-- **useMinigame.ts:** Same id `coral-builder`; component swap only
-
-## Accessibility Notes
-
-- Keyboard: Full navigation and selection without pointer
-- Focus: Visible focus ring on all interactive elements
-- Reduced motion: Animations degrade to instant or static
-- Screen reader: aria-labels for scene and choices
+- Same as current: map → play → minigame round → feedback → next round
+- No new routes or modals

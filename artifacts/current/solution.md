@@ -1,51 +1,36 @@
-# Solution Design — Epic 27 (Solution Designer)
+# Solution Design — Epic 28: New Minigame (Replace Coral)
 
-## Implementation Approach
+## Approach
 
-### 1. Replace MinigameCoralBuilder.vue
+1. **Remove** MinigameCoralBuilder.vue (or rename/repurpose)
+2. **Create** MinigameMemoryMatch.vue (or chosen mechanic)
+3. **Register** in useMinigame.ts with id `coral-builder` (slot reuse) OR introduce new id and update map
+4. **Update** minigame-map.v1.json to use new minigame in same level ranges as coral-builder
 
-- **New mechanic:** Drag coral piece from source zone to reef target slot
-- **Keyboard fallback:** Tab through pieces → select; Tab to slot → Enter to place
-- **Structure:**
-  - Source zone: coral pieces (choices) as draggable items
-  - Reef zone: reef base with one highlighted drop target
-  - On correct drop: emit answer, show success
-  - On wrong drop: wobble, return, optional hint after 2 wrong
+## Option A: Slot Reuse (coral-builder → memory-match)
 
-### 2. Asset Creation
+- Keep MinigameId `coral-builder` but swap component to memory-match
+- Pros: No map/type changes
+- Cons: Id is misleading
 
-- Reef base SVG: simple rock/coral structure with clear drop area
-- Coral piece SVGs: 2–3 variants (branch, fan) — can be colored via CSS or separate files
-- Each < 2 KB; total < 15 KB
+## Option B: New Id (memory-match)
 
-### 3. Pointer + Keyboard Handling
+- Add `memory-match` to MinigameId union
+- Remove `coral-builder` from registry and map
+- Update map rules to use memory-match where coral-builder was
+- Pros: Clear naming
+- Cons: More files to touch (types, map, MINIGAME_IDS)
 
-- Pointer: pointerdown → drag ghost → pointermove → pointerup on drop zone
-- Keyboard: focusable buttons for pieces and slot; select piece, focus slot, Enter to place
-- Reuse patterns from MinigameTreasureDive (drag) and MinigameSubmarineSort (keyboard fallback)
+## Recommendation
 
-### 4. useMinigame Registry Update
+**Option B** — introduce `memory-match`, remove `coral-builder`. Cleaner long-term.
 
-- `interactionType`: `'drag-drop'` (was `build-sequence`)
-- `layoutClass`: `'layout-drag-reef'`
-- `uniqueDifficultyKnobs`: pieceCount, optional reefStyle
+## Files to Touch
 
-### 5. Dutch Copy (nl.json)
-
-- Update `minigameCoralBuilder` keys:
-  - `sequenceHint` → new instruction, e.g. "Sleep het juiste koraal naar het rif!"
-  - `pieceLabel`, `trackLabel` → `coralLabel`, `reefLabel`, `dropZoneLabel`
-
-## File Changes
-
-| File | Change |
-|------|--------|
-| `MinigameCoralBuilder.vue` | Full rewrite (drag-to-place mechanic) |
-| `useMinigame.ts` | Update coral-builder contractV2 |
-| `nl.json` | Update minigameCoralBuilder strings |
-| `assets/graphics/minigames/coral-builder/*` | New SVGs |
-| E2E specs | Update coral-builder interaction tests |
-
-## Rollback
-
-- Revert MinigameCoralBuilder.vue to previous version; no schema or API changes
+- `apps/web/types/minigame.ts` — add memory-match, remove coral-builder
+- `apps/web/components/minigames/MinigameMemoryMatch.vue` — new
+- `apps/web/components/minigames/MinigameCoralBuilder.vue` — delete
+- `apps/web/composables/useMinigame.ts` — register memory-match, remove coral-builder
+- `apps/web/content/minigame-map.v1.json` — replace coral-builder with memory-match in pool
+- `apps/web/content/locales/nl.json` — new strings for memory-match
+- E2E specs — update references from coral-builder to memory-match

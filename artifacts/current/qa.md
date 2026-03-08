@@ -1,37 +1,27 @@
-# QA Strategy — Epic 27 (QA Strategist)
+# QA Strategy — Epic 28: New Minigame (Replace Coral)
 
 ## Unit Tests
 
-- **MinigameCoralBuilder:** Renders, accepts question prop, emits answer on correct selection
-- **Drag path:** Simulate pointer events or use testing-library; verify correct drop emits answer
-- **Keyboard path:** Tab + Enter flow emits answer
-- **Wrong answer:** Wrong piece returns to tray; no emit until correct
-- **Hint:** After 2 wrong, hint appears (if implemented)
+- New minigame component: renders, accepts question/difficultyParams
+- Flip logic: correct pair emits answer; wrong pair flips back, no emit
+- Keyboard: Tab through cards, Enter flips; pair match emits
+- Reduced motion: no animations, instant state change
 
-## E2E Updates
+## E2E Smoke Updates
 
-- **minigame.spec.ts:** Coral builder round — complete with drag or keyboard
-- **interaction-diversity.spec.ts:** Ensure coral-builder still satisfies drag-drop coverage (if it becomes primary drag game)
-- **mechanic-upgrades.spec.ts:** May need update if coral-builder interaction type changes
-- **sorting-sequence.spec.ts:** If coral-builder was used for sequence, update to new mechanic
+- Replace coral-builder scenarios with memory-match
+- `minigame.spec.ts`: play round with memory-match, verify answer submission
+- `interaction-diversity.spec.ts`: update if coral was referenced
+- `mechanic-upgrades.spec.ts`: update if needed
 
-## Non-Flaky Assertions
+## Non-Flaky UI Assertions
 
-- Wait for minigame to load (data-testid="minigame-coral-builder")
-- Use deterministic seed or mock question for reproducible choices
-- Avoid timing-dependent assertions; use state-based checks
+- Wait for cards to be visible before interaction
+- Use data-testid or role for card elements
+- Avoid timing-dependent assertions (use waitFor)
 
 ## Visual Regression
 
-- Screenshot baseline for coral minigame (initial state, pieces visible)
-- Update if existing coral baseline exists
-
-## Acceptance Checklist
-
-- [ ] Coral minigame renders with reef + pieces
-- [ ] Drag correct piece to reef → answer submitted, feedback shown
-- [ ] Keyboard: select piece + slot → answer submitted
-- [ ] Wrong piece returns; no punishment
-- [ ] Reduced motion: no wobble/bounce
-- [ ] Dutch copy correct
-- [ ] Bundle budget passes
+- Screenshot baseline for memory-match initial state
+- Screenshot of matched pair state
+- Remove coral-builder baselines

@@ -1,27 +1,21 @@
-# Security & Privacy — Epic 27 (Security/Privacy)
+# Security & Privacy — Epic 28: New Minigame (Replace Coral)
 
 ## New Risks Introduced
 
-**None.** This epic replaces one minigame component with a new implementation. No new:
-- Auth or permissions
-- Data collection or storage
-- External API calls
-- User input beyond existing answer selection
+**None.** No new auth, payments, external APIs, or data collection.
 
 ## Config Constraints
 
-- No new env vars or secrets
-- Assets are static SVGs; no user-generated content
+- Minigame receives question (a, b, correctAnswer, choices) — same as existing
+- No new config or env vars
 
 ## Data Handling
 
-- Same as existing: question + answer flow; no PII
-- No new localStorage or cookies
+- No new persistence
+- Same session/local state as other minigames
 
 ## Checks Required
 
-- Gitleaks: no new secrets
-- SAST: no new attack surface
-- Dependency: no new packages (reuse existing)
-
-**Impact: none.** Security review: N/A for this scope.
+- No secrets or PII in new code
+- Dependency audit unchanged (no new deps)
+- SAST/gitleaks: no new findings
