@@ -4,7 +4,7 @@ export type MinigameId =
   | 'bubble-pop'
   | 'treasure-dive'
   | 'fish-feed'
-  | 'coral-builder'
+  | 'memory-match'
   | 'submarine-sort'
   | 'starfish-match'
 
@@ -12,7 +12,7 @@ export const MINIGAME_IDS: readonly MinigameId[] = [
   'bubble-pop',
   'treasure-dive',
   'fish-feed',
-  'coral-builder',
+  'memory-match',
   'submarine-sort',
   'starfish-match',
 ] as const

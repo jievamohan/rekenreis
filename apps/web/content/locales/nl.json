@@ -286,11 +286,11 @@
     "hintMessage": "Het antwoord is {answer}. Goed onthouden!",
     "hintContinue": "We gaan rustig verder..."
   },
-  "minigameCoralBuilder": {
-    "ariaLabel": "Koraal bouwen — sleep het juiste koraal naar het rif",
-    "pieceLabel": "Koraalstuk {value}",
-    "reefLabel": "Koraalrif",
-    "sequenceHint": "Sleep het juiste koraal naar het rif!"
+  "memoryMatch": {
+    "cardBack": "Kaart, omgedraaid"
+  },
+  "minigameMemoryMatch": {
+    "ariaLabel": "Memory — vind het paar dat samen het antwoord geeft"
   },
   "minigameSubmarineSort": {
     "ariaLabel": "Onderzeeër sorteren — sleep het juiste item naar het compartiment",

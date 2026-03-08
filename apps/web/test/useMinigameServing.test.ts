@@ -8,7 +8,7 @@ const weightedPool: MinigameMapEntry = {
     { minigameId: 'bubble-pop', weight: 1 },
     { minigameId: 'treasure-dive', weight: 1 },
     { minigameId: 'fish-feed', weight: 1 },
-    { minigameId: 'coral-builder', weight: 1 },
+    { minigameId: 'memory-match', weight: 1 },
   ],
 }
 
