@@ -1594,7 +1594,7 @@ Acceptance:
 ---
 
 ## Epic 29.1 — Star Scoring Logic + Session Stats
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-29.md
 - archive: artifacts/archive/epic-29.0/latest
