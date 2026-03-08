@@ -1,40 +1,23 @@
-# Assets — Epic 27 (Illustrator)
+# Assets — Epic 28: New Minigame (Replace Coral)
 
-## Required Assets
+## Required Assets (Memory-Match)
 
-### 1. Reef Base
+- **Card back SVG:** Illustrated back (e.g. shell, fish, bubble pattern). Flat, rounded. < 2 KB.
+- **Card face:** Numbers rendered via text/CSS; optional decorative frame SVG. < 1 KB.
+- **Match glow:** CSS or small SVG accent. < 1 KB.
 
-- **File:** `assets/graphics/minigames/coral-builder/reef-base.svg`
-- **Description:** Simple reef/rock structure with a clear "target" area (slot or platform) where coral piece is placed
-- **Style:** Flat, chunky, teal/stone tones; kid-friendly
-- **Size:** < 2 KB
+**Total target:** < 10 KB for memory-match assets.
 
-### 2. Coral Pieces (2–3 variants)
+## Asset Locations
 
-- **Files:** `coral-branch.svg`, `coral-fan.svg` (or `coral-1.svg`, `coral-2.svg`)
-- **Description:** Distinct coral shapes — branch, fan — that can hold a number label
-- **Style:** Rounded, flat; warm coral colors (#ff8a65, #ffab91)
-- **Size:** < 2 KB each
+- `assets/graphics/minigames/memory-match/card-back.svg`
+- Optional: `card-frame.svg`, `match-glow.svg`
 
-### 3. Optional: Drop Zone Highlight
+## Removal
 
-- Can be CSS-only (border, background) — no asset needed
+- Remove or archive `assets/graphics/minigames/coral-builder/` (reef-base, coral-piece SVGs) — no longer referenced.
 
-## Asset Budget
+## Illustrator Notes
 
-| Asset | Max Size |
-|-------|----------|
-| reef-base.svg | 2 KB |
-| coral-piece-1.svg | 2 KB |
-| coral-piece-2.svg | 2 KB |
-| Total new | < 10 KB |
-
-## Reuse
-
-- Existing underwater gradients, tokens
-- Existing gem/coral color palette from design tokens
-
-## N/A
-
-- No character illustrations
-- No new mascot or background music
+- Card back: kid-friendly, underwater theme, distinct from other minigame assets
+- Avoid realistic textures; keep flat, chunky, colorful

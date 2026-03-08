@@ -1,40 +1,29 @@
-# Discovery — Epic 27 (Business Analyst)
+# Discovery — Epic 28: Replace Coral Minigame
 
-## Intent (User)
+## Business Context
 
-De minigame "plaats het koraal op de juiste plek" heeft een rare gameplay en look and feel. Verzin een betere spel, en laat het aanvoelen als een echte kinderspel. Het hoeft niet op de andere spellen te lijken.
+Rekentreis is a math learning game for kleuters (4–6 jaar). Epic 27 introduced a coral reef minigame with drag-to-place mechanic. This creates a problem: we now have two drag-and-drop minigames (Treasure Dive + Coral Builder), reducing variety and making the experience repetitive for children.
 
 ## Problem Statement
 
-The Coral Builder minigame ("plaats het koraal op de juiste plek") currently:
-- Presents a number track (0..max) with selectable positions
-- User taps a number from choices — effectively a disguised multiple-choice
-- No genuine coral-building, reef scene, or tactile interaction
-- Feels abstract and "form-like" rather than playful
-- Does not match the promise of its name or underwater theme
+1. **Duplicate mechanic:** Coral Builder and Treasure Dive both use drag-drop. Kids get the same interaction twice.
+2. **Uniform layout:** All minigames share the same structure: progress bar → sum (ProblemCard) → answer choices. This feels monotonous.
+3. **Lack of variety:** Children benefit from different gameplay patterns to stay engaged and to exercise different cognitive skills.
 
-## Target Audience
+## User Goals
 
-- Kleuters (4–6 jaar) and their parents
-- Dutch-speaking (Netherlands/Flanders)
-- Same audience as existing Rekenreis minigames
+- Replace the coral-builder minigame with a **completely new** game
+- **New gameplay:** A mechanic we don't yet have (not tap-choice, drag-drop, timed-pop, sort-into-bins)
+- **Different look and feel:** Break the standard layout pattern; the new game should feel visually and structurally distinct
+- **More variety:** Give kids a fresh experience that doesn't resemble other minigames
+
+## Scope
+
+- **In scope:** Replace MinigameCoralBuilder with a new minigame component; update registry, map, E2E
+- **Out of scope:** Changing other minigames, new math operators, backend, i18n beyond Dutch
 
 ## Success Criteria
 
-1. **Gameplay:** The new coral minigame must feel like a real kids' game — tactile, satisfying, with clear cause-and-effect.
-2. **Distinct identity:** It does not need to resemble other minigames; it can have its own mechanic and look.
-3. **Math integrity:** Still receives `AdditionQuestion` + `onAnswer`; no change to core math loop.
-4. **Accessibility:** Keyboard-playable, reduced-motion support, 44px tap targets.
-
-## Non-Goals
-
-- Changing other minigames
-- New math operators or question types
-- Backend or API changes
-- i18n beyond Dutch
-
-## Impact
-
-- **Scope:** Single minigame component (MinigameCoralBuilder.vue) replacement
-- **Risk:** Low — isolated to one minigame; fallback to Keypad remains
-- **Dependencies:** Existing assets (underwater SVGs), useMinigame registry, MinigameRenderer
+- New minigame uses an interaction type not yet in the pool (e.g. memory-flip, trace-numberline, build-sequence, swipe-match)
+- Layout/visual structure differs from the standard "progressbar → sum → answers" pattern
+- Kids experience genuine variety when the new minigame appears in rotation

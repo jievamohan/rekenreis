@@ -73,19 +73,19 @@ registerMinigame({
 })
 
 registerMinigame({
-  id: 'coral-builder',
-  component: () => import('~/components/minigames/MinigameCoralBuilder.vue'),
+  id: 'memory-match',
+  component: () => import('~/components/minigames/MinigameMemoryMatch.vue'),
   difficultyKnobs: {
-    pieceCount: { min: 3, max: 5 },
+    cardCount: { min: 6, max: 8 },
   },
   contractV2: {
-    interactionType: 'drag-drop',
-    requiredInputs: ['pointer', 'drag', 'keyboard'],
+    interactionType: 'memory-flip',
+    requiredInputs: ['pointer', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'pieceCount', min: 3, max: 5, description: 'Number of coral pieces to place on reef' },
+      { key: 'cardCount', min: 6, max: 8, description: 'Number of cards in the grid' },
     ],
-    layoutClass: 'layout-drag-reef',
+    layoutClass: 'layout-match-grid',
     isNew: false,
   },
 })

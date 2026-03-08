@@ -1,30 +1,43 @@
-# Backlog — Epic 27
+# Backlog — Epic 28.1: Memory-Match Core Mechanic + Assets
 
-## Micro-Epics (Slices)
+## Epic Summary
 
-Each slice ≤ 5 tasks, visible milestone.
+Replace MinigameCoralBuilder with MinigameMemoryMatch: grid of face-down cards (6–8), flip two to find pair that sums to correctAnswer. Correct pair → emit answer; wrong pair → flip back after delay. Keyboard: Tab + Enter.
 
-### Epic 27.1 — Coral Minigame: Core Mechanic + Assets
-- **Milestone:** Drag-to-place coral on reef works; reef + pieces visible
-- **Tasks:** New MinigameCoralBuilder (drag), reef + coral SVGs, basic layout
-- **Acceptance:** Drag correct piece → answer; keyboard fallback
+## Scope In
 
-### Epic 27.2 — Coral Minigame: Polish + Feedback
-- **Milestone:** Animations, wrong-answer feedback, hint after 2 wrong
-- **Tasks:** Snap-in, wobble-return, hint logic, reduced motion
-- **Acceptance:** Feels like a kids' game; a11y and reduced-motion pass
+- Create MinigameMemoryMatch.vue with flip logic
+- Card grid (6–8 cards), face-down; flip two, check sum
+- Correct pair → emit answer; wrong → flip back after short delay
+- Card back SVG in assets/graphics/minigames/memory-match/
+- Keyboard: Tab through cards, Enter to flip
+- Add memory-match to MinigameId; remove coral-builder from types and registry
+- Delete MinigameCoralBuilder.vue
+- Update minigame-map.v1.json: replace coral-builder with memory-match in all rules and default pool
+- Same props (question, difficultyParams) and emit (answer) contract
+- Unit test for render + flip + answer emit; E2E smoke for memory-match round
 
-### Epic 27.3 — Coral Minigame: Integration + E2E
-- **Milestone:** Registry update, Dutch copy, E2E green
-- **Tasks:** useMinigame contractV2, nl.json, E2E updates, visual baseline
-- **Acceptance:** Full flow works; CI green; bundle budget passes
+## Scope Out
 
-## Order
+- Polish/animations (Epic 28.2)
+- E2E visual regression, Diversity Gate verification (Epic 28.3)
+- Dutch copy beyond minimal strings (28.2)
 
-- 27.1 → 27.2 → 27.3 (foundation → polish → integration)
+## Risks
 
-## Out of Scope
+- perf: new SVG assets; keep < 10 KB total
+- a11y: keyboard flow must work
 
-- Other minigames
-- Map scroll / decoration (Epic 26)
-- New math operators
+## NFRs
+
+- Typecheck clean, build passes, smoke green
+- SVG assets < 10 KB total
+- Gate C/D/F pass
+
+## Task List
+
+| Task | Title | Lanes | Gates | Risk |
+|------|-------|-------|-------|------|
+| 0134 | Memory-Match types + registry + map | W2 | C,D,F | |
+| 0135 | MinigameMemoryMatch.vue: core mechanic + assets | W1 | C,D,F | |
+| 0136 | Remove coral-builder + tests | W1,W2,T | C,D,F | |

@@ -56,24 +56,23 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
 
-  test('sequence/spatial (CoralBuilder): select piece and place on reef', async ({ page }) => {
+  test('memory-flip (MemoryMatch): flip two cards that sum to correct answer', async ({ page }) => {
     await page.goto('/play?level=4')
-    await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('[data-testid="minigame-memory-match"]')).toBeVisible({ timeout: 10000 })
 
-    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
-    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
-    const correct = a + b
-
-    const pieces = page.locator('[data-testid="minigame-coral-builder"] .coral-piece')
-    for (let i = 0; i < await pieces.count(); i++) {
-      const text = (await pieces.nth(i).locator('.coral-number').textContent())?.trim()
-      if (text === String(correct)) {
-        await pieces.nth(i).click()
-        break
+    const cards = page.locator('[data-testid="minigame-memory-match"] .card')
+    const count = await cards.count()
+    for (let i = 0; i < count - 1; i++) {
+      for (let j = i + 1; j < count; j++) {
+        await cards.nth(i).click()
+        await cards.nth(j).click()
+        await page.waitForTimeout(900)
+        const progress = page.locator('.round-progress')
+        const val = await progress.getAttribute('aria-valuenow')
+        if (val === '1') return
       }
     }
-    await page.locator('[data-testid="minigame-coral-builder"] .reef-zone').click()
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
+    expect.fail('Could not complete memory-match round')
   })
 })
 
@@ -94,12 +93,12 @@ test.describe('Dutch copy assertions', () => {
     expect(label).toContain('Schatduik')
   })
 
-  test('coral-builder shows Dutch sequence hint', async ({ page }) => {
+  test('memory-match shows Dutch aria label', async ({ page }) => {
     await page.goto('/play?level=4')
-    await expect(page.locator('[data-testid="minigame-coral-builder"]')).toBeVisible({ timeout: 10000 })
-    const instruction = await page.locator('.reef-instruction').textContent()
-    expect(instruction).toContain('juiste')
-    expect(instruction).toContain('rif')
+    await expect(page.locator('[data-testid="minigame-memory-match"]')).toBeVisible({ timeout: 10000 })
+    const scene = page.locator('[data-testid="minigame-memory-match"]')
+    const label = await scene.getAttribute('aria-label')
+    expect(label).toContain('Memory')
   })
 
   test('submarine-sort shows Dutch aria label', async ({ page }) => {

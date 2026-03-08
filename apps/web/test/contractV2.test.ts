@@ -113,7 +113,7 @@ describe('validateAllContracts', () => {
     const defs = [
       makeDef({ id: 'bubble-pop', contractV2: makeValidContract({ isNew: false }) }),
       makeDef({
-        id: 'coral-builder',
+        id: 'memory-match',
         contractV2: makeValidContract({ isNew: true }),
       }),
     ]
@@ -125,7 +125,7 @@ describe('validateAllContracts', () => {
     const defs = [
       makeDef({ id: 'bubble-pop', contractV2: makeValidContract({ isNew: false }) }),
       makeDef({
-        id: 'coral-builder',
+        id: 'memory-match',
         contractV2: makeValidContract({
           isNew: true,
           duplicationJustification: 'Different visual metaphor and scene composition',
@@ -199,6 +199,13 @@ describe('registry Contract v2 completeness', () => {
         expect(def.contractV2.timerPolicy.allowDisableInSettings).toBe(true)
       }
     }
+  })
+
+  test('memory-match is registered with memory-flip interaction', () => {
+    const def = allDefs.find((d) => d.id === 'memory-match')
+    expect(def).toBeDefined()
+    expect(def!.contractV2.interactionType).toBe('memory-flip')
+    expect(def!.contractV2.layoutClass).toBe('layout-match-grid')
   })
 
   test('no two minigames share both interactionType and layoutClass', () => {

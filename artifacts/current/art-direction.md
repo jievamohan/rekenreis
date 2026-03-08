@@ -1,43 +1,35 @@
-# Art Direction — Epic 27 (Art Director)
+# Art Direction — Epic 28: New Minigame (Replace Coral)
 
 ## Theme Directive
 
-Create a coral minigame that looks and feels like a real kids' game — playful, underwater, with coral as the hero. The scene should invite touch and feel tangible.
+The new minigame must look and feel **totally different** from other minigames. Avoid the "floating objects + answer buttons" aesthetic. Propose a distinct visual language.
 
-## Current State
+**Candidates:**
+- **Memory Match:** Card-based, flat illustrated backs (shells, fish, bubbles). Face-down grid. Flip to reveal numbers. Warm, tactile, board-game feel.
+- **Number Line Leap:** Horizontal number line as a path (stones, lily pads). Character (frog, fish) jumps. Spatial, linear, journey-like.
 
-- Single reef emoji (🪸), number track with styled markers
-- Coral metaphor is superficial; no reef scene, no coral pieces as objects
+## Color Palette
 
-## Visual Direction (New)
+- Reuse app tokens where possible: `--app-primary`, `--app-correct`, `--app-wrong`
+- **Memory Match:** Card backs: teal/cyan gradients; card faces: large numbers on soft pastel backgrounds
+- **Number Line Leap:** Path in teal; landing spots in contrasting colors; character in mascot palette
 
-### Scene Composition
+## Typography
 
-- **Reef base:** A reef structure (rock/coral base) as the focal point — where coral "lives"
-- **Coral pieces:** Distinct, chunky coral shapes (branches, fans) — each with a number label
-- **Background:** Reuse existing underwater gradient; optional subtle bubbles/seaweed
-- **Depth:** Layered — reef in foreground, pieces above or beside it
+- Numbers: large, bold (2rem+), Nunito/Fredoka One
+- No new font families
 
-### Color Palette
+## Shapes
 
-- Reuse `--app-primary`, `--app-secondary`, `--app-correct`, `--app-wrong`, `--app-surface`
-- Coral accents: warm oranges/pinks (#ff8a65, #ffab91) for coral pieces — kid-friendly, not realistic
-- Reef base: teal/stone tones for contrast
+- **Memory:** Rounded rectangles (cards), chunky corners
+- **Number line:** Organic path shapes, circular nodes
 
-### Shapes & Style
+## Icon Style
 
-- **Coral pieces:** Chunky, rounded, flat SVG — no realistic texture
-- **Numbers:** Large (1.5–2rem), high contrast on coral surface
-- **Do:** Flat, friendly, consistent with existing minigame assets (Treasure Dive, Bubble Pop)
-- **Don't:** Realistic coral, sharp edges, tiny details, flashing
+- Flat SVG, consistent with assets/graphics/
+- Per asset < 2 KB
 
-### Icon / Asset Style
+## Do / Don't
 
-- SVG preferred; PNG if needed for gradients
-- Per-asset budget: < 2 KB
-- Total new assets for coral minigame: < 15 KB
-
-## Reference
-
-- Existing minigames: Treasure Dive (gems, chest), Bubble Pop (bubbles) — similar chunky, flat style
-- Coral minigame should feel distinct but coherent with underwater theme
+- **Do:** Dense, playful, distinct from bubble/treasure/fish/coral/submarine/starfish
+- **Don't:** Reuse coral/reef assets; mimic drag-drop visual language; tiny details or realistic textures

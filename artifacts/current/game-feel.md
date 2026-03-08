@@ -1,55 +1,50 @@
-# Game Feel — Epic 27 (Game Designer)
+# Game Feel — Epic 28: New Minigame (Replace Coral)
 
-## Problem with Current Coral Builder
+## Mechanic Options (Pick One)
 
-- Mechanic: "Pick number from track" — abstract, not tactile
-- No sense of building, placing, or nurturing
-- Feels like a quiz disguised as a game
+We need a mechanic **not** currently used:
 
-## Design Goal
+| Mechanic | Used By | Candidate |
+|----------|---------|-----------|
+| tap-choice | bubble-pop | — |
+| drag-drop | treasure-dive, coral-builder | **No** (replacing coral) |
+| timed-pop | fish-feed, starfish-match | — |
+| sort-into-bins | submarine-sort | — |
+| **memory-flip** | — | **Yes** |
+| **trace-numberline** | — | **Yes** |
+| **build-sequence** | — | **Yes** |
+| swipe-match | — | Yes (touch-heavy; consider a11y) |
 
-Create a coral minigame that feels like a **real kids' game** — immediate, satisfying, with clear cause-and-effect. It does NOT need to resemble other minigames.
+## Recommended: Memory-Flip
 
-## Proposed Mechanic: Coral Reef Builder (Drag-to-Place)
+**Gameplay:**
+- Grid of face-down cards (e.g. 6–8 cards)
+- Each card has a number (from question.choices: correctAnswer + distractors)
+- Two cards sum to correctAnswer; others are distractors
+- Player flips two cards. If they sum to correctAnswer → match! (cards stay face-up, glow). Otherwise → flip back after short delay
+- Win when the correct pair is found
 
-### Core Loop
+**Why it fits:**
+- Universally recognized (memory game)
+- No drag-drop; distinct from Treasure Dive
+- Layout is a grid of cards — not "row of answer buttons"
+- Kid-friendly, low frustration (no timer pressure by default)
+- Keyboard: Tab through cards, Enter to flip; second Enter on another card to flip pair
 
-1. **Setup:** Reef base visible (rock/coral structure with an empty "target" slot)
-2. **Pieces:** 3–5 coral pieces with numbers (choices) float or sit in a tray/source zone
-3. **Goal:** Drag the correct coral piece onto the reef target slot (or tap to select + tap slot)
-4. **Success:** Piece snaps into place, reef "glows" or grows slightly, correct feedback
-5. **Wrong:** Piece wobbles, returns to tray; after 2 wrong, hint appears
+## Alternative: Trace-Numberline
 
-### Why This Works for Kids
+**Gameplay:**
+- Number line from 0 to max(a+b, 10)
+- Start at `a`, "jump" `b` steps to land on answer
+- Tap/click each step or drag along path
+- Correct landing → celebration
 
-- **Concrete action:** "I put the coral on the reef" — matches mental model
-- **Satisfying:** Snap-in, growth, celebration
-- **Low pressure:** No timer; wrong answer is gentle
-- **Distinct:** Drag-to-place on a reef is different from Treasure Dive (chest), Bubble Pop (tap), etc.
+**Why it fits:**
+- Spatial, visual, supports number sense
+- No drag-drop
+- Different layout (linear path vs grid/buttons)
 
-### Alternative Considered: Coral Tap (Bubble-Pop-like)
+## Recommendation
 
-- Coral pieces bob gently; tap correct one
-- **Rejected:** Too similar to Bubble Pop; user asked for something that feels different
-
-### Alternative Considered: Coral Count
-
-- Count fish near coral; answer is sum
-- **Rejected:** Changes math model (counting vs. addition choice); out of scope
-
-### Difficulty Knobs
-
-- `pieceCount`: 3–5 coral pieces (choices)
-- `reefComplexity`: simple reef vs. slightly busier (visual only)
-
-### Contract Alignment
-
-- `interactionType`: `drag-drop` (with keyboard fallback: select piece, then select slot)
-- `requiredInputs`: pointer, keyboard
-- `layoutClass`: `layout-drag-reef` (distinct from `layout-drag-chest` of Treasure Dive)
-
-## Non-Goals
-
-- Timer (keep it relaxed)
-- Multiple rounds per question
-- Changing the AdditionQuestion contract
+**Primary:** memory-flip — highest differentiation, proven kid appeal.
+**Fallback:** trace-numberline — if memory-flip proves too complex for kleuters.

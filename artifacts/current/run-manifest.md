@@ -1,20 +1,21 @@
-# Run Manifest — Epic 27 Epicify
+# Run Manifest — Epic 28.1 Memory-Match Core
 
-- **Run id:** 20260308111852
-- **Epic number:** 27
-- **Intent:** Coral minigame redesign — better gameplay and look/feel, feels like a real kids' game
+- **Run id:** 20260308123726
+- **Slice:** 28.1
+- **Intent:** Replace coral-builder with memory-match minigame — core mechanic and assets.
 
 ## Required Planning Agents
 
-| Agent | Status | Artifact Path |
-|-------|--------|---------------|
-| business-analyst | OK | artifacts/current/discovery.md |
-| ux-designer | OK | artifacts/current/ux.md |
-| art-director | OK | artifacts/current/art-direction.md |
-| game-designer | OK | artifacts/current/game-feel.md |
-| motion-audio-designer | OK | artifacts/current/motion-audio.md |
-| principal-architect | OK | artifacts/current/architecture.md |
-| solution-designer | OK | artifacts/current/solution.md |
-| qa-strategist | OK | artifacts/current/qa.md |
-| security-privacy | OK | artifacts/current/security-design.md |
-| illustrator | OK | artifacts/current/assets.md |
+| Agent | Status | Artifact |
+|-------|--------|----------|
+| business-analyst | OK | discovery.md |
+| ux-designer | OK | ux.md |
+| art-director | OK | art-direction.md |
+| game-designer | OK | game-feel.md |
+| motion-audio-designer | OK | motion-audio.md |
+| principal-architect | OK | architecture.md |
+| solution-designer | OK | solution.md |
+| qa-strategist | OK | qa.md |
+| security-privacy | OK | security-design.md |
+| illustrator | OK | assets.md |
+| orchestrator | OK | backlog.md |
