@@ -1,25 +1,16 @@
-# Backlog — Epic 24.4 Fine-tune Spinup
+# Backlog — Epic 26
 
-## Epic Summary
+## Orchestrator Output
 
-Fine-tune tot spinup (Build + Start) nagenoeg instantaan. Slices 24.1–24.3 gedaan (benchmark, MySQL cache, build cache).
+### Slice summary
+Two main work items, can be combined into 1–2 micro-epics:
 
-## Scope
+1. **Scroll-to-current on map load** — UX improvement
+2. **Full-width dense decoration** — Visual improvement
 
-**In:** e2e-container job optimalisatie; docs/runbooks/e2e-benchmark.md
-**Out:** Andere gates; test logic; nieuwe tests
+### Recommended slicing
+- **Epic 26.1:** Scroll-to-current + full-width dense decoration (single cohesive map UX/visual pass)
+  - Tasks: scroll logic, MapDecor full-width + density, E2E update
+  - Each task ≤ 5; total ≤ 5 tasks for one micro-epic.
 
-## Risks
-
-- Lane I (infra): low risk. Standard CI.
-- Mitigation: Gate D groen; cache miss fallback getest
-
-## Tasks
-
-1. **0129-epic24-4-parallel-load** — Parallel load Playwright + MySQL images when both caches hit; document final config
-
-## NFRs
-
-- Perf: spinup < ~1m30s (target: nagenoeg instantaan)
-- Security: Gate D groen
-- Playwright: container-only (policy 64)
+Alternative: split into 26.1 (scroll) and 26.2 (decor) if we want smaller PRs. Given the small scope, one micro-epic is sufficient.

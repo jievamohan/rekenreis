@@ -1,11 +1,28 @@
-# Discovery — Epic 24.4 (PlanRef)
+# Discovery — Epic 26
 
-Epic 24.4: Fine-tune tot spinup (Build + Start) nagenoeg instantaan.
+## Business Analyst Output
 
-**Scope (slice 24.4):**
-- Pas eventuele extra optimalisaties toe (volgorde, parallelisatie, etc.)
-- Doel: spinup Build + Start significant korter dan ~1m30s
-- Documenteer finale config in docs/runbooks/e2e-benchmark.md
-- Alle Playwright tests blijven groen
+### Intent (user input)
+- When the map loads, the page should scroll so that the level we're currently on is preferably in the center of the view.
+- The background decoration is now only the width of the path. It should be across the full width of the page.
+- The decoration can be nicely densely filled.
 
-**Context:** 24.1 (benchmark), 24.2 (MySQL cache), 24.3 (build cache) zijn gedaan.
+### Target audience
+- Kleuters (kindergarten-age children) and their parents using the Rekenreis app.
+
+### Primary experience goal
+- Improve map page usability: user immediately sees their current level without manual scrolling.
+- Improve visual richness: full-width underwater decoration creates a more immersive, playful atmosphere.
+
+### Success criteria
+- On map load: current level node is centered (or near-center) in the viewport.
+- Background decoration spans full page width (not constrained to path band).
+- Decoration density is noticeably increased ("lekker dense").
+
+### Non-goals
+- New minigames or gameplay changes.
+- New assets or illustrations (reuse existing underwater SVGs).
+- Changes to path drawing or node behavior.
+
+### Impact
+- Map page only. No API, no persistence, no auth changes.
