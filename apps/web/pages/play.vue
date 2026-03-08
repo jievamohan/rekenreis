@@ -23,6 +23,7 @@ import { SKIN_ORDER, UNLOCK_THRESHOLDS } from '~/utils/rewardsConfig'
 import { applyPacing } from '~/utils/pacingEngine'
 import { useLevelProgress } from '~/composables/useLevelProgress'
 import { useMistakes } from '~/composables/useMistakes'
+import { computeStars } from '~/utils/starScoring'
 import { useI18n } from '~/composables/useI18n'
 import { nextTick, ref, watch } from 'vue'
 import { useMinigame } from '~/composables/useMinigame'
@@ -159,6 +160,7 @@ const game = usePlayGame(mode, {
 const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
 const roundIndex = ref(0)
+const correctCount = ref(0)
 const { mistakes, record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
 const { completeLevel } = useLevelProgress(profile)
 const showLevelComplete = ref(false)
@@ -185,6 +187,7 @@ function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
   const fb = game.feedback.value
   const resolved = outcome ?? (fb ? (isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')) : null)
   if (resolved) {
+    if (resolved === 'correct') correctCount.value += 1
     roundOutcome.recordRoundOutcome(resolved, interactionMode.value)
     dailyGoal.incrementRound()
   }
@@ -192,7 +195,7 @@ function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
   roundIndex.value += 1
 
   if (useKeypadMode.value && roundIndex.value >= roundsPerLevel.value) {
-    const stars = mistakeCount.value === 0 ? 3 : mistakeCount.value <= 1 ? 2 : 1
+    const stars = computeStars(correctCount.value, roundsPerLevel.value)
     completeLevel(levelParam.value!, stars)
     completedStars.value = stars
     showLevelComplete.value = true
@@ -228,6 +231,7 @@ function onRetryLevel() {
   showReview.value = false
   clearMistakes()
   roundIndex.value = 0
+  correctCount.value = 0
   game.nextQuestion()
   if (useMinigameMode.value) pickNextMinigame()
 }
@@ -358,14 +362,21 @@ watch(
 
 // immediate: true — pick minigame as soon as levelParam is ready (avoids race where
 // onMounted ran before route was settled, causing levelParam=null → level 1 → wrong minigame)
-watch(levelParam, () => {
+watch(levelParam, (level, prevLevel) => {
   if (useMinigameMode.value) pickNextMinigame()
+  // Reset session stats when navigating to a different level (e.g. Next → level+1)
+  if (level !== null && prevLevel !== undefined && level !== prevLevel) {
+    roundIndex.value = 0
+    correctCount.value = 0
+    clearMistakes()
+  }
 }, { immediate: true })
 
 onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
   clearMistakes()
   roundIndex.value = 0
+  correctCount.value = 0
   packSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   minigameSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   if (useMinigameMode.value) pickNextMinigame()

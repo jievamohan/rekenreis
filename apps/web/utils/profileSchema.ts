@@ -182,7 +182,7 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
               typeof v === 'object' &&
               v !== null &&
               typeof (v as LevelStars).stars === 'number' &&
-              (v as LevelStars).stars >= 1 &&
+              (v as LevelStars).stars >= 0 &&
               (v as LevelStars).stars <= 3
           ))) &&
       (p.progress.currentLevel === undefined ||

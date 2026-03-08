@@ -93,15 +93,26 @@ describe('useLevelProgress', () => {
     expect(starsFor(1)).toBe(3)
   })
 
-  it('clamps stars to 1–3', () => {
+  it('replay with 0 stars does not decrease stored score', () => {
+    const mock = createMockProfile({
+      levelProgress: { 1: { stars: 2 } },
+      currentLevel: 2,
+    })
+    const { completeLevel, starsFor } = useLevelProgress(mock)
+
+    completeLevel(1, 0)
+    expect(starsFor(1)).toBe(2)
+  })
+
+  it('accepts 0 stars and clamps to 0–3', () => {
     const mock = createMockProfile()
     const { completeLevel, starsFor } = useLevelProgress(mock)
 
-    completeLevel(1, 5)
-    expect(starsFor(1)).toBe(3)
+    completeLevel(1, 0)
+    expect(starsFor(1)).toBe(0)
 
-    completeLevel(2, 0)
-    expect(starsFor(2)).toBe(1)
+    completeLevel(2, 5)
+    expect(starsFor(2)).toBe(3)
   })
 
   it('isUnlocked returns true for levels up to currentLevel', () => {

@@ -19,7 +19,7 @@ export function useLevelProgress(profile: ProfileApi) {
     const p = profile.activeProfile.value
     if (!p) return
 
-    const clamped = Math.max(1, Math.min(3, Math.floor(stars)))
+    const clamped = Math.max(0, Math.min(3, Math.floor(stars)))
     const existing = p.progress.levelProgress ?? {}
     const prev = existing[level]?.stars ?? 0
     const best = Math.max(prev, clamped)
