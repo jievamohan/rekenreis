@@ -2,7 +2,7 @@
 
 > Run with: /run-epics
 > Each epic uses /feature --ci --max-tasks=5 (default FORCE autopilot).
-> Pipeline: plan -> tasks -> execute -> finalize -> wait for manual merge -> next epic.
+> Pipeline: plan -> tasks -> execute -> finalize -> wait for manual merge -> epics update (PR, merge commit) -> sync main -> next epic.
 
 ## Epic 2 — Skin System + 1 Skin
 - [x]
