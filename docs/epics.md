@@ -1533,7 +1533,7 @@ Acceptance:
 ---
 
 ## Epic 27.2 — Coral Minigame: Polish + Feedback
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-27.md
 - archive: artifacts/archive/epic-27.0/latest
