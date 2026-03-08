@@ -17,15 +17,22 @@ const emit = defineEmits<{
 
 const { getDefinition } = useMinigame()
 
+const componentCache = new Map<MinigameId, ReturnType<typeof defineAsyncComponent>>()
+
 const activeComponent = computed(() => {
   const def = getDefinition(props.minigameId)
   if (!def) return null
-  return defineAsyncComponent({
-    loader: def.component,
-    loadingComponent: undefined,
-    errorComponent: undefined,
-    timeout: 5000,
-  })
+  let comp = componentCache.get(props.minigameId)
+  if (!comp) {
+    comp = defineAsyncComponent({
+      loader: def.component,
+      loadingComponent: undefined,
+      errorComponent: undefined,
+      timeout: 5000,
+    })
+    componentCache.set(props.minigameId, comp)
+  }
+  return comp
 })
 
 function handleAnswer(choice: number) {

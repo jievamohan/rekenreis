@@ -1,30 +1,29 @@
-# Motion & Audio — Epic 27 (Motion/Audio Designer)
+# Motion & Audio — Epic 28: New Minigame (Replace Coral)
 
-## Animations (New Coral Minigame)
+## Animations (Memory-Flip)
 
-| Event | Animation | Duration | Easing |
-|-------|-----------|----------|--------|
-| Coral piece hover | Slight scale-up (1.05) | 150ms | ease-out |
-| Coral piece drag start | Scale 1.05, slight lift (translateY -4px) | 150ms | ease-out |
-| Correct drop | Snap into slot, reef glow pulse | 300ms | cubic-bezier(0.34, 1.56, 0.64, 1) |
-| Wrong drop | Wobble (rotate -3° → 3° → 0°), return to tray | 400ms | ease-out |
-| Hint reveal | Fade-in target highlight | 200ms | ease-out |
+| Event | Animation | Duration |
+|-------|-----------|----------|
+| Card flip (reveal) | 3D flip / scale-y 0→1 | 200ms |
+| Card flip (hide) | Scale-y 1→0 | 150ms |
+| Match found | Glow pulse, slight scale 1.05 | 300ms |
+| Wrong pair | Gentle shake, then flip back | 400ms |
 
-## Timing Rules
+## Timing / Easing
 
-- All animations ≤ 400ms
-- No looping animations that distract (optional: very subtle coral "breathe" at 3s — low priority)
-- Reduced motion: disable or shorten; wrong-drop returns instantly
-
-## Audio
-
-- **Correct:** Reuse `playCelebrate()` or coral-specific soft "pop" if available
-- **Wrong:** Reuse gentle wrong SFX (non-punitive)
-- **Place:** Optional soft "thunk" on correct drop — satisfying tactile cue
-- Respect global audio toggle and reduced-motion
+- Flip: ease-out
+- Match: bounce easing
+- Wrong: ease-in-out
 
 ## Reduced Motion
 
-- `prefers-reduced-motion: reduce` → no scale/lift on drag; instant state changes
-- Wrong piece: instant return, no wobble
-- Correct: instant placement, no bounce
+- Flip: instant opacity/visibility change
+- No shake, no bounce
+- Match: static glow, no scale
+
+## Sound Rules
+
+- Reuse `playCelebrate()` on correct match
+- Optional: soft "flip" SFX on card turn
+- Optional: gentle "wrong" cue (non-punitive) on mismatch
+- Respect global sound toggle

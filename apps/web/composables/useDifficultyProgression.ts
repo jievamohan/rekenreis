@@ -25,8 +25,9 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
       timerSeconds: { min: 15, max: 8 },
       pelletCount: { min: 3, max: 5 },
     },
-    'coral-builder': {
-      pieceCount: { min: 3, max: 5 },
+    'memory-match': {
+      pairCount: { min: 3, max: 6 },
+      timerSeconds: { min: 60, max: 25 },
     },
     'submarine-sort': {
       compartmentCount: { min: 2, max: 3 },
