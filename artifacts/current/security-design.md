@@ -1,3 +1,15 @@
-# Security — Epic 24.4
+# Security Design — Epic 26
 
-Low risk. Standard CI. Gate D must remain green.
+## Security/Privacy Output
+
+### New risks introduced
+- None. No new inputs, no auth, no data handling, no external requests.
+
+### Config constraints
+- None.
+
+### Data handling
+- None.
+
+### Checks still required
+- No security review needed for this scope.

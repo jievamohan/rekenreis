@@ -1466,3 +1466,36 @@ Acceptance:
 - Target bereikt (install nagenoeg instant)
 - Finale config gedocumenteerd
 - Alle tests green
+
+---
+
+## Epic 26.1 — Map Scroll-to-Current + Full-Width Dense Decoration
+- [ ]
+PlanRef:
+- design: docs/design/epic-26.md
+- archive: artifacts/archive/epic-26.0/latest
+- slice: 26.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 26.1: Map scroll-to-current on load + full-width dense background decoration.
+
+Requirements:
+- On map load: scroll so current level node is centered (or near-center) in viewport.
+  - Use scrollIntoView({ block: 'center' }) or scrollTop calculation.
+  - Respect prefers-reduced-motion: instant scroll when preferred.
+- Background decoration: expand from path-width band to full page width.
+  - MapDecor: distribute items across 0–100% horizontal space (remove path-based bands).
+  - Restructure if needed: full-width decoration layer inside map-scroll.
+- Decoration density: increase to ~2–3× current (e.g. h/25 vs h/55).
+- E2E: assert current node in view after map load; decoration visible.
+- Tests: typecheck, build, smoke green.
+
+Acceptance:
+- Current level centered on map load
+- Decoration spans full width
+- Decoration noticeably denser
+- Reduced motion respected
+- E2E passes
