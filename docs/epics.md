@@ -1470,7 +1470,7 @@ Acceptance:
 ---
 
 ## Epic 26.1 — Map Scroll-to-Current + Full-Width Dense Decoration
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-26.md
 - archive: artifacts/archive/epic-26.0/latest
