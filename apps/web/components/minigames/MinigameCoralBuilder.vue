@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted, watch } from 'vue'
 import type { AdditionQuestion } from '~/types/game'
 import { useI18n } from '~/composables/useI18n'
+import { useSound } from '~/composables/useSound'
 import { createSeededRng } from '~/utils/seedableRng'
 
 import reefBaseSrc from '~/assets/graphics/minigames/coral-builder/reef-base.svg'
@@ -20,12 +21,22 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const { playCorrect, playWrong } = useSound()
 
 const draggedPiece = ref<number | null>(null)
 const isDragging = ref(false)
 const dragPos = ref({ x: 0, y: 0 })
 const selectedPiece = ref<number | null>(null)
 const reefHighlight = ref(false)
+const wrongCount = ref(0)
+const wrongPiece = ref<number | null>(null)
+const showHint = ref(false)
+const reefGlow = ref(false)
+
+watch(() => props.question, () => {
+  wrongCount.value = 0
+  showHint.value = false
+})
 
 function assignCoralPieces(
   choices: number[],
@@ -77,16 +88,31 @@ function handlePointerUpOrCancel(e: PointerEvent) {
   if (!isDragging.value || draggedPiece.value === null) return
   e.preventDefault()
   const reefEl = document.querySelector('[data-drop-target="reef"]')
-  if (reefEl) {
+  const inZone = reefEl && (() => {
     const rect = reefEl.getBoundingClientRect()
     const pad = 40
-    const inZone =
+    return (
       e.clientX >= rect.left - pad &&
       e.clientX <= rect.right + pad &&
       e.clientY >= rect.top - pad &&
       e.clientY <= rect.bottom + pad
-    if (inZone) {
-      submitAnswer(draggedPiece.value)
+    )
+  })()
+
+  if (inZone) {
+    const value = draggedPiece.value
+    const correct = value === props.question.correctAnswer
+    if (correct) {
+      reefGlow.value = true
+      playCorrect()
+      submitAnswer(value)
+      setTimeout(() => { reefGlow.value = false }, 300)
+    } else {
+      wrongCount.value++
+      wrongPiece.value = value
+      playWrong()
+      if (wrongCount.value >= 2) showHint.value = true
+      setTimeout(() => { wrongPiece.value = null }, 400)
     }
   }
   cleanupPointer()
@@ -135,15 +161,31 @@ function onPieceKeydown(value: number) {
 function onReefKeydown(e: KeyboardEvent) {
   if ((e.key === 'Enter' || e.key === ' ') && selectedPiece.value !== null) {
     e.preventDefault()
-    submitAnswer(selectedPiece.value)
+    tryPlace(selectedPiece.value)
     selectedPiece.value = null
   }
 }
 
 function onReefClick() {
   if (selectedPiece.value !== null) {
-    submitAnswer(selectedPiece.value)
+    tryPlace(selectedPiece.value)
     selectedPiece.value = null
+  }
+}
+
+function tryPlace(value: number) {
+  const correct = value === props.question.correctAnswer
+  if (correct) {
+    reefGlow.value = true
+    playCorrect()
+    submitAnswer(value)
+    setTimeout(() => { reefGlow.value = false }, 300)
+  } else {
+    wrongCount.value++
+    wrongPiece.value = value
+    playWrong()
+    if (wrongCount.value >= 2) showHint.value = true
+    setTimeout(() => { wrongPiece.value = null }, 400)
   }
 }
 </script>
@@ -177,6 +219,8 @@ function onReefClick() {
         :class="{
           selected: selectedPiece === piece.value,
           dragging: isDragging && draggedPiece === piece.value,
+          'wrong-drop': wrongPiece === piece.value,
+          'hint-target': showHint && piece.value === question.correctAnswer,
         }"
         :aria-label="t('minigameCoralBuilder.pieceLabel', { value: piece.value })"
         :aria-pressed="selectedPiece === piece.value"
@@ -197,7 +241,7 @@ function onReefClick() {
       data-drop-target="reef"
       role="button"
       tabindex="0"
-      :class="{ highlight: reefHighlight }"
+      :class="{ highlight: reefHighlight, 'reef-glow': reefGlow }"
       :aria-label="t('minigameCoralBuilder.reefLabel')"
       @click="onReefClick"
       @keydown="onReefKeydown"
@@ -353,6 +397,19 @@ function onReefClick() {
   box-shadow: 0 0 0 4px var(--app-primary, #4fc3f7);
 }
 
+.reef-zone.reef-glow {
+  animation: reef-glow 0.3s ease-out;
+}
+
+.coral-piece.wrong-drop {
+  animation: coral-wobble 0.4s ease-in-out;
+}
+
+.coral-piece.hint-target {
+  box-shadow: 0 0 0 4px var(--app-correct, #66bb6a);
+  animation: hint-pulse 1.5s ease-in-out infinite;
+}
+
 .reef-img {
   width: 200px;
   height: auto;
@@ -364,6 +421,23 @@ function onReefClick() {
   50% { transform: translateY(6px); }
 }
 
+@keyframes reef-glow {
+  0% { box-shadow: 0 0 0 0 var(--app-correct, #66bb6a); }
+  50% { box-shadow: 0 0 20px 4px var(--app-correct, #66bb6a); }
+  100% { box-shadow: 0 0 0 0 var(--app-correct, #66bb6a); }
+}
+
+@keyframes coral-wobble {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.05) rotate(-4deg); }
+  75% { transform: scale(1.05) rotate(4deg); }
+}
+
+@keyframes hint-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px var(--app-correct, #66bb6a); }
+  50% { box-shadow: 0 0 12px 6px var(--app-correct, #66bb6a); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .coral-piece,
   .reef-zone {
@@ -371,6 +445,17 @@ function onReefClick() {
   }
   .drop-arrow {
     animation: none;
+  }
+  .reef-zone.reef-glow {
+    animation: none;
+    box-shadow: 0 0 0 4px var(--app-correct, #66bb6a);
+  }
+  .coral-piece.wrong-drop {
+    animation: none;
+  }
+  .coral-piece.hint-target {
+    animation: none;
+    box-shadow: 0 0 0 4px var(--app-correct, #66bb6a);
   }
 }
 </style>
