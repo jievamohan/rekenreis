@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <defs>
+    <linearGradient id="reef-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4db6ac"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 80 L0 50 Q20 35 50 45 Q80 30 100 40 Q130 25 150 35 Q180 30 200 45 L200 80 Z" fill="url(#reef-grad)" stroke="#00695c" stroke-width="2"/>
+  <ellipse cx="100" cy="45" rx="35" ry="18" fill="rgba(255,255,255,0.15)" stroke="#00695c" stroke-width="1"/>
+</svg>

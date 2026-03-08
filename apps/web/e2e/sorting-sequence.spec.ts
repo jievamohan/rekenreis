@@ -75,7 +75,7 @@ test.describe('sorting mechanic (SubmarineSort)', () => {
 })
 
 test.describe('sequence/spatial mechanic (CoralBuilder)', () => {
-  test('completes one round by selecting position on number track', async ({ page }) => {
+  test('completes one round by selecting piece and placing on reef', async ({ page }) => {
     // Level 4 maps to coral-builder
     await page.goto('/play?level=4')
 
@@ -86,17 +86,17 @@ test.describe('sequence/spatial mechanic (CoralBuilder)', () => {
     const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
     const correctAnswer = a + b
 
-    // Find the correct position on the number track
-    const positions = page.locator('[data-testid="minigame-coral-builder"] .track-position.is-choice')
-    const posCount = await positions.count()
-    for (let i = 0; i < posCount; i++) {
-      const marker = positions.nth(i).locator('.track-marker')
-      const text = (await marker.textContent())?.trim()
+    // Find the correct coral piece and click it, then click reef zone to place
+    const pieces = page.locator('[data-testid="minigame-coral-builder"] .coral-piece')
+    const pieceCount = await pieces.count()
+    for (let i = 0; i < pieceCount; i++) {
+      const text = (await pieces.nth(i).locator('.coral-number').textContent())?.trim()
       if (text === String(correctAnswer)) {
-        await positions.nth(i).click()
+        await pieces.nth(i).click()
         break
       }
     }
+    await page.locator('[data-testid="minigame-coral-builder"] .reef-zone').click()
 
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
