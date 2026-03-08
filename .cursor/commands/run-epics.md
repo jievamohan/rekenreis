@@ -4,7 +4,7 @@ Goal: Run all epics from docs/epics.md hands-off:
 - execute each epic via /feature
 - ensure CI is green and finalize ran
 - wait until you (human) merge the PR
-- then continue with the next epic
+- then update epics.md via PR (merge commit, no squash), sync main, continue to next epic
 
 Protocol:
 
@@ -33,12 +33,15 @@ Protocol:
       - scripts/ci/gh_watch.sh host <PR_NUM>
    f) Enter WAIT MODE until merged:
       - TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
-   g) Once merged: update epic checkbox to `- [x]` in docs/epics.md.
-   h) Run BRANCH SYNC again (checkout main, pull); then move on to next epic.
+   g) Once merged: run EPICS UPDATE flow (no squash):
+      - scripts/ci/gh_epics_update.sh <EPIC_ID> <PR_NUM>
+      - EPIC_ID: the epic just merged (e.g. 23.1 or Epic 23.1); PR_NUM: the merged feature PR number.
+      - Script: updates epics.md + epic-progress.md, creates branch, pushes, creates PR, merges with --merge (merge commit, no squash), fetches main, checks out main.
+   h) After script completes: main is up to date and checked out; move on to next epic.
 
 Stop conditions:
 - If any epic becomes BLOCKED, stop immediately and summarize blockers.
-- Never start the next epic until the previous epic PR is merged.
+- Never start the next epic until the previous epic PR is merged and epics update is complete.
 
 Output:
 - For each epic: PR number + URL + final status (merged/blocked).
