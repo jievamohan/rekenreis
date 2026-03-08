@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Waypoint } from '~/utils/mapWaypoints'
-import { MAP_VIEW_WIDTH } from '~/utils/mapWaypoints'
 
 import seaweedSrc from '~/assets/graphics/objects/seaweed.svg'
 import coralSrc from '~/assets/graphics/objects/coral.svg'
@@ -37,19 +36,6 @@ function mulberry32(seed: number): () => number {
   }
 }
 
-function pathXAtY(y: number, wps: Waypoint[]): number {
-  if (wps.length === 0) return MAP_VIEW_WIDTH / 2
-  if (y <= wps[0].y) return wps[0].x
-  if (y >= wps[wps.length - 1].y) return wps[wps.length - 1].x
-  for (let i = 0; i < wps.length - 1; i++) {
-    if (y >= wps[i].y && y <= wps[i + 1].y) {
-      const t = (y - wps[i].y) / (wps[i + 1].y - wps[i].y)
-      return wps[i].x + t * (wps[i + 1].x - wps[i].x)
-    }
-  }
-  return MAP_VIEW_WIDTH / 2
-}
-
 const catalog = [
   { src: seaweedSrc, w: 28, h: 64, edge: true },
   { src: coralSrc, w: 48, h: 42, edge: true },
@@ -65,23 +51,11 @@ const items = computed(() => {
   const rng = mulberry32(137)
   const decorations: Decor[] = []
   const h = props.mapHeight
-  const wps = props.waypoints
-  const count = Math.floor(h / 55)
+  const count = Math.floor(h / 25)
 
   for (let i = 0; i < count; i++) {
     const y = 30 + rng() * (h - 80)
-    const pathX = pathXAtY(y, wps)
-    const pathPct = pathX / MAP_VIEW_WIDTH
-
-    const goLeft = rng() > pathPct
-    let xPct: number
-    if (goLeft) {
-      xPct = rng() * Math.max(0, pathPct - 0.15) * 100
-    } else {
-      const rightStart = pathPct + 0.15
-      xPct = (rightStart + rng() * Math.max(0, 1 - rightStart)) * 100
-    }
-    xPct = Math.max(1, Math.min(99, xPct))
+    const xPct = Math.max(1, Math.min(99, rng() * 100))
 
     const entry = catalog[Math.floor(rng() * catalog.length)]
     const scale = 0.7 + rng() * 0.6

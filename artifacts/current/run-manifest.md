@@ -1,20 +1,16 @@
-# Run Manifest — Epic 26
+# Run Manifest
 
-- **Run id:** 2025-03-08T12:00:00Z
-- **Epic number:** 26
-- **Intent:** Map scroll-to-current + full-width dense background decoration
+- Run id: 2025-03-08-epic26-1
+- Feature: Epic 26.1 — Map Scroll-to-Current + Full-Width Dense Decoration
+- PlanRef: docs/design/epic-26.md, slice 26.1
 
-## Required planning agents
+## Required agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| art-director | OK | art-direction.md |
-| game-designer | N/A | N/A (no gameplay change) |
-| motion-audio-designer | N/A | N/A (no new motion/audio) |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
-| illustrator | N/A | N/A (no new assets) |
+| business-analyst | OK | PlanRef |
+| ux-designer | OK | PlanRef |
+| principal-architect | OK | PlanRef |
+| solution-designer | OK | PlanRef |
+| qa-strategist | OK | PlanRef |
+| security-privacy | OK | PlanRef |
