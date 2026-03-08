@@ -1443,7 +1443,7 @@ Acceptance:
 ---
 
 ## Epic 25.4 — Fine-tune & Documenteer
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-25.md
 - archive: artifacts/archive/epic-25.0/latest
