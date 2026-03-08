@@ -1503,7 +1503,7 @@ Acceptance:
 ---
 
 ## Epic 27.1 — Coral Minigame: Core Mechanic + Assets
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-27.md
 - archive: artifacts/archive/epic-27.0/latest
