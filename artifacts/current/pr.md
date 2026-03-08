@@ -1,7 +1,7 @@
-# Epic 25.3 — Elimineer Runtime Installs
+# Epic 25.4 — Fine-tune & Documenteer
 
-Verwijder npm install -g pnpm uit e2e run; gebruik custom image.
+Fine-tune e2e install optimalisatie en documenteer finale config.
 
 ## Tasks
 
-- [ ] 0132-epic25-3-elimineer-runtime-installs
+- [ ] 0133-epic25-4-fine-tune-documenteer
