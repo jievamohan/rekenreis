@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import Confetti from '~/components/effects/Confetti.vue'
 import MascotIcon from '~/components/graphics/MascotIcon.vue'
+import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 import { useI18n } from '~/composables/useI18n'
+import { useMaatje } from '~/composables/useMaatje'
+import type { ExpressionId } from '~/types/maatje'
 
 const { t } = useI18n()
+const { resolve } = useMaatje()
 
 const props = defineProps<{
   open: boolean
@@ -13,6 +17,20 @@ const props = defineProps<{
   hasMistakes: boolean
   isLastLevel: boolean
 }>()
+
+const starToExpression: Record<number, ExpressionId> = {
+  0: 'verdrietig',
+  1: 'neutraal',
+  2: 'blij',
+  3: 'feest',
+}
+
+const maatjeExpression = computed<ExpressionId>(
+  () => starToExpression[props.stars] ?? 'neutraal'
+)
+
+const maatjeSrc = computed(() => resolve('wolkje', maatjeExpression.value))
+const showMaatje = computed(() => !!maatjeSrc.value)
 
 const emit = defineEmits<{
   backToMap: []
@@ -87,7 +105,20 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           :aria-label="t('levelComplete.ariaLabel')"
           tabindex="-1"
         >
-          <MascotIcon id-prefix="level-complete" class="mascot" :aria-label="t('levelComplete.mascotAlt')" />
+          <div v-if="showMaatje" class="mascot">
+            <MaatjeAvatar
+              character="wolkje"
+              :expression="maatjeExpression"
+              size="lg"
+              :aria-label="t('levelComplete.mascotAlt')"
+            />
+          </div>
+          <MascotIcon
+            v-else
+            id-prefix="level-complete"
+            class="mascot"
+            :aria-label="t('levelComplete.mascotAlt')"
+          />
 
           <h2 class="modal-title">{{ t('levelComplete.title', { level }) }}</h2>
 

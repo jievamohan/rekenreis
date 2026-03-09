@@ -9,6 +9,8 @@ test.describe('map page', () => {
     await expect(currentNode).toBeVisible()
     await expect(currentNode).toBeInViewport()
 
+    await expect(page.locator('.map-avatar')).toBeVisible()
+
     const decorItems = page.locator('.decor-item')
     await expect(decorItems.first()).toBeVisible()
     expect(await decorItems.count()).toBeGreaterThan(0)
