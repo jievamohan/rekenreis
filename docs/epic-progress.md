@@ -57,3 +57,4 @@
 | Epic 31.1 — Level Content: 200 Levels | done | PR #123 merged |
 | Epic 31.2 — MapNode: Stars Above, Placeholders, Number in Circle | done | PR #125 merged |
 | Epic 31.3 — MapAvatar: Much Larger | done | PR #127 merged |
+| Epic 31.4 — Polish & E2E | done | PR #129 merged |

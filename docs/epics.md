@@ -1873,7 +1873,7 @@ Acceptance:
 ---
 
 ## Epic 31.4 — Polish & E2E
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-31.md
 - archive: artifacts/archive/epic-31.0/latest
