@@ -27,7 +27,7 @@ Example: `docker compose exec web pnpm run typecheck`
 |------|--------|-------|
 | policy-check | `bash scripts/ci/policy-check.sh` | Config-file secrets (docker-compose, workflows, .env.example) |
 | gitleaks | `gitleaks detect --no-git` | Secrets scan; uses `.gitleaks.toml` if present (install: https://github.com/gitleaks/gitleaks) |
-| semgrep | `semgrep scan --config auto --config .semgrep --error` | SAST: auto + custom rules in `.semgrep/` (install: pip install semgrep) |
+| semgrep | `docker compose run --rm ci semgrep scan --config auto --config .semgrep --error` | SAST: auto + custom rules; run in ci container (no host pip) |
 | pnpm audit | `cd apps/web && pnpm audit --prod` | Web deps |
 | composer audit | `cd apps/api && composer run audit-deps` | API deps (audit reserved by Composer) |
 | hadolint | `docker run --rm -i hadolint/hadolint < apps/web/Dockerfile` | Dockerfile lint (image cached in gate-d) |
@@ -54,8 +54,8 @@ Example: `docker compose exec web pnpm run typecheck`
 
 | App | Command |
 |-----|---------|
-| web lint | `cd apps/web && pnpm run lint` |
-| web test | `cd apps/web && pnpm run test` |
+| web lint | `docker compose exec web pnpm run lint` | In web container |
+| web test | `docker compose exec web pnpm run test` | In web container |
 | api test | `cd apps/api && composer run test` |
 
 ## Docker Compose (vertical slice)

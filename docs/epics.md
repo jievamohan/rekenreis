@@ -1789,3 +1789,109 @@ Acceptance:
 - Visual baselines committed
 - Reduced motion respected
 - E2E green
+
+---
+
+## Epic 31.1 — Level Content: 200 Levels
+- [ ]
+PlanRef:
+- design: docs/design/epic-31.md
+- archive: artifacts/archive/epic-31.0/latest
+- slice: 31.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 31.1: Expand level content to 200 levels.
+
+Requirements:
+- Extend levels.classic.v1.json to 200 entries (merge existing + generated or full regenerate)
+- Update generate-levels.mjs (or equivalent) to produce 200 levels with valid schema
+- Map and play must use totalLevels = 200; waypoints scale automatically
+- levelValidator.test.ts: 200-level pack validates
+- Typecheck, build green
+
+Acceptance:
+- Map shows 200 level nodes; play supports level 1–200
+- levels.classic.v1.json has 200 entries; schema valid
+- E2E smoke green
+
+---
+
+## Epic 31.2 — MapNode: Stars Above, Placeholders, Number in Circle
+- [ ]
+PlanRef:
+- design: docs/design/epic-31.md
+- archive: artifacts/archive/epic-31.0/latest
+- slice: 31.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 31.2: Move stars above level circle, add empty placeholders, always show level number in circle.
+
+Requirements:
+- Stars row above the circle; fixed height; 3 slots
+- When stars = 0: render 3 empty star outlines (placeholder) so no layout jump
+- Level number always visible inside circle (including completed levels)
+- Aria-labels updated for new layout
+- Typecheck, build, E2E green
+
+Acceptance:
+- Stars above circle; placeholders prevent layout shift when stars appear
+- Every node shows level number in circle
+- E2E passes
+
+---
+
+## Epic 31.3 — MapAvatar: Much Larger
+- [ ]
+PlanRef:
+- design: docs/design/epic-31.md
+- archive: artifacts/archive/epic-31.0/latest
+- slice: 31.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 31.3: Make map avatar much bigger.
+
+Requirements:
+- MapAvatar: increase size from 40px to ~96px (or 80–100px)
+- MaatjeAvatar: add size="xl" (96px) or use existing lg (80px) for map
+- map.vue: adjust avatarStyle top offset for larger avatar
+- Typecheck, build, E2E green
+
+Acceptance:
+- Avatar on map is clearly larger than level circles
+- Avatar correctly positioned above current node
+- E2E passes
+
+---
+
+## Epic 31.4 — Polish & E2E
+- [ ]
+PlanRef:
+- design: docs/design/epic-31.md
+- archive: artifacts/archive/epic-31.0/latest
+- slice: 31.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 31.4: Polish, E2E updates, bundle budget, reduced motion.
+
+Requirements:
+- E2E: map smoke covers 200 levels, scroll-to-current, avatar, node layout
+- Bundle budget (Gate F) must pass
+- Reduced motion: avatar bounce uit indien preferred
+- Final E2E pass: map → play level 1 and level 200 → back to map
+- Typecheck, build green
+
+Acceptance:
+- Bundle budget passes
+- E2E green
