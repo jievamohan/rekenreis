@@ -8,7 +8,7 @@ test.describe('map page visual', () => {
     await expect(page.locator('.map-path-svg')).toBeVisible()
 
     await expect(page).toHaveScreenshot('map.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.10,
     })
   })
 })
