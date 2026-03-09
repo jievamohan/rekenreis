@@ -338,17 +338,19 @@ jobs:
 
       - name: ZAP baseline (parallel)
         run: |
-          mkdir -p artifacts/zap && chmod 777 artifacts/zap
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+          for d in zap-start zap-play zap-health zap-session; do
+            mkdir -p "artifacts/zap/$d" && chmod 777 "artifacts/zap/$d"
+          done
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap/zap-start:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/start -I -m 1 \
             -J web-start-report.json -r web-start-report.html || true &
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap/zap-play:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://web:3000/play -I -m 1 \
             -J web-play-report.json -r web-play-report.html || true &
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap/zap-health:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/health -I -m 1 \
             -J api-health-report.json -r api-health-report.html || true &
-          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap:/zap/wrk:rw" \
+          docker run --rm --network rekenreis_default -v "$(pwd)/artifacts/zap/zap-session:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://api:8000/api/session-stats -I -m 1 \
             -J api-session-stats-report.json -r api-session-stats-report.html || true &
           wait

@@ -14,5 +14,5 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['vue', '@typescript-eslint'],
-  ignorePatterns: ['.nuxt', '.output', 'dist', 'node_modules'],
+  ignorePatterns: ['.nuxt', '.output', 'dist', 'node_modules', 'playwright-report', 'test-results'],
 }
