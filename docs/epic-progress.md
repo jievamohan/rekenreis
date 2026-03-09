@@ -55,3 +55,4 @@
 | Epic 30.3 — Mistakes Review + Introductie | done | PR #117 merged |
 | Epic 30.5 — Polish + Bundle Budget | done | PR #120 merged |
 | Epic 31.1 — Level Content: 200 Levels | done | PR #123 merged |
+| Epic 31.2 — MapNode: Stars Above, Placeholders, Number in Circle | done | PR #125 merged |

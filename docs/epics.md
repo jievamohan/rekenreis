@@ -1820,7 +1820,7 @@ Acceptance:
 ---
 
 ## Epic 31.2 — MapNode: Stars Above, Placeholders, Number in Circle
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-31.md
 - archive: artifacts/archive/epic-31.0/latest
