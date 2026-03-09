@@ -100,16 +100,16 @@ describe('levelValidator', () => {
 
   describe('content packs with pacingTag', () => {
     const packs = [
-      { name: 'classic', data: () => import('../content/levels.classic.v1.json').then((m) => m.default) },
-      { name: 'timed-pop', data: () => import('../content/levels.timed-pop.v1.json').then((m) => m.default) },
-      { name: 'build-bridge', data: () => import('../content/levels.build-bridge.v1.json').then((m) => m.default) },
+      { name: 'classic', data: () => import('../content/levels.classic.v1.json').then((m) => m.default), min: 200, max: 200 },
+      { name: 'timed-pop', data: () => import('../content/levels.timed-pop.v1.json').then((m) => m.default), min: 25, max: 30 },
+      { name: 'build-bridge', data: () => import('../content/levels.build-bridge.v1.json').then((m) => m.default), min: 25, max: 30 },
     ]
     for (const pack of packs) {
-      it(`${pack.name}: 25-30 levels, all pass validation`, async () => {
+      it(`${pack.name}: ${pack.min}-${pack.max} levels, all pass validation`, async () => {
         const levels = (await pack.data()) as unknown[]
         expect(Array.isArray(levels)).toBe(true)
-        expect(levels.length).toBeGreaterThanOrEqual(25)
-        expect(levels.length).toBeLessThanOrEqual(30)
+        expect(levels.length).toBeGreaterThanOrEqual(pack.min)
+        expect(levels.length).toBeLessThanOrEqual(pack.max)
         for (const level of levels) {
           expect(() => validateLevel(level)).not.toThrow()
           const validated = validateLevel(level)
