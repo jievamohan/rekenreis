@@ -78,6 +78,7 @@ test.describe('mistakes review', () => {
     await reviewBtn.click()
 
     await expect(page.locator('.mistakes-review')).toBeVisible({ timeout: 3000 })
+    await expect(page.locator('.review-header .review-mascot')).toBeVisible()
     await expect(page.locator('.review-title')).toContainText('Laten we deze nog eens bekijken')
     await expect(page.locator('.mistake-card')).toHaveCount(1)
 

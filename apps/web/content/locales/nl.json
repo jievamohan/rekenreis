@@ -23,12 +23,14 @@
   },
   "index": {
     "welcome": "Welkom!",
+    "maatjeAlt": "Vriendelijke maatje",
     "intro": "Klaar om te oefenen met rekenen? Kies een spel en veel plezier!",
     "checkConnection": "Verbinding controleren",
     "playGame": "Rekenspel starten"
   },
   "start": {
     "title": "Start",
+    "maatjeAlt": "Maatje",
     "error": "Kan geen verbinding maken met de server. Het rekenspel werkt ook zonder — ga naar",
     "errorSuffix": "om te spelen.",
     "loading": "Laden..."
@@ -76,6 +78,7 @@
   },
   "mistakesReview": {
     "title": "Laten we deze nog eens bekijken!",
+    "maatjeAlt": "Maatje denkt na",
     "subtitle": "Level {level} — {count} om te bekijken",
     "mistakesToReview": "Fouten om te bekijken",
     "ariaLabel": "Fouten om te bekijken",
