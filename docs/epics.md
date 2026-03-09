@@ -1847,7 +1847,7 @@ Acceptance:
 ---
 
 ## Epic 31.3 — MapAvatar: Much Larger
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-31.md
 - archive: artifacts/archive/epic-31.0/latest
