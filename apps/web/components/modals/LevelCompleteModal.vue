@@ -107,7 +107,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             </svg>
           </div>
 
-          <p class="modal-message">{{ stars === 3 ? t('levelComplete.perfect') : stars === 2 ? t('levelComplete.great') : t('levelComplete.good') }}</p>
+          <p class="modal-message">{{ stars === 3 ? t('levelComplete.perfect') : stars === 2 ? t('levelComplete.great') : stars === 1 ? t('levelComplete.good') : t('levelComplete.tryAgain') }}</p>
 
           <div class="modal-actions">
             <button type="button" class="cta-primary" @click="emit('backToMap')">
