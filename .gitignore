@@ -9,3 +9,7 @@ artifacts/zap/
 artifacts/ci/
 artifacts/current/
 artifacts/*.md
+
+# Playwright
+apps/web/test-results/
+apps/web/playwright-report/
