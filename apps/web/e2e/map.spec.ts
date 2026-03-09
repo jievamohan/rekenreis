@@ -16,11 +16,11 @@ test.describe('map page', () => {
     expect(await decorItems.count()).toBeGreaterThan(0)
   })
 
-  test('map shows path, nodes, and play CTA', async ({ page }) => {
+  test('map shows path, 200 nodes, and play CTA', async ({ page }) => {
     await page.goto('/map')
     await expect(page.locator('.map-page')).toBeVisible()
     await expect(page.locator('.map-path-svg')).toBeVisible()
-    await expect(page.locator('.map-node')).toHaveCount(await page.locator('.map-node').count())
+    await expect(page.locator('.map-node')).toHaveCount(200)
     await expect(page.locator('.play-current-cta')).toBeVisible()
   })
 })
