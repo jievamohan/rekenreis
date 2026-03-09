@@ -1793,7 +1793,7 @@ Acceptance:
 ---
 
 ## Epic 31.1 — Level Content: 200 Levels
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-31.md
 - archive: artifacts/archive/epic-31.0/latest
