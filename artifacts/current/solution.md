@@ -1,49 +1,34 @@
-# Solution — Epic 28 (Solution Designer)
+# Solution Design — Epic 30: Avatars & Expressions
 
-## Implementation Plan
+## Solution Designer Output
 
-### 1. Session Correct Count
+### Copy Script
+- Script: `scripts/copy-maatjes.sh` of npm script
+- Kopieer temp_assets/maatjes/* naar apps/web/assets/graphics/characters/maatjes/
+- Hernoem mappen: "een-oog eerlijk" → "een-oog-eerlijk", "slimme rekenaar" → "slimme-rekenaar"
+- Exclude .DS_Store
 
-- Extend `useMistakes` or add `useSessionStats` to track:
-  - `correctCount` (increment on correct)
-  - `totalRounds` (from roundsPerLevel)
-- Alternative: derive from `roundOutcome` if it exposes correct count; or track in play.vue via ref that increments on `advanceRound('correct')`.
+### Matrix Definition
+- File: `apps/web/content/maatje-matrix.ts` of `.json`
+- Structure:
+```ts
+export const MAATJE_MATRIX: Record<MaatjeId, Record<ExpressionId, string>> = {
+  wolkje: { blij: '...', neutraal: '...', verdrietig: '...', nadenken: '...' },
+  'een-oog-eerlijk': { blij: '...', feest: '...', ... },
+  'slimme-rekenaar': { blij: '...', feest: '...', ... },
+}
+```
+- Fallback chain: requested expression → blij → neutraal → first available
 
-### 2. Star Computation
+### MaatjeAvatar.vue
+- Props: character (MaatjeId), expression (ExpressionId), size? ('sm'|'md'|'lg')
+- Resolve asset via useMaatje; render img with alt
+- Sizes: sm 40px, md 64px, lg 80px
 
-- Create `computeStars(correctCount: number, totalRounds: number, thresholds?: [number, number, number]): number`
-- Default thresholds: [3, 6, 9] for 10 rounds
-- Returns 0–3
+### ProfileSchema Extension (Optional, Later)
+- AvatarId kan uitgebreid worden met maatje-ids, of aparte maatjeId field
+- Migratie: bestaande emoji-avatars blijven; nieuwe maatje-keuze optioneel
 
-### 3. play.vue
-
-- Replace `mistakeCount.value === 0 ? 3 : ...` with `computeStars(correctCount.value, roundsPerLevel.value)`
-- Ensure `correctCount` is tracked (e.g. ref incremented in advanceRound when outcome === 'correct')
-
-### 4. useLevelProgress
-
-- `completeLevel`: accept stars 0–3; remove clamp to min 1 (currently `Math.max(1, Math.min(3, ...))`)
-- Keep `best = Math.max(prev, stars)` — no downward overwrite
-
-### 5. profileSchema
-
-- `isValidV1`: allow `stars >= 0 && stars <= 3` for levelProgress
-
-### 6. LevelCompleteModal
-
-- Support stars === 0: show "Probeer opnieuw" or similar
-- nl.json: add `levelComplete.tryAgain` for 0 stars
-
-### 7. MapNode
-
-- Already uses `starsFor(level)` — 0 will display as no stars (verify)
-
-## Files
-
-- `apps/web/utils/starScoring.ts` (or composable)
-- `apps/web/pages/play.vue`
-- `apps/web/composables/useLevelProgress.ts`
-- `apps/web/composables/useMistakes.ts` or new `useSessionStats`
-- `apps/web/utils/profileSchema.ts`
-- `apps/web/components/modals/LevelCompleteModal.vue`
-- `apps/web/content/locales/nl.json`
+### Config Constraints
+- Geen env vars voor avatars
+- Assets in repo (geen CDN)

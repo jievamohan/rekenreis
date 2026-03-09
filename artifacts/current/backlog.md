@@ -1,22 +1,35 @@
-# Backlog — Epic 28
+# Backlog — Epic 30: Avatars & Expressions
 
-## Micro-Epics (Sliced)
+## Prioritized Task Slices
 
-1. **Epic 28.1 — Star Scoring Logic + Session Stats**
-   - Track correctCount per session
-   - computeStars(correctCount, totalRounds, thresholds)
-   - Replace mistake-based stars in play.vue
-   - Unit tests for computeStars and useLevelProgress (0 stars, best-only)
+### Epic 30.1 — Asset Pipeline + Matrix
+- Copy temp_assets/maatjes → assets/graphics/characters/maatjes (normaliseer namen)
+- Create maatje-matrix.ts (MaatjeId × ExpressionId → path)
+- Create types/maatje.ts
+- Create useMaatje composable
+- Create MaatjeAvatar.vue component
+- Unit tests: useMaatje, MaatjeAvatar
 
-2. **Epic 28.2 — Schema + Persistence + UI**
-   - profileSchema: allow stars 0–3
-   - useLevelProgress: accept 0, remove min-1 clamp
-   - LevelCompleteModal: 0-star message (nl.json)
-   - MapNode: verify 0 stars display
-   - E2E: replay, best-only, threshold boundaries
+### Epic 30.2 — Map + Level Complete Integration
+- MapAvatar: use MaatjeAvatar with profile maatje (or default wolkje), expression Blij
+- LevelCompleteModal: replace MascotIcon with MaatjeAvatar; expression from stars (0→verdrietig, 1→neutraal, 2→blij, 3→feest)
+- Fallback: emoji/MascotIcon if maatje asset missing
+- E2E: map avatar visible; level complete maatje visible
 
-## Out of Scope
+### Epic 30.3 — Mistakes Review + Start/Intro
+- MistakesReview: replace MascotIcon with MaatjeAvatar (nadenken)
+- Start/index: add maatje with Neutraal or Blij (introductie)
+- nl.json: any new aria-labels
+- E2E: mistakes review maatje; start page maatje
 
-- New minigames, map scroll, background decoration (other epics)
-- Changing rounds per level
-- Backend/API changes
+### Epic 30.4 — Profile Maatje Selection (Optional)
+- ProfileCreate: add maatje character choice (wolkje, een-oog-eerlijk, slimme-rekenaar)
+- ProfileSchema: extend with maatjeId or map avatarId → maatjeId
+- ProfileSelector: show maatje thumbnail instead of emoji when maatje selected
+- Migration: existing profiles get default maatje (wolkje)
+
+### Epic 30.5 — Polish + Bundle Budget
+- Bundle budget verification
+- Visual regression baselines
+- Reduced motion check
+- Final E2E pass
