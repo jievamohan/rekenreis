@@ -1709,7 +1709,7 @@ Acceptance:
 ---
 
 ## Epic 30.3 — Mistakes Review + Introductie
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-30.md
 - archive: artifacts/archive/epic-30.0/latest
