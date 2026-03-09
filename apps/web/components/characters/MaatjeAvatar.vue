@@ -7,8 +7,8 @@ const props = withDefaults(
   defineProps<{
     character: MaatjeId
     expression: ExpressionId
-    /** sm 40px, md 64px, lg 80px */
-    size?: 'sm' | 'md' | 'lg'
+    /** sm 40px, md 64px, lg 80px, xl 96px */
+    size?: 'sm' | 'md' | 'lg' | 'xl'
     ariaLabel?: string
   }>(),
   { size: 'md' }
@@ -26,6 +26,8 @@ const sizePx = computed(() => {
       return 64
     case 'lg':
       return 80
+    case 'xl':
+      return 96
     default:
       return 64
   }

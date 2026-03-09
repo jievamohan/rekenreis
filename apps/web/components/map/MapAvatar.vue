@@ -33,7 +33,7 @@ const showMaatje = computed(() => !!maatjeSrc.value)
 <template>
   <div class="map-avatar" :aria-label="t('mapAvatar.position', { name })">
     <div v-if="showMaatje" class="avatar-bubble">
-      <MaatjeAvatar :character="maatjeId" expression="blij" size="sm" />
+      <MaatjeAvatar :character="maatjeId" expression="blij" size="xl" />
     </div>
     <span v-else class="avatar-bubble" aria-hidden="true">{{ avatarEmoji[avatarId] ?? '🐠' }}</span>
   </div>
@@ -48,15 +48,15 @@ const showMaatje = computed(() => !!maatjeSrc.value)
 }
 
 .avatar-bubble {
-  width: 40px;
-  height: 40px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   background: var(--app-surface-elevated);
   border: 2px solid var(--app-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 2.5rem;
   box-shadow: var(--app-shadow-md);
 }
 

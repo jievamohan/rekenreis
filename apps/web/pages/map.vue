@@ -48,13 +48,16 @@ function nodeStyle(index: number) {
   }
 }
 
+/** Avatar is 96px; position above current node (node top ~y-38, avatar bottom at y-40) */
+const MAP_AVATAR_OFFSET = 136
+
 function avatarStyle(index: number) {
   const { x, y } = waypoints[index]
   const leftPct = (x / MAP_VIEW_WIDTH) * 100
   return {
     position: 'absolute' as const,
     left: `${leftPct}%`,
-    top: `${y - 44}px`,
+    top: `${y - MAP_AVATAR_OFFSET}px`,
     transform: 'translate(-50%, 0)',
   }
 }
