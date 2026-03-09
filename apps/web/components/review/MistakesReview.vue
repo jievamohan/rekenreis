@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { MistakeItem } from '~/composables/useMistakes'
 import { useI18n } from '~/composables/useI18n'
+import { useMaatje } from '~/composables/useMaatje'
 import HintDots from '~/components/hints/HintDots.vue'
 import MascotIcon from '~/components/graphics/MascotIcon.vue'
+import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 
 const { t } = useI18n()
+const { resolve } = useMaatje()
+
 defineProps<{
   mistakes: MistakeItem[]
   level: number
@@ -14,12 +19,23 @@ defineEmits<{
   retry: []
   backToMap: []
 }>()
+
+const maatjeSrc = computed(() => resolve('wolkje', 'nadenken'))
+const showMaatje = computed(() => !!maatjeSrc.value)
 </script>
 
 <template>
   <div class="mistakes-review">
     <div class="review-header">
-      <MascotIcon id-prefix="mistakes-review" class="review-mascot" />
+      <div v-if="showMaatje" class="review-mascot">
+        <MaatjeAvatar
+          character="wolkje"
+          expression="nadenken"
+          size="md"
+          :aria-label="t('mistakesReview.maatjeAlt')"
+        />
+      </div>
+      <MascotIcon v-else id-prefix="mistakes-review" class="review-mascot" />
       <h2 class="review-title">{{ t('mistakesReview.title') }}</h2>
       <p class="review-subtitle">{{ t('mistakesReview.subtitle', { level, count: mistakes.length }) }}</p>
     </div>

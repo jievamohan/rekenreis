@@ -1,10 +1,26 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from '~/composables/useI18n'
+import { useMaatje } from '~/composables/useMaatje'
+import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
+
 const { t } = useI18n()
+const { resolve } = useMaatje()
+
+const maatjeSrc = computed(() => resolve('wolkje', 'blij'))
+const showMaatje = computed(() => !!maatjeSrc.value)
 </script>
 
 <template>
   <div class="home">
+    <MaatjeAvatar
+      v-if="showMaatje"
+      character="wolkje"
+      expression="blij"
+      size="md"
+      class="home-maatje"
+      :aria-label="t('index.maatjeAlt')"
+    />
     <h1>{{ t('index.welcome') }}</h1>
     <p class="intro">{{ t('index.intro') }}</p>
     <nav class="home-nav">
@@ -18,6 +34,10 @@ const { t } = useI18n()
 .home {
   padding: var(--app-space-md);
   font-family: var(--app-font);
+}
+
+.home-maatje {
+  margin-bottom: var(--app-space-sm);
 }
 h1 {
   font-size: var(--app-font-size-2xl);

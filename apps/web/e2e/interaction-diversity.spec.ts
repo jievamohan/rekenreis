@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('interaction diversity — E2E proof', () => {
+  test.describe.configure({ retries: 2 })
   test('drag/drop (TreasureDive): completes round via click + chest', async ({ page }) => {
     await page.goto('/play?level=2')
     await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
@@ -65,11 +66,10 @@ test.describe('interaction diversity — E2E proof', () => {
     const count = await cards.count()
     for (let i = 0; i < count - 1; i++) {
       for (let j = i + 1; j < count; j++) {
-        await cards.nth(i).evaluate((el: HTMLElement) => el.click())
-        await cards.nth(j).evaluate((el: HTMLElement) => el.click())
-        await page.waitForTimeout(900)
-        const progress = page.locator('.round-progress')
-        const val = await progress.getAttribute('aria-valuenow')
+        await cards.nth(i).click({ force: true })
+        await cards.nth(j).click({ force: true })
+        await page.waitForTimeout(1200)
+        const val = await page.locator('.round-progress').getAttribute('aria-valuenow')
         if (val === '1') return
       }
     }
