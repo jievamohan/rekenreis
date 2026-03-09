@@ -1,10 +1,20 @@
-# Security/Privacy — Epic 28
+# Security & Privacy — Epic 30: Avatars & Expressions
 
-**New risks:** None.
+## Security/Privacy Output
 
-- No new auth, payments, or external APIs
-- No new PII or sensitive data
-- Local storage schema change: allow stars 0–3 (backward compatible)
-- No config injection; thresholds are code/content, not user input
+### New Risks
+- **Low:** PNG assets in repo; geen user upload, geen external fetch
+- Geen PII in avatars
+- Geen auth/crypto/payment impact
 
-**Checks still required:** yes — ensure no user-controlled values affect star computation (only session outcomes).
+### Config Constraints
+- Assets served from same origin (static)
+- Geen eval of dynamic script from asset paths
+
+### Data Handling
+- Geen persoonlijke data
+- Profile.avatarId blijft lokaal (localStorage); geen wijziging aan privacy model
+
+### Checks Required
+- gitleaks: clean (geen secrets in PNG)
+- SAST: geen nieuwe vectors

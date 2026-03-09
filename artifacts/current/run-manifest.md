@@ -1,20 +1,20 @@
-# Run Manifest — Epic 28
+# Run Manifest — Epic 30 (Avatars & Expressions)
 
-**Run id:** 20260308T232325Z  
-**Epic number:** 28  
-**Intent:** Fix star scoring: based on correct answers, threshold before first star, replay to improve, score never lower than best.
+**Run id:** 20260309T003645Z  
+**Epic number:** 30
 
 ## Required Planning Agents
 
-| Agent | Status | Artifact |
-|-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| art-director | N/A | art-direction.md (no visual redesign) |
-| game-designer | OK | game-feel.md |
-| motion-audio-designer | N/A | motion-audio.md (no new motion/audio) |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
-| illustrator | N/A | assets.md (no new assets) |
+| Agent | Status | Artifact Path |
+|-------|--------|---------------|
+| business-analyst | OK | artifacts/current/discovery.md |
+| ux-designer | OK | artifacts/current/ux.md |
+| art-director | OK | artifacts/current/art-direction.md |
+| game-designer | OK | artifacts/current/game-feel.md |
+| motion-audio-designer | OK | artifacts/current/motion-audio.md |
+| principal-architect | OK | artifacts/current/architecture.md |
+| solution-designer | OK | artifacts/current/solution.md |
+| qa-strategist | OK | artifacts/current/qa.md |
+| security-privacy | OK | artifacts/current/security-design.md |
+| illustrator | OK | artifacts/current/assets.md |
+| backlog | OK | artifacts/current/backlog.md |

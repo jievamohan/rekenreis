@@ -1648,3 +1648,144 @@ Acceptance:
 - Replay improves score when player does better
 - Replay never decreases stored score
 - E2E passes
+
+---
+
+## Epic 30.1 — Asset Pipeline + Matrix + MaatjeAvatar
+- [ ]
+PlanRef:
+- design: docs/design/epic-30.md
+- archive: artifacts/archive/epic-30.0/latest
+- slice: 30.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 30.1: Copy maatjes assets, create matrix, types, useMaatje composable, MaatjeAvatar component.
+
+Requirements:
+- Copy temp_assets/maatjes to apps/web/assets/graphics/characters/maatjes/ (normaliseer: "een-oog eerlijk" → "een-oog-eerlijk", "slimme rekenaar" → "slimme-rekenaar")
+- Create types/maatje.ts: MaatjeId, ExpressionId
+- Create maatje-matrix (content/maatje-matrix.ts of composable): character × expression → asset path
+- Create useMaatje composable: resolve(character, expression) met fallback
+- Create MaatjeAvatar.vue: props character, expression, size?; render img
+- Unit tests: useMaatje resolve + fallback; MaatjeAvatar renders
+- Typecheck, build green
+
+Acceptance:
+- 14 PNG assets in assets/graphics/characters/maatjes/
+- Matrix compleet voor wolkje, een-oog-eerlijk, slimme-rekenaar
+- MaatjeAvatar rendert correcte afbeelding
+- Unit tests pass
+
+---
+
+## Epic 30.2 — Map + Level Complete Integration
+- [ ]
+PlanRef:
+- design: docs/design/epic-30.md
+- archive: artifacts/archive/epic-30.0/latest
+- slice: 30.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 30.2: Integrate MaatjeAvatar in MapAvatar and LevelCompleteModal.
+
+Requirements:
+- MapAvatar: replace emoji with MaatjeAvatar (default wolkje, expression Blij); fallback to emoji if asset missing
+- LevelCompleteModal: replace MascotIcon with MaatjeAvatar; expression from stars: 0→verdrietig, 1→neutraal, 2→blij, 3→feest
+- Fallback chain: requested expression → blij → neutraal → first available
+- E2E: map avatar visible; level complete maatje visible with correct expression
+- Typecheck, build, smoke green
+
+Acceptance:
+- Map toont maatje op huidige node
+- Level complete toont maatje met juiste expressie voor 0/1/2/3 sterren
+- E2E passes
+
+---
+
+## Epic 30.3 — Mistakes Review + Introductie
+- [ ]
+PlanRef:
+- design: docs/design/epic-30.md
+- archive: artifacts/archive/epic-30.0/latest
+- slice: 30.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 30.3: Integrate MaatjeAvatar in MistakesReview and start/index pages.
+
+Requirements:
+- MistakesReview: replace MascotIcon with MaatjeAvatar (expression nadenken)
+- Start and/or index: add maatje with Neutraal of Blij (introductie)
+- nl.json: aria-labels voor maatje waar nodig
+- E2E: mistakes review maatje visible; start page maatje visible
+- Typecheck, build, smoke green
+
+Acceptance:
+- Mistakes review toont maatje (nadenken)
+- Start/index toont maatje (neutraal of blij)
+- E2E passes
+
+---
+
+## Epic 30.4 — Profile Maatje Selection (Optional)
+- [ ]
+PlanRef:
+- design: docs/design/epic-30.md
+- archive: artifacts/archive/epic-30.0/latest
+- slice: 30.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 30.4: Allow profile to select maatje character; show maatje in ProfileSelector and across app.
+
+Requirements:
+- ProfileSchema: add maatjeId ('wolkje'|'een-oog-eerlijk'|'slimme-rekenaar') or map avatarId → maatjeId
+- ProfileCreate: maatje character choice (3 opties)
+- ProfileSelector: show maatje thumbnail instead of emoji when maatje selected
+- Migration: existing profiles get default maatje (wolkje)
+- MapAvatar, LevelCompleteModal, etc.: use profile.maatjeId
+- E2E: create profile with maatje; map/level complete shows chosen maatje
+- Typecheck, build, smoke green
+
+Acceptance:
+- Profiel kan maatje kiezen
+- Gekozen maatje verschijnt op map, level complete, etc.
+- E2E passes
+
+---
+
+## Epic 30.5 — Polish + Bundle Budget
+- [ ]
+PlanRef:
+- design: docs/design/epic-30.md
+- archive: artifacts/archive/epic-30.0/latest
+- slice: 30.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 30.5: Bundle budget, visual regression, reduced motion, final E2E.
+
+Requirements:
+- Bundle budget (Gate F) must pass
+- Visual regression baselines: map, level complete, mistakes review
+- Reduced motion: map avatar-bounce uit; overige statisch
+- Final E2E pass: full flow map → play → complete → review → map
+- Typecheck, build, smoke green
+
+Acceptance:
+- Bundle budget passes
+- Visual baselines committed
+- Reduced motion respected
+- E2E green

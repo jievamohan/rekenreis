@@ -1,26 +1,38 @@
-# UX — Epic 28 (UX Designer)
+# UX Design — Epic 30: Avatars & Expressions
 
-## Primary Screens Impacted
+## UX Designer Output
 
-- `/play` — level complete flow
-- `LevelCompleteModal` — star display
-- `/map` — node star display
-- `MistakesReview` — retry CTA (unchanged)
+### Primary Screens Impacted
+- `/map` — MapAvatar toont gekozen maatje (expressie: Blij of Neutraal)
+- `/play` — (optioneel) maatje tijdens spel (Nadenken bij vraag, Blij bij correct)
+- LevelCompleteModal — maatje met score-afhankelijke expressie (Feest/Blij/Verdrietig)
+- MistakesReview — maatje met Nadenken of Verdrietig
+- `/start` of index — introductie: maatje met Neutraal of Blij
+- ProfileSelector / ProfileCreate — avatar-keuze kan maatje-tonen uitbreiden
 
-## UX Changes
+### Expression Mapping (Context → Expressie)
+| Context | Expressie |
+|---------|-----------|
+| Map (huidige positie) | Blij of Neutraal |
+| Level complete 3 sterren | Feest |
+| Level complete 2 sterren | Blij |
+| Level complete 1 ster | Neutraal |
+| Level complete 0 sterren | Verdrietig |
+| Mistakes review | Nadenken of Verdrietig |
+| Introductie / start | Neutraal of Blij |
+| Tijdens vraag (play) | Nadenken |
+| Correct antwoord (feedback) | Blij |
+| Verkeerd antwoord (feedback) | Verdrietig of Verrast |
 
-1. **Star display:** Modal and map show 0–3 stars (0 when below threshold). No change to visual layout; only the value changes.
-2. **Feedback copy:** LevelCompleteModal messages (perfect/great/good) may need a 0-star variant (e.g. "Probeer opnieuw").
-3. **Retry flow:** Already present; player can retry from MistakesReview or replay from map. No change.
-4. **Progress bar:** No change; rounds completed as today.
+### Component Catalog
+- **AvatarMatrix** (data/config): characterId × expressionId → asset path
+- **MaatjeAvatar.vue**: component die maatje+expressie rendert (img of Picture)
+- **MapAvatar**: vervang emoji door MaatjeAvatar (of hybride: emoji fallback)
+- **LevelCompleteModal**: vervang MascotIcon door MaatjeAvatar met expressie op basis van stars
+- **MistakesReview**: vervang MascotIcon door MaatjeAvatar (Nadenken)
+- **ProfileSelector/ProfileCreate**: uitbreiden met maatje-keuze (character selectie)
 
-## Component Catalog
-
-- `LevelCompleteModal` — accept stars 0–3; optional 0-star message
-- `MapNode` — display 0–3 stars (already supports 0 via starsFor)
-- `useLevelProgress` — allow 0 stars in schema (or keep 1–3 if threshold guarantees ≥1)
-- `play.vue` — compute stars from correctCount + thresholds
-
-## Tap Targets & Accessibility
-
-No new interactive elements. Existing CTAs unchanged.
+### Tap Targets & Accessibility
+- Avatars zijn decoratief; `aria-hidden="true"` of `role="img"` met `aria-label`
+- Geen nieuwe interactieve elementen voor avatars zelf
+- Profile-keuze: bestaande 48px tap targets behouden

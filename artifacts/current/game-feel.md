@@ -1,32 +1,25 @@
-# Game Feel — Epic 28 (Game Designer)
+# Game Feel — Epic 30: Avatars & Expressions
 
-## Goal
+## Game Designer Output
 
-Stars must feel earned based on **correct answers**, not punishment for mistakes. A threshold before the first star avoids rewarding very low performance while still allowing improvement through replay.
+### Primary Experience Goal
+- Maatjes voelen als vriendelijke reisgenoten die meeleven met het kind
+- Emotionele feedback via expressie versterkt het gevoel van vooruitgang en steun
 
-## Star Formula (Proposed)
+### Expression Triggers (Game Feel)
+| Moment | Expressie | Rationale |
+|--------|-----------|-----------|
+| Op de map | Blij | "Je bent hier, klaar om te spelen" |
+| Level klaar 3★ | Feest | Viering, confetti-moment |
+| Level klaar 2★ | Blij | Goed gedaan |
+| Level klaar 1★ | Neutraal | Oké, kan beter |
+| Level klaar 0★ | Verdrietig | Empathie, "probeer opnieuw" |
+| Mistakes review | Nadenken | "Laten we samen kijken" |
+| Tijdens vraag | Nadenken | Maatje denkt mee |
+| Correct antwoord | Blij | Directe positieve feedback |
+| Fout antwoord | Verdrietig/Verrast | Zacht, niet straffend |
 
-- **Input:** `correctCount`, `totalRounds` (e.g. 10 per level)
-- **Threshold:** Minimum correct for 1 star (e.g. 3 of 10 = 30%)
-- **Mapping:**
-  - 0 stars: correctCount < threshold
-  - 1 star: threshold ≤ correctCount < tier2
-  - 2 stars: tier2 ≤ correctCount < tier3
-  - 3 stars: correctCount ≥ tier3
-
-Example thresholds (configurable):
-- 1 star: ≥3 correct (30%)
-- 2 stars: ≥6 correct (60%)
-- 3 stars: ≥9 correct (90%)
-
-## Replay
-
-- Player can retry level from MistakesReview or replay from map
-- New stars = computeStars(correctCount, totalRounds)
-- Stored stars = max(previousBest, newStars)
-- Score never decreases
-
-## Kid-Safe
-
-- No punitive messaging for 0 stars; encourage "probeer opnieuw"
-- Positive framing: "Je hebt X van Y goed!"
+### Non-Goals
+- Geen gameplay-mechanica wijzigingen
+- Geen nieuwe minigames
+- Geen difficulty-aanpassingen

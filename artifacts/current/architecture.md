@@ -1,25 +1,41 @@
-# Architecture — Epic 28 (Principal Architect)
+# Architecture — Epic 30: Avatars & Expressions
 
-## Scope
+## Principal Architect Output
 
-- `play.vue` — star computation at level complete
-- `useLevelProgress` — completeLevel accepts 0–3; best-only logic
-- `useMistakes` or new `useSessionStats` — track correctCount per session
-- `profileSchema` — allow stars 0–3 in levelProgress validation
+### Asset Pipeline
+- **Input:** temp_assets/maatjes/{character}/{expression}.png
+- **Output:** apps/web/assets/graphics/characters/maatjes/{character}/{expression}.png
+- **Naming:** Normaliseer "een-oog eerlijk" → "een-oog-eerlijk" (kebab-case, geen spaties)
+- **Matrix:** TypeScript/JSON config: MaatjeId × ExpressionId → import path of URL
 
-## Data Flow
+### Data Model
+- **MaatjeId:** 'wolkje' | 'een-oog-eerlijk' | 'slimme-rekenaar'
+- **ExpressionId:** 'blij' | 'neutraal' | 'verdrietig' | 'nadenken' | 'feest' | 'verrast'
+- **Avatar matrix:** Record<MaatjeId, Partial<Record<ExpressionId, string>>> (asset paths)
+- **Fallback:** Als expressie ontbreekt voor maatje → 'blij' of 'neutraal'
 
-1. **Session:** Each round records outcome (correct/wrong/timeout) via `roundOutcome.recordRoundOutcome` or equivalent.
-2. **Level complete:** Compute `correctCount` from session outcomes.
-3. **Stars:** `computeStars(correctCount, totalRounds, thresholds)` → 0–3.
-4. **Persist:** `completeLevel(level, stars)` — `useLevelProgress` keeps `Math.max(prev, stars)`.
+### Component Structure
+```
+apps/web/
+  assets/graphics/characters/maatjes/
+    wolkje/
+    een-oog-eerlijk/
+    slimme-rekenaar/
+  components/
+    characters/
+      MaatjeAvatar.vue    # character + expression → img
+  composables/
+    useMaatje.ts         # matrix, resolve(character, expression), fallback
+  types/
+    maatje.ts            # MaatjeId, ExpressionId
+```
 
-## Threshold Config
+### Integration Points
+- MapAvatar: use profile.avatarId → map to MaatjeId; expression = 'blij'
+- LevelCompleteModal: expression from stars (0→verdrietig, 1→neutraal, 2→blij, 3→feest)
+- MistakesReview: expression = 'nadenken'
+- ProfileSchema: AvatarId blijft; optioneel MaatjeId koppelen (later)
 
-- Add `STAR_THRESHOLDS` in config (e.g. `apps/web/config/starThresholds.ts` or content JSON)
-- Default: [3, 6, 9] for 10 rounds → 1/2/3 stars
-
-## Schema Change
-
-- `LevelStars.stars`: allow 0–3 (currently 1–3 in `isValidV1`)
-- Migration: existing data stays valid (no 0s in legacy)
+### Performance
+- Lazy-load avatar images per context (niet alle 14 in initial bundle)
+- Use dynamic import or static path; Nuxt/Vite handles chunking
