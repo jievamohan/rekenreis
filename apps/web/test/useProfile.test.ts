@@ -27,17 +27,17 @@ describe('useProfile', () => {
   it('createProfile adds profile and switches to it', () => {
     const { createProfile, activeProfile, profiles } = useProfile()
     const before = profiles.value.length
-    createProfile('Kid', 'star')
+    createProfile('Kid', 'wolkje')
     expect(profiles.value).toHaveLength(before + 1)
     expect(activeProfile.value?.name).toBe('Kid')
-    expect(activeProfile.value?.avatarId).toBe('star')
+    expect(activeProfile.value?.maatjeId).toBe('wolkje')
   })
 
   it('switchProfile changes activeProfile', () => {
     const { createProfile, switchProfile, activeProfile } = useProfile()
-    createProfile('A', 'default')
+    createProfile('A', 'wolkje')
     const firstId = activeProfile.value!.id
-    createProfile('B', 'heart')
+    createProfile('B', 'een-oog-eerlijk')
     expect(activeProfile.value?.name).toBe('B')
     switchProfile(firstId)
     expect(activeProfile.value?.name).toBe('A')

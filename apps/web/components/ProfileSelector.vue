@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import type { ProfileData, AvatarId } from '~/utils/profileSchema'
+import type { ProfileData } from '~/utils/profileSchema'
+import type { MaatjeId } from '~/types/maatje'
+import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 import { useI18n } from '~/composables/useI18n'
-import ProfileCreate from './ProfileCreate.vue'
-
-function avatarEmoji(id: string): string {
-  const map: Record<string, string> = {
-    default: '👤',
-    star: '⭐',
-    heart: '❤️',
-    circle: '⭕',
-    square: '⬜',
-  }
-  return map[id] ?? '👤'
-}
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -22,7 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   switch: [id: string]
-  create: [name: string, avatarId: AvatarId]
+  create: [name: string, maatjeId: MaatjeId]
 }>()
 
 const showCreate = ref(false)
@@ -31,9 +21,13 @@ function onSelect(id: string) {
   emit('switch', id)
 }
 
-function onCreate(name: string, avatarId: AvatarId) {
-  emit('create', name, avatarId)
+function onCreate(name: string, maatjeId: MaatjeId) {
+  emit('create', name, maatjeId)
   showCreate.value = false
+}
+
+function maatjeForProfile(p: ProfileData): MaatjeId {
+  return p.maatjeId ?? 'wolkje'
 }
 </script>
 
@@ -50,7 +44,13 @@ function onCreate(name: string, avatarId: AvatarId) {
           :aria-pressed="p.id === activeProfileId"
           @click="onSelect(p.id)"
         >
-          <span class="avatar" :aria-hidden="true">{{ avatarEmoji(p.avatarId) }}</span>
+          <span class="profile-thumb" aria-hidden="true">
+            <MaatjeAvatar
+              :character="maatjeForProfile(p)"
+              expression="blij"
+              size="sm"
+            />
+          </span>
           <span class="name">{{ p.name }}</span>
         </button>
       </li>
@@ -118,7 +118,10 @@ h2 {
 .profile-btn.add {
   justify-content: center;
 }
-.avatar {
+.profile-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
 }
 </style>

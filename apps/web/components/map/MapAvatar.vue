@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AvatarId } from '~/utils/profileSchema'
+import type { MaatjeId } from '~/types/maatje'
 import { useI18n } from '~/composables/useI18n'
 import { useMaatje } from '~/composables/useMaatje'
 import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
@@ -8,10 +9,14 @@ import { computed } from 'vue'
 const { t } = useI18n()
 const { resolve } = useMaatje()
 
-defineProps<{
-  avatarId: AvatarId
-  name: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    avatarId: AvatarId
+    name: string
+    maatjeId?: MaatjeId
+  }>(),
+  { maatjeId: 'wolkje' }
+)
 
 const avatarEmoji: Record<AvatarId, string> = {
   default: '🐠',
@@ -21,14 +26,14 @@ const avatarEmoji: Record<AvatarId, string> = {
   square: '🐢',
 }
 
-const maatjeSrc = computed(() => resolve('wolkje', 'blij'))
+const maatjeSrc = computed(() => resolve(props.maatjeId, 'blij'))
 const showMaatje = computed(() => !!maatjeSrc.value)
 </script>
 
 <template>
   <div class="map-avatar" :aria-label="t('mapAvatar.position', { name })">
     <div v-if="showMaatje" class="avatar-bubble">
-      <MaatjeAvatar character="wolkje" expression="blij" size="sm" />
+      <MaatjeAvatar :character="maatjeId" expression="blij" size="sm" />
     </div>
     <span v-else class="avatar-bubble" aria-hidden="true">{{ avatarEmoji[avatarId] ?? '🐠' }}</span>
   </div>

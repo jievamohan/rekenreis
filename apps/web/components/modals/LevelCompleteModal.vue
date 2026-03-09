@@ -5,18 +5,22 @@ import MascotIcon from '~/components/graphics/MascotIcon.vue'
 import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 import { useI18n } from '~/composables/useI18n'
 import { useMaatje } from '~/composables/useMaatje'
-import type { ExpressionId } from '~/types/maatje'
+import type { ExpressionId, MaatjeId } from '~/types/maatje'
 
 const { t } = useI18n()
 const { resolve } = useMaatje()
 
-const props = defineProps<{
-  open: boolean
-  level: number
-  stars: number
-  hasMistakes: boolean
-  isLastLevel: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    open: boolean
+    level: number
+    stars: number
+    hasMistakes: boolean
+    isLastLevel: boolean
+    maatjeId?: MaatjeId
+  }>(),
+  { maatjeId: 'wolkje' }
+)
 
 const starToExpression: Record<number, ExpressionId> = {
   0: 'verdrietig',
@@ -29,7 +33,7 @@ const maatjeExpression = computed<ExpressionId>(
   () => starToExpression[props.stars] ?? 'neutraal'
 )
 
-const maatjeSrc = computed(() => resolve('wolkje', maatjeExpression.value))
+const maatjeSrc = computed(() => resolve(props.maatjeId, maatjeExpression.value))
 const showMaatje = computed(() => !!maatjeSrc.value)
 
 const emit = defineEmits<{
@@ -107,7 +111,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
         >
           <div v-if="showMaatje" class="mascot">
             <MaatjeAvatar
-              character="wolkje"
+              :character="maatjeId"
               :expression="maatjeExpression"
               size="lg"
               :aria-label="t('levelComplete.mascotAlt')"

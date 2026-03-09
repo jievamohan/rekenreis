@@ -167,6 +167,8 @@
     "profileName": "Profielnaam",
     "chooseAvatar": "Kies een avatar",
     "avatarLabel": "Avatar {id}",
+    "chooseMaatje": "Kies een maatje",
+    "maatjeLabel": "Maatje {id}",
     "cancel": "Annuleren",
     "create": "Aanmaken",
     "switchProfile": "Profiel wisselen"

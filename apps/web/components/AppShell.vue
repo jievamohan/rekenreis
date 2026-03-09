@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AvatarId } from '~/utils/profileSchema'
+import type { MaatjeId } from '~/types/maatje'
 import { useI18n } from '~/composables/useI18n'
 import { useProfile } from '~/composables/useProfile'
 import { useAppShell } from '~/composables/useAppShell'
@@ -45,8 +45,8 @@ function onProfileSwitch(id: string) {
   showProfileSelector.value = false
 }
 
-function onProfileCreate(name: string, avatarId: AvatarId) {
-  profile.createProfile(name, avatarId)
+function onProfileCreate(name: string, maatjeId: MaatjeId) {
+  profile.createProfile(name, maatjeId)
   showProfileSelector.value = false
 }
 </script>
@@ -59,6 +59,7 @@ function onProfileCreate(name: string, avatarId: AvatarId) {
       <button
         type="button"
         class="profile-pill"
+        data-testid="profile-pill"
         :aria-label="t('profile.switchProfile')"
         @click="showProfileSelector = true"
       >

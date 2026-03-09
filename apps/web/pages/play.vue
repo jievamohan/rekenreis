@@ -529,6 +529,7 @@ onUnmounted(() => {
       :stars="completedStars"
       :has-mistakes="hasMistakes"
       :is-last-level="(levelParam ?? 1) >= totalLevels"
+      :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
       @back-to-map="onModalBackToMap"
       @next="onModalNext"
       @review-mistakes="onModalReviewMistakes"
