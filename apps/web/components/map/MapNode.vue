@@ -13,37 +13,75 @@ defineEmits<{ select: [level: number] }>()
 </script>
 
 <template>
-  <button
-    type="button"
-    class="map-node"
-    :class="{
-      locked: !unlocked,
-      current,
-      completed: stars > 0,
-    }"
-    :aria-label="t('map.levelLabel', { level }) + (stars > 0 ? (stars > 1 ? t('map.levelStarsPlural', { stars }) : t('map.levelStars', { stars })) : '') + (!unlocked ? t('map.levelLocked') : '')"
-    :aria-disabled="!unlocked"
-    :tabindex="unlocked ? 0 : -1"
-    @click="unlocked && $emit('select', level)"
-    @keydown.enter="unlocked && $emit('select', level)"
-    @keydown.space.prevent="unlocked && $emit('select', level)"
-  >
-    <span v-if="!unlocked" class="node-icon lock" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="5" y="11" width="14" height="11" rx="2"/>
-        <path d="M8 11V7a4 4 0 018 0v4"/>
-      </svg>
-    </span>
-    <span v-else-if="stars > 0" class="node-stars" aria-hidden="true">
-      <svg v-for="i in stars" :key="i" class="star-icon" viewBox="0 0 24 24" fill="currentColor">
+  <div class="map-node-wrapper">
+    <!-- Stars row: 3 slots, fixed height; empty placeholders when stars=0 -->
+    <div class="node-stars-row" aria-hidden="true">
+      <svg
+        v-for="i in 3"
+        :key="i"
+        class="star-slot"
+        :class="{ filled: i <= stars }"
+        viewBox="0 0 24 24"
+      >
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
       </svg>
-    </span>
-    <span v-else class="node-number">{{ level }}</span>
-  </button>
+    </div>
+    <button
+      type="button"
+      class="map-node"
+      :class="{
+        locked: !unlocked,
+        current,
+        completed: stars > 0,
+      }"
+      :aria-label="t('map.levelLabel', { level }) + (stars > 0 ? (stars > 1 ? t('map.levelStarsPlural', { stars }) : t('map.levelStars', { stars })) : '') + (!unlocked ? t('map.levelLocked') : '')"
+      :aria-disabled="!unlocked"
+      :tabindex="unlocked ? 0 : -1"
+      @click="unlocked && $emit('select', level)"
+      @keydown.enter="unlocked && $emit('select', level)"
+      @keydown.space.prevent="unlocked && $emit('select', level)"
+    >
+      <span v-if="!unlocked" class="node-icon lock" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="11" width="14" height="11" rx="2"/>
+          <path d="M8 11V7a4 4 0 018 0v4"/>
+        </svg>
+      </span>
+      <span v-else class="node-number">{{ level }}</span>
+    </button>
+  </div>
 </template>
 
 <style scoped>
+.map-node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.node-stars-row {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.star-slot {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: rgba(255, 193, 7, 0.4);
+  stroke-width: 1.5;
+}
+
+.star-slot.filled {
+  fill: #ffc107;
+  stroke: none;
+}
+
 .map-node {
   width: 56px;
   height: 56px;
@@ -102,7 +140,7 @@ defineEmits<{ select: [level: number] }>()
 }
 
 .node-number {
-  font-size: var(--app-font-size-lg);
+  font-size: clamp(0.75rem, 4vw, var(--app-font-size-lg));
 }
 
 .node-icon.lock {
@@ -115,16 +153,5 @@ defineEmits<{ select: [level: number] }>()
   width: 20px;
   height: 20px;
   color: var(--app-text-muted-on-surface);
-}
-
-.node-stars {
-  display: flex;
-  gap: 1px;
-}
-
-.star-icon {
-  width: 14px;
-  height: 14px;
-  color: #ffc107;
 }
 </style>
