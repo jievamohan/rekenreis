@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import type { AvatarId } from '~/utils/profileSchema'
+import type { MaatjeId } from '~/types/maatje'
+import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 import { useI18n } from '~/composables/useI18n'
 
 const { t } = useI18n()
-const AVATARS: { id: AvatarId; emoji: string }[] = [
-  { id: 'default', emoji: '👤' },
-  { id: 'star', emoji: '⭐' },
-  { id: 'heart', emoji: '❤️' },
-  { id: 'circle', emoji: '⭕' },
-  { id: 'square', emoji: '⬜' },
-]
+const MAATJES: MaatjeId[] = ['wolkje', 'een-oog-eerlijk', 'slimme-rekenaar']
 
 const name = ref('')
-const selectedAvatar = ref<AvatarId>('default')
+const selectedMaatje = ref<MaatjeId>('wolkje')
 
 const emit = defineEmits<{
-  create: [name: string, avatarId: AvatarId]
+  create: [name: string, maatjeId: MaatjeId]
   cancel: []
 }>()
 
 function submit() {
-  emit('create', name.value.trim() || t('common.player1'), selectedAvatar.value)
+  emit('create', name.value.trim() || t('common.player1'), selectedMaatje.value)
 }
 
 function cancel() {
@@ -41,18 +36,18 @@ function cancel() {
         :aria-label="t('profile.profileName')"
       />
     </label>
-    <div class="avatars" role="group" :aria-label="t('profile.chooseAvatar')">
+    <div class="maatjes" role="group" :aria-label="t('profile.chooseMaatje')">
       <button
-        v-for="a in AVATARS"
-        :key="a.id"
+        v-for="m in MAATJES"
+        :key="m"
         type="button"
-        class="avatar-btn"
-        :class="{ active: selectedAvatar === a.id }"
-        :aria-label="t('profile.avatarLabel', { id: a.id })"
-        :aria-pressed="selectedAvatar === a.id"
-        @click="selectedAvatar = a.id"
+        class="maatje-btn"
+        :class="{ active: selectedMaatje === m }"
+        :aria-label="t('profile.maatjeLabel', { id: m })"
+        :aria-pressed="selectedMaatje === m"
+        @click="selectedMaatje = m"
       >
-        {{ a.emoji }}
+        <MaatjeAvatar :character="m" expression="blij" size="sm" />
       </button>
     </div>
     <div class="actions">
@@ -85,28 +80,31 @@ h3 {
   font-size: 1rem;
   min-height: 44px;
 }
-.avatars {
+.maatjes {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
-.avatar-btn {
+.maatje-btn {
   min-width: 48px;
   min-height: 48px;
-  font-size: 1.5rem;
+  padding: 4px;
   border: 2px solid var(--app-muted);
   border-radius: 0.5rem;
   background: var(--app-surface);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.avatar-btn:hover {
+.maatje-btn:hover {
   background: var(--app-surface-elevated);
 }
-.avatar-btn:focus-visible {
+.maatje-btn:focus-visible {
   outline: 2px solid var(--app-primary);
   outline-offset: 2px;
 }
-.avatar-btn.active {
+.maatje-btn.active {
   border-color: var(--app-primary);
   background: rgba(0, 188, 212, 0.15);
 }

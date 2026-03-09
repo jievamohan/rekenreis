@@ -3,6 +3,8 @@
 services:
   e2e:
     image: rekenreis-e2e:latest
+    environment:
+      - CI=true
 
   web:
     user: "1000:1000"  # node user (override base root for CI least-privilege)

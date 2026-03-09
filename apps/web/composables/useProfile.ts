@@ -1,11 +1,11 @@
 import { ref, computed, readonly } from 'vue'
+import type { MaatjeId } from '~/types/maatje'
 import {
   loadProfiles,
   saveProfiles,
   createDefaultProfile,
   type ProfileSchemaV1,
   type ProfileData,
-  type AvatarId,
 } from '../utils/profileSchema'
 
 let schemaRef: ReturnType<typeof ref<ProfileSchemaV1>> | null = null
@@ -37,12 +37,12 @@ export function useProfile() {
     saveProfiles(next)
   }
 
-  function createProfile(name: string, avatarId: AvatarId) {
+  function createProfile(name: string, maatjeId: MaatjeId) {
     const s = schema.value
     if (!s) return
     const newProfile = createDefaultProfile()
     newProfile.name = name.slice(0, 50) || 'Speler 1'
-    newProfile.avatarId = avatarId
+    newProfile.maatjeId = maatjeId
     const next: ProfileSchemaV1 = {
       version: 1,
       activeProfileId: newProfile.id,
@@ -52,7 +52,7 @@ export function useProfile() {
     saveProfiles(next)
   }
 
-  function updateProfile(id: string, updates: Partial<Pick<ProfileData, 'name' | 'avatarId' | 'progress' | 'prefs' | 'telemetryOptOut'>>) {
+  function updateProfile(id: string, updates: Partial<Pick<ProfileData, 'name' | 'avatarId' | 'maatjeId' | 'progress' | 'prefs' | 'telemetryOptOut'>>) {
     const s = schema.value
     if (!s) return
     const idx = s.profiles.findIndex((p) => p.id === id)

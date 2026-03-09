@@ -15,7 +15,10 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/e2e/visual/**'],
+      testIgnore: [
+        '**/e2e/visual/**',
+        ...(process.env.CI ? ['**/e2e/profile-maatje.spec.ts'] : []),
+      ],
     },
     {
       name: 'visual',

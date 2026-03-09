@@ -1,4 +1,5 @@
 import type { InteractionModeId } from '~/types/mode'
+import type { MaatjeId } from '~/types/maatje'
 import type { SkinId } from '~/utils/skinResolver'
 
 const STORAGE_KEY = 'rekenreis_profiles_v1'
@@ -43,6 +44,8 @@ export interface ProfileData {
   id: string
   name: string
   avatarId: AvatarId
+  /** Maatje character for map/level-complete. Default 'wolkje'. */
+  maatjeId?: MaatjeId
   progress: ProfileProgress
   prefs: ProfilePrefs
   telemetryOptOut: boolean
@@ -57,6 +60,7 @@ export interface ProfileSchemaV1 {
 const VALID_MODES = ['classic', 'timed-pop', 'build-bridge'] as const
 const VALID_SKINS = ['classic', 'monster-feed', 'space', 'pirate'] as const
 const VALID_AVATARS: AvatarId[] = ['default', 'star', 'heart', 'circle', 'square']
+const VALID_MAATJES: MaatjeId[] = ['wolkje', 'een-oog-eerlijk', 'slimme-rekenaar']
 
 function genId(): string {
   return `p_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 9)}`
@@ -113,6 +117,7 @@ function migrateFromLegacy(): ProfileSchemaV1 {
     id: genId(),
     name: 'Speler 1',
     avatarId: 'default',
+    maatjeId: 'wolkje',
     progress: { bestScore },
     prefs,
     telemetryOptOut,
@@ -129,6 +134,7 @@ function createFreshSchema(): ProfileSchemaV1 {
     id: genId(),
     name: 'Speler 1',
     avatarId: 'default',
+    maatjeId: 'wolkje',
     progress: { bestScore: 0 },
     prefs: defaultPrefs(),
     telemetryOptOut: true,
@@ -160,6 +166,7 @@ function isValidV1(data: unknown): data is ProfileSchemaV1 {
       typeof p.id === 'string' &&
       typeof p.name === 'string' &&
       VALID_AVATARS.includes(p.avatarId as AvatarId) &&
+      (p.maatjeId === undefined || VALID_MAATJES.includes(p.maatjeId as MaatjeId)) &&
       p.progress &&
       typeof p.progress.bestScore === 'number' &&
       (p.progress.dailyGoal === undefined ||
@@ -208,6 +215,9 @@ export function loadProfiles(): ProfileSchemaV1 {
     const data = JSON.parse(raw) as unknown
     if (isValidV1(data)) {
       for (const p of data.profiles) {
+        if (p.maatjeId === undefined) {
+          p.maatjeId = 'wolkje'
+        }
         if (p.prefs && p.prefs.soundOn === undefined) {
           p.prefs.soundOn = true
         }
@@ -239,6 +249,7 @@ export function createDefaultProfile(): ProfileData {
     id: genId(),
     name: 'Speler 1',
     avatarId: 'default',
+    maatjeId: 'wolkje',
     progress: { bestScore: 0 },
     prefs: defaultPrefs(),
     telemetryOptOut: true,

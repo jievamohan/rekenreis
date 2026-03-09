@@ -128,6 +128,7 @@ onMounted(() => {
             <MapAvatar
               :avatar-id="profile.activeProfile.value?.avatarId ?? 'default'"
               :name="profile.activeProfile.value?.name ?? t('common.player')"
+              :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
             />
           </div>
         </template>
