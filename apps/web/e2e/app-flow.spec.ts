@@ -104,4 +104,19 @@ test.describe('app flow: map → play → complete → map', () => {
     await expect(page.locator('.play-current-cta')).toBeVisible()
     await expect(page.locator('.map-progress')).toBeVisible()
   })
+
+  test('map → play level 1 → play level 200 → map', async ({ page }) => {
+    await page.goto('/map')
+    await expect(page.locator('.map-page')).toBeVisible()
+
+    await page.goto('/play?level=1')
+    await expect(page.locator('.problem-card')).toBeVisible()
+
+    await page.goto('/play?level=200')
+    await expect(page.locator('.problem-card')).toBeVisible()
+
+    await page.locator('.exit-to-map-btn').click()
+    await expect(page).toHaveURL(/\/map/)
+    await expect(page.locator('.map-page')).toBeVisible()
+  })
 })
