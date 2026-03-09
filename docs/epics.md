@@ -1623,7 +1623,7 @@ Acceptance:
 ---
 
 ## Epic 29.2 — Schema + Persistence + UI Polish
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-29.md
 - archive: artifacts/archive/epic-29.0/latest
