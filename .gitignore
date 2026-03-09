@@ -1,5 +1,8 @@
 .pnpm-store
 
+# Generated maatjes (copied by prebuild from temp_assets)
+apps/web/public/graphics/characters/maatjes/
+
 # CI-generated ZAP reports and artifact lifecycle
 artifacts/archive/
 artifacts/zap/
