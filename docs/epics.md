@@ -1682,7 +1682,7 @@ Acceptance:
 ---
 
 ## Epic 30.2 — Map + Level Complete Integration
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-30.md
 - archive: artifacts/archive/epic-30.0/latest
