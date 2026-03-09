@@ -1652,7 +1652,7 @@ Acceptance:
 ---
 
 ## Epic 30.1 — Asset Pipeline + Matrix + MaatjeAvatar
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-30.md
 - archive: artifacts/archive/epic-30.0/latest

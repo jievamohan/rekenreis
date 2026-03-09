@@ -50,3 +50,4 @@
 | Epic 28.1 — Replace Coral with Memory-Match | done | PR #106 merged |
 | Epic 29.1 — Star Scoring Logic + Session Stats | done | PR #108 merged |
 | Epic 29.2 — Schema + Persistence + UI Polish | done | PR #110 merged |
+| Epic 30.1 — Asset Pipeline + Matrix + MaatjeAvatar | done | PR #113 merged |
