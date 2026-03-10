@@ -59,3 +59,4 @@
 | Epic 31.3 — MapAvatar: Much Larger | done | PR #127 merged |
 | Epic 31.4 — Polish & E2E | done | PR #129 merged |
 | Epic 32.1 — Shell Collector: Core Mechanic + Assets | done | PR #132 merged |
+| Epic 32.2 — Shell Collector: Integration | done | PR #134 merged |

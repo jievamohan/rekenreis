@@ -1929,7 +1929,7 @@ Acceptance:
 ---
 
 ## Epic 32.2 — Shell Collector: Integration
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-32.md
 - archive: artifacts/archive/epic-32.0/latest
