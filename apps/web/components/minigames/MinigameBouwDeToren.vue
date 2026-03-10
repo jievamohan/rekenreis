@@ -22,14 +22,15 @@ const engine = useTowerLevelEngine(props.levelConfig, seed)
 const phase = computed(() => engine.phase.value)
 const currentPuzzle = computed(() => engine.currentPuzzle.value)
 const stars = computed(() => engine.stars.value)
-const progressText = computed(() =>
-  t('minigameBouwDeToren.progress', {
-    round: engine.currentRoundIndex.value + 1,
-    total: engine.totalRounds,
-    tower: engine.currentTowerIndex.value + 1,
-    towersPerRound: engine.towersPerRound,
-  })
+const roundProgressPercent = computed(() =>
+  engine.totalRounds > 0
+    ? (engine.currentRoundIndex.value / engine.totalRounds) * 100
+    : 0
 )
+
+const currentRoundDisplay = computed(() => engine.currentRoundIndex.value + 1)
+
+const currentTowerIndex = computed(() => engine.currentTowerIndex.value)
 
 watch(
   () => engine.phase.value,
@@ -101,25 +102,36 @@ function onDismissPhase() {
       </div>
     </Teleport>
     <div v-if="phase === 'playing' && currentPuzzle" class="tower-scene">
-      <div class="progress-row">
-        <div class="progress-stars" role="img" :aria-label="t('minigameBouwDeToren.starsAria', { stars })">
-          <svg
-            v-for="i in 3"
-            :key="i"
-            class="star-slot"
-            :class="{ filled: i <= stars }"
-            viewBox="0 0 24 24"
+      <div class="progress-wrap">
+        <div
+          class="round-progress"
+          role="progressbar"
+          :aria-valuemin="0"
+          :aria-valuemax="engine.totalRounds"
+          :aria-valuenow="currentRoundDisplay"
+          :aria-label="t('play.roundProgress')"
+        >
+          <div
+            class="round-progress-fill"
+            :style="{ width: `${roundProgressPercent}%` }"
+          />
+          <div
+            class="round-progress-node round-progress-node-current"
+            :style="{ left: `${roundProgressPercent}%` }"
+            aria-hidden="true"
           >
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
-          </svg>
-        </div>
-        <div class="progress" aria-live="polite">
-          {{ progressText }}
+            {{ currentRoundDisplay }}
+          </div>
+          <div class="round-progress-node round-progress-node-target" aria-hidden="true">
+            {{ engine.totalRounds }}
+          </div>
         </div>
       </div>
       <TowerPuzzle
         :key="`${engine.currentRoundIndex}-${engine.currentTowerIndex}`"
         :puzzle="currentPuzzle"
+        :towers-per-round="engine.towersPerRound"
+        :current-tower-index="currentTowerIndex"
         @correct="onCorrect"
         @wrong="onWrong"
       />
@@ -142,6 +154,17 @@ function onDismissPhase() {
       </button>
     </div>
     <div v-else-if="phase === 'levelComplete'" class="level-complete">
+      <div class="progress-stars" role="img" :aria-label="t('minigameBouwDeToren.starsAria', { stars })">
+        <svg
+          v-for="i in 3"
+          :key="i"
+          class="star-slot"
+          :class="{ filled: i <= stars }"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
+        </svg>
+      </div>
       <p>{{ t('minigameBouwDeToren.levelComplete', { stars }) }}</p>
     </div>
   </div>
@@ -166,11 +189,66 @@ function onDismissPhase() {
   gap: 1rem;
 }
 
-.progress-row {
+.progress-wrap {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
   align-items: center;
-  gap: 0.5rem;
+  min-width: min(92vw, 440px);
+  margin-bottom: 0.5rem;
+}
+
+.round-progress {
+  position: relative;
+  width: min(92vw, 440px);
+  height: 1rem;
+  background: #ffffff !important;
+  border-radius: 999px;
+  overflow: visible;
+  border: 1px solid rgba(1, 36, 43, 0.22);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.round-progress-fill {
+  height: calc(100% - 4px);
+  margin: 2px;
+  background: var(--app-primary);
+  border-radius: 999px;
+  transition: width 180ms ease-out;
+}
+
+.round-progress-node {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: #00bcd4;
+  color: #01242b;
+  font-family: var(--app-font);
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border: 2px solid rgba(1, 36, 43, 0.22);
+}
+
+.round-progress-node-current {
+  z-index: 2;
+  background: linear-gradient(180deg, #41e3ff 0%, #00bcd4 100%);
+  border-color: rgba(1, 36, 43, 0.28);
+}
+
+.round-progress-node-target {
+  left: 100%;
+  z-index: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #f3fbff 100%);
+  color: rgba(1, 36, 43, 0.3);
+  border-color: rgba(1, 36, 43, 0.24);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
 }
 
 .progress-stars {
@@ -192,11 +270,6 @@ function onDismissPhase() {
 .progress-stars .star-slot.filled {
   fill: #ffc107;
   stroke: none;
-}
-
-.progress {
-  font-size: 0.9rem;
-  color: var(--app-text-secondary, #666);
 }
 
 .round-complete,

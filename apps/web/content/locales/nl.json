@@ -335,6 +335,7 @@
     "lastChance": "Laatste kans! Kies de twee blokken die samen {target} zijn.",
     "sumCorrect": "{a} + {b} = {sum}",
     "continue": "Doorgaan",
-    "starsAria": "{stars} van 3 sterren"
+    "starsAria": "{stars} van 3 sterren",
+    "towerCompleted": "Toren voltooid"
   }
 }

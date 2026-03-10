@@ -2225,3 +2225,33 @@ Acceptance:
 - E2E green
 - Bundle budget passes
 - i18n compleet
+
+---
+
+## Epic 35.1 — Bouw de Toren: Finetune
+- [ ]
+PlanRef:
+- design: docs/design/epic-35.md
+- archive: artifacts/archive/epic-35.0/latest
+- slice: 35.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 35.1: Bouw de Toren vijf verfijningen (layout shift, placeholder, progress, contrast, doelgetal).
+
+Requirements:
+1. **Layout shift:** Bij het pakken van een blok verschuift het spel niet meer (placeholder zelfde dimensies; block-ghost fixed)
+2. **Placeholder:** Na drop blijft de placeholder op de originele locatie staan tot ronde afsluiting
+3. **Progress vs gedropt:** Voltooide torens visueel afzijdig en herkenbaar (eigen rij/sectie; ander look-and-feel dan actieve dropzones)
+4. **Contrast:** Gedropt blok (zone-value) WCAG AA leesbaar (donkere tekst op lichte achtergrond of omgekeerd)
+5. **Doelgetal:** Toren+getal implementatie verbeteren — getal prominent; icon ondersteunend of nummer-only (research-gebaseerd: Optie A of C uit solution.md)
+
+Acceptance:
+- Geen layout shift bij pointerdown
+- Placeholder zichtbaar na drop
+- Voltooide torens duidelijk onderscheiden
+- Zone-value contrast ≥4.5:1
+- Doelgetal visueel verbeterd
+- Typecheck, build, E2E green
