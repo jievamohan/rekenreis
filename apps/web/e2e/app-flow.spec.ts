@@ -113,7 +113,8 @@ test.describe('app flow: map → play → complete → map', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
 
     await page.goto('/play?level=200')
-    await expect(page.locator('.problem-card')).toBeVisible()
+    // Level 200 uses weighted pool; memory-match hides ProblemCard — assert game area visible
+    await expect(page.locator('.problem-card, [data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
 
     await page.locator('.exit-to-map-btn').click()
     await expect(page).toHaveURL(/\/map/)
