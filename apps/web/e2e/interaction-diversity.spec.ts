@@ -28,25 +28,12 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
   })
 
-  test('tap-to-increment (ShellCollector): tap add-shell until correct', async ({ page }) => {
+  test('drag-drop (BouwDeToren): level 5 shows tower minigame', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
-
-    const countDisplay = page.locator('[data-testid="minigame-shell-collector"] .count-display')
-    await expect(countDisplay).toBeVisible()
-    const text = await countDisplay.textContent()
-    const match = text?.match(/(\d+)\s*\/\s*(\d+)/)
-    expect(match).toBeTruthy()
-    const current = Number(match![1])
-    const target = Number(match![2])
-    const tapsNeeded = target - current
-
-    const addBtn = page.locator('[data-testid="minigame-shell-collector"] .add-shell-btn')
-    for (let i = 0; i < tapsNeeded; i++) {
-      await addBtn.click()
-      await page.waitForTimeout(80)
-    }
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('[data-testid="tower-puzzle"]')).toBeVisible()
+    await expect(page.locator('[data-testid="tower-puzzle"] .target-display')).toBeVisible()
+    await expect(page.locator('[data-testid="tower-puzzle"] .block').first()).toBeVisible()
   })
 
   test('memory-flip (MemoryMatch): flip sum+answer pairs to complete', async ({ page }) => {
@@ -94,12 +81,12 @@ test.describe('Dutch copy assertions', () => {
     expect(label).toContain('Memory')
   })
 
-  test('shell-collector shows Dutch aria label', async ({ page }) => {
+  test('bouw-de-toren shows Dutch aria label', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
-    const scene = page.locator('[data-testid="minigame-shell-collector"]')
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
+    const scene = page.locator('[data-testid="minigame-bouw-de-toren"]')
     const label = await scene.getAttribute('aria-label')
-    expect(label).toContain('schelpen')
+    expect(label).toContain('Bouw de toren')
   })
 })
 

@@ -29,8 +29,9 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
       pairCount: { min: 3, max: 6 },
       timerSeconds: { min: 60, max: 25 },
     },
-    'shell-collector': {
-      shellTargetBonus: { min: 0, max: 2 },
+    'bouw-de-toren': {
+      rounds: { min: 3, max: 7 },
+      towersPerRound: { min: 2, max: 3 },
     },
     'starfish-match': {
       pairCount: { min: 2, max: 4 },

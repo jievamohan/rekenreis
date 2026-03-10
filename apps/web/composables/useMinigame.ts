@@ -98,19 +98,21 @@ registerMinigame({
 })
 
 registerMinigame({
-  id: 'shell-collector',
-  component: () => import('~/components/minigames/MinigameShellCollector.vue'),
+  id: 'bouw-de-toren',
+  component: () => import('~/components/minigames/MinigameBouwDeToren.vue'),
   difficultyKnobs: {
-    shellTargetBonus: { min: 0, max: 2 },
+    rounds: { min: 3, max: 7 },
+    towersPerRound: { min: 2, max: 3 },
   },
   contractV2: {
-    interactionType: 'tap-to-increment',
-    requiredInputs: ['pointer', 'keyboard'],
+    interactionType: 'drag-drop',
+    requiredInputs: ['pointer', 'drag', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'shellTargetBonus', min: 0, max: 2, description: 'Extra shells to add for harder levels' },
+      { key: 'rounds', min: 3, max: 7, description: 'Number of rounds in level' },
+      { key: 'towersPerRound', min: 2, max: 3, description: 'Towers per round' },
     ],
-    layoutClass: 'layout-embedded-math',
+    layoutClass: 'layout-tower-dualzone',
     isNew: false,
   },
 })

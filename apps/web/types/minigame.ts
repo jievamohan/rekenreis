@@ -5,7 +5,7 @@ export type MinigameId =
   | 'treasure-dive'
   | 'fish-feed'
   | 'memory-match'
-  | 'shell-collector'
+  | 'bouw-de-toren'
   | 'starfish-match'
 
 export const MINIGAME_IDS: readonly MinigameId[] = [
@@ -13,7 +13,7 @@ export const MINIGAME_IDS: readonly MinigameId[] = [
   'treasure-dive',
   'fish-feed',
   'memory-match',
-  'shell-collector',
+  'bouw-de-toren',
   'starfish-match',
 ] as const
 
@@ -67,6 +67,7 @@ export type LayoutClass =
   | 'layout-match-grid'
   | 'layout-sequence-track'
   | 'layout-route-canvas'
+  | 'layout-tower-dualzone'
 
 export const LAYOUT_CLASSES: readonly LayoutClass[] = [
   'layout-float-field',
@@ -79,6 +80,7 @@ export const LAYOUT_CLASSES: readonly LayoutClass[] = [
   'layout-match-grid',
   'layout-sequence-track',
   'layout-route-canvas',
+  'layout-tower-dualzone',
 ] as const
 
 export interface TimerPolicy {
