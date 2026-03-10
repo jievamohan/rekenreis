@@ -21,4 +21,7 @@ COPY . .
 RUN composer dump-autoload
 EXPOSE 8000
 
+RUN adduser -D -g '' appuser && chown -R appuser:appuser /app
+USER appuser
+
 CMD ["sh", "-c", "sleep 5 && php artisan migrate --force && exec php artisan serve --host=0.0.0.0"]

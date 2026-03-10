@@ -83,7 +83,10 @@ services:
       - ./:/repo
 
   e2e:
-    image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    build:
+      context: ./docker/e2e
+      dockerfile: Dockerfile
+    image: rekenreis-e2e:latest
     working_dir: /repo/apps/web
     volumes:
       - ./:/repo

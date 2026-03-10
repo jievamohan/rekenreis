@@ -1,7 +1,8 @@
 # PR gate override: use prebuilt GHCR images only. No build, no volume mounts.
-# Used by e2e-container job. Images published by publish-images workflow.
+# pull_policy: if_not_present prevents re-pull during up (we pull explicitly first).
 services:
   web:
+    pull_policy: if_not_present
     image: ghcr.io/jievamohan/rekenreis/web:latest
     user: "1000:1000"
     working_dir: /app
@@ -12,9 +13,14 @@ services:
 
   api:
     image: ghcr.io/jievamohan/rekenreis/api:latest
+    pull_policy: if_not_present
+
+  mysql:
+    pull_policy: if_not_present
 
   e2e:
     image: ghcr.io/jievamohan/rekenreis/e2e:latest
+    pull_policy: if_not_present
     working_dir: /app
     volumes:
       - ./apps/web/playwright-report:/app/playwright-report

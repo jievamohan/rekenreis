@@ -4,6 +4,16 @@
 
 Web, API, and E2E images are prebuilt and published to GHCR. The PR Playwright gate pulls these images and does not build locally.
 
+## GHCR permissions (organization repos)
+
+If you see `denied: installation not allowed to Create organization package`:
+
+1. Go to **Organization** → Settings → Actions → General
+2. Under "Workflow permissions", select **Read and write permissions**
+3. Save
+
+This allows `GITHUB_TOKEN` to push images to `ghcr.io/<org>/<repo>/*`.
+
 ## Bootstrap
 
 Before the first PR can pass the e2e gate, images must exist in GHCR. Either:
