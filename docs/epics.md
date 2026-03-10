@@ -2014,7 +2014,7 @@ Acceptance:
 ---
 
 ## Epic 33.2 — Result Modal: Stats (Score, Tijd, Combo, XP)
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-33.md
 - archive: artifacts/archive/epic-33.0/latest
