@@ -1,0 +1,23 @@
+# PR gate override: use prebuilt GHCR images only. No build, no volume mounts.
+# Used by e2e-container job. Images published by publish-images workflow.
+services:
+  web:
+    image: ghcr.io/jievamohan/rekenreis/web:latest
+    user: "1000:1000"
+    working_dir: /app
+    command: pnpm run dev --host 0.0.0.0
+    volumes: []
+    environment:
+      - NUXT_PUBLIC_API_URL=http://api:8000
+
+  api:
+    image: ghcr.io/jievamohan/rekenreis/api:latest
+
+  e2e:
+    image: ghcr.io/jievamohan/rekenreis/e2e:latest
+    working_dir: /app
+    volumes:
+      - ./apps/web/playwright-report:/app/playwright-report
+    environment:
+      - CI=true
+      - BASE_URL=http://web:3000
