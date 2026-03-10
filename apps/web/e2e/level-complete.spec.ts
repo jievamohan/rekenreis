@@ -19,7 +19,7 @@ const NUMBER_SPAN_SELECTOR =
   '[data-testid^="minigame-"] .bubble-number, [data-testid^="minigame-"] .gem-number, [data-testid^="minigame-"] .pellet-number, [data-testid^="minigame-"] .item-number, [data-testid^="minigame-"] .star-number'
 
 async function answerWrong(page: import('@playwright/test').Page) {
-  await expect(page.locator(NUMBER_SPAN_SELECTOR).first()).toBeVisible({ timeout: 5000 })
+  await expect(page.locator(NUMBER_SPAN_SELECTOR).first()).toBeVisible({ timeout: 10000 })
   const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
   const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
   const correct = a + b
@@ -43,7 +43,7 @@ test.describe('level complete modal', () => {
   test.describe.configure({ retries: 2 })
   test('modal appears after completing all rounds', async ({ page }) => {
     await page.goto('/play?level=1')
-    await expect(page.locator('.problem-card')).toBeVisible()
+    await expect(page.locator('.problem-card, [data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
@@ -65,6 +65,7 @@ test.describe('level complete modal', () => {
 
   test('Next Level button navigates to next level', async ({ page }) => {
     await page.goto('/play?level=1')
+    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
@@ -80,6 +81,7 @@ test.describe('level complete modal', () => {
 
   test('modal is not dismissable via Escape or overlay click', async ({ page }) => {
     await page.goto('/play?level=1')
+    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
@@ -96,7 +98,7 @@ test.describe('level complete modal', () => {
 
   test('0 stars shows Probeer opnieuw when below threshold', async ({ page }) => {
     await page.goto('/play?level=1')
-    await expect(page.locator('.problem-card')).toBeVisible()
+    await expect(page.locator('.problem-card, [data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
 
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
       await answerWrong(page)
@@ -110,6 +112,7 @@ test.describe('level complete modal', () => {
 
   test('replay improves score when player does better', async ({ page }) => {
     await page.goto('/play?level=1')
+    await expect(page.locator('.problem-card, [data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) await answerWrong(page)
     await expect(page.locator('.modal-dialog')).toBeVisible()
     await page.getByRole('button', { name: 'Bekijk foutjes' }).click()

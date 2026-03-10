@@ -448,6 +448,9 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: baseline;
   gap: 0.25em;
+  background: rgba(0, 77, 64, 0.06);
+  padding: 0.25em 0.5em;
+  border-radius: var(--app-radius-sm);
 }
 
 .stat-label {
