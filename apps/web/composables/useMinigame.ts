@@ -98,21 +98,19 @@ registerMinigame({
 })
 
 registerMinigame({
-  id: 'submarine-sort',
-  component: () => import('~/components/minigames/MinigameSubmarineSort.vue'),
+  id: 'shell-collector',
+  component: () => import('~/components/minigames/MinigameShellCollector.vue'),
   difficultyKnobs: {
-    compartmentCount: { min: 2, max: 3 },
-    itemCount: { min: 3, max: 5 },
+    shellTargetBonus: { min: 0, max: 2 },
   },
   contractV2: {
-    interactionType: 'sort-into-bins',
-    requiredInputs: ['pointer', 'drag', 'keyboard'],
+    interactionType: 'tap-to-increment',
+    requiredInputs: ['pointer', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'compartmentCount', min: 2, max: 3, description: 'Number of sorting compartments' },
-      { key: 'itemCount', min: 3, max: 5, description: 'Number of items to sort' },
+      { key: 'shellTargetBonus', min: 0, max: 2, description: 'Extra shells to add for harder levels' },
     ],
-    layoutClass: 'layout-sort-bins',
+    layoutClass: 'layout-embedded-math',
     isNew: false,
   },
 })

@@ -5,7 +5,7 @@ export type MinigameId =
   | 'treasure-dive'
   | 'fish-feed'
   | 'memory-match'
-  | 'submarine-sort'
+  | 'shell-collector'
   | 'starfish-match'
 
 export const MINIGAME_IDS: readonly MinigameId[] = [
@@ -13,7 +13,7 @@ export const MINIGAME_IDS: readonly MinigameId[] = [
   'treasure-dive',
   'fish-feed',
   'memory-match',
-  'submarine-sort',
+  'shell-collector',
   'starfish-match',
 ] as const
 
@@ -25,6 +25,7 @@ export interface MinigameDifficultyKnobs {
 
 export type InteractionType =
   | 'tap-choice'
+  | 'tap-to-increment'
   | 'drag-drop'
   | 'swipe-match'
   | 'timed-pop'
@@ -35,6 +36,7 @@ export type InteractionType =
 
 export const INTERACTION_TYPES: readonly InteractionType[] = [
   'tap-choice',
+  'tap-to-increment',
   'drag-drop',
   'swipe-match',
   'timed-pop',
@@ -60,6 +62,7 @@ export type LayoutClass =
   | 'layout-drag-reef'
   | 'layout-pop-field'
   | 'layout-tap-scene'
+  | 'layout-embedded-math'
   | 'layout-sort-bins'
   | 'layout-match-grid'
   | 'layout-sequence-track'
@@ -71,6 +74,7 @@ export const LAYOUT_CLASSES: readonly LayoutClass[] = [
   'layout-drag-reef',
   'layout-pop-field',
   'layout-tap-scene',
+  'layout-embedded-math',
   'layout-sort-bins',
   'layout-match-grid',
   'layout-sequence-track',

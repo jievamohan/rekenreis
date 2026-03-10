@@ -462,7 +462,7 @@ onUnmounted(() => {
       <div ref="gameMainRef" id="game-main" class="keypad-stage" tabindex="-1">
         <template v-if="game.question.value">
           <ProblemCard
-            v-if="currentMinigameId !== 'memory-match'"
+            v-if="currentMinigameId !== 'memory-match' && currentMinigameId !== 'shell-collector'"
             :a="game.question.value.a"
             :b="game.question.value.b"
             :answer="''"
