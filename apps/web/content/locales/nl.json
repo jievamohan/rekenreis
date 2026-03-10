@@ -80,9 +80,9 @@
     "nextLevel": "Volgend level",
     "reviewMistakes": "Bekijk foutjes",
     "retry": "Nog een keer",
-    "scoreLabel": "SCORE",
-    "timeLabel": "TIJD",
-    "comboLabel": "COMBO",
+    "scoreLabel": "Score",
+    "timeLabel": "Tijd",
+    "comboLabel": "Combo",
     "xpLabel": "XP"
   },
   "mistakesReview": {

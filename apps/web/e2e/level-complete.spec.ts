@@ -55,6 +55,12 @@ test.describe('level complete modal', () => {
     await expect(page.locator('.mascot')).toBeVisible()
     await expect(page.locator('.star-svg')).toHaveCount(3)
     await expect(page.locator('.modal-title')).toContainText('Level Voltooid!')
+    // Supports both stat-item (new) and stat-capsule (legacy) — CI may run against pre-built main image
+    await expect(page.locator('.stat-item, .stat-capsule')).toHaveCount(4)
+    await expect(page.locator('.modal-footer-stats')).toContainText(/score/i)
+    await expect(page.locator('.modal-footer-stats')).toContainText(/tijd/i)
+    await expect(page.locator('.modal-footer-stats')).toContainText(/combo/i)
+    await expect(page.locator('.modal-footer-stats')).toContainText(/xp/i)
   })
 
   test('Next Level button navigates to next level', async ({ page }) => {
