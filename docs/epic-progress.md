@@ -60,3 +60,4 @@
 | Epic 31.4 — Polish & E2E | done | PR #129 merged |
 | Epic 32.1 — Shell Collector: Core Mechanic + Assets | done | PR #132 merged |
 | Epic 32.2 — Shell Collector: Integration | done | PR #134 merged |
+| Epic 32.3 — Shell Collector: E2E + Polish | done | PR #136 merged |

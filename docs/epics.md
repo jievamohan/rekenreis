@@ -1959,7 +1959,7 @@ Acceptance:
 ---
 
 ## Epic 32.3 — Shell Collector: E2E + Polish
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-32.md
 - archive: artifacts/archive/epic-32.0/latest
