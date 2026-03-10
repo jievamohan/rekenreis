@@ -2040,7 +2040,7 @@ Acceptance:
 ---
 
 ## Epic 33.3 — Result Modal: Polish + E2E
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-33.md
 - archive: artifacts/archive/epic-33.0/latest
