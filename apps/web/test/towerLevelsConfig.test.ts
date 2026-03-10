@@ -8,8 +8,6 @@ function isValidTowerLevelConfig(c: unknown): c is TowerLevelConfig {
   return (
     typeof o.rounds === 'number' &&
     o.rounds > 0 &&
-    typeof o.towersPerRound === 'number' &&
-    o.towersPerRound > 0 &&
     Array.isArray(o.targetRange) &&
     o.targetRange.length === 2 &&
     typeof o.blockPoolSize === 'number' &&

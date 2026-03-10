@@ -101,16 +101,14 @@ registerMinigame({
   id: 'bouw-de-toren',
   component: () => import('~/components/minigames/MinigameBouwDeToren.vue'),
   difficultyKnobs: {
-    rounds: { min: 3, max: 7 },
-    towersPerRound: { min: 2, max: 3 },
+    rounds: { min: 6, max: 21 },
   },
   contractV2: {
     interactionType: 'drag-drop',
     requiredInputs: ['pointer', 'drag', 'keyboard'],
     timerPolicy: null,
     uniqueDifficultyKnobs: [
-      { key: 'rounds', min: 3, max: 7, description: 'Number of rounds in level' },
-      { key: 'towersPerRound', min: 2, max: 3, description: 'Towers per round' },
+      { key: 'rounds', min: 6, max: 21, description: 'Number of towers (rounds) in level' },
     ],
     layoutClass: 'layout-tower-dualzone',
     isNew: false,

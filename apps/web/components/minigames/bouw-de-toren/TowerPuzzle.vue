@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import type { TowerPuzzle as TowerPuzzleType } from '~/types/tower'
 import { useI18n } from '~/composables/useI18n'
 
 import towerIcon from '~/assets/graphics/minigames/bouw-de-toren/tower.svg'
 
+const ghostEl = ref<HTMLDivElement | null>(null)
+
 const props = withDefaults(
   defineProps<{
     puzzle: TowerPuzzleType
-    towersPerRound?: number
-    currentTowerIndex?: number
+    totalRounds?: number
+    currentRoundIndex?: number
+    /** When true, blocks and zones are not interactive (e.g. waiting for next puzzle) */
+    frozen?: boolean
+    /** When true, current tower is shown as active (after answer, waiting for next) */
+    roundComplete?: boolean
   }>(),
-  { towersPerRound: 2, currentTowerIndex: 0 }
+  { totalRounds: 1, currentRoundIndex: 0, frozen: false, roundComplete: false }
 )
 
 const emit = defineEmits<{
@@ -27,6 +33,8 @@ const selectedBlock = ref<number | null>(null)
 const focusedZone = ref<1 | 2 | null>(null)
 const isDragging = ref(false)
 const dragBlock = ref<number | null>(null)
+/** When dragging from a drop zone, which zone (1 or 2); null when dragging from pool */
+const dragSourceZone = ref<1 | 2 | null>(null)
 const dragPos = ref({ x: 0, y: 0 })
 const wrongShake = ref(false)
 const correctFeedback = ref<{ a: number; b: number; sum: number } | null>(null)
@@ -37,46 +45,41 @@ const prefersReducedMotion = computed(() => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 })
 
-const blocksInPool = computed(() => {
-  const placed = new Set([zone1.value, zone2.value].filter((x): x is number => x !== null))
-  return props.puzzle.blocks.filter((b) => !placed.has(b))
-})
+const placedSet = computed(() =>
+  new Set([zone1.value, zone2.value].filter((x): x is number => x !== null))
+)
 
-/** Display list: blocks with placeholder slots when dragging, to prevent layout shift */
+/** Display list: all blocks; placeholder when placed or when dragging (show dashed slot as soon as block is picked up) */
 const blocksDisplay = computed(() =>
-  blocksInPool.value.map((block) => ({
-    value: block,
-    isPlaceholder: isDragging.value && block === dragBlock.value,
-  }))
+  props.puzzle.blocks.map((block) => {
+    const isPlaced = placedSet.value.has(block)
+    const isDraggingThis = isDragging.value && block === dragBlock.value
+    return {
+      value: block,
+      isPlaceholder: isPlaced || isDraggingThis,
+      isDraggingThis,
+      inPool: !isPlaced,
+    }
+  })
 )
 
 const canSubmit = computed(
   () => zone1.value !== null && zone2.value !== null && correctFeedback.value === null
 )
 
-let correctFeedbackTimeout: ReturnType<typeof setTimeout> | null = null
-
 function validateAndSubmit() {
   if (!canSubmit.value || correctFeedback.value !== null) return
   const sum = zone1.value! + zone2.value!
   if (sum === props.puzzle.target) {
     correctFeedback.value = { a: zone1.value!, b: zone2.value!, sum }
-    correctFeedbackTimeout = setTimeout(() => {
-      correctFeedback.value = null
-      zone1.value = null
-      zone2.value = null
-      emit('correct')
-      correctFeedbackTimeout = null
-    }, prefersReducedMotion.value ? 0 : 300)
+    emit('correct')
+    // State stays frozen: zones and correctFeedback remain until parent loads next puzzle
   } else {
     wrongShake.value = true
     const duration = prefersReducedMotion.value ? 0 : 300
-    setTimeout(() => {
-      zone1.value = null
-      zone2.value = null
-      wrongShake.value = false
-      emit('wrong')
-    }, duration)
+    setTimeout(() => { wrongShake.value = false }, duration)
+    emit('wrong')
+    // State stays frozen: zones remain filled until parent loads next puzzle
   }
 }
 
@@ -107,15 +110,32 @@ function onZoneKeydown(zone: 1 | 2, e: KeyboardEvent) {
   }
 }
 
-function onBlockPointerDown(value: number, e: PointerEvent) {
+function updateGhostPos(x: number, y: number, offsetX: number, offsetY: number) {
+  const el = ghostEl.value
+  if (el) {
+    el.style.left = `${x - offsetX}px`
+    el.style.top = `${y - offsetY}px`
+  }
+}
+
+function onBlockPointerDown(value: number, e: PointerEvent, sourceZone?: 1 | 2) {
+  if (props.frozen) return
   e.preventDefault()
+  const target = e.target as HTMLElement
+  const rect = target.getBoundingClientRect()
+  const grabOffsetX = e.clientX - rect.left
+  const grabOffsetY = e.clientY - rect.top
   dragBlock.value = value
+  dragSourceZone.value = sourceZone ?? null
   isDragging.value = true
   dragPos.value = { x: e.clientX, y: e.clientY }
-  ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+  updateGhostPos(e.clientX, e.clientY, grabOffsetX, grabOffsetY)
+  if (ghostEl.value) ghostEl.value.textContent = String(value)
+  target.setPointerCapture(e.pointerId)
   const boundMove = (ev: PointerEvent) => {
     if (isDragging.value) {
       dragPos.value = { x: ev.clientX, y: ev.clientY }
+      updateGhostPos(ev.clientX, ev.clientY, grabOffsetX, grabOffsetY)
       const pad = 50
       const zones = [
         document.querySelector('[data-drop-zone="1"]')?.getBoundingClientRect(),
@@ -135,130 +155,167 @@ function onBlockPointerDown(value: number, e: PointerEvent) {
       highlightedZone.value = found
     }
   }
+  function endDrag() {
+    if (!isDragging.value) return
+    isDragging.value = false
+    dragBlock.value = null
+    dragSourceZone.value = null
+    highlightedZone.value = null
+    document.removeEventListener('pointermove', boundMove)
+    document.removeEventListener('pointerup', boundUp)
+    document.removeEventListener('pointercancel', boundUp)
+    target.removeEventListener('lostpointercapture', onLostCapture)
+  }
+
   const boundUp = (ev: PointerEvent) => {
-    if (!isDragging.value || dragBlock.value === null) return
+    if (dragBlock.value === null) return
+    const block = dragBlock.value
+    const sourceZone = dragSourceZone.value
     const pad = 50
     const zones = [
       document.querySelector('[data-drop-zone="1"]')?.getBoundingClientRect(),
       document.querySelector('[data-drop-zone="2"]')?.getBoundingClientRect(),
     ]
+    let droppedOnZone = false
     for (let i = 0; i < 2; i++) {
       const rect = zones[i]
       if (rect && ev.clientX >= rect.left - pad && ev.clientX <= rect.right + pad &&
           ev.clientY >= rect.top - pad && ev.clientY <= rect.bottom + pad) {
         const z = (i + 1) as 1 | 2
-        if (z === 1 && zone1.value === null) {
-          zone1.value = dragBlock.value
-        } else if (z === 2 && zone2.value === null) {
-          zone2.value = dragBlock.value
+        const isSameZone = sourceZone === z
+        if (z === 1 && (zone1.value === null || isSameZone)) {
+          zone1.value = block
+          if (sourceZone === 2) zone2.value = null
+          droppedOnZone = true
+        } else if (z === 2 && (zone2.value === null || isSameZone)) {
+          zone2.value = block
+          if (sourceZone === 1) zone1.value = null
+          droppedOnZone = true
         }
         break
       }
     }
+    if (!droppedOnZone && sourceZone !== null) {
+      if (sourceZone === 1) zone1.value = null
+      else if (sourceZone === 2) zone2.value = null
+    }
     if (canSubmit.value) validateAndSubmit()
+    endDrag()
+  }
+
+  const onLostCapture = () => {
+    // Don't call endDrag here: lostpointercapture often fires before pointerup when
+    // dropping on a zone, which would clear dragBlock before boundUp can process the drop.
+    // Only hide the ghost and stop move tracking; let boundUp do the full cleanup.
+    if (!isDragging.value) return
     isDragging.value = false
-    dragBlock.value = null
     highlightedZone.value = null
     document.removeEventListener('pointermove', boundMove)
-    document.removeEventListener('pointerup', boundUp)
+    target.removeEventListener('lostpointercapture', onLostCapture)
   }
+
   document.addEventListener('pointermove', boundMove)
   document.addEventListener('pointerup', boundUp, { once: true })
+  document.addEventListener('pointercancel', boundUp, { once: true })
+  target.addEventListener('lostpointercapture', onLostCapture, { once: true })
 }
-
-onBeforeUnmount(() => {
-  if (correctFeedbackTimeout) clearTimeout(correctFeedbackTimeout)
-})
 </script>
 
 <template>
   <div
     class="tower-puzzle"
+    :class="{ 'tower-puzzle-frozen': frozen }"
     data-testid="tower-puzzle"
     role="group"
     :aria-label="t('minigameBouwDeToren.puzzleLabel', { target: puzzle.target })"
   >
+    <div class="towers-progress" role="group" :aria-label="t('minigameBouwDeToren.towersProgress')">
+      <div
+        v-for="idx in totalRounds"
+        :key="`tower-${idx - 1}`"
+        class="tower-progress-slot"
+        :class="{
+          'tower-progress-completed': idx - 1 < currentRoundIndex,
+          'tower-progress-active': roundComplete && idx - 1 === currentRoundIndex,
+          'tower-progress-inactive': idx - 1 > currentRoundIndex || (idx - 1 === currentRoundIndex && !roundComplete)
+        }"
+        role="img"
+        :aria-label="idx - 1 < currentRoundIndex ? t('minigameBouwDeToren.towerCompleted') : idx - 1 === currentRoundIndex ? t('minigameBouwDeToren.towerActive') : t('minigameBouwDeToren.towerPending')"
+      >
+        <img :src="towerIcon" alt="" class="tower-progress-icon" aria-hidden="true" width="48" height="60" />
+      </div>
+    </div>
     <div class="target-row">
-      <img :src="towerIcon" alt="" class="tower-icon" aria-hidden="true" width="48" height="60" />
+      <img :src="towerIcon" alt="" class="tower-icon" aria-hidden="true" width="56" height="70" />
       <div class="target-display" aria-live="polite">
         {{ puzzle.target }}
       </div>
     </div>
-    <div
-      v-if="correctFeedback"
-      class="correct-feedback"
-      role="status"
-      aria-live="polite"
-      :data-testid="'correct-sum'"
-    >
-      {{ t('minigameBouwDeToren.sumCorrect', correctFeedback) }}
-    </div>
-    <div class="towers-row">
-      <template v-for="(_, idx) in towersPerRound" :key="idx">
-        <div
-          v-if="idx < currentTowerIndex"
-          class="tower-slot tower-slot-completed"
-          role="img"
-          :aria-label="t('minigameBouwDeToren.towerCompleted')"
-        >
-          <span class="tower-check" aria-hidden="true">✓</span>
-        </div>
-        <template v-else-if="idx === currentTowerIndex">
-          <div class="dropzones">
-            <div
-              data-drop-zone="1"
-              class="dropzone"
-              :class="{ filled: zone1 !== null && !correctFeedback, wrongShake, highlight: highlightedZone === 1 }"
-              role="button"
-              tabindex="0"
-              :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 1, value: zone1 ?? '' })"
-              @focus="onZoneFocus(1)"
-              @keydown="onZoneKeydown(1, $event)"
-            >
-              <span v-if="zone1 !== null" class="zone-value">{{ zone1 }}</span>
+    <div class="dropzones-row">
+      <div class="dropzones">
+              <div
+                data-drop-zone="1"
+                class="dropzone"
+                :class="{ filled: zone1 !== null, wrongShake, highlight: highlightedZone === 1 }"
+                role="button"
+                tabindex="0"
+                :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 1, value: zone1 ?? '' })"
+                @focus="onZoneFocus(1)"
+                @keydown="onZoneKeydown(1, $event)"
+              >
+                <span
+                  v-if="zone1 !== null && !(isDragging && dragBlock === zone1)"
+                  class="zone-value zone-value-draggable"
+                  @pointerdown.stop="onBlockPointerDown(zone1!, $event, 1)"
+                >{{ zone1 }}</span>
+              </div>
+              <span class="plus" aria-hidden="true">+</span>
+              <div
+                data-drop-zone="2"
+                class="dropzone"
+                :class="{ filled: zone2 !== null, wrongShake, highlight: highlightedZone === 2 }"
+                role="button"
+                tabindex="0"
+                :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 2, value: zone2 ?? '' })"
+                @focus="onZoneFocus(2)"
+                @keydown="onZoneKeydown(2, $event)"
+              >
+                <span
+                  v-if="zone2 !== null && !(isDragging && dragBlock === zone2)"
+                  class="zone-value zone-value-draggable"
+                  @pointerdown.stop="onBlockPointerDown(zone2!, $event, 2)"
+                >{{ zone2 }}</span>
+              </div>
             </div>
-            <span class="plus" aria-hidden="true">+</span>
-            <div
-              data-drop-zone="2"
-              class="dropzone"
-              :class="{ filled: zone2 !== null && !correctFeedback, wrongShake, highlight: highlightedZone === 2 }"
-              role="button"
-              tabindex="0"
-              :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 2, value: zone2 ?? '' })"
-              @focus="onZoneFocus(2)"
-              @keydown="onZoneKeydown(2, $event)"
-            >
-              <span v-if="zone2 !== null" class="zone-value">{{ zone2 }}</span>
-            </div>
-          </div>
-        </template>
-        <div
-          v-else
-          class="tower-slot tower-slot-ghost"
-          aria-hidden="true"
-        >
-          <span class="tower-placeholder">+</span>
-        </div>
-      </template>
     </div>
-    <div v-if="isDragging && dragBlock !== null" class="block-ghost" :style="{ left: `${dragPos.x}px`, top: `${dragPos.y}px` }" aria-hidden="true">
-      {{ dragBlock }}
-    </div>
+    <Teleport to="body">
+      <div
+        v-show="isDragging && dragBlock !== null"
+        ref="ghostEl"
+        class="block-ghost"
+        aria-hidden="true"
+      >
+        {{ dragBlock ?? '' }}
+      </div>
+    </Teleport>
     <div class="blocks-pool" role="group" :aria-label="t('minigameBouwDeToren.blocksLabel')">
       <template v-for="(item, i) in blocksDisplay" :key="`${item.value}-${i}`">
-        <div v-if="item.isPlaceholder" class="block block-placeholder" aria-hidden="true" />
-        <button
-          v-else
-          class="block"
-          :class="{ selected: selectedBlock === item.value }"
-          :aria-label="t('minigameBouwDeToren.blockLabel', { value: item.value })"
-          :aria-pressed="selectedBlock === item.value"
-          @pointerdown="onBlockPointerDown(item.value, $event)"
-          @keydown.enter.prevent="onBlockSelect(item.value)"
-          @keydown.space.prevent="onBlockSelect(item.value)"
-        >
-          {{ item.value }}
-        </button>
+        <div class="block-slot">
+          <div v-if="item.isPlaceholder" class="block block-placeholder" aria-hidden="true" />
+          <button
+            v-else
+            class="block"
+            :class="{ selected: selectedBlock === item.value, 'block-dragging': item.isDraggingThis }"
+            :aria-label="t('minigameBouwDeToren.blockLabel', { value: item.value })"
+            :aria-pressed="selectedBlock === item.value"
+            :aria-hidden="item.isDraggingThis"
+            @pointerdown="onBlockPointerDown(item.value, $event)"
+            @keydown.enter.prevent="onBlockSelect(item.value)"
+            @keydown.space.prevent="onBlockSelect(item.value)"
+          >
+            {{ item.value }}
+          </button>
+        </div>
       </template>
     </div>
   </div>
@@ -276,6 +333,10 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
+.tower-puzzle-frozen {
+  pointer-events: none;
+}
+
 .target-row {
   display: flex;
   align-items: center;
@@ -288,50 +349,45 @@ onBeforeUnmount(() => {
 }
 
 .target-display {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
   color: var(--app-text, #1a1a2e);
 }
 
-.towers-row {
+.towers-progress {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
   justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.tower-slot {
-  width: 56px;
-  height: 56px;
-  min-width: 56px;
-  min-height: 56px;
-  border-radius: 8px;
+.tower-progress-slot {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.tower-slot-completed {
-  background: var(--app-node-unlocked, #e3f2fd);
-  border: 2px solid var(--app-primary, #4fc3f7);
+.tower-progress-icon {
+  display: block;
 }
 
-.tower-check {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--app-primary, #4fc3f7);
+.tower-progress-completed .tower-progress-icon,
+.tower-progress-active .tower-progress-icon {
+  opacity: 1;
+  filter: none;
 }
 
-.tower-slot-ghost {
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px dashed var(--app-map-path-edge, #999);
-  opacity: 0.6;
+.tower-progress-inactive .tower-progress-icon {
+  opacity: 0.25;
+  filter: grayscale(1);
 }
 
-.tower-placeholder {
-  font-size: 1rem;
-  color: var(--app-map-path-edge, #999);
+.dropzones-row {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
 }
 
 .dropzones {
@@ -357,6 +413,7 @@ onBeforeUnmount(() => {
 .dropzone.filled {
   border-style: solid;
   background: var(--app-node-unlocked, #e3f2fd);
+  --zone-value-text: #01242b;
 }
 
 .dropzone.highlight {
@@ -381,17 +438,22 @@ onBeforeUnmount(() => {
   75% { transform: translateX(6px); }
 }
 
-.correct-feedback {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--app-primary, #4fc3f7);
-  padding: 0.5rem;
-}
-
 .zone-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--app-text, #1a1a2e);
+  color: var(--zone-value-text, var(--app-text, #01242b));
+}
+
+.zone-value-draggable {
+  cursor: grab;
+  display: inline-block;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 4px;
+}
+
+.zone-value-draggable:active {
+  cursor: grabbing;
 }
 
 .plus {
@@ -403,8 +465,6 @@ onBeforeUnmount(() => {
   position: fixed;
   width: 48px;
   height: 48px;
-  margin-left: -24px;
-  margin-top: -24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -424,11 +484,27 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
-.block {
+.block-slot {
+  flex-shrink: 0;
   width: 48px;
   height: 48px;
   min-width: 48px;
   min-height: 48px;
+  position: relative;
+}
+
+.block-slot .block {
+  position: absolute;
+  inset: 0;
+}
+
+.block {
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -441,8 +517,8 @@ onBeforeUnmount(() => {
   transition: transform 0.15s ease;
 }
 
-.block:not(:disabled):hover,
-.block:not(:disabled):focus-visible {
+.block:not(:disabled):hover:not(.block-dragging),
+.block:not(:disabled):focus-visible:not(.block-dragging) {
   transform: scale(1.05);
 }
 
@@ -451,11 +527,23 @@ onBeforeUnmount(() => {
   outline-offset: 2px;
 }
 
+.block-dragging {
+  visibility: hidden;
+  pointer-events: none;
+  transform: none;
+}
+
 .block-placeholder {
-  border-style: dashed;
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 2px dashed var(--app-map-path-edge, #999);
+  border-radius: 8px;
   background: transparent;
   cursor: default;
-  visibility: visible;
 }
 
 .block:disabled {

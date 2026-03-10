@@ -55,16 +55,12 @@ export function generateTowerLevel(
   let s = seed
 
   for (let r = 0; r < config.rounds; r++) {
-    const roundPuzzles: TowerPuzzle[] = []
-    for (let t = 0; t < config.towersPerRound; t++) {
-      const puzzle = generateTowerPuzzle(
-        s++,
-        config.targetRange,
-        config.blockPoolSize
-      )
-      roundPuzzles.push(puzzle)
-    }
-    rounds.push(roundPuzzles)
+    const puzzle = generateTowerPuzzle(
+      s++,
+      config.targetRange,
+      config.blockPoolSize
+    )
+    rounds.push([puzzle])
   }
 
   return rounds
