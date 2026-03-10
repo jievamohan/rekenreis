@@ -1987,7 +1987,7 @@ Acceptance:
 ---
 
 ## Epic 33.1 — Result Modal: Layout + Non-dismissable
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-33.md
 - archive: artifacts/archive/epic-33.0/latest
