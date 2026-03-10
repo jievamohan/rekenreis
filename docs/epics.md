@@ -2229,7 +2229,7 @@ Acceptance:
 ---
 
 ## Epic 35.1 — Bouw de Toren: Finetune
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-35.md
 - archive: artifacts/archive/epic-35.0/latest
