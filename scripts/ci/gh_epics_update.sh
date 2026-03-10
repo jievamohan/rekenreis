@@ -105,4 +105,11 @@ git fetch origin "$BASE"
 git checkout "$BASE"
 git pull origin "$BASE"
 
+# 9) Delete local feature branch (remote already deleted by GitHub)
+HEAD_REF="$(gh pr view "$EPIC_PR_NUM" --json headRefName -q .headRefName 2>/dev/null || true)"
+FEATURE_BRANCH="${HEAD_REF#*:}"  # strip "owner:" for fork PRs
+if [[ -n "$FEATURE_BRANCH" ]] && git show-ref --quiet refs/heads/"$FEATURE_BRANCH" 2>/dev/null; then
+  git branch -d "$FEATURE_BRANCH" 2>/dev/null || true
+fi
+
 echo "Epics update complete. Epic $EPIC_ID marked done. On $BASE, ready for next epic."
