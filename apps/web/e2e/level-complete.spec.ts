@@ -54,7 +54,7 @@ test.describe('level complete modal', () => {
     await expect(page.locator('.modal-dialog')).toBeVisible()
     await expect(page.locator('.mascot')).toBeVisible()
     await expect(page.locator('.star-svg')).toHaveCount(3)
-    await expect(page.locator('.modal-title')).toContainText('Level 1 voltooid!')
+    await expect(page.locator('.modal-title')).toContainText('Level Voltooid!')
   })
 
   test('Next Level button navigates to next level', async ({ page }) => {
@@ -72,6 +72,22 @@ test.describe('level complete modal', () => {
     await expect(page).toHaveURL(/level=2/)
   })
 
+  test('modal is not dismissable via Escape or overlay click', async ({ page }) => {
+    await page.goto('/play?level=1')
+
+    for (let round = 0; round < ROUNDS_PER_LEVEL; round++) {
+      const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
+      const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
+      await answerCurrentQuestion(page, a + b)
+    }
+
+    await expect(page.locator('.modal-dialog')).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(page.locator('.modal-dialog')).toBeVisible()
+    await page.locator('.modal-overlay').click({ position: { x: 10, y: 10 } })
+    await expect(page.locator('.modal-dialog')).toBeVisible()
+  })
+
   test('0 stars shows Probeer opnieuw when below threshold', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card')).toBeVisible()
@@ -81,7 +97,7 @@ test.describe('level complete modal', () => {
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible()
-    await expect(page.locator('.modal-message')).toContainText('Probeer opnieuw')
+    await expect(page.locator('.performance-bar')).toContainText('Probeer opnieuw')
     const earnedStars = await page.locator('.star-svg.earned').count()
     expect(earnedStars).toBe(0)
   })
@@ -90,7 +106,7 @@ test.describe('level complete modal', () => {
     await page.goto('/play?level=1')
     for (let round = 0; round < ROUNDS_PER_LEVEL; round++) await answerWrong(page)
     await expect(page.locator('.modal-dialog')).toBeVisible()
-    await page.getByRole('button', { name: 'Fouten bekijken' }).click()
+    await page.getByRole('button', { name: 'Bekijk foutjes' }).click()
     await expect(page.locator('.mistakes-review')).toBeVisible()
     await page.getByRole('button', { name: 'Opnieuw proberen' }).click()
     await expect(page.locator('.problem-card')).toBeVisible()

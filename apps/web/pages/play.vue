@@ -241,8 +241,13 @@ function onBackToMap() {
   router.push('/map')
 }
 
-function onModalClose() {
+function onModalRetry() {
   showLevelComplete.value = false
+  clearMistakes()
+  roundIndex.value = 0
+  correctCount.value = 0
+  game.nextQuestion()
+  if (useMinigameMode.value) pickNextMinigame()
 }
 
 const sessionStatsSent = ref(false)
@@ -527,13 +532,19 @@ onUnmounted(() => {
       :open="showLevelComplete"
       :level="levelParam ?? 1"
       :stars="completedStars"
+      :correct-count="correctCount"
+      :rounds-total="roundsPerLevel"
       :has-mistakes="hasMistakes"
       :is-last-level="(levelParam ?? 1) >= totalLevels"
       :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
+      :score-percent="Math.round((correctCount / roundsPerLevel) * 100)"
+      time-formatted="00:00"
+      :combo-max="0"
+      :xp-gained="0"
       @back-to-map="onModalBackToMap"
       @next="onModalNext"
       @review-mistakes="onModalReviewMistakes"
-      @close="onModalClose"
+      @retry="onModalRetry"
     />
 
   </div>

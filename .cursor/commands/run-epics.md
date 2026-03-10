@@ -29,10 +29,10 @@ Protocol:
       - run tasks
       - finalize (squash + CI watch)
    d) Confirm PR exists by reading artifacts/current/pr-number.txt (or infer via gh).
-   e) Ensure CI is green for the PR:
-      - scripts/ci/gh_watch.sh host <PR_NUM>
+   e) Ensure CI is green for the PR (tuned for ~4 min CI):
+      - SLEEP=20 RETRIES=15 scripts/ci/gh_watch.sh host <PR_NUM>
    f) Enter WAIT MODE until merged:
-      - TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
+      - SLEEP=15 TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
    g) Once merged: run EPICS UPDATE flow (no squash):
       - scripts/ci/gh_epics_update.sh <EPIC_ID> <PR_NUM>
       - EPIC_ID: the epic just merged (e.g. 23.1 or Epic 23.1); PR_NUM: the merged feature PR number.
