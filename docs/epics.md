@@ -1899,7 +1899,7 @@ Acceptance:
 ---
 
 ## Epic 32.1 — Shell Collector: Core Mechanic + Assets
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-32.md
 - archive: artifacts/archive/epic-32.0/latest
