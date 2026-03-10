@@ -2119,7 +2119,7 @@ Acceptance:
 ---
 
 ## Epic 34.3 — Bouw de Toren: Error Flow + Feedback
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
