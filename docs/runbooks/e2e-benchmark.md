@@ -4,21 +4,20 @@
 
 The e2e-container job outputs duration per step to the job summary:
 
-| Step | Description | Typical (cache hit) |
-|------|-------------|---------------------|
-| Build images | docker buildx bake (web, api) | ~30–90s |
-| Start stack | docker compose up + wait | ~20–60s |
-| Run Playwright | e2e tests in container | ~30–60s |
+| Step | Description | Typical (cache hit) | Typical (cache miss) |
+|------|-------------|---------------------|----------------------|
+| Pull/Load images | docker pull or docker load | ~5–15s | ~60–80s |
+| Start stack | docker compose up + wait | ~15–25s | ~15–25s |
+| Run Playwright | e2e tests in container | ~35–45s | ~35–45s |
 
-**Spinup** = Build images + Start stack. **Target (Epic 24):** spinup nagenoeg instantaan via cache.
+**Spinup** = Pull/Load + Start. **Target:** < 60s total via image cache.
 
-### Build cache config (Epic 24.3)
+### Image cache (PR gate)
 
-- **Backend:** `type=gha` (GitHub Actions cache)
-- **Scope:** Separate per target (`scope=web`, `scope=api`) to avoid overwrites
-- **Mode:** `mode=max` exports all layers for better cache hits
-- Cache hit: layers show `CACHED` in build output; Build images step ~20–40s
-- Cache miss: full rebuild; first run on new branch typically misses
+- **No build in PR:** Images are prebuilt by `publish-images` workflow and pulled from GHCR.
+- **Cache:** `actions/cache` + `docker save`/`docker load` for web, api, e2e, mysql.
+- **Key:** `docker-e2e-stack-${{ base.sha }}` for PRs (re-run same PR = cache hit); unique for push to main.
+- **Cache hit:** Load from cache (~5–15s) instead of pull (~60–80s).
 
 ## Baseline (Epic 23.1)
 
@@ -69,11 +68,11 @@ bash scripts/ci/e2e-benchmark.sh
 | Slice | Change | Status |
 |-------|--------|--------|
 | 24.1 | Step timing in job summary | Done |
-| 24.2 | MySQL image cache (no pull on hit) | Done |
-| 24.3 | Build cache config documented | Done |
-| 24.4 | Parallel load Playwright + MySQL when both caches hit | Done |
+| 24.2 | Full stack image cache (web, api, e2e, mysql) | Done |
+| 24.3 | Pull-only PR gate (no build; GHCR images) | Done |
+| 24.4 | docker save/load cache for e2e job | Done |
 
-**Spinup (Build + Start) on cache hit:** ~30–60s (was ~1m30s without MySQL cache). Image loads run in parallel when both Playwright and MySQL caches hit.
+**Spinup on cache hit:** ~20–40s (pull+start). **On cache miss:** ~80–100s. Cache key = PR base sha; re-run same PR = cache hit.
 
 ## Epic 25 — Install Optimization (Final)
 
