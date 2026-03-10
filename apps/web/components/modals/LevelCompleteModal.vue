@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick, computed } from 'vue'
+
+const prefersReducedMotion = ref(false)
 import Confetti from '~/components/effects/Confetti.vue'
 import MascotIcon from '~/components/graphics/MascotIcon.vue'
 import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 import { useI18n } from '~/composables/useI18n'
 import { useMaatje } from '~/composables/useMaatje'
 import type { ExpressionId, MaatjeId } from '~/types/maatje'
+
+const MAATJE_IDS: MaatjeId[] = ['wolkje', 'een-oog-eerlijk', 'slimme-rekenaar']
 
 const { t } = useI18n()
 const { resolve } = useMaatje()
@@ -45,7 +49,8 @@ const maatjeExpression = computed<ExpressionId>(
   () => starToExpression[props.stars] ?? 'neutraal'
 )
 
-const maatjeSrc = computed(() => resolve(props.maatjeId, maatjeExpression.value))
+const displayedMaatjeId = ref<MaatjeId>(props.maatjeId)
+const maatjeSrc = computed(() => resolve(displayedMaatjeId.value, maatjeExpression.value))
 const showMaatje = computed(() => !!maatjeSrc.value)
 
 const emit = defineEmits<{
@@ -63,6 +68,7 @@ watch(() => props.open, async (isOpen) => {
   if (isOpen) {
     starVisible.value = []
     showConfetti.value = false
+    displayedMaatjeId.value = MAATJE_IDS[Math.floor(Math.random() * MAATJE_IDS.length)]!
     await nextTick()
     dialogRef.value?.focus()
 
@@ -102,18 +108,30 @@ function handleKeydown(e: KeyboardEvent) {
   }
 }
 
-onMounted(() => window.addEventListener('keydown', handleKeydown))
-onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
+let mq: MediaQueryList | null = null
+function onMqChange(e: MediaQueryListEvent) {
+  prefersReducedMotion.value = e.matches
+}
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+  mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+  prefersReducedMotion.value = mq.matches
+  mq.addEventListener('change', onMqChange)
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  mq?.removeEventListener('change', onMqChange)
+})
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="modal">
       <div v-if="open" class="modal-overlay">
-        <Confetti :active="showConfetti" />
+        <Confetti :active="showConfetti && !prefersReducedMotion" />
         <div
           ref="dialogRef"
-          class="modal-dialog"
+          class="modal-dialog modal-dialog-glow"
           role="dialog"
           aria-modal="true"
           :aria-label="t('levelComplete.ariaLabel')"
@@ -138,18 +156,18 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <h2 class="modal-title">{{ t('levelComplete.titleMain') }}</h2>
           <p class="modal-subtitle">{{ t('levelComplete.subtitle', { stars }) }}</p>
 
-          <div v-if="showMaatje" class="mascot">
+          <div v-if="showMaatje" class="mascot mascot-modal">
             <MaatjeAvatar
-              :character="maatjeId"
+              :character="displayedMaatjeId"
               :expression="maatjeExpression"
-              size="lg"
+              size="modal"
               :aria-label="t('levelComplete.mascotAlt')"
             />
           </div>
           <MascotIcon
             v-else
             id-prefix="level-complete"
-            class="mascot"
+            class="mascot mascot-modal"
             :aria-label="t('levelComplete.mascotAlt')"
           />
 
@@ -193,22 +211,22 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           </div>
 
           <div class="modal-footer-stats">
-            <div class="stat-capsule">
+            <span class="stat-item">
               <span class="stat-label">{{ t('levelComplete.scoreLabel') }}</span>
               <span class="stat-value">{{ scorePercent }}%</span>
-            </div>
-            <div class="stat-capsule">
+            </span>
+            <span class="stat-item">
               <span class="stat-label">{{ t('levelComplete.timeLabel') }}</span>
               <span class="stat-value">{{ timeFormatted }}</span>
-            </div>
-            <div class="stat-capsule">
+            </span>
+            <span class="stat-item">
               <span class="stat-label">{{ t('levelComplete.comboLabel') }}</span>
               <span class="stat-value stat-combo">x{{ comboMax }}</span>
-            </div>
-            <div class="stat-capsule">
+            </span>
+            <span class="stat-item">
               <span class="stat-label">{{ t('levelComplete.xpLabel') }}</span>
               <span class="stat-value stat-xp">+{{ xpGained }}</span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -229,6 +247,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 }
 
 .modal-dialog {
+  position: relative;
   background: var(--app-surface);
   border-radius: var(--app-radius-lg);
   box-shadow: var(--app-shadow-lg);
@@ -241,11 +260,34 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   align-items: center;
   gap: var(--app-space-md);
   outline: none;
+  font-family: var(--app-font);
+}
+
+.modal-dialog-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 80px;
+  background: radial-gradient(ellipse at center, rgba(129, 199, 132, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: var(--app-radius-lg);
 }
 
 .mascot {
   width: 80px;
   height: 80px;
+}
+
+.mascot-modal {
+  width: 270px;
+  height: 270px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stars-row {
@@ -388,43 +430,49 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   outline-offset: 2px;
 }
 
+/* Stats: supportive info, soft hierarchy — uses app font (modal is teleported to body, outside .app-root) */
 .modal-footer-stats {
   display: flex;
-  gap: var(--app-space-sm);
   flex-wrap: wrap;
+  gap: var(--app-space-sm) var(--app-space-md);
   justify-content: center;
+  align-items: baseline;
   width: 100%;
+  padding-top: var(--app-space-sm);
+  margin-top: var(--app-space-xs);
+  border-top: 1px solid rgba(0, 77, 64, 0.08);
+  font-family: var(--app-font);
 }
 
-.stat-capsule {
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: var(--app-radius-md);
-  padding: var(--app-space-xs) var(--app-space-sm);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 60px;
+.stat-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
 }
 
 .stat-label {
-  font-size: 0.7rem;
+  font-family: var(--app-font);
+  font-size: 0.875rem;
+  font-weight: var(--app-font-weight-normal);
   color: var(--app-text-muted-on-surface);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: none;
 }
 
 .stat-value {
-  font-size: var(--app-font-size-lg);
-  font-weight: var(--app-font-weight-bold);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-base);
+  font-weight: var(--app-font-weight-normal);
   color: var(--app-text-on-surface);
 }
 
 .stat-combo {
-  color: #ff9800;
+  color: #a89050;
+  font-weight: 600;
 }
 
 .stat-xp {
-  color: #4caf50;
+  color: #6b9b6e;
+  font-weight: 600;
 }
 
 .modal-enter-active {

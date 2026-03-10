@@ -83,6 +83,6 @@ test.describe('mistakes review', () => {
     await expect(page.locator('.mistake-card')).toHaveCount(1)
 
     await expect(page.locator('.cta-primary:has-text("Opnieuw proberen")')).toBeVisible({ timeout: 2000 })
-    await expect(page.locator('.cta-secondary:has-text("Naar de kaart")')).toBeVisible({ timeout: 2000 })
+    await expect(page.locator('.mistakes-review .cta-secondary:has-text("Naar de kaart")')).toBeVisible({ timeout: 2000 })
   })
 })

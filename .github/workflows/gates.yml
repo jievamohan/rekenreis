@@ -180,29 +180,32 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache e2e stack images
+      - name: Cache e2e stack images (api, e2e, mysql)
         uses: actions/cache@v4
         id: e2e-images-cache
         with:
           path: /tmp/docker-cache/e2e-stack
           key: docker-e2e-stack-${{ github.event.pull_request.base.sha || format('push-{0}', github.sha) }}
 
-      - name: Pull images
+      - name: Pull api, e2e, mysql images
         if: steps.e2e-images-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull web api e2e mysql
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull api e2e mysql
           mkdir -p /tmp/docker-cache/e2e-stack
-          docker save ghcr.io/${{ github.repository }}/web:latest ghcr.io/${{ github.repository }}/api:latest ghcr.io/${{ github.repository }}/e2e:latest mysql:8.0 -o /tmp/docker-cache/e2e-stack/stack.tar
+          docker save ghcr.io/${{ github.repository }}/api:latest ghcr.io/${{ github.repository }}/e2e:latest mysql:8.0 -o /tmp/docker-cache/e2e-stack/stack.tar
 
       - name: Load cached images
         if: steps.e2e-images-cache.outputs.cache-hit == 'true'
         run: docker load -i /tmp/docker-cache/e2e-stack/stack.tar
 
+      - name: Build web from PR
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pr-build.yml build web
+
       - name: Start stack
         run: |
           echo "## e2e-container step timing" >> "$GITHUB_STEP_SUMMARY"
           START=$(date +%s)
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-mount.yml up -d --wait web api mysql
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml up -d --wait web api mysql
           END=$(date +%s)
           echo "- **Start:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
 
@@ -227,7 +230,7 @@ jobs:
 
       - name: Tear down
         if: always()
-        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-mount.yml down -v
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml down -v
 
   zap-baseline:
     name: OWASP ZAP

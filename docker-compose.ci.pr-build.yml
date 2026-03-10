@@ -1,0 +1,9 @@
+# PR e2e: build web from checkout so tests run against PR code, not main's image.
+# Use for Playwright job on pull_request.
+services:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    image: rekenreis-web-pr:latest
+    pull_policy: never
