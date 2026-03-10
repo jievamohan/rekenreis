@@ -161,6 +161,28 @@ const assistance = useAssistance(game.feedback, strugglingRoundsLeft)
 
 const roundIndex = ref(0)
 const correctCount = ref(0)
+const levelStartTime = ref(0)
+const maxStreakRef = ref(0)
+const completedLevelStats = ref<{
+  timeFormatted: string
+  comboMax: number
+  xpGained: number
+} | null>(null)
+
+function formatMMSS(seconds: number): string {
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
+function resetLevelSession() {
+  roundIndex.value = 0
+  correctCount.value = 0
+  levelStartTime.value = Date.now()
+  maxStreakRef.value = 0
+  completedLevelStats.value = null
+}
+
 const { mistakes, record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
 const { completeLevel } = useLevelProgress(profile)
 const showLevelComplete = ref(false)
@@ -188,6 +210,7 @@ function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
   const resolved = outcome ?? (fb ? (isTimeoutFeedback(fb) ? 'timeout' : (isCorrectFeedback(fb) && fb.correct ? 'correct' : 'wrong')) : null)
   if (resolved) {
     if (resolved === 'correct') correctCount.value += 1
+    maxStreakRef.value = Math.max(maxStreakRef.value, game.streak.value)
     roundOutcome.recordRoundOutcome(resolved, interactionMode.value)
     dailyGoal.incrementRound()
   }
@@ -198,6 +221,14 @@ function advanceRound(outcome?: 'correct' | 'wrong' | 'timeout') {
     const stars = computeStars(correctCount.value, roundsPerLevel.value)
     completeLevel(levelParam.value!, stars)
     completedStars.value = stars
+    const comboMax = Math.max(maxStreakRef.value, game.streak.value)
+    const elapsedSec = (Date.now() - levelStartTime.value) / 1000
+    const xpGained = stars * 40 + Math.min(comboMax * 5, 50)
+    completedLevelStats.value = {
+      timeFormatted: formatMMSS(elapsedSec),
+      comboMax,
+      xpGained,
+    }
     showLevelComplete.value = true
     sound.playCelebrate()
     return
@@ -230,8 +261,7 @@ function onModalReviewMistakes() {
 function onRetryLevel() {
   showReview.value = false
   clearMistakes()
-  roundIndex.value = 0
-  correctCount.value = 0
+  resetLevelSession()
   game.nextQuestion()
   if (useMinigameMode.value) pickNextMinigame()
 }
@@ -244,8 +274,7 @@ function onBackToMap() {
 function onModalRetry() {
   showLevelComplete.value = false
   clearMistakes()
-  roundIndex.value = 0
-  correctCount.value = 0
+  resetLevelSession()
   game.nextQuestion()
   if (useMinigameMode.value) pickNextMinigame()
 }
@@ -371,8 +400,7 @@ watch(levelParam, (level, prevLevel) => {
   if (useMinigameMode.value) pickNextMinigame()
   // Reset session stats when navigating to a different level (e.g. Next → level+1)
   if (level !== null && prevLevel !== undefined && level !== prevLevel) {
-    roundIndex.value = 0
-    correctCount.value = 0
+    resetLevelSession()
     clearMistakes()
   }
 }, { immediate: true })
@@ -380,8 +408,7 @@ watch(levelParam, (level, prevLevel) => {
 onMounted(() => {
   setChooseGameHandler(() => { showModeSelector.value = true })
   clearMistakes()
-  roundIndex.value = 0
-  correctCount.value = 0
+  resetLevelSession()
   packSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   minigameSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   if (useMinigameMode.value) pickNextMinigame()
@@ -538,9 +565,9 @@ onUnmounted(() => {
       :is-last-level="(levelParam ?? 1) >= totalLevels"
       :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
       :score-percent="Math.round((correctCount / roundsPerLevel) * 100)"
-      time-formatted="00:00"
-      :combo-max="0"
-      :xp-gained="0"
+      :time-formatted="completedLevelStats?.timeFormatted ?? '00:00'"
+      :combo-max="completedLevelStats?.comboMax ?? 0"
+      :xp-gained="completedLevelStats?.xpGained ?? 0"
       @back-to-map="onModalBackToMap"
       @next="onModalNext"
       @review-mistakes="onModalReviewMistakes"

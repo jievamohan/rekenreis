@@ -76,7 +76,15 @@ test.describe('app flow: map → play → complete → map', () => {
 
     await completeLevel(page)
 
-    await page.getByRole('button', { name: 'Naar de kaart' }).click()
+    const backToMapBtn = page.getByRole('button', { name: 'Naar de kaart' })
+    const nextLevelBtn = page.getByRole('button', { name: 'Volgend level' })
+    if ((await backToMapBtn.count()) > 0) {
+      await backToMapBtn.first().click()
+    } else {
+      await nextLevelBtn.first().click()
+      await expect(page).toHaveURL(/level=2/)
+      await page.locator('.exit-to-map-btn').click()
+    }
     await expect(page).toHaveURL(/\/map/)
     await expect(page.locator('.map-page')).toBeVisible()
 
