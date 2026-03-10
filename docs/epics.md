@@ -2172,7 +2172,7 @@ Acceptance:
 ---
 
 ## Epic 34.5 — Bouw de Toren: play.vue Integration
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
