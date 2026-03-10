@@ -136,6 +136,7 @@ onUnmounted(() => {
           aria-modal="true"
           :aria-label="t('levelComplete.ariaLabel')"
           tabindex="-1"
+          data-testid="level-complete-modal"
         >
           <div class="stars-row" :aria-label="t('levelComplete.starsAria', { stars })">
             <svg
