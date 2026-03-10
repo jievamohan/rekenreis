@@ -37,6 +37,9 @@ import MistakesReview from '~/components/review/MistakesReview.vue'
 import levelsClassic from '~/content/levels.classic.v1.json'
 import levelsTimedPop from '~/content/levels.timed-pop.v1.json'
 import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
+import levelsBouwDeToren from '~/content/levels.bouw-de-toren.v1.json'
+import MinigameBouwDeToren from '~/components/minigames/MinigameBouwDeToren.vue'
+import type { TowerLevelConfig } from '~/types/tower'
 
 const PACK_BY_MODE: Record<InteractionModeId, Level[]> = {
   classic: applyPacing(levelsClassic as Level[], 42),
@@ -51,9 +54,10 @@ const MODE_OPTIONS = computed(() => [
   { id: 'build-bridge' as const, label: t('modes.buildBridge') },
 ])
 
-const roundsPerLevel = computed(() =>
-  currentMinigameId.value === 'memory-match' ? 5 : 10
-)
+const roundsPerLevel = computed(() => {
+  if (currentMinigameId.value === 'bouw-de-toren') return 1
+  return currentMinigameId.value === 'memory-match' ? 5 : 10
+})
 const currentRoundDisplay = computed(() =>
   Math.min(roundsPerLevel.value, roundIndex.value + 1)
 )
@@ -94,6 +98,18 @@ const minigameQuestion = computed(() => {
   if (!q) return null
   return { a: q.a, b: q.b, correctAnswer: q.correctAnswer, choices: [...q.choices] }
 })
+
+const isTowerLevel = computed(() => currentMinigameId.value === 'bouw-de-toren')
+
+const towerLevelConfig = computed((): TowerLevelConfig | null => {
+  if (!isTowerLevel.value || levelParam.value === null) return null
+  const idx = (levelParam.value - 1) % levelsBouwDeToren.length
+  return levelsBouwDeToren[idx] as TowerLevelConfig
+})
+
+const towerSeed = computed(() =>
+  packSessionSeed.value + (levelParam.value ?? 1) * 1000
+)
 
 function pickNextMinigame() {
   const level = levelParam.value ?? 1
@@ -279,6 +295,20 @@ function onModalRetry() {
   if (useMinigameMode.value) pickNextMinigame()
 }
 
+function onTowerLevelComplete(payload: { stars: number }) {
+  if (levelParam.value === null) return
+  completeLevel(levelParam.value, payload.stars)
+  completedStars.value = payload.stars
+  const elapsedSec = (Date.now() - levelStartTime.value) / 1000
+  completedLevelStats.value = {
+    timeFormatted: formatMMSS(elapsedSec),
+    comboMax: 0,
+    xpGained: payload.stars * 40,
+  }
+  showLevelComplete.value = true
+  sound.playCelebrate()
+}
+
 const sessionStatsSent = ref(false)
 watch(
   () => game.score.value,
@@ -461,9 +491,9 @@ onUnmounted(() => {
       <div class="play-page-level-complete" aria-hidden="true" />
     </template>
 
-    <!-- Minigame mode: ProblemCard + MinigameRenderer (never fall through to classic when level in URL) -->
+    <!-- Minigame mode: ProblemCard + MinigameRenderer, or Bouw de Toren (level-consuming) -->
     <template v-else-if="useKeypadMode">
-      <div v-if="game.question.value" class="play-header play-header-minigame">
+      <div v-if="!isTowerLevel && game.question.value" class="play-header play-header-minigame">
         <div class="progress-wrap">
           <div
             class="round-progress"
@@ -492,9 +522,16 @@ onUnmounted(() => {
       </div>
 
       <div ref="gameMainRef" id="game-main" class="keypad-stage" tabindex="-1">
-        <template v-if="game.question.value">
+        <template v-if="isTowerLevel && towerLevelConfig">
+          <MinigameBouwDeToren
+            :level-config="towerLevelConfig"
+            :seed="towerSeed"
+            @level-complete="onTowerLevelComplete"
+          />
+        </template>
+        <template v-else-if="game.question.value">
           <ProblemCard
-            v-if="currentMinigameId !== 'memory-match' && currentMinigameId !== 'shell-collector'"
+            v-if="currentMinigameId !== 'memory-match' && currentMinigameId !== 'bouw-de-toren'"
             :a="game.question.value.a"
             :b="game.question.value.b"
             :answer="''"
@@ -503,7 +540,7 @@ onUnmounted(() => {
           />
 
           <MinigameRenderer
-            v-if="useMinigameMode && currentMinigameId && minigameQuestion"
+            v-if="useMinigameMode && currentMinigameId && currentMinigameId !== 'bouw-de-toren' && minigameQuestion"
             :key="roundIndex"
             :minigame-id="currentMinigameId"
             :question="minigameQuestion"
@@ -559,9 +596,9 @@ onUnmounted(() => {
       :open="showLevelComplete"
       :level="levelParam ?? 1"
       :stars="completedStars"
-      :correct-count="correctCount"
-      :rounds-total="roundsPerLevel"
-      :has-mistakes="hasMistakes"
+      :correct-count="isTowerLevel ? completedStars : correctCount"
+      :rounds-total="isTowerLevel ? 3 : roundsPerLevel"
+      :has-mistakes="isTowerLevel ? false : hasMistakes"
       :is-last-level="(levelParam ?? 1) >= totalLevels"
       :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
       :score-percent="Math.round((correctCount / roundsPerLevel) * 100)"

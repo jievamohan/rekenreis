@@ -28,25 +28,39 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
   })
 
-  test('tap-to-increment (ShellCollector): tap add-shell until correct', async ({ page }) => {
+  test('drag-drop (BouwDeToren): place 2 blocks to complete tower', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
 
-    const countDisplay = page.locator('[data-testid="minigame-shell-collector"] .count-display')
-    await expect(countDisplay).toBeVisible()
-    const text = await countDisplay.textContent()
-    const match = text?.match(/(\d+)\s*\/\s*(\d+)/)
-    expect(match).toBeTruthy()
-    const current = Number(match![1])
-    const target = Number(match![2])
-    const tapsNeeded = target - current
+    const targetEl = page.locator('[data-testid="tower-puzzle"] .target-display')
+    await expect(targetEl).toBeVisible()
+    const target = Number(await targetEl.textContent())
 
-    const addBtn = page.locator('[data-testid="minigame-shell-collector"] .add-shell-btn')
-    for (let i = 0; i < tapsNeeded; i++) {
-      await addBtn.click()
-      await page.waitForTimeout(80)
+    const blocks = page.locator('[data-testid="tower-puzzle"] .block')
+    const blockCount = await blocks.count()
+    let idxA = -1; let idxB = -1
+    for (let i = 0; i < blockCount && idxA < 0; i++) {
+      for (let j = i + 1; j < blockCount; j++) {
+        const va = Number(await blocks.nth(i).textContent())
+        const vb = Number(await blocks.nth(j).textContent())
+        if (va + vb === target) {
+          idxA = i
+          idxB = j
+          break
+        }
+      }
     }
-    await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
+    expect(idxA).toBeGreaterThanOrEqual(0)
+
+    const blockA = blocks.nth(idxA)
+    const blockB = blocks.nth(idxB)
+    const zone1 = page.locator('[data-drop-zone="1"]')
+    const zone2 = page.locator('[data-drop-zone="2"]')
+
+    await blockA.dragTo(zone1)
+    await blockB.dragTo(zone2)
+
+    await expect(page.locator('text=Volgende ronde').or(page.locator('[data-testid="level-complete-modal"]'))).toBeVisible({ timeout: 5000 })
   })
 
   test('memory-flip (MemoryMatch): flip sum+answer pairs to complete', async ({ page }) => {
@@ -94,12 +108,12 @@ test.describe('Dutch copy assertions', () => {
     expect(label).toContain('Memory')
   })
 
-  test('shell-collector shows Dutch aria label', async ({ page }) => {
+  test('bouw-de-toren shows Dutch aria label', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
-    const scene = page.locator('[data-testid="minigame-shell-collector"]')
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
+    const scene = page.locator('[data-testid="minigame-bouw-de-toren"]')
     const label = await scene.getAttribute('aria-label')
-    expect(label).toContain('schelpen')
+    expect(label).toContain('Bouw de toren')
   })
 })
 
