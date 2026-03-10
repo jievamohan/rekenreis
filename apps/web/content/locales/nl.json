@@ -309,5 +309,11 @@
   "minigameStarfishMatch": {
     "ariaLabel": "Zeester match — tik op de juiste zeester",
     "starLabel": "Zeester {value}"
+  },
+  "minigameShellCollector": {
+    "ariaLabel": "Schelpen verzamelen — het dier heeft {a} schelpen, voeg {b} toe om {target} te bereiken",
+    "countLabel": "{count} van {target} schelpen",
+    "addShellLabel": "Voeg een schelp toe",
+    "addShell": "Voeg schelp toe"
   }
 }
