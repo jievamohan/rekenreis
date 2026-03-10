@@ -1,0 +1,7 @@
+# PR e2e: mount checked-out tests so PR test changes run against (possibly base) images.
+# Use together with docker-compose.ci.pull.yml for Playwright job on pull_request.
+services:
+  e2e:
+    volumes:
+      - ./apps/web/e2e:/app/e2e
+      - ./apps/web/playwright-report:/app/playwright-report

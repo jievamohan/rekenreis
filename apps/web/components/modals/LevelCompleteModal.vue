@@ -170,6 +170,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               <button type="button" class="cta-secondary cta-retry" @click="emit('retry')">
                 {{ t('levelComplete.retry') }}
               </button>
+              <button
+                v-if="!isLastLevel"
+                type="button"
+                class="cta-secondary"
+                @click="emit('backToMap')"
+              >
+                {{ t('levelComplete.backToMap') }}
+              </button>
             </div>
             <button
               v-if="!isLastLevel"

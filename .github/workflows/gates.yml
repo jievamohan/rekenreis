@@ -202,7 +202,7 @@ jobs:
         run: |
           echo "## e2e-container step timing" >> "$GITHUB_STEP_SUMMARY"
           START=$(date +%s)
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml up -d --wait web api mysql
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-mount.yml up -d --wait web api mysql
           END=$(date +%s)
           echo "- **Start:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
 
@@ -227,7 +227,7 @@ jobs:
 
       - name: Tear down
         if: always()
-        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml down -v
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-mount.yml down -v
 
   zap-baseline:
     name: OWASP ZAP
