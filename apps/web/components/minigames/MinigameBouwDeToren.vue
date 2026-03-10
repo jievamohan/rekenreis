@@ -101,8 +101,21 @@ function onDismissPhase() {
       </div>
     </Teleport>
     <div v-if="phase === 'playing' && currentPuzzle" class="tower-scene">
-      <div class="progress" aria-live="polite">
-        {{ progressText }}
+      <div class="progress-row">
+        <div class="progress-stars" role="img" :aria-label="t('minigameBouwDeToren.starsAria', { stars })">
+          <svg
+            v-for="i in 3"
+            :key="i"
+            class="star-slot"
+            :class="{ filled: i <= stars }"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
+          </svg>
+        </div>
+        <div class="progress" aria-live="polite">
+          {{ progressText }}
+        </div>
       </div>
       <TowerPuzzle
         :key="`${engine.currentRoundIndex}-${engine.currentTowerIndex}`"
@@ -112,6 +125,17 @@ function onDismissPhase() {
       />
     </div>
     <div v-else-if="phase === 'roundComplete'" class="round-complete">
+      <div class="progress-stars" role="img" :aria-label="t('minigameBouwDeToren.starsAria', { stars })">
+        <svg
+          v-for="i in 3"
+          :key="i"
+          class="star-slot"
+          :class="{ filled: i <= stars }"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
+        </svg>
+      </div>
       <p>{{ t('minigameBouwDeToren.roundComplete') }}</p>
       <button class="cta" @click="onNextRound">
         {{ t('minigameBouwDeToren.nextRound') }}
@@ -140,6 +164,34 @@ function onDismissPhase() {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+.progress-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 18px;
+}
+
+.progress-stars .star-slot {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: rgba(255, 193, 7, 0.4);
+  stroke-width: 1.5;
+}
+
+.progress-stars .star-slot.filled {
+  fill: #ffc107;
+  stroke: none;
 }
 
 .progress {
