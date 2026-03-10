@@ -301,11 +301,6 @@
   "minigameMemoryMatch": {
     "ariaLabel": "Memory — vind de paren: som en antwoord"
   },
-  "minigameSubmarineSort": {
-    "ariaLabel": "Onderzeeër sorteren — sleep het juiste item naar het compartiment",
-    "itemLabel": "Item {value}",
-    "compartmentLabel": "Onderzeeër compartiment"
-  },
   "minigameStarfishMatch": {
     "ariaLabel": "Zeester match — tik op de juiste zeester",
     "starLabel": "Zeester {value}"

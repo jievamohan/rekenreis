@@ -29,9 +29,8 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
       pairCount: { min: 3, max: 6 },
       timerSeconds: { min: 60, max: 25 },
     },
-    'submarine-sort': {
-      compartmentCount: { min: 2, max: 3 },
-      itemCount: { min: 3, max: 5 },
+    'shell-collector': {
+      shellTargetBonus: { min: 0, max: 2 },
     },
     'starfish-match': {
       pairCount: { min: 2, max: 4 },

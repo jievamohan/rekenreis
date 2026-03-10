@@ -28,31 +28,23 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1', { timeout: 25000 })
   })
 
-  test('sorting (SubmarineSort): keyboard select + sort into bin', async ({ page }) => {
+  test('tap-to-increment (ShellCollector): tap add-shell until correct', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-submarine-sort"]')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
 
-    const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
-    const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
-    const correct = a + b
+    const countDisplay = page.locator('[data-testid="minigame-shell-collector"] .count-display')
+    await expect(countDisplay).toBeVisible()
+    const text = await countDisplay.textContent()
+    const match = text?.match(/(\d+)\s*\/\s*(\d+)/)
+    expect(match).toBeTruthy()
+    const current = Number(match![1])
+    const target = Number(match![2])
+    const tapsNeeded = target - current
 
-    const items = page.locator('[data-testid="minigame-submarine-sort"] .sort-item')
-    for (let i = 0; i < await items.count(); i++) {
-      if ((await items.nth(i).innerText()).trim() === String(correct)) {
-        await items.nth(i).focus()
-        await page.keyboard.press('Enter')
-        break
-      }
-    }
-
-    const bins = page.locator('[data-testid="minigame-submarine-sort"] .sort-bin')
-    for (let i = 0; i < await bins.count(); i++) {
-      const label = await bins.nth(i).locator('.bin-label').textContent()
-      if (label?.trim() === String(correct)) {
-        await bins.nth(i).focus()
-        await page.keyboard.press('Enter')
-        break
-      }
+    const addBtn = page.locator('[data-testid="minigame-shell-collector"] .add-shell-btn')
+    for (let i = 0; i < tapsNeeded; i++) {
+      await addBtn.click()
+      await page.waitForTimeout(80)
     }
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '1')
   })
@@ -102,12 +94,12 @@ test.describe('Dutch copy assertions', () => {
     expect(label).toContain('Memory')
   })
 
-  test('submarine-sort shows Dutch aria label', async ({ page }) => {
+  test('shell-collector shows Dutch aria label', async ({ page }) => {
     await page.goto('/play?level=5')
-    await expect(page.locator('[data-testid="minigame-submarine-sort"]')).toBeVisible({ timeout: 10000 })
-    const scene = page.locator('[data-testid="minigame-submarine-sort"]')
+    await expect(page.locator('[data-testid="minigame-shell-collector"]')).toBeVisible({ timeout: 10000 })
+    const scene = page.locator('[data-testid="minigame-shell-collector"]')
     const label = await scene.getAttribute('aria-label')
-    expect(label).toContain('Onderzeeër')
+    expect(label).toContain('schelpen')
   })
 })
 
