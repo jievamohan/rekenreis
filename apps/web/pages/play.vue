@@ -194,6 +194,8 @@ function formatMMSS(seconds: number): string {
 function resetLevelSession() {
   roundIndex.value = 0
   correctCount.value = 0
+  towerCorrectRounds.value = 0
+  towerRoundsTotal.value = 0
   levelStartTime.value = Date.now()
   maxStreakRef.value = 0
   completedLevelStats.value = null
@@ -204,6 +206,8 @@ const { completeLevel } = useLevelProgress(profile)
 const showLevelComplete = ref(false)
 const showReview = ref(false)
 const completedStars = ref(0)
+const towerCorrectRounds = ref(0)
+const towerRoundsTotal = ref(0)
 const totalLevels = levelsClassic.length
 
 function onKeypadAnswer(answer: number) {
@@ -295,10 +299,12 @@ function onModalRetry() {
   if (useMinigameMode.value) pickNextMinigame()
 }
 
-function onTowerLevelComplete(payload: { stars: number }) {
+function onTowerLevelComplete(payload: { stars: number; correctRounds: number; totalRounds: number }) {
   if (levelParam.value === null) return
   completeLevel(levelParam.value, payload.stars)
   completedStars.value = payload.stars
+  towerCorrectRounds.value = payload.correctRounds
+  towerRoundsTotal.value = payload.totalRounds
   const elapsedSec = (Date.now() - levelStartTime.value) / 1000
   completedLevelStats.value = {
     timeFormatted: formatMMSS(elapsedSec),
@@ -596,12 +602,12 @@ onUnmounted(() => {
       :open="showLevelComplete"
       :level="levelParam ?? 1"
       :stars="completedStars"
-      :correct-count="isTowerLevel ? completedStars : correctCount"
-      :rounds-total="isTowerLevel ? 3 : roundsPerLevel"
+      :correct-count="isTowerLevel ? towerCorrectRounds : correctCount"
+      :rounds-total="isTowerLevel ? towerRoundsTotal : roundsPerLevel"
       :has-mistakes="isTowerLevel ? false : hasMistakes"
       :is-last-level="(levelParam ?? 1) >= totalLevels"
       :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
-      :score-percent="Math.round((correctCount / roundsPerLevel) * 100)"
+      :score-percent="isTowerLevel ? (towerRoundsTotal > 0 ? Math.round((towerCorrectRounds / towerRoundsTotal) * 100) : 0) : Math.round((correctCount / roundsPerLevel) * 100)"
       :time-formatted="completedLevelStats?.timeFormatted ?? '00:00'"
       :combo-max="completedLevelStats?.comboMax ?? 0"
       :xp-gained="completedLevelStats?.xpGained ?? 0"

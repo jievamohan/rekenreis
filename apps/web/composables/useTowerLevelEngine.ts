@@ -3,32 +3,23 @@ import { computeStars } from '~/utils/starScoring'
 import { generateTowerLevel } from '~/utils/towerLevelGenerator'
 import type { TowerLevelConfig, TowerPuzzle } from '~/types/tower'
 
-export type TowerEnginePhase =
-  | 'hint'
-  | 'lastChance'
-  | 'playing'
-  | 'roundComplete'
-  | 'levelComplete'
+export type TowerEnginePhase = 'playing' | 'roundComplete' | 'levelComplete'
 
 /**
- * Tower level engine: rounds, towers per round, mistake counting.
- * 2 mistakes → hint, 3 → last chance, 4 → round skipped (not correct).
+ * Tower level engine: one tower per round, one chance per tower.
+ * Wrong = immediate skip to next round.
  */
 export function useTowerLevelEngine(config: TowerLevelConfig, seed: number) {
   const rounds = generateTowerLevel(seed, config)
   const currentRoundIndex = ref(0)
-  const currentTowerIndex = ref(0)
-  const mistakeCount = ref(0)
   const correctRounds = ref(0)
   const phase = ref<TowerEnginePhase>('playing')
 
   const currentRound = computed(() => rounds[currentRoundIndex.value])
   const currentPuzzle = computed(
-    (): TowerPuzzle | null =>
-      currentRound.value?.[currentTowerIndex.value] ?? null
+    (): TowerPuzzle | null => currentRound.value?.[0] ?? null
   )
   const totalRounds = config.rounds
-  const towersPerRound = config.towersPerRound
 
   const starThresholds = config.starThresholds ?? [
     Math.ceil(totalRounds * 0.3),
@@ -40,49 +31,19 @@ export function useTowerLevelEngine(config: TowerLevelConfig, seed: number) {
     computeStars(correctRounds.value, totalRounds, starThresholds)
   )
 
-  /** 2 mistakes → hint */
-  const showHint = computed(() => mistakeCount.value >= 2)
-
-  /** 3 mistakes → last chance */
-  const showLastChance = computed(() => mistakeCount.value >= 3)
-
-  /** 4 mistakes → round skipped */
-  const shouldSkipRound = computed(() => mistakeCount.value >= 4)
-
   function recordCorrect() {
-    mistakeCount.value = 0
-    advanceTower()
+    correctRounds.value++
+    phase.value = 'roundComplete'
   }
 
   function recordWrong() {
-    mistakeCount.value++
-    if (mistakeCount.value >= 4) {
-      phase.value = 'roundComplete'
-      correctRounds.value += 0 // round skipped, not correct
-      advanceRound()
-    } else if (mistakeCount.value >= 3) {
-      phase.value = 'lastChance'
-    } else if (mistakeCount.value >= 2) {
-      phase.value = 'hint'
-    }
-  }
-
-  function advanceTower() {
-    if (currentTowerIndex.value < towersPerRound - 1) {
-      currentTowerIndex.value++
-      mistakeCount.value = 0
-      phase.value = 'playing'
-    } else {
-      correctRounds.value++
-      phase.value = 'roundComplete'
-    }
+    phase.value = 'roundComplete'
+    // correctRounds unchanged: round skipped
   }
 
   function advanceRound() {
     if (currentRoundIndex.value < totalRounds - 1) {
       currentRoundIndex.value++
-      currentTowerIndex.value = 0
-      mistakeCount.value = 0
       phase.value = 'playing'
     } else {
       phase.value = 'levelComplete'
@@ -96,34 +57,19 @@ export function useTowerLevelEngine(config: TowerLevelConfig, seed: number) {
     }
   }
 
-  /** Reset hint/lastChance phase so player can continue trying */
-  function dismissPhase() {
-    if (phase.value === 'hint' || phase.value === 'lastChance') {
-      phase.value = 'playing'
-    }
-  }
-
   return {
     rounds,
     currentRoundIndex,
-    currentTowerIndex,
     currentRound,
     currentPuzzle,
-    mistakeCount,
     correctRounds,
     phase,
     totalRounds,
-    towersPerRound,
     stars,
-    showHint,
-    showLastChance,
-    shouldSkipRound,
     recordCorrect,
     recordWrong,
-    advanceTower,
     advanceRound,
     goToNextRound,
-    dismissPhase,
   }
 }
 

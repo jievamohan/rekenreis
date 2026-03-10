@@ -326,7 +326,7 @@
     "zoneLabel": "Vak {n}, waarde {value}",
     "blocksLabel": "Blokken om te kiezen",
     "blockLabel": "Blok {value}",
-    "progress": "Ronde {round} van {total}, toren {tower} van {towersPerRound}",
+    "progress": "Toren {round} van {total}",
     "roundComplete": "Ronde voltooid!",
     "nextRound": "Volgende ronde",
     "levelComplete": "Level voltooid! Je hebt {stars} sterren verdiend.",
@@ -336,6 +336,9 @@
     "sumCorrect": "{a} + {b} = {sum}",
     "continue": "Doorgaan",
     "starsAria": "{stars} van 3 sterren",
-    "towerCompleted": "Toren voltooid"
+    "towerCompleted": "Toren voltooid",
+    "towerActive": "Huidige toren",
+    "towersProgress": "Voortgang torens",
+    "towerPending": "Toren nog te bouwen"
   }
 }

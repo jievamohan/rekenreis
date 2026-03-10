@@ -30,8 +30,7 @@ const DEFAULT_PROGRESSION: DifficultyProgression = {
       timerSeconds: { min: 60, max: 25 },
     },
     'bouw-de-toren': {
-      rounds: { min: 3, max: 7 },
-      towersPerRound: { min: 2, max: 3 },
+      rounds: { min: 6, max: 21 },
     },
     'starfish-match': {
       pairCount: { min: 2, max: 4 },

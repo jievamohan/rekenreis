@@ -45,7 +45,6 @@ describe('towerLevelGenerator', () => {
   describe('generateTowerLevel', () => {
     const config: TowerLevelConfig = {
       rounds: 5,
-      towersPerRound: 3,
       targetRange: [3, 10],
       blockPoolSize: 6,
     }
@@ -61,10 +60,10 @@ describe('towerLevelGenerator', () => {
       expect(level).toHaveLength(5)
     })
 
-    it('each round has correct number of towers', () => {
+    it('each round has one tower', () => {
       const level = generateTowerLevel(789, config)
       for (const round of level) {
-        expect(round).toHaveLength(3)
+        expect(round).toHaveLength(1)
       }
     })
 

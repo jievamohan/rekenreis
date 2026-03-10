@@ -1,70 +1,60 @@
 [
   {
-    "rounds": 3,
-    "towersPerRound": 2,
+    "rounds": 6,
     "starThresholds": [1, 2, 3],
     "targetRange": [3, 8],
     "blockPoolSize": 6
   },
   {
-    "rounds": 3,
-    "towersPerRound": 2,
+    "rounds": 6,
     "starThresholds": [1, 2, 3],
     "targetRange": [4, 10],
     "blockPoolSize": 6
   },
   {
-    "rounds": 4,
-    "towersPerRound": 2,
+    "rounds": 8,
     "starThresholds": [2, 3, 4],
     "targetRange": [5, 12],
     "blockPoolSize": 6
   },
   {
-    "rounds": 4,
-    "towersPerRound": 2,
+    "rounds": 8,
     "starThresholds": [2, 3, 4],
     "targetRange": [6, 14],
     "blockPoolSize": 6
   },
   {
-    "rounds": 5,
-    "towersPerRound": 3,
+    "rounds": 15,
     "starThresholds": [2, 4, 5],
     "targetRange": [7, 16],
     "blockPoolSize": 6
   },
   {
-    "rounds": 5,
-    "towersPerRound": 3,
+    "rounds": 15,
     "starThresholds": [2, 4, 5],
     "targetRange": [8, 18],
     "blockPoolSize": 6
   },
   {
-    "rounds": 6,
-    "towersPerRound": 3,
+    "rounds": 18,
     "starThresholds": [3, 4, 6],
     "targetRange": [9, 20],
     "blockPoolSize": 6
   },
   {
-    "rounds": 6,
-    "towersPerRound": 3,
+    "rounds": 18,
     "starThresholds": [3, 4, 6],
     "targetRange": [10, 20],
     "blockPoolSize": 6
   },
   {
-    "rounds": 7,
-    "towersPerRound": 3,
+    "rounds": 21,
     "starThresholds": [3, 5, 7],
     "targetRange": [10, 20],
     "blockPoolSize": 6
   },
   {
-    "rounds": 7,
-    "towersPerRound": 3,
+    "rounds": 21,
     "starThresholds": [3, 5, 7],
     "targetRange": [12, 20],
     "blockPoolSize": 6
