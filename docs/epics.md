@@ -1895,3 +1895,91 @@ Requirements:
 Acceptance:
 - Bundle budget passes
 - E2E green
+
+---
+
+## Epic 32.1 — Shell Collector: Core Mechanic + Assets
+- [ ]
+PlanRef:
+- design: docs/design/epic-32.md
+- archive: artifacts/archive/epic-32.0/latest
+- slice: 32.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 32.1: Replace submarine-sort with Shell Collector minigame — core mechanic and assets.
+
+Requirements:
+- New MinigameShellCollector.vue: tap-to-reach-target mechanic
+- Scene shows creature with a shells; child taps to add b more; count visible
+- Each tap adds 1 shell; when count = a + b, emit answer(correctAnswer)
+- Overtap: gentle feedback (shake), optional undo or soft reset
+- SVG assets in assets/graphics/minigames/shell-collector/ (creature, shell)
+- Keyboard-playable; reduced-motion support
+- Props: question, difficultyParams; Emit: answer(choice)
+- Typecheck, build green
+
+Acceptance:
+- Shell Collector renders; tap adds shells; correct emits answer
+- No ProblemCard in component (math embedded in scene)
+- Keyboard parity with pointer
+
+---
+
+## Epic 32.2 — Shell Collector: Integration
+- [ ]
+PlanRef:
+- design: docs/design/epic-32.md
+- archive: artifacts/archive/epic-32.0/latest
+- slice: 32.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 32.2: Integrate Shell Collector; remove submarine-sort from map and registry.
+
+Requirements:
+- useMinigame: replace submarine-sort with shell-collector
+- MinigameId union: submarine-sort → shell-collector
+- minigame-map.v1.json: rules and default pool use shell-collector
+- useDifficultyProgression: shell-collector params
+- play.vue: hide ProblemCard when currentMinigameId === 'shell-collector'
+- Remove MinigameSubmarineSort.vue
+- nl.json: aria-labels for shell-collector
+- Typecheck, build green
+
+Acceptance:
+- Level 5, 11, 17, … show Shell Collector; no ProblemCard
+- Map → play level 5 → Shell Collector round completes
+- submarine-sort removed from codebase
+
+---
+
+## Epic 32.3 — Shell Collector: E2E + Polish
+- [ ]
+PlanRef:
+- design: docs/design/epic-32.md
+- archive: artifacts/archive/epic-32.0/latest
+- slice: 32.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 32.3: E2E updates, polish, bundle budget.
+
+Requirements:
+- interaction-diversity.spec.ts: replace submarine-sort with shell-collector
+- sorting-sequence.spec.ts: remove or repurpose (was submarine-specific)
+- E2E: level 5 → shell-collector visible → complete round
+- Bundle budget (Gate F) must pass
+- Reduced motion: animations degrade
+- Typecheck, build, smoke green
+
+Acceptance:
+- E2E green
+- Bundle budget passes
+- No submarine-sort references in e2e

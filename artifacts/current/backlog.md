@@ -1,22 +1,18 @@
-# Backlog — Epic 30.5
+# Backlog — Epic 32
 
-## Epic 30.5 — Polish + Bundle Budget
+## Micro-Epics (Slices)
 
-Scope in:
-- Bundle budget (Gate F) must pass
-- Visual regression baselines: map, level complete, mistakes review
-- Reduced motion: map avatar-bounce off when preferred
-- Final E2E pass: full flow map → play → complete → review → map
+1. **Epic 32.1** — New minigame component: Shell Collector core mechanic + assets
+2. **Epic 32.2** — Integration: play.vue hide ProblemCard, useMinigame, map, types
+3. **Epic 32.3** — E2E + polish: specs, aria-labels, reduced motion
 
-Scope out:
-- New features
+## Dependencies
 
-## Task
+- 32.1 must complete before 32.2 (component exists)
+- 32.2 must complete before 32.3 (integration in place)
 
-| Id | Title | Lanes | Gates |
-|----|-------|-------|-------|
-| 0150 | Epic 30.5 — Polish + Bundle Budget | W1, T, I | C, D, F |
+## Out of Scope (This Epic)
 
-## Risks
-
-None (polish only).
+- Other minigame changes
+- New math operators
+- Backend changes
