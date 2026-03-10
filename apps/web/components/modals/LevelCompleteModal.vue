@@ -15,11 +15,23 @@ const props = withDefaults(
     open: boolean
     level: number
     stars: number
+    correctCount: number
+    roundsTotal: number
     hasMistakes: boolean
     isLastLevel: boolean
     maatjeId?: MaatjeId
+    scorePercent?: number
+    timeFormatted?: string
+    comboMax?: number
+    xpGained?: number
   }>(),
-  { maatjeId: 'wolkje' }
+  {
+    maatjeId: 'wolkje',
+    scorePercent: 0,
+    timeFormatted: '00:00',
+    comboMax: 0,
+    xpGained: 0,
+  }
 )
 
 const starToExpression: Record<number, ExpressionId> = {
@@ -40,13 +52,12 @@ const emit = defineEmits<{
   backToMap: []
   next: []
   reviewMistakes: []
-  close: []
+  retry: []
 }>()
 
 const dialogRef = ref<HTMLElement | null>(null)
 const starVisible = ref<boolean[]>([])
 const showConfetti = ref(false)
-
 
 watch(() => props.open, async (isOpen) => {
   if (isOpen) {
@@ -71,7 +82,6 @@ function handleKeydown(e: KeyboardEvent) {
 
   if (e.key === 'Escape') {
     e.preventDefault()
-    emit('close')
     return
   }
 
@@ -99,7 +109,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="open" class="modal-overlay" @click.self="emit('close')">
+      <div v-if="open" class="modal-overlay">
         <Confetti :active="showConfetti" />
         <div
           ref="dialogRef"
@@ -109,23 +119,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           :aria-label="t('levelComplete.ariaLabel')"
           tabindex="-1"
         >
-          <div v-if="showMaatje" class="mascot">
-            <MaatjeAvatar
-              :character="maatjeId"
-              :expression="maatjeExpression"
-              size="lg"
-              :aria-label="t('levelComplete.mascotAlt')"
-            />
-          </div>
-          <MascotIcon
-            v-else
-            id-prefix="level-complete"
-            class="mascot"
-            :aria-label="t('levelComplete.mascotAlt')"
-          />
-
-          <h2 class="modal-title">{{ t('levelComplete.title', { level }) }}</h2>
-
           <div class="stars-row" :aria-label="t('levelComplete.starsAria', { stars })">
             <svg
               v-for="i in 3"
@@ -142,28 +135,72 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             </svg>
           </div>
 
-          <p class="modal-message">{{ stars === 3 ? t('levelComplete.perfect') : stars === 2 ? t('levelComplete.great') : stars === 1 ? t('levelComplete.good') : t('levelComplete.tryAgain') }}</p>
+          <h2 class="modal-title">{{ t('levelComplete.titleMain') }}</h2>
+          <p class="modal-subtitle">{{ t('levelComplete.subtitle', { stars }) }}</p>
+
+          <div v-if="showMaatje" class="mascot">
+            <MaatjeAvatar
+              :character="maatjeId"
+              :expression="maatjeExpression"
+              size="lg"
+              :aria-label="t('levelComplete.mascotAlt')"
+            />
+          </div>
+          <MascotIcon
+            v-else
+            id-prefix="level-complete"
+            class="mascot"
+            :aria-label="t('levelComplete.mascotAlt')"
+          />
+
+          <div class="performance-bar">
+            {{ stars === 0 ? t('levelComplete.performanceTryAgain', { correct: correctCount, total: roundsTotal }) : t('levelComplete.performance', { correct: correctCount, total: roundsTotal }) }}
+          </div>
 
           <div class="modal-actions">
-            <button type="button" class="cta-primary" @click="emit('backToMap')">
-              {{ t('levelComplete.backToMap') }}
-            </button>
+            <div class="modal-actions-secondary">
+              <button
+                v-if="hasMistakes"
+                type="button"
+                class="cta-secondary cta-review"
+                @click="emit('reviewMistakes')"
+              >
+                {{ t('levelComplete.reviewMistakes') }}
+              </button>
+              <button type="button" class="cta-secondary cta-retry" @click="emit('retry')">
+                {{ t('levelComplete.retry') }}
+              </button>
+            </div>
             <button
               v-if="!isLastLevel"
               type="button"
-              class="cta-secondary"
+              class="cta-primary"
               @click="emit('next')"
             >
               {{ t('levelComplete.nextLevel') }}
             </button>
-            <button
-              v-if="hasMistakes"
-              type="button"
-              class="cta-secondary"
-              @click="emit('reviewMistakes')"
-            >
-              {{ t('levelComplete.reviewMistakes') }}
+            <button v-else type="button" class="cta-primary" @click="emit('backToMap')">
+              {{ t('levelComplete.backToMap') }}
             </button>
+          </div>
+
+          <div class="modal-footer-stats">
+            <div class="stat-capsule">
+              <span class="stat-label">{{ t('levelComplete.scoreLabel') }}</span>
+              <span class="stat-value">{{ scorePercent }}%</span>
+            </div>
+            <div class="stat-capsule">
+              <span class="stat-label">{{ t('levelComplete.timeLabel') }}</span>
+              <span class="stat-value">{{ timeFormatted }}</span>
+            </div>
+            <div class="stat-capsule">
+              <span class="stat-label">{{ t('levelComplete.comboLabel') }}</span>
+              <span class="stat-value stat-combo">x{{ comboMax }}</span>
+            </div>
+            <div class="stat-capsule">
+              <span class="stat-label">{{ t('levelComplete.xpLabel') }}</span>
+              <span class="stat-value stat-xp">+{{ xpGained }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -198,34 +235,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   outline: none;
 }
 
-.modal-enter-active {
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
-}
-
-.modal-leave-active {
-  transition: opacity 0.15s ease-in;
-}
-
-.modal-enter-from {
-  opacity: 0;
-  transform: scale(0.92) translateY(16px);
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
 .mascot {
   width: 80px;
   height: 80px;
-}
-
-.modal-title {
-  font-family: var(--app-font);
-  font-size: var(--app-font-size-2xl);
-  font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
-  margin: 0;
 }
 
 .stars-row {
@@ -271,11 +283,31 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   100% { transform: scale(1); }
 }
 
-.modal-message {
+.modal-title {
   font-family: var(--app-font);
-  font-size: var(--app-font-size-lg);
+  font-size: var(--app-font-size-2xl);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-text-on-surface);
+  margin: 0;
+}
+
+.modal-subtitle {
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-base);
   color: var(--app-text-muted-on-surface);
   margin: 0;
+}
+
+.performance-bar {
+  background: rgba(76, 175, 80, 0.2);
+  border-radius: var(--app-radius-md);
+  padding: var(--app-space-sm) var(--app-space-lg);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-text-on-surface);
+  width: 100%;
+  text-align: center;
 }
 
 .modal-actions {
@@ -285,14 +317,22 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   width: 100%;
 }
 
+.modal-actions-secondary {
+  display: flex;
+  gap: var(--app-space-sm);
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .cta-primary {
   min-height: var(--app-tap-min);
   padding: var(--app-space-sm) var(--app-space-lg);
   font-family: var(--app-font);
   font-size: var(--app-font-size-cta);
   font-weight: var(--app-font-weight-bold);
-  color: var(--app-text-on-surface);
-  background: var(--app-primary);
+  color: white;
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
   border: none;
   border-radius: var(--app-radius-md);
   cursor: pointer;
@@ -300,7 +340,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 }
 
 .cta-primary:hover {
-  background: var(--app-primary-hover);
+  background: linear-gradient(135deg, #5cb860 0%, #43a047 100%);
 }
 
 .cta-primary:focus-visible {
@@ -310,24 +350,89 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
 .cta-secondary {
   min-height: var(--app-tap-min);
-  padding: var(--app-space-sm) var(--app-space-lg);
+  padding: var(--app-space-sm) var(--app-space-md);
   font-family: var(--app-font);
-  font-size: var(--app-font-size-lg);
+  font-size: var(--app-font-size-base);
   font-weight: var(--app-font-weight-bold);
-  color: var(--app-primary);
-  background: transparent;
-  border: 2px solid var(--app-primary);
+  color: var(--app-text-on-surface);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--app-radius-md);
   cursor: pointer;
   transition: background var(--app-transition);
 }
 
 .cta-secondary:hover {
-  background: rgba(0, 188, 212, 0.1);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.cta-review {
+  background: rgba(255, 235, 59, 0.4);
+  border-color: rgba(255, 193, 7, 0.5);
+}
+
+.cta-retry {
+  background: rgba(245, 245, 245, 0.9);
 }
 
 .cta-secondary:focus-visible {
   outline: 2px solid var(--app-primary);
   outline-offset: 2px;
+}
+
+.modal-footer-stats {
+  display: flex;
+  gap: var(--app-space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.stat-capsule {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: var(--app-radius-md);
+  padding: var(--app-space-xs) var(--app-space-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--app-text-muted-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: var(--app-font-size-lg);
+  font-weight: var(--app-font-weight-bold);
+  color: var(--app-text-on-surface);
+}
+
+.stat-combo {
+  color: #ff9800;
+}
+
+.stat-xp {
+  color: #4caf50;
+}
+
+.modal-enter-active {
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+.modal-leave-active {
+  transition: opacity 0.15s ease-in;
+}
+
+.modal-enter-from {
+  opacity: 0;
+  transform: scale(0.92) translateY(16px);
+}
+
+.modal-leave-to {
+  opacity: 0;
 }
 </style>

@@ -4,8 +4,9 @@ set -euo pipefail
 MODE="${1:-host}"   # host|container
 PR="${2:-}"         # PR number optional
 BRANCH="${3:-}"     # branch name optional
-RETRIES="${RETRIES:-20}"
-SLEEP="${SLEEP:-30}"
+# Tuned for ~4 min CI: poll every 20s, 15 retries = 5 min max
+RETRIES="${RETRIES:-15}"
+SLEEP="${SLEEP:-20}"
 
 ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}"
 mkdir -p "$ARTIFACTS_DIR"

@@ -1,20 +1,17 @@
-# Run Manifest — Epic 32
+# Run Manifest — Epic 33.1: Result Modal Layout + Non-dismissable
 
-**Run id:** 20250310T120000Z  
-**Epic number:** 32  
-**Intent:** Replace submarine-sort minigame with new gameplay; math integrated into game; distinct layout for 6-year-olds.
+**Run ID:** 2025-03-10T12:30:00Z
+**Epic:** 33.1
+**PlanRef:** docs/design/epic-33.md, slice 33.1
 
 ## Required Planning Agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| art-director | OK | art-direction.md |
-| game-designer | OK | game-feel.md |
-| motion-audio-designer | OK | motion-audio.md |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
-| illustrator | OK | assets.md |
+| discovery | OK | PlanRef |
+| ux | OK | PlanRef |
+| architecture | OK | PlanRef |
+| solution | OK | PlanRef |
+| qa | OK | PlanRef |
+| security | OK | PlanRef |
+| backlog | OK | backlog.md |

@@ -70,7 +70,7 @@ test.describe('mistakes review visual', () => {
     }
 
     await expect(page.locator('.modal-dialog')).toBeVisible({ timeout: 5000 })
-    const reviewBtn = page.locator('.cta-secondary:has-text("Fouten bekijken")')
+    const reviewBtn = page.locator('.cta-secondary:has-text("Bekijk foutjes")')
     await expect(reviewBtn).toBeVisible({ timeout: 3000 })
     await reviewBtn.click()
 

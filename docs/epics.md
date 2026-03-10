@@ -1983,3 +1983,83 @@ Acceptance:
 - E2E green
 - Bundle budget passes
 - No submarine-sort references in e2e
+
+---
+
+## Epic 33.1 — Result Modal: Layout + Non-dismissable
+- [ ]
+PlanRef:
+- design: docs/design/epic-33.md
+- archive: artifacts/archive/epic-33.0/latest
+- slice: 33.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 33.1: Result modal layout herschikken naar screenshot; modal niet dismissable.
+
+Requirements:
+- Layout: sterren bovenaan → titel "Level Voltooid!" → subtitle "Je hebt X sterren verdiend!" → Maatje → performance-bar → secundaire buttons → primaire CTA
+- Geen overlay-click om te sluiten; geen Escape om te sluiten; geen X-knop
+- Buttons: secundair (Bekijk foutjes, Nog een keer) → primair (VOLGENDE LEVEL / NAAR DE KAART)
+- Footer stats placeholders (SCORE, TIJD, COMBO, XP) — waarden kunnen 0/placeholder
+- Typecheck, build green
+
+Acceptance:
+- Modal layout per design
+- Escape en buitenklik sluiten modal niet
+- E2E level-complete green (geen regressie)
+
+---
+
+## Epic 33.2 — Result Modal: Stats (Score, Tijd, Combo, XP)
+- [ ]
+PlanRef:
+- design: docs/design/epic-33.md
+- archive: artifacts/archive/epic-33.0/latest
+- slice: 33.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 33.2: Level timer, combo max, XP-formule; stats in result modal.
+
+Requirements:
+- play.vue: level-timer (start bij level start, stop bij complete)
+- play.vue: max combo bijhouden (game.streak over level)
+- XP-formule: sterren + combo-bonus; doorgeven aan modal
+- LevelCompleteModal: props scorePercent, timeFormatted, comboMax, xpGained; footer stats renderen
+- Formaat: TIJD MM:SS, SCORE %, COMBO xN, XP +N
+
+Acceptance:
+- Stats tonen correcte waarden
+- Typecheck, build, E2E green
+
+---
+
+## Epic 33.3 — Result Modal: Polish + E2E
+- [ ]
+PlanRef:
+- design: docs/design/epic-33.md
+- archive: artifacts/archive/epic-33.0/latest
+- slice: 33.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 33.3: Styling fine-tune, i18n, E2E assertions, bundle budget.
+
+Requirements:
+- i18n: levelComplete.subtitle, performance, retry, stats labels
+- Styling: glow, kleuren, footer capsules per art direction
+- E2E: assert modal niet sluitbaar via Escape/buitenklik; stats zichtbaar
+- Reduced motion: sterren/confetti respecteren prefers-reduced-motion
+- Bundle budget (Gate F) moet slagen
+
+Acceptance:
+- E2E green
+- Bundle budget passes
+- Visuele align met screenshot

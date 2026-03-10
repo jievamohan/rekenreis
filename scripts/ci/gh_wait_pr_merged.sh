@@ -2,8 +2,9 @@
 set -euo pipefail
 
 PR_NUM="${1:-}"
-SLEEP="${SLEEP:-20}"
-TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-600}"   # 10 minutes default
+# Poll every 15s for quick detection once user merges; 10 min timeout for manual review
+SLEEP="${SLEEP:-15}"
+TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-600}"
 MAX_POLLS=$(( TIMEOUT_SECONDS / SLEEP ))
 
 if [[ -z "$PR_NUM" ]]; then
