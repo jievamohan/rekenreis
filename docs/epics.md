@@ -2067,7 +2067,7 @@ Acceptance:
 ---
 
 ## Epic 34.1 — Bouw de Toren: Domain Engine + Level Generator
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
