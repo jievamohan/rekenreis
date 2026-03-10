@@ -330,6 +330,10 @@
     "roundComplete": "Ronde voltooid!",
     "nextRound": "Volgende ronde",
     "levelComplete": "Level voltooid! Je hebt {stars} sterren verdiend.",
-    "done": "Klaar"
+    "done": "Klaar",
+    "hint": "Probeer welke twee blokken samen het doelgetal maken. Je kunt het!",
+    "lastChance": "Laatste kans! Kies de twee blokken die samen {target} zijn.",
+    "sumCorrect": "{a} + {b} = {sum}",
+    "continue": "Doorgaan"
   }
 }
