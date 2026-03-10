@@ -1,17 +1,20 @@
-# Run Manifest — Epic 33.1: Result Modal Layout + Non-dismissable
+# Run Manifest — Epic 34: Bouw de Toren
 
-**Run ID:** 2025-03-10T12:30:00Z
-**Epic:** 33.1
-**PlanRef:** docs/design/epic-33.md, slice 33.1
+**Run ID:** 2025-03-10T12:00:00Z
+**Epic:** 34
+**Feature:** Bouw de Toren (tower-building minigame, replaces shell-collector)
 
-## Required Planning Agents
+## Planning Agents
 
 | Agent | Status | Artifact |
 |-------|--------|----------|
-| discovery | OK | PlanRef |
-| ux | OK | PlanRef |
-| architecture | OK | PlanRef |
-| solution | OK | PlanRef |
-| qa | OK | PlanRef |
-| security | OK | PlanRef |
-| backlog | OK | backlog.md |
+| business-analyst | OK | discovery.md |
+| ux-designer | OK | ux.md |
+| art-director | OK | art-direction.md |
+| game-designer | OK | game-feel.md |
+| motion-audio-designer | OK | motion-audio.md |
+| principal-architect | OK | architecture.md |
+| solution-designer | OK | solution.md |
+| qa-strategist | OK | qa.md |
+| security-privacy | OK | security-design.md |
+| illustrator | OK | assets.md |

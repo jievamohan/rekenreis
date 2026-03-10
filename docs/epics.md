@@ -2063,3 +2063,165 @@ Acceptance:
 - E2E green
 - Bundle budget passes
 - Visuele align met screenshot
+
+---
+
+## Epic 34.1 — Bouw de Toren: Domain Engine + Level Generator
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.1: Domeinlogica en level-generator voor Bouw de Toren.
+
+Requirements:
+- useTowerLevelEngine.ts: rondes, torens per ronde, fout-telling (2→hint, 3→laatste kans, 4→ronde-skip), sterrenberekening
+- towerLevelGenerator.ts: seeded RNG; genereer per toren { target, blocks } met garantie min. 1 geldige oplossing
+- Types voor TowerConfig, TowerPuzzle, LevelConfig
+- Unit tests: engine (rondes/fouten/sterren); generator (oplossing aanwezig, seed-deterministisch)
+
+Acceptance:
+- Engine en generator werken correct
+- Unit tests green
+- Typecheck, build green
+
+---
+
+## Epic 34.2 — Bouw de Toren: Core Mechanic + UI
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.2: MinigameBouwDeToren + TowerPuzzle; drag-drop; doelgetal; dropzones; blokkenpool.
+
+Requirements:
+- MinigameBouwDeToren.vue: level-config props; integreer useTowerLevelEngine; emit levelComplete({ stars })
+- TowerPuzzle.vue: doelgetal prominent; 2 dropzones; blokkenpool; drag 2 blokken, valideer sum=target
+- Keyboard: Tab/Enter/Space voor selectie en plaatsing (zelfde model als treasure-dive)
+- Geen shared pool; elke toren eigen verse pool
+
+Acceptance:
+- Minigame rendert; drag 2 blokken; correcte som → volgende toren
+- Keyboard-playable
+- Typecheck, build green
+
+---
+
+## Epic 34.3 — Bouw de Toren: Error Flow + Feedback
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.3: Hint, laatste kans, ronde-skip; terugveren; correct-feedback met som.
+
+Requirements:
+- 2 fouten op toren → hint modal/message
+- 3 fouten → "laatste kans" melding
+- 4 fouten → ronde overgeslagen, niet-correct
+- Fout: blokken animatie terug naar pool (reduced-motion: instant)
+- Correct: positieve feedback + korte som-weergave (bijv. "3 + 5 = 8")
+- i18n: hint, laatste-kans, som-labels
+
+Acceptance:
+- Flow correct; terugveren; correct-feedback
+- Typecheck, build green
+
+---
+
+## Epic 34.4 — Bouw de Toren: Stars + Progress
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.4: Sterrensysteem configureerbaar; ronde/level progress UI.
+
+Requirements:
+- Sterren: 1/2/3 op basis van correcte rondes; configureerbaar per level of via formule
+- computeStars of equivalent voor Bouw de Toren thresholds
+- Progress indicator: ronde-nummer, level-sterren (als van toepassing)
+- Level config: starThresholds in level-definitie
+
+Acceptance:
+- Sterren correct berekend
+- Progress zichtbaar
+- Typecheck, build green
+
+---
+
+## Epic 34.5 — Bouw de Toren: play.vue Integration
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.5: Level-consuming flow; minigame-map; shell-collector vervanging.
+
+Requirements:
+- play.vue: bij currentMinigameId === 'bouw-de-toren' → level-consuming flow; wacht op levelComplete({ stars })
+- completeLevel(levelId, stars); LevelCompleteModal
+- useMinigame: registreer bouw-de-toren; layoutClass layout-tower-dualzone (of bestaande drag-drop)
+- MinigameId union: bouw-de-toren; shell-collector vervangen in minigame-map.v1.json
+- useDifficultyProgression: bouw-de-toren params indien nodig
+- ProblemCard verborgen voor bouw-de-toren
+
+Acceptance:
+- Level 5, 11, 17, … tonen Bouw de Toren
+- Level complete → sterren, modal
+- shell-collector uit map en default pool
+- Typecheck, build green
+
+---
+
+## Epic 34.6 — Bouw de Toren: Assets + Polish
+- [ ]
+PlanRef:
+- design: docs/design/epic-34.md
+- archive: artifacts/archive/epic-34.0/latest
+- slice: 34.6
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 34.6: tower.svg, styling, i18n, E2E, bundle budget.
+
+Requirements:
+- assets/graphics/minigames/bouw-de-toren/tower.svg (~5–10 KB)
+- Styling per art direction; rustige interface
+- i18n compleet (nl.json)
+- E2E: Map → level 5 → Bouw de Toren; voltooi level; level complete
+- Update interaction-diversity; verwijder shell-collector uit relevante specs
+- Bundle budget (Gate F)
+
+Acceptance:
+- E2E green
+- Bundle budget passes
+- i18n compleet

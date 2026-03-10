@@ -1,27 +1,22 @@
-# Backlog — Epic 33.1: Result Modal Layout + Non-dismissable
+# Backlog — Epic 34: Bouw de Toren
 
-**PlanRef:** docs/design/epic-33.md, slice 33.1
+## Epics (voorstel)
 
-## Scope In
-- LevelCompleteModal.vue layout herschikken (sterren → titel → subtitle → Maatje → performance-bar → buttons → footer)
-- Modal niet dismissable (geen overlay-click, Escape, X)
-- Button order: secundair (Bekijk foutjes, Nog een keer) → primair (VOLGENDE LEVEL / NAAR DE KAART)
-- Performance-bar met placeholder tekst
-- Footer stats placeholders (scorePercent, timeFormatted, comboMax, xpGained — kunnen 0/placeholder)
-- Retry button ("Nog een keer") op modal
+1. **34.1 — Domain Engine + Level Generator:** useTowerLevelEngine, towerLevelGenerator, types, unit tests.
+2. **34.2 — Core Mechanic + UI:** MinigameBouwDeToren, TowerPuzzle, drag-drop, doelgetal, dropzones, blokkenpool.
+3. **34.3 — Error Flow + Feedback:** Hint, laatste kans, ronde-skip; terugveren; correct-feedback met som.
+4. **34.4 — Stars + Progress:** Sterrensysteem configureerbaar; ronde/level progress UI.
+5. **34.5 — play.vue Integration:** Level-consuming flow; minigame-map; shell-collector vervanging.
+6. **34.6 — Assets + Polish:** tower.svg, styling, i18n, E2E, bundle budget.
 
-## Scope Out
-- Timer/combo/XP data wiring (Epic 33.2)
-- i18n uitgebreide keys (Epic 33.3)
-- Styling fine-tune (Epic 33.3)
+## Afhankelijkheden
 
-## Risks
-- Geen
+- 34.2, 34.3, 34.4 bouwen op 34.1.
+- 34.5 wacht op 34.2, 34.3, 34.4.
+- 34.6 kan deels parallel met 34.2 (assets).
 
-## Gates
-- C: typecheck
-- D: secrets/SAST
-- F: bundle budget
+## Parallel Mogelijkheden
 
-## Tasks
-1. 0198-epic33-1-modal-layout — Layout + non-dismissable + retry
+- 34.1 eerst (basis).
+- 34.2, 34.3, 34.4 kunnen na 34.1 parallel (verschillende lanes).
+- 34.6 assets parallel met 34.2; rest van 34.6 na integratie.
