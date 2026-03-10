@@ -319,5 +319,17 @@
     "countLabel": "{count} van {target} schelpen",
     "addShellLabel": "Voeg een schelp toe",
     "addShell": "Voeg schelp toe"
+  },
+  "minigameBouwDeToren": {
+    "ariaLabel": "Bouw de toren — sleep twee blokken naar de vakken zodat de som klopt",
+    "puzzleLabel": "Puzzel met doelgetal {target}",
+    "zoneLabel": "Vak {n}, waarde {value}",
+    "blocksLabel": "Blokken om te kiezen",
+    "blockLabel": "Blok {value}",
+    "progress": "Ronde {round} van {total}, toren {tower} van {towersPerRound}",
+    "roundComplete": "Ronde voltooid!",
+    "nextRound": "Volgende ronde",
+    "levelComplete": "Level voltooid! Je hebt {stars} sterren verdiend.",
+    "done": "Klaar"
   }
 }
