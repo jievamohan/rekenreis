@@ -2093,7 +2093,7 @@ Acceptance:
 ---
 
 ## Epic 34.2 — Bouw de Toren: Core Mechanic + UI
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
