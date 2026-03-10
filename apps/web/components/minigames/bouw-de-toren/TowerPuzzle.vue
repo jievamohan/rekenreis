@@ -3,6 +3,8 @@ import { ref, computed, onBeforeUnmount } from 'vue'
 import type { TowerPuzzle as TowerPuzzleType } from '~/types/tower'
 import { useI18n } from '~/composables/useI18n'
 
+import towerIcon from '~/assets/graphics/minigames/bouw-de-toren/tower.svg'
+
 const props = defineProps<{
   puzzle: TowerPuzzleType
 }>()
@@ -142,8 +144,11 @@ onBeforeUnmount(() => {
     role="group"
     :aria-label="t('minigameBouwDeToren.puzzleLabel', { target: puzzle.target })"
   >
-    <div class="target-display" aria-live="polite">
-      {{ puzzle.target }}
+    <div class="target-row">
+      <img :src="towerIcon" alt="" class="tower-icon" aria-hidden="true" width="48" height="60" />
+      <div class="target-display" aria-live="polite">
+        {{ puzzle.target }}
+      </div>
     </div>
     <div
       v-if="correctFeedback"
@@ -212,6 +217,17 @@ onBeforeUnmount(() => {
   padding: 1rem;
   touch-action: none;
   position: relative;
+}
+
+.target-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tower-icon {
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .target-display {

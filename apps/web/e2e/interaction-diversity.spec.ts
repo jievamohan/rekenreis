@@ -33,6 +33,7 @@ test.describe('interaction diversity — E2E proof', () => {
     await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
     await expect(page.locator('[data-testid="tower-puzzle"]')).toBeVisible()
     await expect(page.locator('[data-testid="tower-puzzle"] .target-display')).toBeVisible()
+    await expect(page.locator('[data-testid="tower-puzzle"] .tower-icon')).toBeVisible()
     await expect(page.locator('[data-testid="tower-puzzle"] .block').first()).toBeVisible()
   })
 
