@@ -92,7 +92,7 @@ onMounted(() => {
 <template>
   <div class="map-page">
     <div class="map-header">
-      <h1 class="map-title">{{ t('map.title') }}!</h1>
+      <h1 class="map-title">{{ t('map.title') }}</h1>
       <span class="map-progress" role="status" :aria-label="t('map.overallProgress')">
         ⭐ {{ totalStars }} / {{ maxStars }}
       </span>
