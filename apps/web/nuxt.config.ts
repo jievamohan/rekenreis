@@ -1,6 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  // Vite watch + HMR for reliable hot reload in Docker (bind mounts)
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+        interval: 300,
+      },
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 24678,
+      },
+    },
+  },
   app: {
     head: {
       title: 'Rekenreis',
