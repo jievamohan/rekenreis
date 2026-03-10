@@ -63,3 +63,4 @@
 | Epic 32.3 — Shell Collector: E2E + Polish | done | PR #136 merged |
 | Epic 33.1 — Result Modal: Layout + Non-dismissable | done | PR #141 merged |
 | Epic 33.2 — Result Modal: Stats (Score, Tijd, Combo, XP) | done | PR #143 merged |
+| Epic 33.3 — Result Modal: Polish + E2E | done | PR #148 merged |
