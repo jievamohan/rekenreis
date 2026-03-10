@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
 import type { TowerPuzzle as TowerPuzzleType } from '~/types/tower'
 import { useI18n } from '~/composables/useI18n'
 
@@ -21,23 +21,46 @@ const focusedZone = ref<1 | 2 | null>(null)
 const isDragging = ref(false)
 const dragBlock = ref<number | null>(null)
 const dragPos = ref({ x: 0, y: 0 })
+const wrongShake = ref(false)
+const correctFeedback = ref<{ a: number; b: number; sum: number } | null>(null)
+
+const prefersReducedMotion = computed(() => {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+})
 
 const blocksInPool = computed(() => {
   const placed = new Set([zone1.value, zone2.value].filter((x): x is number => x !== null))
   return props.puzzle.blocks.filter((b) => !placed.has(b))
 })
 
-const canSubmit = computed(() => zone1.value !== null && zone2.value !== null)
+const canSubmit = computed(
+  () => zone1.value !== null && zone2.value !== null && correctFeedback.value === null
+)
+
+let correctFeedbackTimeout: ReturnType<typeof setTimeout> | null = null
 
 function validateAndSubmit() {
-  if (!canSubmit.value) return
+  if (!canSubmit.value || correctFeedback.value !== null) return
   const sum = zone1.value! + zone2.value!
   if (sum === props.puzzle.target) {
-    emit('correct')
+    correctFeedback.value = { a: zone1.value!, b: zone2.value!, sum }
+    correctFeedbackTimeout = setTimeout(() => {
+      correctFeedback.value = null
+      zone1.value = null
+      zone2.value = null
+      emit('correct')
+      correctFeedbackTimeout = null
+    }, prefersReducedMotion.value ? 0 : 300)
   } else {
-    zone1.value = null
-    zone2.value = null
-    emit('wrong')
+    wrongShake.value = true
+    const duration = prefersReducedMotion.value ? 0 : 300
+    setTimeout(() => {
+      zone1.value = null
+      zone2.value = null
+      wrongShake.value = false
+      emit('wrong')
+    }, duration)
   }
 }
 
@@ -107,6 +130,9 @@ function onBlockPointerDown(value: number, e: PointerEvent) {
   document.addEventListener('pointerup', boundUp, { once: true })
 }
 
+onBeforeUnmount(() => {
+  if (correctFeedbackTimeout) clearTimeout(correctFeedbackTimeout)
+})
 </script>
 
 <template>
@@ -119,11 +145,20 @@ function onBlockPointerDown(value: number, e: PointerEvent) {
     <div class="target-display" aria-live="polite">
       {{ puzzle.target }}
     </div>
+    <div
+      v-if="correctFeedback"
+      class="correct-feedback"
+      role="status"
+      aria-live="polite"
+      :data-testid="'correct-sum'"
+    >
+      {{ t('minigameBouwDeToren.sumCorrect', correctFeedback) }}
+    </div>
     <div class="dropzones">
       <div
         data-drop-zone="1"
         class="dropzone"
-        :class="{ filled: zone1 !== null }"
+        :class="{ filled: zone1 !== null && !correctFeedback, wrongShake }"
         role="button"
         tabindex="0"
         :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 1, value: zone1 ?? '' })"
@@ -136,7 +171,7 @@ function onBlockPointerDown(value: number, e: PointerEvent) {
       <div
         data-drop-zone="2"
         class="dropzone"
-        :class="{ filled: zone2 !== null }"
+        :class="{ filled: zone2 !== null && !correctFeedback, wrongShake }"
         role="button"
         tabindex="0"
         :aria-label="t('minigameBouwDeToren.zoneLabel', { n: 2, value: zone2 ?? '' })"
@@ -208,6 +243,29 @@ function onBlockPointerDown(value: number, e: PointerEvent) {
 .dropzone.filled {
   border-style: solid;
   background: var(--app-node-unlocked, #e3f2fd);
+}
+
+.dropzone.wrongShake {
+  animation: wobble 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropzone.wrongShake {
+    animation: none;
+  }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.correct-feedback {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--app-primary, #4fc3f7);
+  padding: 0.5rem;
 }
 
 .zone-value {

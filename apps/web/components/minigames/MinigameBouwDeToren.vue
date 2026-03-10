@@ -51,6 +51,10 @@ function onWrong() {
 function onNextRound() {
   engine.goToNextRound()
 }
+
+function onDismissPhase() {
+  engine.dismissPhase()
+}
 </script>
 
 <template>
@@ -60,6 +64,42 @@ function onNextRound() {
     role="group"
     :aria-label="t('minigameBouwDeToren.ariaLabel')"
   >
+    <Teleport to="body">
+      <div
+        v-if="phase === 'hint'"
+        class="tower-modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hint-title"
+        data-testid="tower-hint-modal"
+      >
+        <div class="tower-modal">
+          <h2 id="hint-title" class="tower-modal-title">
+            {{ t('minigameBouwDeToren.hint') }}
+          </h2>
+          <button class="cta" @click="onDismissPhase">
+            {{ t('minigameBouwDeToren.continue') }}
+          </button>
+        </div>
+      </div>
+      <div
+        v-else-if="phase === 'lastChance' && currentPuzzle"
+        class="tower-modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lastchance-title"
+        data-testid="tower-lastchance-modal"
+      >
+        <div class="tower-modal">
+          <h2 id="lastchance-title" class="tower-modal-title">
+            {{ t('minigameBouwDeToren.lastChance', { target: currentPuzzle.target }) }}
+          </h2>
+          <button class="cta" @click="onDismissPhase">
+            {{ t('minigameBouwDeToren.continue') }}
+          </button>
+        </div>
+      </div>
+    </Teleport>
     <div v-if="phase === 'playing' && currentPuzzle" class="tower-scene">
       <div class="progress" aria-live="polite">
         {{ progressText }}
@@ -132,5 +172,33 @@ function onNextRound() {
   opacity: 0.95;
   outline: 2px solid var(--app-primary, #4fc3f7);
   outline-offset: 2px;
+}
+
+.tower-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.tower-modal {
+  background: var(--app-surface, #f5f5f5);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.tower-modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--app-text, #1a1a2e);
 }
 </style>
