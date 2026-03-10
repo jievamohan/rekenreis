@@ -2201,7 +2201,7 @@ Acceptance:
 ---
 
 ## Epic 34.6 — Bouw de Toren: Assets + Polish
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
