@@ -67,3 +67,4 @@
 | Epic 34.1 — Bouw de Toren: Domain Engine + Level Generator | done | PR #150 merged |
 | Epic 34.2 — Bouw de Toren: Core Mechanic + UI | done | PR #152 merged |
 | Epic 34.3 — Bouw de Toren: Error Flow + Feedback | done | PR #154 merged |
+| Epic 34.4 — Bouw de Toren: Stars + Progress | done | PR #156 merged |

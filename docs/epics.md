@@ -2146,7 +2146,7 @@ Acceptance:
 ---
 
 ## Epic 34.4 — Bouw de Toren: Stars + Progress
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-34.md
 - archive: artifacts/archive/epic-34.0/latest
