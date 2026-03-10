@@ -65,3 +65,4 @@
 | Epic 33.2 — Result Modal: Stats (Score, Tijd, Combo, XP) | done | PR #143 merged |
 | Epic 33.3 — Result Modal: Polish + E2E | done | PR #148 merged |
 | Epic 34.1 — Bouw de Toren: Domain Engine + Level Generator | done | PR #150 merged |
+| Epic 34.2 — Bouw de Toren: Core Mechanic + UI | done | PR #152 merged |
