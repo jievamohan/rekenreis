@@ -94,3 +94,12 @@ bash scripts/ci/e2e-benchmark.sh
 - **Runtime:** No `npm install -g pnpm`; pnpm pre-installed in image
 - **node_modules:** Cached at job level; on cache hit, install substep is config-only (~0–2s)
 - **Target achieved:** Install substep nagenoeg instant on cache hit
+
+## Epic 36 — Minigame Result Modal E2E
+
+The `e2e/minigame-result-modal.spec.ts` spec exercises the level-complete modal across round-based minigames (bubble-pop, treasure-dive, fish-feed, starfish-match) and Bouw de Toren.
+
+- **Helpers:** `answerBubblePop`, `answerTreasureDive`, `answerFishFeed`, `answerStarfishMatch`, `completeBouwDeToren` (correct/wrong)
+- **Timers:** `seedTimersDisabledProfile` is seeded for fish-feed and starfish-match (deterministic)
+- **Retries:** Each describe block uses `retries: 2` to reduce flakiness
+- **Run:** `docker compose run --rm e2e pnpm exec playwright test minigame-result-modal --project=chromium`

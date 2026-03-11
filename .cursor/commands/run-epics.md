@@ -2,46 +2,168 @@
 
 Goal: Run all epics from docs/epics.md hands-off:
 - execute each epic via /feature
-- ensure CI is green and finalize ran
-- wait until you (human) merge the PR
-- then update epics.md via PR (merge commit, no squash), sync main, continue to next epic
+- perform housekeeping inside the original feature branch and PR
+- ensure the feature branch is squashed to a single head commit
+- ensure CI is green on that squashed head
+- run strict self-review on the PR
+- print clear, granular review logging directly in the Cursor command output
+- if review finds issues: fix them, re-finalize (re-squash), and re-run CI/review
+- if review is clean: merge the feature PR with a merge commit (no squash on merge)
+- after merge: sync local main and clean up the local feature branch
+- continue to the next epic
 
 Protocol:
 
 0) BRANCH SYNC (at start and before each new epic)
 - `git checkout main && git pull origin main`
-- Ensures we run each epic from up-to-date main.
+- Ensures each epic starts from up-to-date main.
 
 1) PREVIEW (before execution)
 - Read docs/epics.md and split into epics in order.
 - For each epic: check `- [x]` (done) vs `- [ ]` (pending).
 - Output summary:
-  - List: Epic N — status (done/pending)
+  - List: Epic N — status (done/pending).
   - Next to execute: first epic with `- [ ]`, or "All epics done" if none.
 - If docs/epic-progress.md exists: reference it in output.
 - Then proceed with step 2.
 
 2) For each epic (starting from first pending):
    a) Skip if epic has `- [x]` (already done).
-   b) Execute exactly the /feature block shown under that epic (including --ci and --max-tasks).
+
+   b) Execute exactly the /feature block shown under that epic (including `--ci` and `--max-tasks`).
+
    c) /feature must:
       - bootstrap a single PR
       - run tasks
-      - finalize (squash + CI watch)
-   d) Confirm PR exists by reading artifacts/current/pr-number.txt (or infer via gh).
-   e) Ensure CI is green for the PR (tuned for ~4 min CI):
-      - SLEEP=20 RETRIES=15 scripts/ci/gh_watch.sh host <PR_NUM>
-   f) Enter WAIT MODE until merged:
-      - SLEEP=15 TIMEOUT_SECONDS=600 scripts/ci/gh_wait_pr_merged.sh <PR_NUM>
-   g) Once merged: run EPICS UPDATE flow (no squash):
-      - scripts/ci/gh_epics_update.sh <EPIC_ID> <PR_NUM>
-      - EPIC_ID: the epic just merged (e.g. 23.1 or Epic 23.1); PR_NUM: the merged feature PR number.
-      - Script: updates epics.md + epic-progress.md, creates branch, pushes, creates PR, merges with --merge (merge commit, no squash), fetches main, checks out main.
-   h) After script completes: main is up to date and checked out; move on to next epic.
+      - apply housekeeping in the same feature branch:
+        - mark the current epic as done in `docs/epics.md`
+        - update `docs/epic-progress.md` if that file is used by this repo
+      - finalize the branch by squashing all branch commits into one commit on top of base
+      - push the squashed branch head
+      - run CI watch for the PR head
+
+   d) Confirm PR exists by reading `artifacts/current/pr-number.txt` (or infer via `gh`).
+      Also capture:
+      - PR number
+      - PR URL
+      - current branch name
+      - current PR head SHA after finalize
+
+   e) Ensure CI is green for the PR head:
+      - `SLEEP=20 RETRIES=15 scripts/ci/gh_watch.sh host <PR_NUM>`
+
+   f) Run strict self-review on the PR using the `code-review-expert` skill.
+      Strict mode means:
+      - any finding blocks merge
+      - findings must be empty
+      - merge gate must be true
+      - confidence must not indicate unresolved critical uncertainty
+
+      Live review visibility is required:
+      - all review output must be shown directly in the Cursor command log
+      - do not rely on files as the primary review log
+      - every review pass must remain visible in the command output history
+      - do not compress review output into only a one-line summary
+
+      For each review pass, print the following directly in the Cursor output:
+
+      Review pass header:
+      - `===== REVIEW PASS <n>/<MAX_REVIEW_FIX_LOOPS> =====`
+      - `Epic: <EPIC_ID>`
+      - `PR: #<PR_NUM>`
+      - `URL: <PR_URL>`
+      - `Branch: <FEATURE_BRANCH>`
+      - `Head SHA: <HEAD_SHA>`
+      - `Mode: strict`
+
+      Review verdict summary:
+      - `Review verdict: <approve | approve-with-follow-ups | changes-required>`
+      - `Merge allowed: <true | false>`
+      - `Confidence: <high | medium | low>`
+      - `Primary blocker: <none or main blocker>`
+      - `Findings count: <n>`
+      - `Severity totals: blocker=<n> major=<n> medium=<n> minor=<n> nit=<n>`
+
+      Granular findings:
+      For each finding, print:
+      - `[Finding <index>]`
+      - `Severity: <blocker | major | medium | minor | nit>`
+      - `Title: <title>`
+      - `Why it matters: <impact>`
+      - `Evidence: <code evidence or concrete rationale>`
+      - `Suggested fix: <smallest strong fix>`
+      - `Status: <open | resolved | still-open | new>`
+
+      Missing verification:
+      - print any explicitly unknown or unverifiable areas
+
+      Final review gate line:
+      - `REVIEW_GATE verdict=<...> merge_allowed=<true|false> findings=<n> blockers=<n> majors=<n> mediums=<n> minors=<n> nits=<n>`
+
+      Hard rule:
+      - if the PR head SHA changes after a review pass, that review is stale
+      - after any fix, re-squash, or push, a new review pass must be run and logged before merge is allowed
+
+   g) If review finds issues:
+      - print a fix summary directly in the Cursor log before making changes
+      - fix only the scoped review findings in the same feature branch
+      - preserve housekeeping changes in that same branch
+      - rerun relevant validations
+      - rerun finalize flow to re-squash the branch into one commit again
+      - force-push the squashed branch
+      - rerun CI watch on the new head
+      - rerun strict self-review
+      - repeat until review is clean or max review-fix loops is reached
+
+      The fix summary printed in the Cursor log must include:
+      - which findings were targeted
+      - what changed
+      - what was intentionally not changed
+      - whether the branch was re-squashed
+      - the new head SHA
+      - a short validation result summary
+
+      From the second review pass onward, also print a review delta:
+      - `Review delta:`
+      - `- resolved: <n>`
+      - `- still open: <n>`
+      - `- new: <n>`
+      - `- verdict trend: <improved | unchanged | worsened>`
+
+   h) Default loop limit:
+      - `MAX_REVIEW_FIX_LOOPS=4`
+      - If unresolved findings remain after final loop: stop immediately and summarize blockers.
+      - Never merge a PR with unresolved findings.
+
+   i) If review is clean and CI is green on the latest squashed head:
+      - merge the feature PR using a merge commit:
+        - `gh pr merge <PR_NUM> --merge --delete-branch --match-head-commit <HEAD_SHA>`
+
+   j) Confirm feature PR is merged.
+      - Prefer immediate verification via:
+        - `gh pr view <PR_NUM> --json mergedAt,state,url`
+      - Fallback polling allowed if needed.
+
+   k) After merge:
+      - checkout main
+      - pull origin main
+      - delete the local feature branch that was just merged:
+        - `git branch -D <FEATURE_BRANCH>`
+      - continue to next pending epic
 
 Stop conditions:
 - If any epic becomes BLOCKED, stop immediately and summarize blockers.
-- Never start the next epic until the previous epic PR is merged and epics update is complete.
+- Never start the next epic until:
+  - the previous epic feature PR is merged
+  - local `main` is checked out and synced
+  - the merged local feature branch has been cleaned up
 
 Output:
-- For each epic: PR number + URL + final status (merged/blocked).
+- For each epic:
+  - PR number
+  - PR URL
+  - squashed head SHA used for merge
+  - latest review verdict
+  - latest review severity totals
+  - latest REVIEW_GATE line
+  - final status (`merged` / `blocked`)
