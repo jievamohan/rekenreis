@@ -2259,7 +2259,7 @@ Acceptance:
 ---
 
 ## Epic 36.1 — Minigame Result Tests: E2E Helpers + 100%/0%
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-36.md
 - archive: artifacts/archive/epic-36.0/latest
