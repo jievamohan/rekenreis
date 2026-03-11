@@ -2630,7 +2630,7 @@ Acceptance:
 ---
 
 ## Epic 44.1 — Bouw de Toren: Responsive Progress Towers
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-44.md
 - archive: artifacts/archive/epic-44.0/latest
