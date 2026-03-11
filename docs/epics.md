@@ -2554,3 +2554,28 @@ Requirements:
 Acceptance:
 - 4 tot 8 visjes
 - Beide zwemrichtingen zichtbaar
+
+---
+
+## Epic 42.1 — L→R Fish Visibility Fix
+- [ ]
+PlanRef:
+- design: docs/design/epic-42.md
+- archive: artifacts/archive/epic-42.0/latest
+- slice: 42.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 42.1: Visjes die van links naar rechts zwemmen, zijn niet zichtbaar. Dit moet opgelost worden.
+
+Requirements:
+- L→R zwemmende visjes zijn zichtbaar in Fish Feed minigame
+- Beide richtingen (L→R en R→L) even goed zichtbaar
+- Geen regressie op R→L of andere Fish Feed gedrag
+- Gate C, F green
+
+Acceptance:
+- L→R visjes zichtbaar tijdens hun zwemroute
+- R→L visjes blijven zichtbaar
