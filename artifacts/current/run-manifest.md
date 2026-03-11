@@ -1,29 +1,20 @@
-# Run Manifest
+# Run Manifest — Epic 36
 
-## Run ID
-feat/map-ux-flowing-path
+**Run id:** 20250311T120000Z  
+**Epic number:** 36
 
-## Required Agents
-| Agent | Status | Artifact |
-|-------|--------|----------|
-| business-analyst | OK | discovery.md |
-| ux-designer | OK | ux.md |
-| principal-architect | OK | architecture.md |
-| solution-designer | OK | solution.md |
-| qa-strategist | OK | qa.md |
-| security-privacy | OK | security-design.md |
+## Required planning agents
 
-## Conditional Agents
-| Agent | Status | Reason |
-|-------|--------|--------|
-| art-director | N/A | Geen visuele/epic redesign |
-| game-designer | N/A | Geen gameplay changes |
-| motion-audio-designer | N/A | Geen animatie/audio epic |
-| illustrator | N/A | Geen nieuwe assets |
-
-## Tasks Generated
-- 0201-map-flowing-path
-- 0202-map-scroll-sticky-header
-- 0203-map-stars-around-circle
-- 0204-map-locked-level-number
-- 0205-map-randomize-avatar
+| Agent | Status | Artifact path |
+|-------|--------|---------------|
+| business-analyst | OK | artifacts/current/discovery.md |
+| ux-designer | OK | artifacts/current/ux.md |
+| art-director | N/A | artifacts/current/art-direction.md |
+| game-designer | OK | artifacts/current/game-feel.md |
+| motion-audio-designer | N/A | artifacts/current/motion-audio.md |
+| principal-architect | OK | artifacts/current/architecture.md |
+| solution-designer | OK | artifacts/current/solution.md |
+| qa-strategist | OK | artifacts/current/qa.md |
+| security-privacy | OK | artifacts/current/security-design.md |
+| illustrator | N/A | artifacts/current/assets.md |
+| orchestrator | — | Slice map in docs/design/epic-36.md Ch. 9 |
