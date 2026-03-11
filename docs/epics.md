@@ -2652,3 +2652,22 @@ Requirements:
 Acceptance:
 - Geen overflow van progress-torens op tablet en telefoon
 - Alle torens (6–21) zichtbaar binnen viewport
+
+---
+
+## Epic 44.2 — Bouw de Toren: Progress Towers Max 3 Rows
+- [x]
+/feature --ci --max-tasks=5
+Build Epic 44.2: Limitier de hoogte van de progress torens tot 3 regels. Als er meer weergegeven moet worden, switch terug naar de progress bar die voor de andere minigames wordt gebruikt.
+
+Requirements:
+- Hoogte progress-torens beperkt tot max 3 regels
+- Bij >9 torens: toon dezelfde progress bar als andere minigames (round-progress)
+- Geen overflow op mobiel; spel schuift niet te ver naar beneden
+- Aria-labels en semantiek behouden
+- Gate C, D, F green
+
+Acceptance:
+- ≤9 torens: tower icons in max 3 rijen
+- >9 torens: progress bar (zoals andere minigames)
+- Geen verticale overflow op telefoon

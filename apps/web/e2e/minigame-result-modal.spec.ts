@@ -393,13 +393,21 @@ test.describe('minigame result modal — Bouw de Toren', () => {
     await seedTimersDisabledProfile(page)
   })
 
+  async function getBouwDeTorenTotalRounds(puzzle: import('@playwright/test').Locator): Promise<number> {
+    const slots = puzzle.locator('.tower-progress-slot')
+    const slotCount = await slots.count()
+    if (slotCount > 0) return slotCount
+    const targetNode = puzzle.locator('.tower-round-progress-node-target')
+    return Number(await targetNode.textContent()) || 0
+  }
+
   test('bouw-de-toren (level 5) 0 stars: all wrong towers', async ({ page }) => {
     test.setTimeout(120000)
     await page.goto('/play?level=5')
     await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
     const puzzle = page.locator('[data-testid="tower-puzzle"]')
     await expect(puzzle).toBeVisible()
-    const totalRounds = await puzzle.locator('.tower-progress-slot').count()
+    const totalRounds = await getBouwDeTorenTotalRounds(puzzle)
     for (let r = 0; r < totalRounds; r++) {
       await completeBouwDeToren(page, false)
     }
@@ -415,7 +423,7 @@ test.describe('minigame result modal — Bouw de Toren', () => {
     await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
     const puzzle = page.locator('[data-testid="tower-puzzle"]')
     await expect(puzzle).toBeVisible()
-    const totalRounds = await puzzle.locator('.tower-progress-slot').count()
+    const totalRounds = await getBouwDeTorenTotalRounds(puzzle)
     for (let r = 0; r < totalRounds; r++) {
       await completeBouwDeToren(page, true)
     }
