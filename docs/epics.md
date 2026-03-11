@@ -2415,7 +2415,7 @@ Acceptance:
 ---
 
 ## Epic 37.2 — Diepte + DOM-verwijdering buiten viewport
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-37.md
 - archive: artifacts/archive/epic-37.0/latest

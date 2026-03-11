@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import type { AdditionQuestion } from '~/types/game'
 import { useI18n } from '~/composables/useI18n'
 import { createSeededRng } from '~/utils/seedableRng'
@@ -20,6 +20,10 @@ const timeLeft = ref(timerSeconds.value)
 let timerHandle: ReturnType<typeof setInterval> | null = null
 const answered = ref(false)
 const prefersReducedMotion = ref(false)
+const aquariumRef = ref<HTMLElement | null>(null)
+const COUNT_MIN = 2
+const COUNT_MAX = 5
+
 /** Seeded positions for pellets scattered in aquarium (deterministic per question) */
 function getPelletPositions(q: AdditionQuestion) {
   const rng = createSeededRng(q.a + q.b * 100 + q.correctAnswer * 10000)
@@ -39,17 +43,69 @@ function getPelletPositions(q: AdditionQuestion) {
 
 const pellets = computed(() => getPelletPositions(props.question))
 
-/** Ambient swimming fish: 2–5 fish, random direction, variable y and speed */
-const fishRng = createSeededRng(props.question.a + props.question.b * 37 + 3700)
-const ambientFish = computed(() => {
-  const count = 2 + Math.floor(fishRng() * 4) // 2–5
-  return Array.from({ length: count }, (_, i) => ({
-    id: `fish-${i}-${props.question.a}-${props.question.b}`,
-    y: 15 + fishRng() * 70, // 15–85% vertical
-    duration: 8 + fishRng() * 12, // 8–20s
-    rightToLeft: fishRng() > 0.5,
-  }))
-})
+interface AmbientFish {
+  id: string
+  y: number
+  duration: number
+  rightToLeft: boolean
+  depth: number // 0=foreground (large), 1=background (small+blur)
+}
+
+/** Ambient fish: reactive array, viewport exit removal, respawn when count < 2 */
+const ambientFish = ref<AmbientFish[]>([])
+const fishObservers = new Map<string, IntersectionObserver>()
+let fishCheckInterval: ReturnType<typeof setInterval> | null = null
+
+function createFish(rng: () => number): AmbientFish {
+  return {
+    id: `fish-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    y: 15 + rng() * 70,
+    duration: 8 + rng() * 12,
+    rightToLeft: rng() > 0.5,
+    depth: rng(),
+  }
+}
+
+function removeFishById(id: string) {
+  fishObservers.get(id)?.disconnect()
+  fishObservers.delete(id)
+  ambientFish.value = ambientFish.value.filter((f) => f.id !== id)
+}
+
+function ensureFishCount(rng: () => number) {
+  if (ambientFish.value.length < COUNT_MIN) {
+    const toAdd = COUNT_MIN - ambientFish.value.length
+    for (let i = 0; i < toAdd; i++) {
+      ambientFish.value = [...ambientFish.value, createFish(rng)]
+    }
+    nextTick(() => setupFishObservers(rng))
+  }
+}
+
+function setupFishObservers(rng: () => number) {
+  if (!aquariumRef.value) return
+  ambientFish.value.forEach((f) => {
+    if (fishObservers.has(f.id)) return
+    const el = aquariumRef.value?.querySelector(`[data-fish-id="${f.id}"]`)
+    if (!el) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) {
+            const id = (entry.target as HTMLElement).dataset.fishId
+            if (id) {
+              removeFishById(id)
+              ensureFishCount(rng)
+            }
+          }
+        }
+      },
+      { root: aquariumRef.value, rootMargin: '20px', threshold: 0 }
+    )
+    obs.observe(el)
+    fishObservers.set(f.id, obs)
+  })
+}
 
 function selectPellet(choice: number) {
   if (answered.value) return
@@ -99,10 +155,23 @@ onMounted(() => {
   if (!props.timersDisabled) {
     startTimer()
   }
+  if (!prefersReducedMotion.value) {
+    const rng = createSeededRng(props.question.a + props.question.b * 37 + 3700)
+    const count = COUNT_MIN + Math.floor(rng() * (COUNT_MAX - COUNT_MIN + 1))
+    ambientFish.value = Array.from({ length: count }, () => createFish(rng))
+    nextTick(() => setupFishObservers(rng))
+    fishCheckInterval = setInterval(() => ensureFishCount(rng), 2000)
+  }
 })
 
 onUnmounted(() => {
   stopTimer()
+  fishObservers.forEach((obs) => obs.disconnect())
+  fishObservers.clear()
+  if (fishCheckInterval) {
+    clearInterval(fishCheckInterval)
+    fishCheckInterval = null
+  }
 })
 </script>
 
@@ -113,7 +182,7 @@ onUnmounted(() => {
     role="group"
     :aria-label="t('minigameFishFeed.ariaLabel')"
   >
-    <div class="aquarium" aria-hidden="true">
+    <div ref="aquariumRef" class="aquarium" aria-hidden="true">
       <!-- Ambient swimming fish (decorative, pointer-events: none) -->
       <div
         v-if="!prefersReducedMotion"
@@ -123,11 +192,15 @@ onUnmounted(() => {
         <span
           v-for="f in ambientFish"
           :key="f.id"
+          :data-fish-id="f.id"
           class="ambient-fish"
           :class="{ 'fish-rtl': f.rightToLeft }"
           :style="{
             '--fish-y': `${f.y}%`,
             '--fish-duration': `${f.duration}s`,
+            '--fish-scale': 1.2 - 0.6 * f.depth,
+            '--fish-blur': `${f.depth * 4}px`,
+            '--fish-opacity': 1 - 0.4 * f.depth,
           }"
         >🐟</span>
       </div>
@@ -237,26 +310,26 @@ onUnmounted(() => {
   top: var(--fish-y, 50%);
   left: -10%;
   font-size: 1.2em;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) blur(var(--fish-blur, 0));
+  opacity: var(--fish-opacity, 1);
   animation: swim-horizontal var(--fish-duration, 12s) linear infinite;
 }
 
 .ambient-fish.fish-rtl {
   left: auto;
   right: -10%;
-  transform: scaleX(-1);
   animation: swim-horizontal-rtl var(--fish-duration, 12s) linear infinite;
 }
 
-/* traverse full aquarium: min 400px ensures visible cross on all screens */
+/* traverse full aquarium; scale from --fish-scale for depth */
 @keyframes swim-horizontal {
-  from { transform: translateX(0); }
-  to { transform: translateX(min(400px, 120vw)); }
+  from { transform: scale(var(--fish-scale, 1)) translateX(0); }
+  to { transform: scale(var(--fish-scale, 1)) translateX(min(400px, 120vw)); }
 }
 
 @keyframes swim-horizontal-rtl {
-  from { transform: scaleX(-1) translateX(0); }
-  to { transform: scaleX(-1) translateX(min(-400px, -120vw)); }
+  from { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(0); }
+  to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(min(-400px, -120vw)); }
 }
 
 .fish-zone {
