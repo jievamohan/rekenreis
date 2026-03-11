@@ -8,12 +8,12 @@ set -euo pipefail
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$REPO_ROOT"
 
-# Load SLACK_EPIC_WEBHOOK_URL from .env if not already set
+# Load .env if SLACK_EPIC_WEBHOOK_URL not already set (use source for robust parsing)
 if [[ -z "${SLACK_EPIC_WEBHOOK_URL:-}" && -f .env ]]; then
-  val=$(grep -E '^SLACK_EPIC_WEBHOOK_URL=' .env 2>/dev/null | head -1 | cut -d= -f2- | sed "s/^['\"]//;s/['\"]$//" | tr -d '\r') || true
-  if [[ -n "$val" ]]; then
-    export SLACK_EPIC_WEBHOOK_URL="$val"
-  fi
+  set -a
+  # shellcheck disable=SC1091
+  source .env 2>/dev/null || true
+  set +a
 fi
 
 WEBHOOK="${SLACK_EPIC_WEBHOOK_URL:-}"
