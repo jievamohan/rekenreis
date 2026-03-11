@@ -2486,3 +2486,28 @@ Acceptance:
 - Fish visibly swimming in browser
 - Screenshot test passes with multiple fish in aquarium
 - No regression to pellets or timer
+
+---
+
+## Epic 39.1 — Remove Fish-Zone + Improve Visibility
+- [ ]
+PlanRef:
+- design: docs/design/epic-39.md
+- archive: artifacts/archive/epic-39.0/latest
+- slice: 39.1
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 39.1: Verwijder fish-zone (center vis); verbeter zichtbaarheid ambient fish.
+
+Requirements:
+- Verwijder fish-zone en bijbehorende center vis uit MinigameFishFeed
+- Ambient fish groter maken (font-size) voor zichtbaarheid
+- Pellets en gameplay ongewijzigd
+- Update fish-feed-visual.spec.ts screenshot baseline
+- Gate C, D, F green
+
+Acceptance:
+- Geen center fish; alleen zwemmende ambient fish + pellets
+- Ambient fish duidelijk zichtbaar
