@@ -2255,3 +2255,132 @@ Acceptance:
 - Zone-value contrast ≥4.5:1
 - Doelgetal visueel verbeterd
 - Typecheck, build, E2E green
+
+---
+
+## Epic 36.1 — Minigame Result Tests: E2E Helpers + 100%/0%
+- [ ]
+PlanRef:
+- design: docs/design/epic-36.md
+- archive: artifacts/archive/epic-36.0/latest
+- slice: 36.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 36.1: E2E helpers en 100%/0% tests voor round-based minigames.
+
+Requirements:
+- Nieuw bestand e2e/minigame-result-modal.spec.ts
+- Helpers: answerBubblePop, answerTreasureDive, answerFishFeed, answerMemoryMatch, answerStarfishMatch (correct/wrong)
+- Tests: level 1–4, 6 (bubble-pop, treasure-dive, fish-feed, memory-match, starfish-match) met 100% en 0% succes
+- Modal assertions: visible, performance-bar, stat-items (score, tijd, combo, XP), sterren
+- timersDisabled waar nodig (fish-feed, starfish-match) voor determinisme
+- Playwright via docker compose run --rm e2e
+
+Acceptance:
+- Alle 5 round-based minigames × 100% en 0% tests green
+- Bestaande level-complete.spec.ts, interaction-diversity.spec.ts blijven groen
+
+---
+
+## Epic 36.2 — Minigame Result Tests: 40%/80% + Strikte Assertions
+- [ ]
+PlanRef:
+- design: docs/design/epic-36.md
+- archive: artifacts/archive/epic-36.0/latest
+- slice: 36.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 36.2: 40% en 80% succesrate tests met strikte modal assertions.
+
+Requirements:
+- Uitbreiden minigame-result-modal.spec.ts met 40% en 80% scenario's
+- Controlled success rate: juist aantal correct/wrong per ronde
+- Assertions: correctCount/roundsTotal in performance-bar, scorePercent exact, sterren (1/2/3)
+- memory-match: 2/5 en 4/5 voor 40%/80%
+
+Acceptance:
+- 40%/80% tests green voor alle 5 round-based minigames
+- Assertions verifiëren exacte waarden
+
+---
+
+## Epic 36.3 — Result Modal Audit + Fixes
+- [ ]
+PlanRef:
+- design: docs/design/epic-36.md
+- archive: artifacts/archive/epic-36.0/latest
+- slice: 36.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 36.3: Log welke informatie bij welk spel niet in orde was; pas resultaatmodals aan.
+
+Requirements:
+- Run tests; log failures in artifacts/current/result-modal-audit.md per minigame
+- Fix play.vue: correctCount, roundsPerLevel, completedLevelStats, scorePercent data flow
+- Fix LevelCompleteModal indien nodig (props interpretatie)
+- Zorg dat correct/total, score%, tijd, combo, XP overal correct
+
+Acceptance:
+- Audit document met bevindingen
+- Alle resultaatmodal-tests pass na fixes
+- Typecheck, build green
+
+---
+
+## Epic 36.4 — Bouw-de-Toren Result Tests
+- [ ]
+PlanRef:
+- design: docs/design/epic-36.md
+- archive: artifacts/archive/epic-36.0/latest
+- slice: 36.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 36.4: E2E tests voor Bouw de Toren resultaatmodal (0 en 3 sterren).
+
+Requirements:
+- completeBouwDeToren helper: drag 2 blokken (correct of fout)
+- Test level 5: 0 sterren (alleen foute torens) en 3 sterren (correcte torens)
+- Modal assertions: correctRounds/totalRounds, score%, sterren, tijd, XP
+- comboMax = 0 voor tower
+
+Acceptance:
+- Bouw-de-toren 0/3 sterren tests green
+- Modal toont correcte tower-statistieken
+
+---
+
+## Epic 36.5 — Result Tests: Polish + CI
+- [ ]
+PlanRef:
+- design: docs/design/epic-36.md
+- archive: artifacts/archive/epic-36.0/latest
+- slice: 36.5
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 36.5: Polish, non-flakiness, CI gates.
+
+Requirements:
+- Retries voor E2E waar nodig; stabiliseer timing (fish-feed, starfish)
+- Gate C: typecheck green
+- Gate D: geen security regressie
+- Gate F: build green
+- Documenteer in runbooks indien nodig
+
+Acceptance:
+- CI green
+- Geen flaky failures in minigame-result-modal.spec.ts
