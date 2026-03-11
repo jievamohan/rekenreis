@@ -88,7 +88,7 @@ gh pr create --base "$BASE" --head "$BRANCH" \
 PR_NUM="$(gh pr view --json number -q .number)"
 
 # 6) Merge with merge commit (no squash)
-gh pr merge "$PR_NUM" --merge
+gh pr merge "$PR_NUM" --merge --delete-branch
 
 # 7) Wait for merge to complete
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-120}"
