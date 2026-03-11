@@ -73,3 +73,4 @@
 | Epic 36.1 — Minigame Result Tests: E2E Helpers + 100%/0% | done | PR #168 merged |
 | Epic 36.2 — Minigame Result Tests: 40%/80% + Strikte Assertions | done | PR #170 merged |
 | Epic 36.3 — Result Modal Audit + Fixes | done | PR #172 merged |
+| Epic 36.4 — Bouw-de-Toren Result Tests | done | PR #174 merged |
