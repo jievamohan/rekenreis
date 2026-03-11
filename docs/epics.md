@@ -2388,7 +2388,7 @@ Acceptance:
 ---
 
 ## Epic 37.1 — Fish Pool + Richting + Hoogte + Snelheid
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-37.md
 - archive: artifacts/archive/epic-37.0/latest
