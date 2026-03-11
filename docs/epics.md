@@ -2362,7 +2362,7 @@ Acceptance:
 ---
 
 ## Epic 36.5 — Result Tests: Polish + CI
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-36.md
 - archive: artifacts/archive/epic-36.0/latest

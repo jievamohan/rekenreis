@@ -74,3 +74,4 @@
 | Epic 36.2 — Minigame Result Tests: 40%/80% + Strikte Assertions | done | PR #170 merged |
 | Epic 36.3 — Result Modal Audit + Fixes | done | PR #172 merged |
 | Epic 36.4 — Bouw-de-Toren Result Tests | done | PR #174 merged |
+| Epic 36.5 — Result Tests: Polish + CI | done | PR #176 merged |
