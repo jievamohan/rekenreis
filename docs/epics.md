@@ -2464,7 +2464,7 @@ Acceptance:
 ---
 
 ## Epic 38.1 — Fish Visibility + Screenshot
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-38.md
 - archive: artifacts/archive/epic-38.0/latest
