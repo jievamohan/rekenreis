@@ -2780,3 +2780,106 @@ Acceptance:
 - E2E specs green (container-only Playwright)
 - CI green
 - Auth UX polished (foutmeldingen, i18n)
+
+---
+
+## Epic 46.1 — Unified Public Folder + Routing
+- [ ]
+PlanRef:
+- design: docs/design/epic-46.md
+- archive: artifacts/archive/epic-46.0/latest
+- slice: 46.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 46.1: Unified public folder zodat Laravel API en Vue frontend samen uit apps/api/public worden geserveerd.
+
+Requirements:
+- Build script: Vue (nuxt generate) output kopiëren naar apps/api/public
+- Merge-strategie: behoud index.php en .htaccess; Vue levert index.html, _nuxt/
+- .htaccess: /api/* → index.php; overige niet-bestaande paden → index.html (SPA fallback)
+- Dev: Docker setup ongewijzigd (web 3000, api 8001)
+- Gate C, D, F green
+
+Acceptance:
+- `make build` of equivalent produceert unified folder
+- Lokaal `php -S localhost:8000 -t apps/api/public` serveert / en /api/health correct
+- Geen regressie in dev
+
+---
+
+## Epic 46.2 — Build Automation + Pre-push
+- [ ]
+PlanRef:
+- design: docs/design/epic-46.md
+- archive: artifacts/archive/epic-46.0/latest
+- slice: 46.2
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 46.2: Pre-push hook en build automation zodat build artifacts geautomatiseerd zijn.
+
+Requirements:
+- Pre-push hook: run build, verifieer dat apps/api/public/_nuxt/ en index.html bestaan
+- Als artifacts ontbreken of stale: fail met duidelijke instructie
+- Build artifacts: in git committen OF CI bouwt en deployt (documenteer keuze)
+- Gate C, D, F green
+
+Acceptance:
+- Pre-push draait build; faalt als build faalt of artifacts ontbreken
+- Documentatie: hoe artifacts up-to-date te houden
+
+---
+
+## Epic 46.3 — Makefile Deploy Scripts
+- [ ]
+PlanRef:
+- design: docs/design/epic-46.md
+- archive: artifacts/archive/epic-46.0/latest
+- slice: 46.3
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 46.3: Makefile met deploy targets voor TransIP VPS + DirectAdmin.
+
+Requirements:
+- Makefile targets: build, deploy, deploy-pull, deploy-rsync
+- deploy-pull: SSH, git pull, composer install, cache clear
+- deploy-rsync: rsync public + vendor naar VPS (of vergelijkbaar)
+- Geen secrets in Makefile; env vars of .env
+- Runbook in docs/runbooks/ of Makefile comments
+- Gate C, D, F green
+
+Acceptance:
+- `make build` werkt
+- `make deploy-pull` (of deploy-rsync) gedocumenteerd en uitvoerbaar met juiste env
+- Runbook beschrijft TransIP/DirectAdmin stappen
+
+---
+
+## Epic 46.4 — Production Config + Docs
+- [ ]
+PlanRef:
+- design: docs/design/epic-46.md
+- archive: artifacts/archive/epic-46.0/latest
+- slice: 46.4
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 46.4: Production config en documentatie.
+
+Requirements:
+- NUXT_PUBLIC_API_URL: relatief of prod URL in build
+- .env.example: API_URL, APP_URL voor prod
+- Runbook: productie deployment, DirectAdmin public folder configuratie
+- Gate C, D, F green
+
+Acceptance:
+- Prod build gebruikt correcte API URL (zelfde origin of geconfigureerd)
+- .env.example compleet voor prod
+- Runbook beschrijft volledige deploy flow
