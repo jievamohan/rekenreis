@@ -317,14 +317,15 @@ onUnmounted(() => {
 }
 
 /* traverse full aquarium; scale from --fish-scale for depth */
+/* 🐟 faces left; L→R needs scaleX(-1) to face right, R→L needs no flip to face left */
 @keyframes swim-horizontal {
-  from { transform: scale(var(--fish-scale, 1)) translateX(0); }
-  to { transform: scale(var(--fish-scale, 1)) translateX(min(400px, 120vw)); }
+  from { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(0); }
+  to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(min(400px, 120vw)); }
 }
 
 @keyframes swim-horizontal-rtl {
-  from { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(0); }
-  to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(min(-400px, -120vw)); }
+  from { transform: scale(var(--fish-scale, 1)) translateX(0); }
+  to { transform: scale(var(--fish-scale, 1)) translateX(min(-400px, -120vw)); }
 }
 
 .pellets-zone {
