@@ -116,7 +116,7 @@ function startTimer() {
       stopTimer()
       if (!answered.value) {
         answered.value = true
-        emit('answer', props.question.correctAnswer)
+        emit('answer', -1)
       }
     }
   }, 1000)
