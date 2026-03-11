@@ -21,8 +21,8 @@ let timerHandle: ReturnType<typeof setInterval> | null = null
 const answered = ref(false)
 const prefersReducedMotion = ref(false)
 const aquariumRef = ref<HTMLElement | null>(null)
-const COUNT_MIN = 2
-const COUNT_MAX = 5
+const COUNT_MIN = 4
+const COUNT_MAX = 8
 
 /** Seeded positions for pellets scattered in aquarium (deterministic per question) */
 function getPelletPositions(q: AdditionQuestion) {
@@ -51,7 +51,7 @@ interface AmbientFish {
   depth: number // 0=foreground (large), 1=background (small+blur)
 }
 
-/** Ambient fish: reactive array, viewport exit removal, respawn when count < 2 */
+/** Ambient fish: reactive array, viewport exit removal, respawn when count < COUNT_MIN */
 const ambientFish = ref<AmbientFish[]>([])
 const fishObservers = new Map<string, IntersectionObserver>()
 let fishCheckInterval: ReturnType<typeof setInterval> | null = null
@@ -72,11 +72,29 @@ function removeFishById(id: string) {
   ambientFish.value = ambientFish.value.filter((f) => f.id !== id)
 }
 
+function ensureBothDirections(fish: AmbientFish[]) {
+  if (fish.length < 2) return
+  const hasLtr = fish.some((f) => !f.rightToLeft)
+  const hasRtl = fish.some((f) => f.rightToLeft)
+  if (!hasLtr) fish[0].rightToLeft = false
+  else if (!hasRtl) fish[0].rightToLeft = true
+}
+
 function ensureFishCount(rng: () => number) {
   if (ambientFish.value.length < COUNT_MIN) {
+    let hasLtr = ambientFish.value.some((f) => !f.rightToLeft)
+    let hasRtl = ambientFish.value.some((f) => f.rightToLeft)
     const toAdd = COUNT_MIN - ambientFish.value.length
     for (let i = 0; i < toAdd; i++) {
-      ambientFish.value = [...ambientFish.value, createFish(rng)]
+      const fish = createFish(rng)
+      if (!hasRtl) {
+        fish.rightToLeft = true
+        hasRtl = true
+      } else if (!hasLtr) {
+        fish.rightToLeft = false
+        hasLtr = true
+      }
+      ambientFish.value = [...ambientFish.value, fish]
     }
     nextTick(() => setupFishObservers(rng))
   }
@@ -159,6 +177,7 @@ onMounted(() => {
     const rng = createSeededRng(props.question.a + props.question.b * 37 + 3700)
     const count = COUNT_MIN + Math.floor(rng() * (COUNT_MAX - COUNT_MIN + 1))
     ambientFish.value = Array.from({ length: count }, () => createFish(rng))
+    ensureBothDirections(ambientFish.value)
     nextTick(() => setupFishObservers(rng))
     fishCheckInterval = setInterval(() => ensureFishCount(rng), 2000)
   }

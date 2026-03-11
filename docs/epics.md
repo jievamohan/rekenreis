@@ -2532,3 +2532,25 @@ Requirements:
 
 Acceptance:
 - L→R en R→L vissen kijken correct
+
+---
+
+## Epic 41.1 — Fish Count 4–8 & Direction Balance
+- [ ]
+PlanRef:
+- design: docs/design/epic-41.md
+- slice: 41.1
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 41.1: Visjes 4–8 per vraag; altijd beide zwemrichtingen zichtbaar.
+
+Requirements:
+- Aantal visjes varieert van 4 tot 8 (niet 2–5)
+- Altijd minstens 1 vis L→R en 1 vis R→L zichtbaar
+- Gate C, F green
+
+Acceptance:
+- 4 tot 8 visjes
+- Beide zwemrichtingen zichtbaar
