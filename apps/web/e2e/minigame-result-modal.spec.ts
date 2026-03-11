@@ -232,3 +232,107 @@ test.describe('minigame result modal — 100% and 0%', () => {
     await expect(page.locator('.star-svg.earned')).toHaveCount(0)
   })
 })
+
+test.describe('minigame result modal — 40% and 80%', () => {
+  test.describe.configure({ retries: 2 })
+
+  test.beforeEach(async ({ page }) => {
+    await seedTimersDisabledProfile(page)
+  })
+
+  test('bubble-pop (level 1) 40%: 4/10, score 40%, 1 star', async ({ page }) => {
+    await page.goto('/play?level=1')
+    await expect(page.locator('[data-testid="minigame-bubble-pop"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerBubblePop(page, r < 4)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('4')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('40')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(1)
+  })
+
+  test('bubble-pop (level 1) 80%: 8/10, score 80%, 2 stars', async ({ page }) => {
+    await page.goto('/play?level=1')
+    await expect(page.locator('[data-testid="minigame-bubble-pop"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerBubblePop(page, r < 8)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('8')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('80')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(2)
+  })
+
+  test('treasure-dive (level 2) 40%: 4/10, score 40%, 1 star', async ({ page }) => {
+    await page.goto('/play?level=2')
+    await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerTreasureDive(page, r < 4)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('4')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('40')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(1)
+  })
+
+  test('treasure-dive (level 2) 80%: 8/10, score 80%, 2 stars', async ({ page }) => {
+    await page.goto('/play?level=2')
+    await expect(page.locator('[data-testid="minigame-treasure-dive"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerTreasureDive(page, r < 8)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('8')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('80')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(2)
+  })
+
+  test('fish-feed (level 3) 40%: 4/10, score 40%, 1 star', async ({ page }) => {
+    await page.goto('/play?level=3')
+    await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerFishFeed(page, r < 4)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('4')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('40')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(1)
+  })
+
+  test('fish-feed (level 3) 80%: 8/10, score 80%, 2 stars', async ({ page }) => {
+    await page.goto('/play?level=3')
+    await expect(page.locator('[data-testid="minigame-fish-feed"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerFishFeed(page, r < 8)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('8')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('80')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(2)
+  })
+
+  test.skip('memory-match (level 4) 40%: 2/5 — no wrong-round path', async ({ page }) => {
+    void page
+  })
+
+  test.skip('memory-match (level 4) 80%: 4/5 — no wrong-round path', async ({ page }) => {
+    void page
+  })
+
+  test('starfish-match (level 6) 40%: 4/10, score 40%, 1 star', async ({ page }) => {
+    await page.goto('/play?level=6')
+    await expect(page.locator('[data-testid="minigame-starfish-match"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerStarfishMatch(page, r < 4)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('4')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('40')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(1)
+  })
+
+  test('starfish-match (level 6) 80%: 8/10, score 80%, 2 stars', async ({ page }) => {
+    await page.goto('/play?level=6')
+    await expect(page.locator('[data-testid="minigame-starfish-match"]')).toBeVisible({ timeout: 10000 })
+    for (let r = 0; r < 10; r++) await answerStarfishMatch(page, r < 8)
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('8')
+    await expect(page.locator('.performance-bar')).toContainText('10')
+    await expect(page.locator('.stat-value').first()).toContainText('80')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(2)
+  })
+})
