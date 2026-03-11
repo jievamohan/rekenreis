@@ -2626,3 +2626,29 @@ Requirements:
 
 Acceptance:
 - E2E test bestaat en slaagt
+
+---
+
+## Epic 44.1 — Bouw de Toren: Responsive Progress Towers
+- [ ]
+PlanRef:
+- design: docs/design/epic-44.md
+- archive: artifacts/archive/epic-44.0/latest
+- slice: 44.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 44.1: Progress-torens in Bouw de Toren schalen niet op tablet/telefoon; overflow buiten scherm. Maak de gehele progress altijd zichtbaar op elk scherm.
+
+Requirements:
+- Responsive layout voor `.towers-progress` in TowerPuzzle.vue
+- Volledige progress zichtbaar op viewport 320px–1920px (geen horizontale overflow)
+- flex-wrap + responsive icon size + gap; alternatieve implementatie op telefoon toegestaan
+- Aria-labels en semantiek behouden
+- Gate C, D, F green
+
+Acceptance:
+- Geen overflow van progress-torens op tablet en telefoon
+- Alle torens (6–21) zichtbaar binnen viewport
