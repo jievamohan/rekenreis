@@ -2536,7 +2536,7 @@ Acceptance:
 ---
 
 ## Epic 41.1 — Fish Count 4–8 & Direction Balance
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-41.md
 - slice: 41.1
