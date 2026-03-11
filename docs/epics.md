@@ -2286,7 +2286,7 @@ Acceptance:
 ---
 
 ## Epic 36.2 — Minigame Result Tests: 40%/80% + Strikte Assertions
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-36.md
 - archive: artifacts/archive/epic-36.0/latest
