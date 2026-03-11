@@ -2675,7 +2675,7 @@ Acceptance:
 ---
 
 ## Epic 45.1 — API Auth + Sanctum + Progress Schema
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-45.md
 - archive: artifacts/archive/epic-45.0/latest

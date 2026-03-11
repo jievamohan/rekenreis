@@ -79,4 +79,5 @@
 | Epic 37.2 — Diepte + DOM-verwijdering | done | PR #181 merged |
 | Epic 37.3 — Polish + Reduced Motion + E2E | done | PR #182 merged |
 | Epic 38.1 — Fish Visibility + Screenshot | done | PR #184 merged |
-| Epic 39.1 — Remove Fish-Zone + Visibility | in progress | PR pending |
+| Epic 39.1 — Remove Fish-Zone + Visibility | done | PR merged |
+| Epic 45.1 — API Auth + Sanctum + Progress Schema | done | PR pending |
