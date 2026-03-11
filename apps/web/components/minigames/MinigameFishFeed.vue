@@ -278,6 +278,7 @@ onUnmounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 0; /* behind fish so ambient fish are visible */
   background: linear-gradient(180deg, rgba(3, 169, 244, 0.4), rgba(0, 150, 136, 0.5));
   transition: height 1s linear;
   display: flex;
@@ -296,13 +297,13 @@ onUnmounted(() => {
   border-radius: 8px;
 }
 
-/* Ambient decorative fish: swim horizontally, pointer-events none */
+/* Ambient decorative fish: swim horizontally, above water-level */
 .fish-ambient-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  z-index: 0;
+  z-index: 1;
 }
 
 .ambient-fish {
@@ -339,7 +340,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .fish-emoji {
@@ -363,7 +364,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .pellets-zone .pellet {

@@ -77,4 +77,5 @@
 | Epic 36.5 — Result Tests: Polish + CI | done | PR #176 merged |
 | Epic 37.1 — Fish Pool + Richting + Hoogte + Snelheid | done | PR #180 merged |
 | Epic 37.2 — Diepte + DOM-verwijdering | done | PR #181 merged |
-| Epic 37.3 — Polish + Reduced Motion + E2E | in progress | PR pending |
+| Epic 37.3 — Polish + Reduced Motion + E2E | done | PR #182 merged |
+| Epic 38.1 — Fish Visibility + Screenshot | in progress | PR pending |
