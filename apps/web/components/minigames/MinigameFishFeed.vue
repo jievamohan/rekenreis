@@ -445,5 +445,9 @@ onUnmounted(() => {
   .water-level {
     transition: none;
   }
+  /* Epic 37: ambient fish hidden via v-if; disable animations as fallback */
+  .ambient-fish {
+    animation: none;
+  }
 }
 </style>
