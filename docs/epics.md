@@ -2579,3 +2579,50 @@ Requirements:
 Acceptance:
 - L→R visjes zichtbaar tijdens hun zwemroute
 - R→L visjes blijven zichtbaar
+
+---
+
+## Epic 43.1 — Result Screen: Timeout telt als fout
+- [x]
+PlanRef:
+- design: docs/design/epic-43.md
+- archive: artifacts/archive/epic-43.0/latest
+- slice: 43.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 43.1: Het resultaat scherm klopt niet. Timeout mag niet als correct tellen.
+
+Requirements:
+- Minigames met timer (Fish Feed, Bubble Pop, Memory Match): bij timeout emit wrong answer i.p.v. correctAnswer
+- correctCount in level complete modal klopt
+- Gate C, F green
+
+Acceptance:
+- Timeout telt als fout
+- 0 antwoorden gegeven → 0 van 10 getoond
+
+---
+
+## Epic 43.2 — E2E: 0/10 zonder antwoorden
+- [x]
+PlanRef:
+- design: docs/design/epic-43.md
+- archive: artifacts/archive/epic-43.0/latest
+- slice: 43.2
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 43.2: E2E test door het hele spel zonder antwoord, verifieer 0 van 10.
+
+Requirements:
+- E2E: ga door hele spel (10 rondes) zonder antwoord te geven
+- Verifieer level complete modal toont 0 van 10 goed
+- Gebruik timersDisabled of wacht op timeouts
+- Gate C, F green
+
+Acceptance:
+- E2E test bestaat en slaagt

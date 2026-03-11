@@ -148,7 +148,8 @@ function startTimer() {
 function onTimeout() {
   if (!answered.value) {
     answered.value = true
-    emit('answer', props.question.correctAnswer)
+    const wrong = props.question.choices.find((c) => c !== props.question.correctAnswer)
+    emit('answer', wrong ?? -1)
   }
 }
 
