@@ -2671,3 +2671,112 @@ Acceptance:
 - ≤9 torens: tower icons in max 3 rijen
 - >9 torens: progress bar (zoals andere minigames)
 - Geen verticale overflow op telefoon
+
+---
+
+## Epic 45.1 — API Auth + Sanctum + Progress Schema
+- [ ]
+PlanRef:
+- design: docs/design/epic-45.md
+- archive: artifacts/archive/epic-45.0/latest
+- slice: 45.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 45.1: API authentication + Sanctum + progress schema.
+
+Requirements:
+- Add Laravel Sanctum for SPA auth
+- Migrations: user_progress (user_id, progress JSON)
+- API routes: POST /api/login, /api/register, /api/forgot-password, /api/reset-password
+- API routes: GET /api/user, GET /api/progress; PUT /api/progress (auth:sanctum)
+- User.name = kindnaam (child name)
+- Gate C, D, F green
+
+Acceptance:
+- Login, register, forgot-password, reset-password werken via API
+- Progress CRUD werkt voor authenticated user
+- PHPStan clean, composer audit clean
+
+---
+
+## Epic 45.2 — Web Auth Pages + Middleware
+- [ ]
+PlanRef:
+- design: docs/design/epic-45.md
+- archive: artifacts/archive/epic-45.0/latest
+- slice: 45.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 45.2: Web auth pages + auth middleware.
+
+Requirements:
+- Pages: /login, /register, /forgot-password, /reset-password
+- useAuth composable: login, logout, register, forgotPassword, resetPassword
+- auth middleware: redirect to /login als niet ingelogd
+- Formulieren: email, wachtwoord, kindnaam (register), validatie, foutmeldingen
+- Gate C, D, F green
+
+Acceptance:
+- Login, register, forgot-password, reset-password flows werken in browser
+- Niet-ingelogd bezoek aan beschermde route → redirect naar /login
+- Typecheck clean
+
+---
+
+## Epic 45.3 — Progress Sync + Protected Routes
+- [ ]
+PlanRef:
+- design: docs/design/epic-45.md
+- archive: artifacts/archive/epic-45.0/latest
+- slice: 45.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 45.3: Progress sync + protected routes + kindnaam in game.
+
+Requirements:
+- useProgressSync: fetch progress from API on init, save on change
+- Apply auth middleware to alle beschermde routes (/, /play, /map, /start, etc.)
+- Kindnaam (User.name) tonen in game waar spelersnaam relevant is
+- Merge/vervang localStorage-logica met API-backed progress voor ingelogde users
+- Gate C, D, F green
+
+Acceptance:
+- Voortgang wordt opgehaald uit en opgeslagen in database
+- Kindnaam zichtbaar in game
+- Alle game-pagina's vereisen login
+
+---
+
+## Epic 45.4 — E2E + Polish
+- [ ]
+PlanRef:
+- design: docs/design/epic-45.md
+- archive: artifacts/archive/epic-45.0/latest
+- slice: 45.4
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 45.4: E2E voor auth + polish.
+
+Requirements:
+- E2E: login flow, register flow, protected route redirect
+- E2E: password reset (request link + reset form, mock of test token)
+- i18n keys voor auth pagina's (NL)
+- Error states en loading states polish
+- Gate C, D, F green
+
+Acceptance:
+- E2E specs green (container-only Playwright)
+- CI green
+- Auth UX polished (foutmeldingen, i18n)
