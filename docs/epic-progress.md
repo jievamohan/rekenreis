@@ -75,4 +75,5 @@
 | Epic 36.3 — Result Modal Audit + Fixes | done | PR #172 merged |
 | Epic 36.4 — Bouw-de-Toren Result Tests | done | PR #174 merged |
 | Epic 36.5 — Result Tests: Polish + CI | done | PR #176 merged |
-| Epic 37.1 — Fish Pool + Richting + Hoogte + Snelheid | in progress | PR #180 |
+| Epic 37.1 — Fish Pool + Richting + Hoogte + Snelheid | done | PR #180 merged |
+| Epic 37.2 — Diepte + DOM-verwijdering | in progress | PR pending |
