@@ -2384,3 +2384,79 @@ Requirements:
 Acceptance:
 - CI green
 - Geen flaky failures in minigame-result-modal.spec.ts
+
+---
+
+## Epic 37.1 — Fish Pool + Richting + Hoogte + Snelheid
+- [ ]
+PlanRef:
+- design: docs/design/epic-37.md
+- archive: artifacts/archive/epic-37.0/latest
+- slice: 37.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 37.1: Zwemmende vissen door antwoordenblok – kern.
+
+Requirements:
+- Fish Feed minigame: nieuwe laag met 2–5 decoratieve vissen
+- Richting: random links→rechts OF rechts→links per vis
+- Hoogte: variabele y binnen aquarium bounds
+- Snelheid: variabel per vis (bijv. 8–20s traversie)
+- Vissen hebben pointer-events: none; pellets blijven klikbaar
+- aria-hidden op vis-laag
+
+Acceptance:
+- 2–5 vissen zwemmen horizontaal door het aquarium
+- Pellet-click werkt ongestoord
+
+---
+
+## Epic 37.2 — Diepte + DOM-verwijdering buiten viewport
+- [ ]
+PlanRef:
+- design: docs/design/epic-37.md
+- archive: artifacts/archive/epic-37.0/latest
+- slice: 37.2
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 37.2: Diepte-effect en viewport-exit.
+
+Requirements:
+- Diepte: voorgrond groter/scherp, achtergrond kleiner + blur + lagere opacity
+- Wanneer vis buiten viewable area komt: remove from DOM
+- Spawn nieuwe vis wanneer count < 2 (blijf tussen 2–5)
+
+Acceptance:
+- Visuele diepte zichtbaar (scale + blur)
+- Vissen verdwijnen uit DOM buiten viewport; nieuwe spawnen om count te behouden
+
+---
+
+## Epic 37.3 — Polish + Reduced Motion + E2E
+- [ ]
+PlanRef:
+- design: docs/design/epic-37.md
+- archive: artifacts/archive/epic-37.0/latest
+- slice: 37.3
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 37.3: Polish en kwaliteitsgates.
+
+Requirements:
+- prefers-reduced-motion: reduce: geen zwemmende vissen of statisch
+- Count 2–5 stabiel tijdens sessie
+- E2E: Fish Feed smoke blijft green
+- Gate C (typecheck), D (security), F (build) green
+
+Acceptance:
+- Reduced-motion werkt
+- E2E en CI green
