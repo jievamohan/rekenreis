@@ -2558,7 +2558,7 @@ Acceptance:
 ---
 
 ## Epic 42.1 — L→R Fish Visibility Fix
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-42.md
 - archive: artifacts/archive/epic-42.0/latest

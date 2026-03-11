@@ -319,10 +319,12 @@ onUnmounted(() => {
   z-index: 1;
 }
 
+/* L→R fish: start at left boundary (right: 100%) so they enter visible; R→L: start at right (right: -10%) */
 .ambient-fish {
   position: absolute;
   top: var(--fish-y, 50%);
-  left: -10%;
+  right: 100%;
+  left: auto;
   font-size: 2em;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) blur(var(--fish-blur, 0));
   opacity: var(--fish-opacity, 1);
@@ -330,8 +332,8 @@ onUnmounted(() => {
 }
 
 .ambient-fish.fish-rtl {
-  left: auto;
   right: -10%;
+  left: auto;
   animation: swim-horizontal-rtl var(--fish-duration, 12s) linear infinite;
 }
 
@@ -339,12 +341,12 @@ onUnmounted(() => {
 /* 🐟 faces left; L→R needs scaleX(-1) to face right, R→L needs no flip to face left */
 @keyframes swim-horizontal {
   from { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(0); }
-  to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(min(400px, 120vw)); }
+  to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(450px); }
 }
 
 @keyframes swim-horizontal-rtl {
   from { transform: scale(var(--fish-scale, 1)) translateX(0); }
-  to { transform: scale(var(--fish-scale, 1)) translateX(min(-400px, -120vw)); }
+  to { transform: scale(var(--fish-scale, 1)) translateX(-450px); }
 }
 
 .pellets-zone {
