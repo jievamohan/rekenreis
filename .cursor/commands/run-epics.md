@@ -1,5 +1,12 @@
 # /run-epics
 
+**CRITICAL — Mandatory Slack scripts (run these; do not skip):**
+| Step | Script | When |
+|------|--------|------|
+| a2 | `scripts/ci/slack_post_epic_checklist.sh` | First action when epic starts |
+| f | `scripts/ci/slack_post_review.sh --epic ... --pr ... --url ... --verdict ... --merge-allowed ... --blockers ... --majors ... --mediums ... --minors ... --nits ... --branch ... --head-sha ... --pass ...` | After each review pass |
+| i | `scripts/ci/gh_pr_merge_with_notify.sh --pr ... --head-sha ... --epic ... --title ...` | For merge (replaces raw `gh pr merge`; includes post-merge Slack) |
+
 Goal: Run all epics from docs/epics.md hands-off:
 - execute each epic via /feature
 - perform housekeeping inside the original feature branch and PR
@@ -147,18 +154,14 @@ Protocol:
       - Never merge a PR with unresolved findings.
 
    i) If review is clean and CI is green on the latest squashed head:
-      - merge the feature PR using a merge commit:
-        - `gh pr merge <PR_NUM> --merge --delete-branch --match-head-commit <HEAD_SHA>`
+      - merge the feature PR and post Slack (single script; Slack cannot be skipped):
+        - `scripts/ci/gh_pr_merge_with_notify.sh --pr <PR_NUM> --head-sha <HEAD_SHA> --epic "$EPIC_ID" --title "$EPIC_TITLE"`
+      - Do NOT use raw `gh pr merge`; use this script so post-merge Slack (j2) runs automatically.
 
    j) Confirm feature PR is merged.
       - Prefer immediate verification via:
         - `gh pr view <PR_NUM> --json mergedAt,state,url`
       - Fallback polling allowed if needed.
-
-   j2) Slack notifications (mandatory to run, after merge):
-      - PR merged: run `scripts/ci/slack_post_pr_merged.sh --epic "$EPIC_ID" --title "$EPIC_TITLE" --pr "$PR_NUM" --url "$PR_URL"`
-      - Epic checklist: run `scripts/ci/slack_post_epic_checklist.sh` to post updated checklist.
-      - Scripts do no-op if `SLACK_PR_WEBHOOK_URL` or `SLACK_EPIC_WEBHOOK_URL` are unset.
 
    k) After merge:
       - checkout main

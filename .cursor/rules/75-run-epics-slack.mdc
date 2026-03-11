@@ -1,0 +1,16 @@
+---
+description: "Run-epics: mandatory Slack scripts — do not skip"
+alwaysApply: true
+---
+
+# Run-Epics Slack (Mandatory)
+
+When executing `/run-epics`, you MUST run these scripts at the specified steps. Do not skip.
+
+| Step | Script | When |
+|------|--------|------|
+| a2 | `scripts/ci/slack_post_epic_checklist.sh` | First action when epic starts (before step b) |
+| f | `scripts/ci/slack_post_review.sh` with verdict args | After each review pass (before merge) |
+| i | `scripts/ci/gh_pr_merge_with_notify.sh` | For merge — never use raw `gh pr merge` |
+
+Scripts no-op if webhooks are unset; they must still be run.
