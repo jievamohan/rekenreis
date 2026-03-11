@@ -109,6 +109,8 @@ Used by `/run-epics` and `/epicify` to post to Slack. All scripts load from `.en
 | PR merged | `scripts/ci/slack_post_pr_merged.sh` | `SLACK_PR_WEBHOOK_URL` |
 | Epic checklist | `scripts/ci/slack_post_epic_checklist.sh` | `SLACK_EPIC_WEBHOOK_URL` |
 
+**Merge + Slack (run-epics step i):** Use `scripts/ci/gh_pr_merge_with_notify.sh` instead of raw `gh pr merge`. It merges the PR and runs `slack_post_pr_merged.sh` + `slack_post_epic_checklist.sh` so post-merge Slack cannot be skipped.
+
 Setup: [Slack API Apps](https://api.slack.com/apps) → Incoming Webhooks → Add to Workspace → choose channel.
 
 ## Install (prerequisites)

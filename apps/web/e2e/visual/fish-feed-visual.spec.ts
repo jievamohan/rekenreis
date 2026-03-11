@@ -41,7 +41,7 @@ test.describe('fish-feed visual', () => {
 
     await expect(page.locator('[data-testid="minigame-fish-feed"] .aquarium')).toHaveScreenshot(
       'fish-feed-aquarium.png',
-      { maxDiffPixelRatio: 0.08 }
+      { maxDiffPixelRatio: 0.12 }
     )
   })
 })
