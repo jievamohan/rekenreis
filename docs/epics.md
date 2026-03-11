@@ -2511,3 +2511,24 @@ Requirements:
 Acceptance:
 - Geen center fish; alleen zwemmende ambient fish + pellets
 - Ambient fish duidelijk zichtbaar
+
+---
+
+## Epic 40.1 — Fish Direction Fix
+- [x]
+PlanRef:
+- design: docs/design/epic-40.md
+- slice: 40.1
+Rules:
+- Use PlanRef as source of truth.
+
+/feature --ci --max-tasks=5
+Build Epic 40.1: Visjes juiste kant op; L→R en R→L beide correct.
+
+Requirements:
+- Visjes zwemmen van links naar rechts én van rechts naar links
+- Visjes kijken in zwemrichting (geen achteruit)
+- Gate C, F green
+
+Acceptance:
+- L→R en R→L vissen kijken correct
