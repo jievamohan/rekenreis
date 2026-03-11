@@ -34,6 +34,8 @@ async function answerBubblePop(
   page: import('@playwright/test').Page,
   correct: boolean
 ): Promise<void> {
+  await expect(page.locator('[data-testid="minigame-bubble-pop"] .bubble-number').first()).toBeVisible()
+  await page.waitForTimeout(100)
   const a = Number(await page.locator('[data-testid="operand-a"]').textContent())
   const b = Number(await page.locator('[data-testid="operand-b"]').textContent())
   const target = a + b
