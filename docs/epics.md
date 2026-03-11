@@ -2311,7 +2311,7 @@ Acceptance:
 ---
 
 ## Epic 36.3 — Result Modal Audit + Fixes
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-36.md
 - archive: artifacts/archive/epic-36.0/latest
