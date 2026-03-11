@@ -39,6 +39,18 @@ function getPelletPositions(q: AdditionQuestion) {
 
 const pellets = computed(() => getPelletPositions(props.question))
 
+/** Ambient swimming fish: 2–5 fish, random direction, variable y and speed */
+const fishRng = createSeededRng(props.question.a + props.question.b * 37 + 3700)
+const ambientFish = computed(() => {
+  const count = 2 + Math.floor(fishRng() * 4) // 2–5
+  return Array.from({ length: count }, (_, i) => ({
+    id: `fish-${i}-${props.question.a}-${props.question.b}`,
+    y: 15 + fishRng() * 70, // 15–85% vertical
+    duration: 8 + fishRng() * 12, // 8–20s
+    rightToLeft: fishRng() > 0.5,
+  }))
+})
+
 function selectPellet(choice: number) {
   if (answered.value) return
   answered.value = true
@@ -102,6 +114,23 @@ onUnmounted(() => {
     :aria-label="t('minigameFishFeed.ariaLabel')"
   >
     <div class="aquarium" aria-hidden="true">
+      <!-- Ambient swimming fish (decorative, pointer-events: none) -->
+      <div
+        v-if="!prefersReducedMotion"
+        class="fish-ambient-layer"
+        aria-hidden="true"
+      >
+        <span
+          v-for="f in ambientFish"
+          :key="f.id"
+          class="ambient-fish"
+          :class="{ 'fish-rtl': f.rightToLeft }"
+          :style="{
+            '--fish-y': `${f.y}%`,
+            '--fish-duration': `${f.duration}s`,
+          }"
+        >🐟</span>
+      </div>
       <!-- Timer as water level: fills from bottom, drops as time runs out -->
       <div
         v-if="!timersDisabled"
@@ -194,6 +223,42 @@ onUnmounted(() => {
   border-radius: 8px;
 }
 
+/* Ambient decorative fish: swim horizontally, pointer-events none */
+.fish-ambient-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.ambient-fish {
+  position: absolute;
+  top: var(--fish-y, 50%);
+  left: -10%;
+  font-size: 1.2em;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  animation: swim-horizontal var(--fish-duration, 12s) linear infinite;
+}
+
+.ambient-fish.fish-rtl {
+  left: auto;
+  right: -10%;
+  transform: scaleX(-1);
+  animation: swim-horizontal-rtl var(--fish-duration, 12s) linear infinite;
+}
+
+/* traverse full aquarium: min 400px ensures visible cross on all screens */
+@keyframes swim-horizontal {
+  from { transform: translateX(0); }
+  to { transform: translateX(min(400px, 120vw)); }
+}
+
+@keyframes swim-horizontal-rtl {
+  from { transform: scaleX(-1) translateX(0); }
+  to { transform: scaleX(-1) translateX(min(-400px, -120vw)); }
+}
+
 .fish-zone {
   position: absolute;
   inset: 0;
@@ -201,6 +266,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 1;
 }
 
 .fish-emoji {
@@ -224,6 +290,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 2;
 }
 
 .pellets-zone .pellet {
