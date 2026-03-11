@@ -356,10 +356,12 @@ function onBlockPointerDown(value: number, e: PointerEvent, sourceZone?: 1 | 2) 
 
 .towers-progress {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: clamp(0.35rem, 1.5vw, 0.75rem);
   margin-bottom: 0.5rem;
+  max-width: 100%;
 }
 
 .tower-progress-slot {
@@ -367,10 +369,14 @@ function onBlockPointerDown(value: number, e: PointerEvent, sourceZone?: 1 | 2) 
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .tower-progress-icon {
   display: block;
+  width: clamp(24px, 6vw, 48px);
+  height: auto;
+  aspect-ratio: 48 / 60;
 }
 
 .tower-progress-completed .tower-progress-icon,
