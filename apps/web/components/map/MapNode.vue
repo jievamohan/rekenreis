@@ -10,22 +10,27 @@ defineProps<{
 }>()
 
 defineEmits<{ select: [level: number] }>()
+
+/** Arc positions: 3 stars above and around the circle. Arc radius 48, 35px stars. index 1,2,3 → -50°, 0°, 50°. */
+function starArcStyle(index: number): Record<string, string> {
+  const angleDeg = -50 + (index - 1) * 50
+  const r = 48
+  const cx = 28
+  const cy = 28
+  const rad = (angleDeg * Math.PI) / 180
+  const x = cx + r * Math.sin(rad)
+  const y = cy - r * Math.cos(rad)
+  return {
+    position: 'absolute',
+    left: `${x}px`,
+    top: `${y}px`,
+    transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
+  }
+}
 </script>
 
 <template>
   <div class="map-node-wrapper">
-    <!-- Stars row: 3 slots, fixed height; empty placeholders when stars=0 -->
-    <div class="node-stars-row" aria-hidden="true">
-      <svg
-        v-for="i in 3"
-        :key="i"
-        class="star-slot"
-        :class="{ filled: i <= stars }"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
-      </svg>
-    </div>
     <button
       type="button"
       class="map-node"
@@ -41,13 +46,25 @@ defineEmits<{ select: [level: number] }>()
       @keydown.enter="unlocked && $emit('select', level)"
       @keydown.space.prevent="unlocked && $emit('select', level)"
     >
+      <!-- Stars on top arc of circle -->
+      <svg
+        v-for="i in 3"
+        :key="i"
+        class="star-slot"
+        :class="{ filled: i <= stars }"
+        :style="starArcStyle(i)"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
+      </svg>
+      <span class="node-number">{{ level }}</span>
       <span v-if="!unlocked" class="node-icon lock" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="5" y="11" width="14" height="11" rx="2"/>
           <path d="M8 11V7a4 4 0 018 0v4"/>
         </svg>
       </span>
-      <span v-else class="node-number">{{ level }}</span>
     </button>
   </div>
 </template>
@@ -58,23 +75,17 @@ defineEmits<{ select: [level: number] }>()
   flex-direction: column;
   align-items: center;
   gap: 2px;
-}
-
-.node-stars-row {
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  flex-shrink: 0;
+  overflow: visible;
 }
 
 .star-slot {
-  width: 12px;
-  height: 12px;
+  position: absolute;
+  width: 35px;
+  height: 35px;
   fill: none;
   stroke: rgba(255, 193, 7, 0.4);
   stroke-width: 1.5;
+  pointer-events: none;
 }
 
 .star-slot.filled {
@@ -86,6 +97,7 @@ defineEmits<{ select: [level: number] }>()
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  overflow: visible;
   border: 3px solid var(--app-map-path-edge);
   background: var(--app-node-unlocked);
   display: flex;
@@ -144,14 +156,22 @@ defineEmits<{ select: [level: number] }>()
 }
 
 .node-icon.lock {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--app-node-locked);
+  border-radius: 50%;
+  border: 1px solid rgba(128, 203, 196, 0.5);
 }
 
 .node-icon.lock svg {
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   color: var(--app-text-muted-on-surface);
 }
 </style>

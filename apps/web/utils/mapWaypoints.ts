@@ -23,40 +23,31 @@ function mulberry32(seed: number): () => number {
 }
 
 /**
- * Generate organic, non-repeating waypoints.
+ * Generate organic, flowing waypoints (serpentine path).
  *
- * Uses three summed sine harmonics whose frequencies are related by the
- * golden ratio — this guarantees the pattern never visually repeats within
- * any reasonable level count. Small seeded noise on top keeps it organic.
+ * Path flows from left to right and back in smooth waves — no short bumps.
+ * One full wave spans ~10 levels. Uses sine for smooth glooiend patroon.
  */
 export function generateWaypoints(count: number): Waypoint[] {
   const rng = mulberry32(42)
   const margin = MAP_PATH_WIDTH / 2 + 2
-  const centerX = MAP_VIEW_WIDTH / 2
-  const amplitude = centerX - margin
+  const minX = margin
+  const maxX = MAP_VIEW_WIDTH - margin
+  const amplitude = (maxX - minX) / 2
+  const centerX = (minX + maxX) / 2
 
-  const phi = (1 + Math.sqrt(5)) / 2
-  const baseFreq = 2.8 + rng() * 0.5
-  const harmonics = [
-    { amp: 0.70, freq: baseFreq, phase: rng() * Math.PI * 2 },
-    { amp: 0.22, freq: baseFreq * phi, phase: rng() * Math.PI * 2 },
-    { amp: 0.13, freq: baseFreq * phi * phi, phase: rng() * Math.PI * 2 },
-  ]
+  /** One full left→right→left wave per ~10 levels */
+  const levelsPerWave = 10
 
   const waypoints: Waypoint[] = []
 
   for (let i = 0; i < count; i++) {
-    const t = i / Math.max(count - 1, 1)
+    /** One full sine wave per levelsPerWave levels */
+    const phase = (i / levelsPerWave) * Math.PI * 2
+    const wave = Math.sin(phase)
+    const x = clamp(centerX + wave * amplitude, minX, maxX)
 
-    let wave = 0
-    for (const h of harmonics) {
-      wave += h.amp * Math.sin(t * Math.PI * 2 * h.freq + h.phase)
-    }
-    wave += (rng() - 0.5) * 0.15
-    wave = clamp(wave / 1.08, -1, 1)
-
-    const x = clamp(centerX + wave * amplitude, margin, MAP_VIEW_WIDTH - margin)
-    const yJitter = i > 0 ? (rng() - 0.5) * 14 : 0
+    const yJitter = i > 0 ? (rng() - 0.5) * 6 : 0
     const y = MAP_START_Y + i * MAP_SPACING + yJitter
 
     waypoints.push({ x: round1(x), y: round1(y) })

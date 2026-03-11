@@ -1,15 +1,18 @@
-# Backlog — Epic 35 Bouw de Toren Finetune
+# Backlog: Map UX Improvements
 
-## In Scope (Epic 35.1)
+## Tasks (generated)
 
-1. Fix layout shift bij pointerdown (TowerPuzzle)
-2. Placeholder blijft staan na drop op originele locatie
-3. Progress (voltooide torens) visueel afzijdig en anders dan actieve dropzones
-4. WCAG contrast voor gedropt blok (zone-value)
-5. Doelgetal-presentatie verbeteren (toren+getal; research-gebaseerd)
+| # | Task | Scope |
+|---|------|-------|
+| 1 | Flowing path | mapWaypoints.ts — serpentine waypoints |
+| 2 | Scroll + sticky header | map.vue — scroll behavior, header sticky |
+| 3 | Stars around circle | MapNode.vue — arc layout, grotere sterren |
+| 4 | Locked level number visible | MapNode.vue — nummer + slot badge |
+| 5 | Randomize avatar | MapAvatar.vue / map.vue — random avatar op map |
+
+## Dependencies
+- Geen; taken kunnen parallel (W1-lane).
 
 ## Out of Scope
-
-- Nieuwe game modes
-- Nieuwe content packs
-- Optie B (target in tower SVG) — later indien gewenst
+- API, backend, DB
+- Andere pagina's dan map

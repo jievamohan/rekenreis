@@ -12,7 +12,10 @@ import {
   computeMapHeight,
   MAP_VIEW_WIDTH,
 } from '~/utils/mapWaypoints'
-import { nextTick, onMounted, ref } from 'vue'
+import type { AvatarId } from '~/utils/profileSchema'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+
+const AVATAR_IDS: AvatarId[] = ['default', 'star', 'heart', 'circle', 'square']
 
 definePageMeta({ layout: 'bare' })
 
@@ -23,6 +26,7 @@ const { currentLevel, isUnlocked, starsFor, levelProgress } = useLevelProgress(p
 
 const mapScrollRef = ref<HTMLElement | null>(null)
 const currentNodeRef = ref<HTMLElement | null>(null)
+const mapAvatarId = ref<AvatarId>('default')
 
 const totalLevels = levelsData.length
 const waypoints = generateWaypoints(totalLevels)
@@ -84,19 +88,65 @@ function scrollToCurrentNode() {
   })
 }
 
+/** Max scroll: current level top at viewport top. Node center at y, extends ~94px up (button 28 + stars 66). */
+const maxScrollTop = computed(() => {
+  const idx = currentLevel.value - 1
+  if (idx < 0) return 0
+  const y = waypoints[idx]?.y ?? 0
+  return Math.max(0, y - 94)
+})
+
+let clampRaf: number | null = null
+function clampScroll() {
+  if (clampRaf) return
+  clampRaf = requestAnimationFrame(() => {
+    clampRaf = null
+    const el = mapScrollRef.value
+    if (!el) return
+    const max = maxScrollTop.value
+    if (el.scrollTop > max) {
+      el.scrollTop = max
+    }
+  })
+}
+
+function onWheel(e: WheelEvent) {
+  const el = mapScrollRef.value
+  if (!el) return
+  const max = maxScrollTop.value
+  if (el.scrollTop >= max && e.deltaY > 0) {
+    e.preventDefault()
+  }
+}
+
 onMounted(() => {
+  mapAvatarId.value = AVATAR_IDS[Math.floor(Math.random() * AVATAR_IDS.length)]!
   nextTick(() => scrollToCurrentNode())
+  const el = mapScrollRef.value
+  if (el) {
+    el.addEventListener('scroll', clampScroll, { passive: true })
+    el.addEventListener('wheel', onWheel, { passive: false })
+  }
+})
+
+onUnmounted(() => {
+  const el = mapScrollRef.value
+  el?.removeEventListener('scroll', clampScroll)
+  el?.removeEventListener('wheel', onWheel)
+  if (clampRaf) cancelAnimationFrame(clampRaf)
 })
 </script>
 
 <template>
-  <div class="map-page">
-    <div class="map-header">
+  <ClientOnly>
+    <div class="map-page">
+      <div class="map-header">
       <h1 class="map-title">{{ t('map.title') }}!</h1>
       <span class="map-progress" role="status" :aria-label="t('map.overallProgress')">
         ⭐ {{ totalStars }} / {{ maxStars }}
       </span>
     </div>
+    <div class="map-header-spacer" aria-hidden="true" />
     <button
       type="button"
       class="play-current-cta"
@@ -129,7 +179,7 @@ onMounted(() => {
           </div>
           <div v-if="i === currentLevel" :style="avatarStyle(i - 1)">
             <MapAvatar
-              :avatar-id="profile.activeProfile.value?.avatarId ?? 'default'"
+              :avatar-id="mapAvatarId"
               :name="profile.activeProfile.value?.name ?? t('common.player')"
               :maatje-id="profile.activeProfile.value?.maatjeId ?? 'wolkje'"
             />
@@ -138,7 +188,16 @@ onMounted(() => {
         </div>
       </div>
     </div>
-  </div>
+    </div>
+    <template #fallback>
+      <div class="map-page map-loading">
+        <div class="map-header">
+          <h1 class="map-title">{{ t('map.title') }}!</h1>
+          <span class="map-progress">⭐ …</span>
+        </div>
+      </div>
+    </template>
+  </ClientOnly>
 </template>
 
 <style scoped>
@@ -147,9 +206,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
 }
 
 .map-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -157,6 +222,11 @@ onMounted(() => {
   flex-shrink: 0;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(4px);
+}
+
+.map-header-spacer {
+  flex-shrink: 0;
+  height: 72px;
 }
 
 .map-title {
@@ -202,6 +272,7 @@ onMounted(() => {
 
 .map-scroll {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -242,5 +313,9 @@ onMounted(() => {
   max-width: 600px;
   margin: 0 auto;
   z-index: 1;
+}
+
+.map-loading {
+  min-height: 120px;
 }
 </style>

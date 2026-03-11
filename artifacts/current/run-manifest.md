@@ -1,20 +1,29 @@
-# Run Manifest — Epic 35 Bouw de Toren Finetune
+# Run Manifest
 
-- **Run ID:** 2025-03-10T12:00:00Z
-- **Epic:** 35
+## Run ID
+feat/map-ux-flowing-path
 
-## Required Planning Agents
-
+## Required Agents
 | Agent | Status | Artifact |
 |-------|--------|----------|
 | business-analyst | OK | discovery.md |
 | ux-designer | OK | ux.md |
-| art-director | OK | art-direction.md |
-| game-designer | OK | game-feel.md |
-| motion-audio-designer | N/A | motion-audio.md |
 | principal-architect | OK | architecture.md |
 | solution-designer | OK | solution.md |
 | qa-strategist | OK | qa.md |
-| security-privacy | N/A | security-design.md |
-| illustrator | N/A | assets.md |
-| backlog | OK | backlog.md |
+| security-privacy | OK | security-design.md |
+
+## Conditional Agents
+| Agent | Status | Reason |
+|-------|--------|--------|
+| art-director | N/A | Geen visuele/epic redesign |
+| game-designer | N/A | Geen gameplay changes |
+| motion-audio-designer | N/A | Geen animatie/audio epic |
+| illustrator | N/A | Geen nieuwe assets |
+
+## Tasks Generated
+- 0201-map-flowing-path
+- 0202-map-scroll-sticky-header
+- 0203-map-stars-around-circle
+- 0204-map-locked-level-number
+- 0205-map-randomize-avatar
