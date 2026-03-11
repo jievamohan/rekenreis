@@ -215,12 +215,6 @@ onUnmounted(() => {
         <span class="timer-badge">{{ timeLeft }}s</span>
       </div>
 
-      <div class="fish-zone">
-        <span class="fish-emoji fish-waiting">
-          🐟
-        </span>
-      </div>
-
       <div
         v-if="!answered"
         class="pellets-zone"
@@ -310,7 +304,7 @@ onUnmounted(() => {
   position: absolute;
   top: var(--fish-y, 50%);
   left: -10%;
-  font-size: 1.2em;
+  font-size: 2em;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) blur(var(--fish-blur, 0));
   opacity: var(--fish-opacity, 1);
   animation: swim-horizontal var(--fish-duration, 12s) linear infinite;
@@ -333,38 +327,11 @@ onUnmounted(() => {
   to { transform: scaleX(-1) scale(var(--fish-scale, 1)) translateX(min(-400px, -120vw)); }
 }
 
-.fish-zone {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.fish-emoji {
-  font-size: 4rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.fish-waiting {
-  animation: fish-swim 2.5s ease-in-out infinite;
-}
-
-.fish-eat {
-  animation: fish-eat 0.4s ease-out;
-}
-
-.fish-shake {
-  animation: fish-shake 0.5s ease-in-out;
-}
-
 .pellets-zone {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 2;
 }
 
 .pellets-zone .pellet {
@@ -420,11 +387,6 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-@keyframes fish-swim {
-  0%, 100% { transform: translateX(0) scaleX(1); }
-  50% { transform: translateX(8px) scaleX(1.02); }
-}
-
 @keyframes pellet-float-in {
   from {
     opacity: 0;
@@ -437,9 +399,6 @@ onUnmounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fish-waiting {
-    animation: none;
-  }
   .pellet-animate {
     animation: none;
   }

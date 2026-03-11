@@ -2490,7 +2490,7 @@ Acceptance:
 ---
 
 ## Epic 39.1 — Remove Fish-Zone + Improve Visibility
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-39.md
 - archive: artifacts/archive/epic-39.0/latest
