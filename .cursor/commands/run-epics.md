@@ -30,9 +30,9 @@ Protocol:
 2) For each epic (starting from first pending):
    a) Skip if epic has `- [x]` (already done).
 
-   a2) Epic started — post checklist (optional):
+   a2) Epic started — post checklist (mandatory to run):
       - Run `scripts/ci/slack_post_epic_checklist.sh` to post current epic checklist to `SLACK_EPIC_WEBHOOK_URL`.
-      - If unset, exits 0 (no-op).
+      - Script does no-op if `SLACK_EPIC_WEBHOOK_URL` is unset.
 
    b) Execute exactly the /feature block shown under that epic (including `--ci` and `--max-tasks`).
 
@@ -105,10 +105,10 @@ Protocol:
       Final review gate line:
       - `REVIEW_GATE verdict=<...> merge_allowed=<true|false> findings=<n> blockers=<n> majors=<n> mediums=<n> minors=<n> nits=<n>`
 
-      Slack notification (optional):
+      Slack notification (mandatory to run):
       - After each review pass, run:
         `scripts/ci/slack_post_review.sh --epic "$EPIC_ID" --pr "$PR_NUM" --url "$PR_URL" --verdict "$VERDICT" --merge-allowed "$MERGE_ALLOWED" --blockers "$N" --majors "$N" --mediums "$N" --minors "$N" --nits "$N" --branch "$FEATURE_BRANCH" --head-sha "$HEAD_SHA" --pass "$PASS"`
-      - If `SLACK_REVIEW_WEBHOOK_URL` is unset, the script exits 0 (no-op). No error.
+      - Script does no-op if `SLACK_REVIEW_WEBHOOK_URL` is unset.
       - Pass the values from the review verdict summary and header above.
 
       Hard rule:
@@ -155,10 +155,10 @@ Protocol:
         - `gh pr view <PR_NUM> --json mergedAt,state,url`
       - Fallback polling allowed if needed.
 
-   j2) Slack notifications (optional, after merge):
+   j2) Slack notifications (mandatory to run, after merge):
       - PR merged: run `scripts/ci/slack_post_pr_merged.sh --epic "$EPIC_ID" --title "$EPIC_TITLE" --pr "$PR_NUM" --url "$PR_URL"`
       - Epic checklist: run `scripts/ci/slack_post_epic_checklist.sh` to post updated checklist.
-      - Uses `SLACK_PR_WEBHOOK_URL` and `SLACK_EPIC_WEBHOOK_URL` from env or .env. If unset, no-op.
+      - Scripts do no-op if `SLACK_PR_WEBHOOK_URL` or `SLACK_EPIC_WEBHOOK_URL` are unset.
 
    k) After merge:
       - checkout main

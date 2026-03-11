@@ -18,6 +18,7 @@ fi
 
 WEBHOOK="${SLACK_REVIEW_WEBHOOK_URL:-}"
 if [[ -z "$WEBHOOK" ]]; then
+  echo "Slack: SLACK_REVIEW_WEBHOOK_URL unset, skipping" >&2
   exit 0
 fi
 

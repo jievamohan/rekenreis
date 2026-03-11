@@ -99,9 +99,9 @@ docker compose up --build
 12. Visit http://localhost:3000/play?mode=build-bridge — graphical scene (background, bridge, character); planks as game objects; drag correct plank to gap or click plank then gap — feedback; wrong drop shows wobble; after 2 wrong, hint appears; click Next — score increments, new question loads
 13. Visit http://localhost:3000/stickers, /summary, /settings — each loads correctly with AppShell
 
-## Slack (run-epics)
+## Slack (run-epics + epicify)
 
-Used by `/run-epics` to post to Slack. All scripts load from `.env` or env; if unset, no-op.
+Used by `/run-epics` and `/epicify` to post to Slack. All scripts load from `.env` or env; if unset, no-op (scripts log "Slack: SLACK_*_WEBHOOK_URL unset, skipping" to stderr). Epicify runs `slack_post_epic_checklist.sh` after planning PR merge.
 
 | Purpose | Script | Env var |
 |---------|--------|---------|

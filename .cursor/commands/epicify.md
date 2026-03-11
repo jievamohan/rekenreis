@@ -143,6 +143,8 @@ Then include a `/feature` block (explicit prompt) and acceptance criteria.
 - Merge: `gh pr merge <PR_NUM> --merge`
   - If merge is blocked (e.g. branch protection): mark BLOCKED, output that user must merge manually once CI is green
   - After merge: `git checkout main && git pull origin main`
+- Run `scripts/ci/slack_post_epic_checklist.sh` to post the epic checklist (epic N is now in docs/epics.md).
+  - If `SLACK_EPIC_WEBHOOK_URL` is unset: script does no-op (exit 0).
 
 11) Optional automatic execution handoff
 - If `--run-epics` is NOT set:
