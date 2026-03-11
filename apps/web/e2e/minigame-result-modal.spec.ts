@@ -338,3 +338,91 @@ test.describe('minigame result modal — 40% and 80%', () => {
     await expect(page.locator('.star-svg.earned')).toHaveCount(2)
   })
 })
+
+/** Complete one Bouw de Toren tower (correct or wrong). Uses keyboard: select block, zone, Enter. */
+async function completeBouwDeToren(
+  page: import('@playwright/test').Page,
+  correct: boolean
+): Promise<void> {
+  const puzzle = page.locator('[data-testid="tower-puzzle"]')
+  await expect(puzzle).toBeVisible()
+  const target = Number(await puzzle.locator('.target-display').textContent())
+  const blocks = puzzle.locator('button.block')
+  const count = await blocks.count()
+  let valA = 0
+  let valB = 0
+  for (let i = 0; i < count - 1; i++) {
+    for (let j = i + 1; j < count; j++) {
+      const va = Number(await blocks.nth(i).textContent())
+      const vb = Number(await blocks.nth(j).textContent())
+      const isCorrect = va + vb === target
+      if (correct ? isCorrect : !isCorrect) {
+        valA = va
+        valB = vb
+        break
+      }
+    }
+    if (valA !== 0 || valB !== 0) break
+  }
+  if (valA === 0 && valB === 0) throw new Error('No matching block pair found')
+
+  const blockA = blocks.filter({ hasText: String(valA) }).first()
+  const blockB = blocks.filter({ hasText: String(valB) }).first()
+  await blockA.focus()
+  await page.keyboard.press('Enter')
+  await puzzle.locator('[data-drop-zone="1"]').focus()
+  await page.keyboard.press('Enter')
+  await page.waitForTimeout(100)
+  await blockB.focus()
+  await page.keyboard.press('Enter')
+  await puzzle.locator('[data-drop-zone="2"]').focus()
+  await page.keyboard.press('Enter')
+
+  await expect(page.locator('text=Volgende ronde').or(page.locator('[data-testid="level-complete-modal"]'))).toBeVisible({ timeout: 5000 })
+  const nextBtn = page.locator('[data-testid="tower-next-puzzle"]')
+  if (await nextBtn.isVisible()) {
+    await nextBtn.click()
+    await page.waitForTimeout(300)
+  }
+}
+
+test.describe('minigame result modal — Bouw de Toren', () => {
+  test.describe.configure({ retries: 2 })
+
+  test.beforeEach(async ({ page }) => {
+    await seedTimersDisabledProfile(page)
+  })
+
+  test('bouw-de-toren (level 5) 0 stars: all wrong towers', async ({ page }) => {
+    test.setTimeout(120000)
+    await page.goto('/play?level=5')
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
+    const puzzle = page.locator('[data-testid="tower-puzzle"]')
+    await expect(puzzle).toBeVisible()
+    const totalRounds = await puzzle.locator('.tower-progress-slot').count()
+    for (let r = 0; r < totalRounds; r++) {
+      await completeBouwDeToren(page, false)
+    }
+    await assertModalVisible(page)
+    await expect(page.locator('.performance-bar')).toContainText('0')
+    await expect(page.locator('.star-svg.earned')).toHaveCount(0)
+    await expect(page.locator('.stat-item').filter({ hasText: /combo/i }).locator('.stat-value')).toContainText('x0')
+  })
+
+  test('bouw-de-toren (level 5) 3 stars: all correct towers', async ({ page }) => {
+    test.setTimeout(120000)
+    await page.goto('/play?level=5')
+    await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })
+    const puzzle = page.locator('[data-testid="tower-puzzle"]')
+    await expect(puzzle).toBeVisible()
+    const totalRounds = await puzzle.locator('.tower-progress-slot').count()
+    for (let r = 0; r < totalRounds; r++) {
+      await completeBouwDeToren(page, true)
+    }
+    await assertModalVisible(page)
+    const perfBar = page.locator('.performance-bar')
+    await expect(perfBar).toContainText(String(totalRounds))
+    await expect(page.locator('.star-svg.earned')).toHaveCount(3)
+    await expect(page.locator('.stat-item').filter({ hasText: /combo/i }).locator('.stat-value')).toContainText('x0')
+  })
+})
