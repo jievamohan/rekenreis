@@ -2460,3 +2460,29 @@ Requirements:
 Acceptance:
 - Reduced-motion werkt
 - E2E en CI green
+
+---
+
+## Epic 38.1 — Fish Visibility + Screenshot
+- [ ]
+PlanRef:
+- design: docs/design/epic-38.md
+- archive: artifacts/archive/epic-38.0/latest
+- slice: 38.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 38.1: Fix fish visibility (z-index) and add Playwright screenshot test.
+
+Requirements:
+- MinigameFishFeed.vue: water-level z-index: 0, fish-ambient-layer z-index: 1 so fish render above water
+- E2E: e2e/visual/fish-feed-visual.spec.ts — navigate to /play?level=3 with timersDisabled, assert ≥2 .ambient-fish visible, capture screenshot
+- Playwright via docker compose e2e only
+- Gate C, D, F green
+
+Acceptance:
+- Fish visibly swimming in browser
+- Screenshot test passes with multiple fish in aquarium
+- No regression to pellets or timer
