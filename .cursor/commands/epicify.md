@@ -131,10 +131,18 @@ Then include a `/feature` block (explicit prompt) and acceptance criteria.
 - Commit:
   - `docs/epics.md`
   - `docs/design/epic-<N>.md`
-  - `artifacts/archive/epic-<N>.0/`
+  - `artifacts/archive/epic-<N>.0/` (if not gitignored)
 - Commit message:
   - `chore(epicify): add epic <N> micro-epics and archive plan <N>.0`
 - Push
+
+10.5) Planning PR: create, wait for CI, merge (mandatory before --run-epics)
+- Create PR for current branch: `gh pr create --base main --head $(git branch --show-current) --title "chore(epicify): add epic <N> micro-epics and archive plan <N>.0" --body "Planning for Epic <N>. ..."`
+- Wait for CI: `SLEEP=25 RETRIES=20 scripts/ci/gh_watch.sh host <PR_NUM>` (use PR number from `gh pr list --head` or create output)
+  - If CI fails: mark BLOCKED, do not merge, do not run `/run-epics`
+- Merge: `gh pr merge <PR_NUM> --merge`
+  - If merge is blocked (e.g. branch protection): mark BLOCKED, output that user must merge manually once CI is green
+  - After merge: `git checkout main && git pull origin main`
 
 11) Optional automatic execution handoff
 - If `--run-epics` is NOT set:
@@ -149,6 +157,7 @@ Then include a `/feature` block (explicit prompt) and acceptance criteria.
     - archive snapshot exists
     - commit succeeded
     - push succeeded
+    - planning PR created, CI green, PR merged to main (step 10.5)
   - then automatically execute:
     - `/run-epics`
   - `/run-epics` must start from the first newly created pending epic for major epic `<N>`
