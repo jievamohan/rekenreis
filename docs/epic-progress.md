@@ -71,3 +71,4 @@
 | Epic 34.5 — Bouw de Toren: play.vue Integration | done | PR #158 merged |
 | Epic 34.6 — Bouw de Toren: Assets + Polish | done | PR #160 merged |
 | Epic 36.1 — Minigame Result Tests: E2E Helpers + 100%/0% | done | PR #168 merged |
+| Epic 36.2 — Minigame Result Tests: 40%/80% + Strikte Assertions | done | PR #170 merged |
