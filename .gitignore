@@ -1,5 +1,8 @@
 .pnpm-store
 
+# Local env (secrets)
+.env
+
 # Generated maatjes (copied by prebuild from temp_assets)
 apps/web/public/graphics/characters/maatjes/
 

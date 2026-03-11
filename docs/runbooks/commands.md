@@ -99,6 +99,18 @@ docker compose up --build
 12. Visit http://localhost:3000/play?mode=build-bridge — graphical scene (background, bridge, character); planks as game objects; drag correct plank to gap or click plank then gap — feedback; wrong drop shows wobble; after 2 wrong, hint appears; click Next — score increments, new question loads
 13. Visit http://localhost:3000/stickers, /summary, /settings — each loads correctly with AppShell
 
+## Slack (run-epics)
+
+Used by `/run-epics` to post to Slack. All scripts load from `.env` or env; if unset, no-op.
+
+| Purpose | Script | Env var |
+|---------|--------|---------|
+| Code review results | `scripts/ci/slack_post_review.sh` | `SLACK_REVIEW_WEBHOOK_URL` |
+| PR merged | `scripts/ci/slack_post_pr_merged.sh` | `SLACK_PR_WEBHOOK_URL` |
+| Epic checklist | `scripts/ci/slack_post_epic_checklist.sh` | `SLACK_EPIC_WEBHOOK_URL` |
+
+Setup: [Slack API Apps](https://api.slack.com/apps) → Incoming Webhooks → Add to Workspace → choose channel.
+
 ## Install (prerequisites)
 
 ```bash
