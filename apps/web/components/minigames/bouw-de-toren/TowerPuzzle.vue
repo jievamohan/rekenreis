@@ -27,6 +27,19 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
+/** Max tower icons before switching to progress bar (3 rows × 3 = 9) */
+const MAX_TOWERS_FOR_ICONS = 9
+
+const useProgressBar = computed(() => (props.totalRounds ?? 1) > MAX_TOWERS_FOR_ICONS)
+
+const completedProgressPercent = computed(() => {
+  const total = props.totalRounds ?? 1
+  const current = props.currentRoundIndex ?? 0
+  return total > 0 ? Math.min(100, (current / total) * 100) : 0
+})
+
+const currentRoundDisplay = computed(() => (props.currentRoundIndex ?? 0) + 1)
+
 const zone1 = ref<number | null>(null)
 const zone2 = ref<number | null>(null)
 const selectedBlock = ref<number | null>(null)
@@ -229,7 +242,32 @@ function onBlockPointerDown(value: number, e: PointerEvent, sourceZone?: 1 | 2) 
     role="group"
     :aria-label="t('minigameBouwDeToren.puzzleLabel', { target: puzzle.target })"
   >
-    <div class="towers-progress" role="group" :aria-label="t('minigameBouwDeToren.towersProgress')">
+    <div v-if="useProgressBar" class="tower-progress-wrap" role="group" :aria-label="t('minigameBouwDeToren.towersProgress')">
+      <div
+        class="tower-round-progress"
+        role="progressbar"
+        :aria-valuemin="0"
+        :aria-valuemax="totalRounds"
+        :aria-valuenow="currentRoundIndex"
+        :aria-label="t('play.roundProgress')"
+      >
+        <div
+          class="tower-round-progress-fill"
+          :style="{ width: `${completedProgressPercent}%` }"
+        />
+        <div
+          class="tower-round-progress-node tower-round-progress-node-current"
+          :style="{ left: `${completedProgressPercent}%` }"
+          aria-hidden="true"
+        >
+          {{ currentRoundDisplay }}
+        </div>
+        <div class="tower-round-progress-node tower-round-progress-node-target" aria-hidden="true">
+          {{ totalRounds }}
+        </div>
+      </div>
+    </div>
+    <div v-else class="towers-progress" role="group" :aria-label="t('minigameBouwDeToren.towersProgress')">
       <div
         v-for="idx in totalRounds"
         :key="`tower-${idx - 1}`"
@@ -354,10 +392,70 @@ function onBlockPointerDown(value: number, e: PointerEvent, sourceZone?: 1 | 2) 
   color: var(--app-text, #1a1a2e);
 }
 
-.towers-progress {
+.tower-progress-wrap {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
+  margin-bottom: 0.5rem;
+  min-width: min(92vw, 440px);
+}
+
+.tower-round-progress {
+  position: relative;
+  width: min(92vw, 440px);
+  height: 1rem;
+  background: #ffffff !important;
+  border-radius: 999px;
+  overflow: visible;
+  border: 1px solid rgba(1, 36, 43, 0.22);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.tower-round-progress-fill {
+  height: calc(100% - 4px);
+  margin: 2px;
+  background: var(--app-primary);
+  border-radius: 999px;
+  transition: width 180ms ease-out;
+}
+
+.tower-round-progress-node {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: #00bcd4;
+  color: #01242b;
+  font-family: var(--app-font);
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border: 2px solid rgba(1, 36, 43, 0.22);
+}
+
+.tower-round-progress-node-current {
+  z-index: 2;
+  background: linear-gradient(180deg, #41e3ff 0%, #00bcd4 100%);
+  border-color: rgba(1, 36, 43, 0.28);
+}
+
+.tower-round-progress-node-target {
+  left: 100%;
+  z-index: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #f3fbff 100%);
+  color: rgba(1, 36, 43, 0.3);
+  border-color: rgba(1, 36, 43, 0.24);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.towers-progress {
+  display: grid;
+  grid-template-columns: repeat(3, clamp(24px, 6vw, 48px));
   justify-content: center;
   gap: clamp(0.35rem, 1.5vw, 0.75rem);
   margin-bottom: 0.5rem;
