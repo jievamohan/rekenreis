@@ -6,6 +6,13 @@ import type { GameMode } from '~/types/game'
 
 const { t } = useI18n()
 const profile = useProfile()
+const { logout } = useAuth()
+const router = useRouter()
+
+async function onLogout() {
+  await logout()
+  router.push('/login')
+}
 const unlocked = ref(false)
 
 const difficultyCeiling = computed({
@@ -81,6 +88,9 @@ onMounted(() => {
       <p v-if="timersDisabled" class="timer-help">
         {{ t('settings.disableTimersHelp') }}
       </p>
+      <button type="button" class="logout-btn" @click="onLogout">
+        Uitloggen
+      </button>
     </div>
   </div>
 </template>
@@ -124,5 +134,20 @@ h1 {
   color: var(--app-text-muted, #78909c);
   margin: 0;
   padding-left: var(--app-space-sm);
+}
+.logout-btn {
+  margin-top: var(--app-space-lg);
+  min-height: var(--app-tap-min);
+  padding: var(--app-space-md);
+  font-family: var(--app-font);
+  font-size: var(--app-font-size-lg);
+  background: transparent;
+  color: var(--app-wrong);
+  border: 2px solid var(--app-wrong);
+  border-radius: var(--app-radius-md);
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: rgba(255, 138, 101, 0.2);
 }
 </style>

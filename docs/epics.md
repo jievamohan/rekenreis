@@ -2703,7 +2703,7 @@ Acceptance:
 ---
 
 ## Epic 45.2 — Web Auth Pages + Middleware
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-45.md
 - archive: artifacts/archive/epic-45.0/latest
