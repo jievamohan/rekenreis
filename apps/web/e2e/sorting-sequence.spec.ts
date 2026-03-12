@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test'
+import { E2E_PROFILE } from './fixtures/authenticated'
 
 test.describe('drag-drop tower (Bouw de Toren)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE))
+  })
   test('level 5 shows Bouw de Toren with puzzle', async ({ page }) => {
     await page.goto('/play?level=5')
     await expect(page.locator('[data-testid="minigame-bouw-de-toren"]')).toBeVisible({ timeout: 10000 })

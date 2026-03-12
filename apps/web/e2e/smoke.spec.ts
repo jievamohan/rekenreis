@@ -1,27 +1,32 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('smoke', () => {
-  test('homepage loads', async ({ page }) => {
+  test('unauthenticated visit to / redirects to /login', async ({ page }) => {
     await page.goto('/')
+    await expect(page).toHaveURL(/\/login/)
     await expect(page).toHaveTitle(/rekenreis/i)
   })
 
-  test('index shows maatje when asset available', async ({ page }) => {
-    await page.goto('/')
-    await expect(page.locator('.home')).toBeVisible()
-    const maatje = page.locator('.home-maatje, .maatje-avatar').first()
-    await expect(maatje).toBeVisible({ timeout: 5000 })
+  test('/login loads', async ({ page }) => {
+    await page.goto('/login')
+    await expect(page.locator('.auth-page')).toBeVisible()
+    await expect(page.getByRole('heading', { name: /inloggen/i })).toBeVisible()
   })
 
-  test('/start loads with maatje', async ({ page }) => {
-    await page.goto('/start')
-    await expect(page.locator('.start-page')).toBeVisible()
-    const maatje = page.locator('.start-maatje, .maatje-avatar').first()
-    await expect(maatje).toBeVisible({ timeout: 5000 })
+  test('/register loads', async ({ page }) => {
+    await page.goto('/register')
+    await expect(page.locator('.auth-page')).toBeVisible()
+    await expect(page.getByRole('heading', { name: /account aanmaken/i })).toBeVisible()
   })
 
-  test('/play loads', async ({ page }) => {
+  test('/forgot-password loads', async ({ page }) => {
+    await page.goto('/forgot-password')
+    await expect(page.locator('.auth-page')).toBeVisible()
+    await expect(page.getByRole('heading', { name: /wachtwoord vergeten/i })).toBeVisible()
+  })
+
+  test('/play redirects to /login when unauthenticated', async ({ page }) => {
     await page.goto('/play')
-    await expect(page.locator('body')).toBeVisible()
+    await expect(page).toHaveURL(/\/login/)
   })
 })

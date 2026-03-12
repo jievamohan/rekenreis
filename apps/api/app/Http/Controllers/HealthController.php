@@ -13,6 +13,8 @@ class HealthController extends Controller
 
     public function index(): \Illuminate\Http\JsonResponse
     {
-        return response()->json($this->healthService->check());
+        return response()
+            ->json($this->healthService->check())
+            ->header('Access-Control-Allow-Origin', 'http://localhost:3000');
     }
 }

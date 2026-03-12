@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test'
+import { E2E_PROFILE } from '../fixtures/authenticated'
 
 test.describe('play page visual', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE))
+  })
   test('level minigame screenshot', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card')).toBeVisible()

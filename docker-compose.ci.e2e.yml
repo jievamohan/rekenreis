@@ -1,0 +1,27 @@
+# E2E: fix tempnam(), MissingAppKeyException, sqlite vs mysql. Run as root to mkdir.
+# .env.example has DB_CONNECTION=sqlite; e2e stack uses MySQL. Patch .env explicitly.
+# APP_URL=http://web:3000 so Laravel session/cookies match browser origin (e2e uses BASE_URL=http://web:3000).
+# XSRF_DEBUG_LOG=1 enables XSRF flow logging in API and Nuxt proxy for CI debugging.
+services:
+  web:
+    environment:
+      - XSRF_DEBUG_LOG=1
+      - NUXT_PUBLIC_XSRF_DEBUG_LOG=1
+
+  api:
+    user: "0:0"
+    working_dir: /app
+    environment:
+      - APP_DEBUG=true
+      - XSRF_DEBUG_LOG=1
+      - APP_URL=http://web:3000
+      - SESSION_DOMAIN=
+      - SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,web,web:3000
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=secret
+      - SESSION_DRIVER=database
+    command: ["sh", "-c", "set -e; unset APP_KEY; cp .env.example .env 2>/dev/null || true; (grep -v -E '^(DB_CONNECTION=|# DB_(HOST|PORT|DATABASE|USERNAME|PASSWORD)=)' .env 2>/dev/null || true; printf 'DB_CONNECTION=mysql\nDB_HOST=mysql\nDB_PORT=3306\nDB_DATABASE=laravel\nDB_USERNAME=laravel\nDB_PASSWORD=secret\n') > .env.new && mv .env.new .env; php artisan config:clear 2>/dev/null || true; php artisan key:generate --force; mkdir -p storage/framework/sessions storage/framework/tmp storage/framework/views storage/framework/cache; sleep 5; php artisan migrate --force; exec env DB_CONNECTION=mysql DB_HOST=mysql DB_PORT=3306 DB_DATABASE=laravel DB_USERNAME=laravel DB_PASSWORD=secret php artisan serve --host=0.0.0.0"]

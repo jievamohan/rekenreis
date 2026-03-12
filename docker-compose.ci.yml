@@ -15,4 +15,5 @@ services:
       - /repo/apps/web/node_modules
       - /pnpm-store
     environment:
-      - NUXT_PUBLIC_API_URL=http://api:8000
+      - NUXT_PUBLIC_API_URL=
+      - NUXT_API_PROXY_TARGET=http://api:8000
