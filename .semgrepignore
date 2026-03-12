@@ -3,6 +3,8 @@
 apps/api/phpunit.xml
 # - api Dockerfile: USER causes container exit(1) in CI; defer non-root to follow-up
 apps/api/Dockerfile
+# - web Dockerfile: USER causes container exit(1) in CI with volume mounts; production image has USER
+apps/web/Dockerfile
 # - Playwright report + trace: generated third-party bundler output, not our source
 apps/web/playwright-report/
 apps/web/test-results/

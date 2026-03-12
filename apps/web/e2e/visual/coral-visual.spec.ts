@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/authenticated'
 
 test.describe('memory-match minigame visual', () => {
   test('memory match initial state', async ({ page }) => {

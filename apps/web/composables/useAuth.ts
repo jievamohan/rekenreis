@@ -1,6 +1,7 @@
 import type { AuthUser } from '~/utils/api'
 import {
   fetchUser,
+  fetchCsrfCookie,
   postLogin,
   postLogout,
   postRegister,
@@ -11,6 +12,12 @@ import {
 export function useAuth() {
   const config = useRuntimeConfig()
   const apiUrl = (config.public.apiUrl as string).replace(/\/$/, '')
+
+  /** Pre-fetch CSRF cookie (client-side). Call when mounting auth pages so token is ready before submit. */
+  async function ensureCsrfCookie(): Promise<void> {
+    if (import.meta.server) return
+    await fetchCsrfCookie(apiUrl)
+  }
 
   const user = useState<AuthUser | null>('auth-user', () => null)
   const loading = useState('auth-loading', () => true)
@@ -109,6 +116,7 @@ export function useAuth() {
     loading,
     error,
     fetchAuthUser,
+    ensureCsrfCookie,
     login,
     logout,
     register,

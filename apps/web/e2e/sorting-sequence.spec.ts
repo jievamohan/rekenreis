@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
 
 test.describe('drag-drop tower (Bouw de Toren)', () => {
   test('level 5 shows Bouw de Toren with puzzle', async ({ page }) => {

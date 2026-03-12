@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const { forgotPassword, error } = useAuth()
+const { forgotPassword, error, ensureCsrfCookie } = useAuth()
 
 const email = ref('')
+
+onMounted(() => {
+  ensureCsrfCookie()
+})
 const submitting = ref(false)
 const success = ref(false)
 

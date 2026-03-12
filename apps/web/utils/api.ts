@@ -32,20 +32,35 @@ export interface ResetPasswordPayload {
   password_confirmation: string
 }
 
+/** Read XSRF-TOKEN cookie for CSRF protection (client-side only). */
+function getXsrfToken(): string | null {
+  if (typeof document === 'undefined') return null
+  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
+  if (!match) return null
+  return decodeURIComponent(match[1])
+}
+
 function apiFetch(
   baseUrl: string,
   path: string,
   options: RequestInit = {},
   fetcher: typeof fetch = fetch
 ): Promise<Response> {
+  const method = (options.method ?? 'GET').toUpperCase()
+  const xsrf = method !== 'GET' && method !== 'HEAD' ? getXsrfToken() : null
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string>),
+  }
+  if (xsrf) {
+    headers['X-XSRF-TOKEN'] = xsrf
+  }
   return fetcher(`${baseUrl}${path}`, {
     ...options,
+    body: options.body,
     credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers,
   })
 }
 

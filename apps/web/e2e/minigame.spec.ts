@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
 
 async function findAnswerButtonByExactLabel(
   page: import('@playwright/test').Page,
@@ -18,14 +18,19 @@ async function findAnswerButtonByExactLabel(
 test.describe('minigame mode', () => {
   test('renders minigame component on level play', async ({ page }) => {
     await page.goto('/play?level=1')
-
-    await expect(page.locator('.problem-card')).toBeVisible()
+    // Wait for game to load (ProblemCard or minigame; play-loading disappears)
+    await expect(
+      page.locator('.problem-card, [data-testid^="minigame-"]').first()
+    ).toBeVisible({ timeout: 15000 })
     await expect(page.locator('.minigame-renderer')).toBeVisible()
-    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('[data-testid^="minigame-"]').first()).toBeVisible()
   })
 
   test('minigame buttons submit answer and advance progress', async ({ page }) => {
     await page.goto('/play?level=1')
+    await expect(
+      page.locator('.problem-card, [data-testid^="minigame-"]').first()
+    ).toBeVisible({ timeout: 15000 })
 
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('[data-testid^="minigame-"]')).toBeVisible()
@@ -54,6 +59,9 @@ test.describe('minigame mode', () => {
 
   test('numeric keypad is not shown on level play', async ({ page }) => {
     await page.goto('/play?level=1')
+    await expect(
+      page.locator('.problem-card, [data-testid^="minigame-"]').first()
+    ).toBeVisible({ timeout: 15000 })
 
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('.minigame-renderer')).toBeVisible()

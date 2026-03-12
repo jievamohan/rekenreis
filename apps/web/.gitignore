@@ -5,3 +5,5 @@ dist
 playwright-report
 test-results
 e2e/.auth.json
+e2e/global-setup-diagnostic.json
+e2e/.fail-*.png

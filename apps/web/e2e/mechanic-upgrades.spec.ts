@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
 
 test.describe('drag/drop mechanic (TreasureDive)', () => {
   test('completes one round via click-select + chest click', async ({ page }) => {

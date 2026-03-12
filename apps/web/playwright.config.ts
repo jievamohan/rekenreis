@@ -1,4 +1,9 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { defineConfig, devices } from '@playwright/test'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const AUTH_STATE_PATH = path.join(__dirname, 'e2e', '.auth.json')
 
 export default defineConfig({
   testDir: './e2e',
@@ -22,7 +27,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'e2e/.auth.json',
+        storageState: AUTH_STATE_PATH,
       },
       testIgnore: [
         '**/e2e/smoke.spec.ts',
@@ -35,7 +40,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 720 },
-        storageState: 'e2e/.auth.json',
+        storageState: AUTH_STATE_PATH,
       },
       testMatch: ['**/e2e/visual/**/*.spec.ts'],
     },

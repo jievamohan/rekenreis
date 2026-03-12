@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
 
 /**
  * Epic 43.2: Verifieer dat het resultaat scherm 0 van 10 toont wanneer

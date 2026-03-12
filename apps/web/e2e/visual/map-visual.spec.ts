@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/authenticated'
 
 test.describe('map page visual', () => {
   test('map screenshot baseline', async ({ page }) => {

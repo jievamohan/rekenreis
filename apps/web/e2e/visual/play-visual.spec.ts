@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/authenticated'
 
 test.describe('play page visual', () => {
   test('level minigame screenshot', async ({ page }) => {

@@ -1,10 +1,22 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
+import { diagnoseOnFailure } from './helpers/diagnose-failure'
 
 test.describe('play page — level minigame mode', () => {
   test('shows ProblemCard and minigame when ?level=1', async ({ page }) => {
     await page.goto('/play?level=1')
 
-    await expect(page.locator('.problem-card')).toBeVisible()
+    if (process.env.E2E_DEBUG) {
+      try {
+        await expect(page.locator('.problem-card')).toBeVisible()
+      } catch (e) {
+        const diag = await diagnoseOnFailure(page, 'play-problem-card')
+        const msg = `E2E DIAGNOSE (play-problem-card): ${JSON.stringify(diag, null, 2)}`
+        console.error(msg)
+        throw new Error(`${(e as Error).message}\n\n${msg}`)
+      }
+    } else {
+      await expect(page.locator('.problem-card')).toBeVisible()
+    }
     await expect(page.locator('.minigame-renderer')).toBeVisible()
     await expect(page.locator('.keypad')).toHaveCount(0)
     await expect(page.locator('.round-progress')).toHaveAttribute('aria-valuenow', '0')

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/authenticated'
 
 test.describe('interaction diversity — E2E proof', () => {
   test.describe.configure({ retries: 2 })

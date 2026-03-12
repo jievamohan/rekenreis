@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
-const { resetPassword, error } = useAuth()
+const { resetPassword, error, ensureCsrfCookie } = useAuth()
+
+onMounted(() => {
+  ensureCsrfCookie()
+})
 
 const token = computed(() => (route.query.token as string) || '')
 const email = ref((route.query.email as string) || '')

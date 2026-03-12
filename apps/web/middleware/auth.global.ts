@@ -5,6 +5,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
+  if (import.meta.server) {
+    return
+  }
+
   const { user, fetchAuthUser } = useAuth()
 
   if (!user.value) {

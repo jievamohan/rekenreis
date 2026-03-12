@@ -25,8 +25,12 @@ export default defineNuxtConfig({
     strict: true,
   },
   runtimeConfig: {
+    apiProxyTarget: process.env.NUXT_API_PROXY_TARGET || 'http://api:8000',
     public: {
-      apiUrl: 'http://localhost:8000',
+      apiUrl:
+        process.env.NUXT_PUBLIC_API_URL === ''
+          ? ''
+          : (process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000'),
     },
   },
   routeRules: {

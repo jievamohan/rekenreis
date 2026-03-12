@@ -1,0 +1,8 @@
+# PR ZAP: build api from checkout so CORS/API changes from PR are tested.
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    image: rekenreis-api-pr:latest
+    pull_policy: never

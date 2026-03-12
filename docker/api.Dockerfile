@@ -18,6 +18,8 @@ COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-scripts
 
 COPY . .
+# Ensure .env exists (composer install --no-scripts skips post-install; Laravel needs .env)
+RUN cp .env.example .env 2>/dev/null || true
 RUN composer dump-autoload
 EXPOSE 8000
 

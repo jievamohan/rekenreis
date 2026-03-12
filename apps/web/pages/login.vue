@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const { login, error, isAuthenticated } = useAuth()
+const { login, error, isAuthenticated, ensureCsrfCookie } = useAuth()
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 const submitting = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
   if (isAuthenticated.value) {
     router.replace('/')
+    return
   }
+  await ensureCsrfCookie()
 })
 
 async function onSubmit() {

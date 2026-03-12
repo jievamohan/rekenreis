@@ -173,6 +173,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -201,13 +213,29 @@ jobs:
       - name: Build web from PR
         run: docker compose -f docker-compose.yml -f docker-compose.ci.pr-build.yml build web
 
+      - name: Install web deps (for pr-build volume mount)
+        run: |
+          cd apps/web && pnpm install --frozen-lockfile
+
+      - name: API setup (migrate)
+        run: bash scripts/ci/api-setup.sh -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml
+
+      - name: Ensure playwright-report writable by e2e (pwuser)
+        run: mkdir -p apps/web/playwright-report && chmod 777 apps/web/playwright-report
+
       - name: Start stack
+        id: start-stack
         run: |
           echo "## e2e-container step timing" >> "$GITHUB_STEP_SUMMARY"
           START=$(date +%s)
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml up -d --wait web api mysql
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml up -d --wait web api mysql
           END=$(date +%s)
           echo "- **Start:** $((END - START))s" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Web container logs (on Start stack failure)
+        if: failure() && steps.start-stack.outcome == 'failure'
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml logs web 2>&1 || true
 
       - name: Run Playwright tests (inside e2e container)
         run: bash scripts/ci/e2e-benchmark.sh
@@ -228,9 +256,41 @@ jobs:
           path: apps/web/playwright-report
           if-no-files-found: ignore
 
+      - name: Upload e2e global-setup diagnostic (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-global-setup-diagnostic
+          path: apps/web/playwright-report/global-setup-diagnostic.json
+          if-no-files-found: ignore
+
+      - name: Extract sanctum error for CI logging (on failure)
+        if: failure()
+        run: bash scripts/ci/extract-sanctum-error.sh
+
+      - name: Upload sanctum error HTML (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanctum-error-response-html
+          path: apps/web/playwright-report/sanctum-error-response.html
+          if-no-files-found: ignore
+
+      - name: API and Web logs (on Playwright failure)
+        if: failure()
+        run: |
+          echo "=== API logs ===" && docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml logs api 2>&1 | tail -200 || true
+          echo "=== Web logs ===" && docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml logs web 2>&1 | tail -200 || true
+
+      - name: Raw sanctum response (on Playwright failure)
+        if: failure()
+        run: |
+          echo "=== Direct API sanctum/csrf-cookie response (first 4KB) ==="
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml exec -T api curl -s -H "Host: web:3000" http://localhost:8000/sanctum/csrf-cookie 2>/dev/null | head -c 4096 || true
+
       - name: Tear down
         if: always()
-        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml down -v
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml down -v
 
   zap-baseline:
     name: OWASP ZAP
@@ -264,10 +324,32 @@ jobs:
         if: steps.zap-cache.outputs.cache-hit == 'true'
         run: docker load -i /tmp/docker-cache/zap/zap.tar
 
-      - name: Pull images and start stack
-        run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull web api mysql
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml up -d --wait web api mysql
+      - name: Pull images
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull web api mysql
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ hashFiles('apps/api/composer.lock') }}
+
+      - name: Install API deps (for pr-build-api volume mount)
+        run: cd apps/api && composer install --no-interaction --prefer-dist
+
+      - name: Build api from PR (CORS and API changes)
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build-api.yml build api
+
+      - name: API setup (migrate)
+        run: bash scripts/ci/api-setup.sh -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build-api.yml
+
+      - name: Start stack
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build-api.yml up -d --wait web api mysql
 
       - name: Security headers check
         run: bash scripts/ci/security-headers-check.sh
@@ -293,7 +375,7 @@ jobs:
 
       - name: Teardown
         if: always()
-        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml down -v
+        run: docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build-api.yml down -v
 
   lint-test:
     name: Lint & Test
