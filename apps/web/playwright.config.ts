@@ -7,15 +7,25 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI ? 'html' : 'list',
+  globalSetup: './e2e/global-setup.ts',
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'smoke',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: ['**/e2e/smoke.spec.ts'],
+    },
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'e2e/.auth.json',
+      },
       testIgnore: [
+        '**/e2e/smoke.spec.ts',
         '**/e2e/visual/**',
         ...(process.env.CI ? ['**/e2e/profile-maatje.spec.ts'] : []),
       ],
@@ -25,6 +35,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 720 },
+        storageState: 'e2e/.auth.json',
       },
       testMatch: ['**/e2e/visual/**/*.spec.ts'],
     },
