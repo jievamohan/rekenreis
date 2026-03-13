@@ -14,7 +14,7 @@ class XsrfDebugLog
 {
     private static function log(string $msg, array $data = []): void
     {
-        if (! config('app.debug') && ! env('XSRF_DEBUG_LOG')) {
+        if (! config('app.debug') && ! config('app.xsrf_debug_log')) {
             return;
         }
         $line = '[xsrf-debug] ' . $msg . ' ' . json_encode($data);
@@ -31,8 +31,9 @@ class XsrfDebugLog
             $cookieNames = [];
             if ($cookieHeader) {
                 foreach (explode(';', $cookieHeader) as $pair) {
-                    $name = trim(explode('=', trim($pair), 2)[0] ?? '');
-                    if ($name) {
+                    $parts = explode('=', trim($pair), 2);
+                    $name = trim($parts[0]);
+                    if ($name !== '') {
                         $cookieNames[] = $name;
                     }
                 }
@@ -70,8 +71,9 @@ class XsrfDebugLog
             $cookieNames = [];
             if ($setCookies) {
                 foreach (is_array($setCookies) ? $setCookies : [$setCookies] as $c) {
-                    $name = explode('=', explode(';', $c)[0])[0] ?? '';
-                    $cookieNames[] = trim($name);
+                    $firstPart = explode(';', $c)[0];
+                    $cookieNameParts = explode('=', $firstPart, 2);
+                    $cookieNames[] = trim($cookieNameParts[0]);
                 }
             }
             self::log('sanctum/csrf-cookie RESPONSE', [

@@ -41,6 +41,8 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'xsrf_debug_log' => (bool) env('XSRF_DEBUG_LOG', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL
