@@ -1,11 +1,15 @@
 # E2E: fix tempnam(), MissingAppKeyException, sqlite vs mysql. Run as root to mkdir.
 # .env.example has DB_CONNECTION=sqlite; e2e stack uses MySQL. Patch .env explicitly.
+# APP_URL=http://web:3000 so Laravel session/cookies match browser origin (e2e uses BASE_URL=http://web:3000).
 services:
   api:
     user: "0:0"
     working_dir: /app
     environment:
       - APP_DEBUG=true
+      - APP_URL=http://web:3000
+      - SESSION_DOMAIN=
+      - SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,web,web:3000
       - DB_CONNECTION=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
