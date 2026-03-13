@@ -3,7 +3,8 @@ import { fileURLToPath } from 'url'
 import { defineConfig, devices } from '@playwright/test'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const AUTH_STATE_PATH = path.join(__dirname, 'e2e', '.auth.json')
+// playwright-report is writable in CI (e2e/ is read-only when mounted)
+const AUTH_STATE_PATH = path.join(__dirname, 'playwright-report', '.auth.json')
 
 export default defineConfig({
   testDir: './e2e',

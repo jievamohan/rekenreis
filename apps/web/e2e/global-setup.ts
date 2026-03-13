@@ -5,7 +5,9 @@ import { chromium, type FullConfig } from '@playwright/test'
 import { E2E_PROFILE } from './fixtures/authenticated'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const STORAGE_PATH = path.join(__dirname, '.auth.json')
+const PLAYWRIGHT_REPORT_DIR = path.join(__dirname, '..', 'playwright-report')
+// Write to playwright-report (writable in CI); e2e/ is read-only when mounted.
+const STORAGE_PATH = path.join(PLAYWRIGHT_REPORT_DIR, '.auth.json')
 
 const E2E_USER = {
   email: `e2e-${Date.now()}@test.local`,
@@ -19,8 +21,6 @@ function log(msg: string, data?: Record<string, unknown>) {
   const line = data ? `${LOG_PREFIX} ${msg} ${JSON.stringify(data)}` : `${LOG_PREFIX} ${msg}`
   console.log(line)
 }
-
-const PLAYWRIGHT_REPORT_DIR = path.join(__dirname, '..', 'playwright-report')
 
 /** Write diagnostic to file for CI artifact (exposed when tests fail). Uses playwright-report so pwuser can write. */
 function writeDiagnostic(diag: Record<string, unknown>) {
