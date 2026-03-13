@@ -5,17 +5,13 @@ test.describe('play page — level minigame mode', () => {
   test('shows ProblemCard and minigame when ?level=1', async ({ page }) => {
     await page.goto('/play?level=1')
 
-    if (process.env.E2E_DEBUG) {
-      try {
-        await expect(page.locator('.problem-card')).toBeVisible()
-      } catch (e) {
-        const diag = await diagnoseOnFailure(page, 'play-problem-card')
-        const msg = `E2E DIAGNOSE (play-problem-card): ${JSON.stringify(diag, null, 2)}`
-        console.error(msg)
-        throw new Error(`${(e as Error).message}\n\n${msg}`)
-      }
-    } else {
+    try {
       await expect(page.locator('.problem-card')).toBeVisible()
+    } catch (e) {
+      const diag = await diagnoseOnFailure(page, 'play-problem-card')
+      const msg = `E2E DIAGNOSE (play-problem-card): ${JSON.stringify(diag, null, 2)}`
+      console.error(msg)
+      throw new Error(`${(e as Error).message}\n\n${msg}`)
     }
     await expect(page.locator('.minigame-renderer')).toBeVisible()
     await expect(page.locator('.keypad')).toHaveCount(0)

@@ -1,4 +1,12 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import type { Page } from '@playwright/test'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// CI: e2e/ is read-only; use playwright-report (writable)
+const SCREENSHOT_DIR = process.env.CI
+  ? path.join(__dirname, '..', '..', 'playwright-report')
+  : path.join(__dirname, '..')
 
 export interface DiagnoseResult {
   url: string
@@ -14,7 +22,7 @@ export async function diagnoseOnFailure(
   page: Page,
   label: string
 ): Promise<DiagnoseResult> {
-  const screenshotPath = `e2e/.fail-${label}.png`
+  const screenshotPath = path.join(SCREENSHOT_DIR, `.fail-${label}.png`)
   const url = page.url()
   const hasAuthPage = await page.locator('.auth-page').isVisible().catch(() => false)
   const hasProfileSelector = await page
