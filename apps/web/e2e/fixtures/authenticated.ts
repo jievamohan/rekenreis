@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test'
-import { diagnoseOnFailure } from './helpers/diagnose-failure'
+import { diagnoseOnFailure } from '../helpers/diagnose-failure'
 
 export const E2E_PROFILE = {
   version: 1 as const,

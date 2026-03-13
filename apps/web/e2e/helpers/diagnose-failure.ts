@@ -22,7 +22,8 @@ export async function diagnoseOnFailure(
   page: Page,
   label: string
 ): Promise<DiagnoseResult> {
-  const screenshotPath = path.join(SCREENSHOT_DIR, `.fail-${label}.png`)
+  const safeLabel = label.replace(/[^a-zA-Z0-9-_]/g, '').slice(0, 50) || 'screenshot'
+  const screenshotPath = path.join(SCREENSHOT_DIR, `.fail-${safeLabel}.png`)
   const url = page.url()
   const hasAuthPage = await page.locator('.auth-page').isVisible().catch(() => false)
   const hasProfileSelector = await page
