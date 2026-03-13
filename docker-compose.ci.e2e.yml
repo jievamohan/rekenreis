@@ -1,12 +1,19 @@
 # E2E: fix tempnam(), MissingAppKeyException, sqlite vs mysql. Run as root to mkdir.
 # .env.example has DB_CONNECTION=sqlite; e2e stack uses MySQL. Patch .env explicitly.
 # APP_URL=http://web:3000 so Laravel session/cookies match browser origin (e2e uses BASE_URL=http://web:3000).
+# XSRF_DEBUG_LOG=1 enables XSRF flow logging in API and Nuxt proxy for CI debugging.
 services:
+  web:
+    environment:
+      - XSRF_DEBUG_LOG=1
+      - NUXT_PUBLIC_XSRF_DEBUG_LOG=1
+
   api:
     user: "0:0"
     working_dir: /app
     environment:
       - APP_DEBUG=true
+      - XSRF_DEBUG_LOG=1
       - APP_URL=http://web:3000
       - SESSION_DOMAIN=
       - SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,web,web:3000

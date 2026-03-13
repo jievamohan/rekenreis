@@ -31,6 +31,7 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_API_URL === ''
           ? ''
           : (process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000'),
+      xsrfDebugLog: process.env.NUXT_PUBLIC_XSRF_DEBUG_LOG === '1',
     },
   },
   routeRules: {

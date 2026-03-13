@@ -127,6 +127,13 @@ export default async function globalSetup(config: FullConfig) {
 
     try {
       const page = await storage.newPage()
+      // Forward [xsrf-client] console to stderr for CI
+      page.on('console', (msg) => {
+        const text = msg.text()
+        if (text.includes('[xsrf-client]')) {
+          process.stderr.write(`[e2e-global-setup-console] ${text}\n`)
+        }
+      })
 
       // Register: capture CSRF response and any API errors
       log('Navigating to register', { url: `${baseURL}/register` })

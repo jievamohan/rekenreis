@@ -1,5 +1,11 @@
 import { joinURL } from 'ufo'
 
+const XSRF_DEBUG = !!process.env.XSRF_DEBUG_LOG
+
+function xsrfLog(msg: string, data?: Record<string, unknown>) {
+  if (XSRF_DEBUG) console.error('[xsrf-api-proxy]', msg, data ?? '')
+}
+
 function forwardSetCookies(event: import('h3').H3Event, res: { headers: Headers }) {
   const setCookies =
     typeof res.headers.getSetCookie === 'function'
@@ -35,6 +41,24 @@ export default defineEventHandler(async (event) => {
       forwarded.set(k, Array.isArray(v) ? v.join(', ') : String(v))
     }
   }
+  const apiPath = Array.isArray(path) ? path.join('/') : path || ''
+  const cookie = headers['cookie'] || headers['Cookie']
+  const xsrfHeader = headers['x-xsrf-token'] || headers['X-XSRF-TOKEN']
+  const cookieNames = cookie
+    ? String(cookie)
+        .split(';')
+        .map((p) => (p.trim().split('=')[0] || '').trim())
+        .filter(Boolean)
+    : []
+  xsrfLog('REQUEST', {
+    path: apiPath,
+    method,
+    hasXsrfHeader: !!xsrfHeader,
+    xsrfPrefix: xsrfHeader ? String(xsrfHeader).slice(0, 12) + '...' : null,
+    cookieNames,
+    hasXsrfCookie: cookieNames.some((n) => n.includes('XSRF')),
+    hasLaravelSession: cookieNames.some((n) => n.includes('laravel') || n.includes('session')),
+  })
   const res = await $fetch.raw(target, {
     method,
     body,

@@ -26,6 +26,13 @@ export const E2E_PROFILE = {
 
 export const test = base.extend({
   page: async ({ page }, use, testInfo) => {
+    // Forward [xsrf-client] console messages to stderr for CI logging
+    page.on('console', (msg) => {
+      const text = msg.text()
+      if (text.includes('[xsrf-client]')) {
+        process.stderr.write(`[e2e-console] ${text}\n`)
+      }
+    })
     await page.addInitScript((schema: string) => {
       localStorage.setItem('rekenreis_profiles_v1', schema)
     }, JSON.stringify(E2E_PROFILE))

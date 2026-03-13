@@ -32,12 +32,27 @@ export interface ResetPasswordPayload {
   password_confirmation: string
 }
 
+function xsrfLog(msg: string, data?: Record<string, unknown>) {
+  if (import.meta.server) return
+  try {
+    const config = useRuntimeConfig()
+    if (!config.public?.xsrfDebugLog) return
+  } catch {
+    return
+  }
+  if (typeof console !== 'undefined') {
+    console.error('[xsrf-client]', msg, JSON.stringify(data ?? {}))
+  }
+}
+
 /** Read XSRF-TOKEN cookie for CSRF protection (client-side only). */
 function getXsrfToken(): string | null {
   if (typeof document === 'undefined') return null
   const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
   if (!match) return null
-  return decodeURIComponent(match[1])
+  const token = decodeURIComponent(match[1])
+  xsrfLog('getXsrfToken', { hasToken: !!token, prefix: token ? token.slice(0, 12) + '...' : null })
+  return token
 }
 
 function apiFetch(
@@ -48,6 +63,7 @@ function apiFetch(
 ): Promise<Response> {
   const method = (options.method ?? 'GET').toUpperCase()
   const xsrf = method !== 'GET' && method !== 'HEAD' ? getXsrfToken() : null
+  xsrfLog('apiFetch', { path, method, hasXsrf: !!xsrf, willSendHeader: !!xsrf })
   const headers: Record<string, string> = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -68,10 +84,12 @@ export async function fetchCsrfCookie(
   baseUrl: string,
   fetcher: typeof fetch = fetch
 ): Promise<void> {
-  await fetcher(`${baseUrl}/sanctum/csrf-cookie`, {
+  xsrfLog('fetchCsrfCookie REQUEST', { url: `${baseUrl}/sanctum/csrf-cookie` })
+  const res = await fetcher(`${baseUrl}/sanctum/csrf-cookie`, {
     credentials: 'include',
     headers: { Accept: 'application/json' },
   })
+  xsrfLog('fetchCsrfCookie RESPONSE', { status: res.status, ok: res.ok })
 }
 
 export async function postLogin(
