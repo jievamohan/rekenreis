@@ -15,7 +15,7 @@ services:
       - APP_DEBUG=true
       - XSRF_DEBUG_LOG=1
       - APP_URL=http://web:3000
-      - SESSION_DOMAIN=
+      - SESSION_DOMAIN=web
       - SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,web,web:3000
       - DB_CONNECTION=mysql
       - DB_HOST=mysql
