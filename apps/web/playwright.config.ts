@@ -4,7 +4,11 @@ import { defineConfig, devices } from '@playwright/test'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // playwright-report is writable in CI (e2e/ is read-only when mounted)
-const AUTH_STATE_PATH = path.join(__dirname, 'playwright-report', '.auth.json')
+// CI e2e container uses /app; explicit path avoids resolution issues across workers
+const AUTH_STATE_PATH =
+  process.env.CI && process.env.BASE_URL?.includes('web:3000')
+    ? '/app/playwright-report/.auth.json'
+    : path.join(__dirname, 'playwright-report', '.auth.json')
 
 export default defineConfig({
   testDir: './e2e',

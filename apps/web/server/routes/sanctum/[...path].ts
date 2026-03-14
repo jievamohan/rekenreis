@@ -71,12 +71,20 @@ export default defineEventHandler(async (event) => {
       ? res.headers.getSetCookie()
       : []
   const setCookieNames: string[] = []
+  const requestHost = hostStr ? hostStr.split(':')[0] : ''
   for (const cookie of setCookies) {
     const name = cookie.split('=')[0]?.trim() || ''
     if (name) setCookieNames.push(name)
-    const fixed = cookie
-      .replace(/;\s*Domain=[^;]+/gi, '')
-      .replace(/;\s*Secure/gi, '')
+    // Strip Domain only when it would mismatch request host (e.g. API returns Domain=api).
+    // Preserve Domain=web for CI (browser at web:3000) so session cookie is sent correctly.
+    let fixed = cookie.replace(/;\s*Secure/gi, '')
+    const domainMatch = fixed.match(/;\s*Domain=([^;]+)/i)
+    if (domainMatch) {
+      const apiDomain = domainMatch[1].trim().toLowerCase()
+      if (apiDomain !== requestHost.toLowerCase()) {
+        fixed = fixed.replace(/;\s*Domain=[^;]+/gi, '')
+      }
+    }
     appendResponseHeader(event, 'set-cookie', fixed)
   }
   xsrfLog('RESPONSE', {

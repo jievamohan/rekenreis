@@ -6,15 +6,24 @@ function xsrfLog(msg: string, data?: Record<string, unknown>) {
   if (XSRF_DEBUG) console.error('[xsrf-api-proxy]', msg, data ?? '')
 }
 
-function forwardSetCookies(event: import('h3').H3Event, res: { headers: Headers }) {
+function forwardSetCookies(
+  event: import('h3').H3Event,
+  res: { headers: Headers },
+  requestHost: string
+) {
   const setCookies =
     typeof res.headers.getSetCookie === 'function'
       ? res.headers.getSetCookie()
       : []
   for (const cookie of setCookies) {
-    const fixed = cookie
-      .replace(/;\s*Domain=[^;]+/gi, '')
-      .replace(/;\s*Secure/gi, '')
+    let fixed = cookie.replace(/;\s*Secure/gi, '')
+    const domainMatch = fixed.match(/;\s*Domain=([^;]+)/i)
+    if (domainMatch) {
+      const apiDomain = domainMatch[1].trim().toLowerCase()
+      if (apiDomain !== requestHost.toLowerCase()) {
+        fixed = fixed.replace(/;\s*Domain=[^;]+/gi, '')
+      }
+    }
     appendResponseHeader(event, 'set-cookie', fixed)
   }
 }
@@ -72,6 +81,7 @@ export default defineEventHandler(async (event) => {
   }
   setResponseHeaders(event, resHeaders)
   setResponseStatus(event, res.status)
-  forwardSetCookies(event, res)
+  const requestHost = hostStr ? hostStr.split(':')[0] : ''
+  forwardSetCookies(event, res, requestHost)
   return res._data
 })
