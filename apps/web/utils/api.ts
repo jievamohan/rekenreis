@@ -89,7 +89,13 @@ export async function fetchCsrfCookie(
     credentials: 'include',
     headers: { Accept: 'application/json' },
   })
-  xsrfLog('fetchCsrfCookie RESPONSE', { status: res.status, ok: res.ok })
+  const setCookie = res.headers.get('set-cookie')
+  xsrfLog('fetchCsrfCookie RESPONSE', {
+    status: res.status,
+    ok: res.ok,
+    hasSetCookie: !!setCookie,
+    setCookieLen: setCookie?.length ?? 0,
+  })
 }
 
 export async function postLogin(
@@ -97,15 +103,20 @@ export async function postLogin(
   payload: LoginPayload,
   fetcher: typeof fetch = fetch
 ): Promise<{ user: AuthUser }> {
+  xsrfLog('postLogin STEP1', { url: `${baseUrl}/sanctum/csrf-cookie` })
   await fetchCsrfCookie(baseUrl, fetcher)
+  xsrfLog('postLogin STEP2', { url: `${baseUrl}/api/login`, email: payload.email })
   const res = await apiFetch(baseUrl, '/api/login', {
     method: 'POST',
     body: JSON.stringify(payload),
   }, fetcher)
+  xsrfLog('postLogin STEP3', { status: res.status, ok: res.ok })
   const data = await res.json()
   if (!res.ok) {
+    xsrfLog('postLogin FAIL', { status: res.status, message: data.message })
     throw new Error(data.message ?? `HTTP ${res.status}`)
   }
+  xsrfLog('postLogin OK', { userId: data.user?.id })
   return data
 }
 
@@ -114,15 +125,20 @@ export async function postRegister(
   payload: RegisterPayload,
   fetcher: typeof fetch = fetch
 ): Promise<{ user: AuthUser }> {
+  xsrfLog('postRegister STEP1', { url: `${baseUrl}/sanctum/csrf-cookie` })
   await fetchCsrfCookie(baseUrl, fetcher)
+  xsrfLog('postRegister STEP2', { url: `${baseUrl}/api/register`, email: payload.email })
   const res = await apiFetch(baseUrl, '/api/register', {
     method: 'POST',
     body: JSON.stringify(payload),
   }, fetcher)
+  xsrfLog('postRegister STEP3', { status: res.status, ok: res.ok })
   const data = await res.json()
   if (!res.ok) {
+    xsrfLog('postRegister FAIL', { status: res.status, message: data.message })
     throw new Error(data.message ?? `HTTP ${res.status}`)
   }
+  xsrfLog('postRegister OK', { userId: data.user?.id })
   return data
 }
 
@@ -162,10 +178,13 @@ export async function fetchUser(
   baseUrl: string,
   fetcher: typeof fetch = fetch
 ): Promise<AuthUser | null> {
+  xsrfLog('fetchUser REQUEST', { url: `${baseUrl}/api/user` })
   const res = await apiFetch(baseUrl, '/api/user', {}, fetcher)
+  xsrfLog('fetchUser RESPONSE', { status: res.status, ok: res.ok })
   if (res.status === 401) return null
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const data = await res.json()
+  xsrfLog('fetchUser OK', { userId: data.user?.id })
   return data.user ?? null
 }
 
@@ -185,6 +204,23 @@ export async function fetchHealth(
     throw new Error(`HTTP ${res.status}`)
   }
   return res.json() as Promise<HealthResponse>
+}
+
+/** Debug auth state (CI only). Fetches /api/debug/auth-flow with credentials. */
+export async function fetchDebugAuth(
+  baseUrl: string,
+  fetcher: typeof fetch = fetch
+): Promise<Record<string, unknown> | null> {
+  try {
+    const res = await fetcher(`${baseUrl}/api/debug/auth-flow`, {
+      credentials: 'include',
+      headers: { Accept: 'application/json' },
+    })
+    if (!res.ok) return { error: `HTTP ${res.status}` }
+    return (await res.json()) as Record<string, unknown>
+  } catch (e) {
+    return { error: String(e) }
+  }
 }
 
 export interface SessionStatsPayload {

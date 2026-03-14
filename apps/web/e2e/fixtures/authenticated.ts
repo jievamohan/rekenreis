@@ -24,8 +24,61 @@ export const E2E_PROFILE = {
   ],
 }
 
-export const test = base.extend({
-  page: async ({ page }, use, testInfo) => {
+export const test = base.extend<
+  Record<string, never>,
+  { authenticatedContext: import('@playwright/test').BrowserContext }
+>({
+  // Worker-scoped: run auth in same context (no storage save/load - avoids cookie persistence bugs)
+  authenticatedContext: [
+    async ({ browser }, use, testInfo) => {
+      const baseURL = process.env.BASE_URL || 'http://localhost:3000'
+      const ctx = await browser.newContext({ baseURL })
+      const page = await ctx.newPage()
+      const csrfPromise = page.waitForResponse(
+        (r) => r.url().includes('/sanctum/csrf-cookie'),
+        { timeout: 15000 }
+      )
+      await page.goto(`${baseURL}/register`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      await csrfPromise
+      const user = {
+        email: `e2e-w${testInfo.workerIndex}-${Date.now()}@test.local`,
+        password: 'e2e-password-123',
+        name: `E2E W${testInfo.workerIndex}`,
+      }
+      await page.getByLabel(/kindnaam/i).fill(user.name)
+      await page.getByLabel(/e-mail/i).fill(user.email)
+      await page.getByLabel(/wachtwoord/i).first().fill(user.password)
+      await page.getByLabel(/wachtwoord bevestigen/i).fill(user.password)
+      await page.getByRole('button', { name: /registreren/i }).click()
+      const registered = await page.waitForURL((url) => !url.pathname.includes('/register'), { timeout: 15000 }).then(() => true).catch(() => false)
+      if (!registered) {
+        const loginCsrf = page.waitForResponse((r) => r.url().includes('/sanctum/csrf-cookie'), { timeout: 15000 })
+        await page.goto(`${baseURL}/login`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await loginCsrf
+        await page.getByLabel(/e-mail/i).fill(user.email)
+        await page.getByLabel(/wachtwoord/i).fill(user.password)
+        await page.getByRole('button', { name: /inloggen/i }).click()
+        await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
+      }
+      const debugAuth = await page.evaluate(async () => {
+        const r = await fetch('/api/debug/auth-flow', { credentials: 'include', headers: { Accept: 'application/json' } })
+        return r.ok ? await r.json() : { error: `HTTP ${r.status}` }
+      })
+      process.stderr.write(`[e2e-auth-diag] post-register/login: ${JSON.stringify(debugAuth)}\n`)
+      await page.goto(`${baseURL}/map`, { waitUntil: 'networkidle', timeout: 15000 })
+      const debugAuthMap = await page.evaluate(async () => {
+        const r = await fetch('/api/debug/auth-flow', { credentials: 'include', headers: { Accept: 'application/json' } })
+        return r.ok ? await r.json() : { error: `HTTP ${r.status}` }
+      })
+      process.stderr.write(`[e2e-auth-diag] post-map: ${JSON.stringify(debugAuthMap)}\n`)
+      await page.evaluate((s) => localStorage.setItem('rekenreis_profiles_v1', s), JSON.stringify(E2E_PROFILE))
+      await page.close()
+      await use(ctx)
+    },
+    { scope: 'worker' },
+  ],
+  page: async ({ authenticatedContext }, use, testInfo) => {
+    const page = await authenticatedContext.newPage()
     // Forward [xsrf-client] console messages to stderr for CI logging
     page.on('console', (msg) => {
       const text = msg.text()

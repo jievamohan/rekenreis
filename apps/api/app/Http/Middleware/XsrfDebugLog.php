@@ -83,6 +83,31 @@ class XsrfDebugLog
             ]);
         }
 
+        // 4. Response: api/register (API sets laravel_session on success)
+        if (str_contains($path, 'api/register')) {
+            $setCookies = $response->headers->get('Set-Cookie');
+            $cookieNames = [];
+            if ($setCookies) {
+                foreach (is_array($setCookies) ? $setCookies : [$setCookies] as $c) {
+                    $firstPart = explode(';', $c)[0];
+                    $cookieNameParts = explode('=', $firstPart, 2);
+                    $cookieNames[] = trim($cookieNameParts[0]);
+                }
+            }
+            self::log('api/register RESPONSE', [
+                'status' => $response->getStatusCode(),
+                'setCookieNames' => $cookieNames,
+                'hasSessionCookie' => $setCookies && (str_contains((string) $setCookies, 'laravel_session') || str_contains((string) $setCookies, 'rekenreis_session')),
+            ]);
+        }
+
+        // 5. Response: api/user (401 = no valid session)
+        if (str_contains($path, 'api/user')) {
+            self::log('api/user RESPONSE', [
+                'status' => $response->getStatusCode(),
+            ]);
+        }
+
         return $response;
     }
 }

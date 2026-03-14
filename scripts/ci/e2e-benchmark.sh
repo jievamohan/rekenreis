@@ -7,7 +7,7 @@ mkdir -p artifacts/ci
 
 # Self-contained e2e image has tests + node_modules baked in; just run tests.
 START=$(date +%s)
-docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml run --rm e2e pnpm test:e2e
+docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml run --rm -e E2E_QUICKFAIL="${E2E_QUICKFAIL:-5}" e2e pnpm test:e2e
 EXIT=$?
 END=$(date +%s)
 DURATION=$((END - START))

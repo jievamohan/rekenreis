@@ -16,6 +16,7 @@ export interface DiagnoseResult {
   hasProblemCard: boolean
   bodySnippet: string
   screenshotPath: string
+  debugAuth?: Record<string, unknown>
 }
 
 export async function diagnoseOnFailure(
@@ -40,6 +41,15 @@ export async function diagnoseOnFailure(
     .catch(() => false)
   const bodyText = await page.locator('body').innerText().catch(() => '')
   await page.screenshot({ path: screenshotPath })
+  let debugAuth: Record<string, unknown> | undefined
+  try {
+    debugAuth = await page.evaluate(async () => {
+      const r = await fetch('/api/debug/auth-flow', { credentials: 'include', headers: { Accept: 'application/json' } })
+      return r.ok ? await r.json() : { error: `HTTP ${r.status}` }
+    })
+  } catch {
+    debugAuth = { error: 'fetch failed' }
+  }
   return {
     url,
     hasAuthPage,
@@ -48,5 +58,6 @@ export async function diagnoseOnFailure(
     hasProblemCard,
     bodySnippet: bodyText.slice(0, 500),
     screenshotPath,
+    debugAuth,
   }
 }

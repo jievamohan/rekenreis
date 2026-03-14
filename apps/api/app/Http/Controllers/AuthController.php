@@ -12,8 +12,19 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    private static function authLog(string $msg, array $data = []): void
+    {
+        if (! config('app.debug') && ! config('app.xsrf_debug_log')) {
+            return;
+        }
+        error_log('[auth-debug] ' . $msg . ' ' . json_encode($data));
+    }
     public function login(Request $request): JsonResponse
     {
+        self::authLog('login REQUEST', [
+            'hasSession' => $request->hasSession(),
+            'email' => $request->input('email'),
+        ]);
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -25,15 +36,19 @@ class AuthController extends Controller
 
         if ($request->hasSession()) {
             if (! Auth::attempt($request->only('email', 'password'))) {
+                self::authLog('login FAIL', ['reason' => 'invalid credentials']);
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
             $request->session()->regenerate();
             $user = $request->user();
+            self::authLog('login OK', ['userId' => $user->id]);
         } else {
             $user = User::where('email', $request->email)->first();
             if (! $user || ! Hash::check($request->password, $user->password)) {
+                self::authLog('login FAIL', ['reason' => 'invalid credentials (no session)']);
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
+            self::authLog('login OK (no session)', ['userId' => $user->id]);
         }
 
         return response()->json([
@@ -43,6 +58,12 @@ class AuthController extends Controller
 
     public function register(Request $request): JsonResponse
     {
+        self::authLog('register REQUEST', [
+            'hasSession' => $request->hasSession(),
+            'sessionId' => $request->hasSession() ? substr($request->session()->getId(), 0, 8) . '...' : null,
+            'cookieCount' => $request->header('Cookie') ? substr_count($request->header('Cookie'), '=') : 0,
+        ]);
+
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -59,10 +80,18 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $didLogin = false;
         if ($request->hasSession()) {
             Auth::login($user);
             $request->session()->regenerate();
+            $didLogin = true;
         }
+
+        self::authLog('register RESPONSE', [
+            'userId' => $user->id,
+            'didLogin' => $didLogin,
+            'hasSession' => $request->hasSession(),
+        ]);
 
         return response()->json([
             'user' => $user->only(['id', 'name', 'email']),
@@ -83,6 +112,11 @@ class AuthController extends Controller
     public function user(Request $request): JsonResponse
     {
         $user = $request->user();
+        self::authLog('user REQUEST', [
+            'hasSession' => $request->hasSession(),
+            'authenticated' => (bool) $user,
+            'userId' => $user?->id,
+        ]);
         if (! $user) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }

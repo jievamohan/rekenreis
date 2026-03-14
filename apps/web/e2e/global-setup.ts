@@ -113,7 +113,10 @@ async function waitForSanctum(
 }
 
 export default async function globalSetup(config: FullConfig) {
-  const baseURL = config.projects[0].use.baseURL || 'http://localhost:3000'
+  const baseURL =
+    process.env.BASE_URL ||
+    (config.projects[0]?.use as { baseURL?: string })?.baseURL ||
+    'http://localhost:3000'
   const diag: Record<string, unknown> = { baseURL, user: E2E_USER.email, steps: [] as string[] }
 
   try {
@@ -218,6 +221,13 @@ export default async function globalSetup(config: FullConfig) {
         writeDiagnostic(diag)
         throw new Error(`${LOG_PREFIX} auth failed — still on login after register/login flow. url=${currentUrl} cookies=${cookies.length}`)
       }
+
+      const debugAuth = await page.evaluate(async () => {
+        const r = await fetch('/api/debug/auth-flow', { credentials: 'include', headers: { Accept: 'application/json' } })
+        return r.ok ? await r.json() : { error: `HTTP ${r.status}` }
+      })
+      log('Debug auth before save', debugAuth as Record<string, unknown>)
+      diag.debugAuth = debugAuth
 
       await page.evaluate((schema: string) => {
         localStorage.setItem('rekenreis_profiles_v1', schema)
