@@ -2730,7 +2730,7 @@ Acceptance:
 ---
 
 ## Epic 45.3 — Progress Sync + Protected Routes
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-45.md
 - archive: artifacts/archive/epic-45.0/latest

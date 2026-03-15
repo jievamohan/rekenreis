@@ -228,6 +228,39 @@ export interface SessionStatsPayload {
   rounds?: number
 }
 
+export interface ProgressResponse {
+  progress: Record<string, unknown>
+}
+
+export async function fetchProgress(
+  baseUrl: string,
+  fetcher: typeof fetch = fetch
+): Promise<ProgressResponse> {
+  const res = await apiFetch(baseUrl, '/api/progress', {}, fetcher)
+  if (res.status === 401) {
+    throw new Error('Unauthenticated')
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const data = (await res.json()) as ProgressResponse
+  return { progress: data.progress ?? {} }
+}
+
+export async function putProgress(
+  baseUrl: string,
+  progress: Record<string, unknown>,
+  fetcher: typeof fetch = fetch
+): Promise<ProgressResponse> {
+  const res = await apiFetch(baseUrl, '/api/progress', {
+    method: 'PUT',
+    body: JSON.stringify({ progress }),
+  }, fetcher)
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({})) as { message?: string }
+    throw new Error(data.message ?? `HTTP ${res.status}`)
+  }
+  return (await res.json()) as ProgressResponse
+}
+
 export async function postSessionStats(
   baseUrl: string,
   payload: SessionStatsPayload,

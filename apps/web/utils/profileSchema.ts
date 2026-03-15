@@ -255,3 +255,32 @@ export function createDefaultProfile(): ProfileData {
     telemetryOptOut: true,
   }
 }
+
+/** Create schema for API-backed user. If apiProgress is valid ProfileSchemaV1, use it; else create fresh with kindnaam. */
+export function createSchemaForUser(kindnaam: string, apiProgress?: unknown): ProfileSchemaV1 {
+  if (apiProgress && isValidV1(apiProgress)) {
+    const schema = apiProgress as ProfileSchemaV1
+    for (const p of schema.profiles) {
+      if (p.maatjeId === undefined) p.maatjeId = 'wolkje'
+      if (p.prefs?.soundOn === undefined) p.prefs.soundOn = true
+      if (p.prefs?.timersDisabled === undefined) p.prefs.timersDisabled = false
+      if (p.progress.currentLevel === undefined) p.progress.currentLevel = 1
+      if (p.progress.levelProgress === undefined) p.progress.levelProgress = {}
+    }
+    return schema
+  }
+  const profile: ProfileData = {
+    id: 'api_profile',
+    name: kindnaam.slice(0, 50) || 'Speler 1',
+    avatarId: 'default',
+    maatjeId: 'wolkje',
+    progress: { bestScore: 0 },
+    prefs: defaultPrefs(),
+    telemetryOptOut: true,
+  }
+  return {
+    version: 1,
+    activeProfileId: profile.id,
+    profiles: [profile],
+  }
+}

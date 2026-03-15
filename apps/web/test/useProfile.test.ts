@@ -1,11 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { ref } from 'vue'
 import { useProfile } from '../composables/useProfile'
+import { __resetProfileSchema } from '../composables/useProfileSchema'
+
+vi.mock('../composables/useAuth', () => ({
+  useAuth: () => ({ user: ref(null) }),
+}))
 
 const getItem = vi.fn()
 const setItem = vi.fn()
 
 describe('useProfile', () => {
   beforeEach(() => {
+    __resetProfileSchema()
     vi.stubGlobal('localStorage', { getItem, setItem, removeItem: vi.fn() })
     vi.stubGlobal('window', { localStorage: { getItem, setItem, removeItem: vi.fn() } })
     getItem.mockReset()
