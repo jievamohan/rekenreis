@@ -3,6 +3,7 @@ import {
   loadProfiles,
   saveProfiles,
   createDefaultProfile,
+  createSchemaForUser,
   type ProfileSchemaV1,
 } from '../utils/profileSchema'
 
@@ -109,5 +110,34 @@ describe('profileSchema', () => {
     const result = loadProfiles()
     expect(result.profiles).toHaveLength(1)
     expect(result.profiles[0].name).toBe('Speler 1')
+  })
+
+  it('createSchemaForUser returns fresh schema when apiProgress invalid', () => {
+    const result = createSchemaForUser('Jan')
+    expect(result.profiles).toHaveLength(1)
+    expect(result.profiles[0].name).toBe('Jan')
+    expect(result.profiles[0].id).toBe('api_profile')
+    expect(result.profiles[0].progress.bestScore).toBe(0)
+  })
+
+  it('createSchemaForUser uses valid apiProgress when provided', () => {
+    const stored: ProfileSchemaV1 = {
+      version: 1,
+      activeProfileId: 'p1',
+      profiles: [{
+        id: 'p1',
+        name: 'Jan',
+        avatarId: 'default',
+        maatjeId: 'wolkje',
+        progress: { bestScore: 10, currentLevel: 5, levelProgress: { 1: { stars: 3 } } },
+        prefs: createDefaultProfile().prefs,
+        telemetryOptOut: false,
+      }],
+    }
+    const result = createSchemaForUser('Jan', stored)
+    expect(result.profiles).toHaveLength(1)
+    expect(result.profiles[0].progress.bestScore).toBe(10)
+    expect(result.profiles[0].progress.currentLevel).toBe(5)
+    expect(result.profiles[0].progress.levelProgress).toEqual({ 1: { stars: 3 } })
   })
 })

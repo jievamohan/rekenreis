@@ -1,40 +1,40 @@
-import { ref, computed, readonly } from 'vue'
+import { computed, readonly } from 'vue'
 import type { MaatjeId } from '~/types/maatje'
 import {
-  loadProfiles,
   saveProfiles,
   createDefaultProfile,
   type ProfileSchemaV1,
   type ProfileData,
 } from '../utils/profileSchema'
-
-let schemaRef: ReturnType<typeof ref<ProfileSchemaV1>> | null = null
-
-function getSchemaRef() {
-  if (!schemaRef) {
-    schemaRef = ref<ProfileSchemaV1>(loadProfiles())
-  }
-  return schemaRef
-}
+import { useProfileSchema } from './useProfileSchema'
+import { useAuth } from './useAuth'
 
 export function useProfile() {
-  const schema = getSchemaRef()
+  const schema = useProfileSchema()
+  const { user } = useAuth()
 
   const activeProfile = computed<ProfileData | null>(() => {
     const s = schema.value
     if (!s) return null
-    const p = s.profiles.find((x) => x.id === s.activeProfileId)
+    const p = s.profiles.find((x: ProfileData) => x.id === s.activeProfileId)
     return p ?? s.profiles[0] ?? null
   })
+
+  function persist(next: ProfileSchemaV1) {
+    if (!user.value) {
+      saveProfiles(next)
+    }
+    // When authenticated, useProgressSync plugin persists to API via watch
+  }
 
   function switchProfile(id: string) {
     const s = schema.value
     if (!s) return
-    const profile = s.profiles.find((p) => p.id === id)
+    const profile = s.profiles.find((p: ProfileData) => p.id === id)
     if (!profile) return
     const next: ProfileSchemaV1 = { version: 1, activeProfileId: id, profiles: s.profiles }
     schema.value = next
-    saveProfiles(next)
+    persist(next)
   }
 
   function createProfile(name: string, maatjeId: MaatjeId) {
@@ -49,19 +49,19 @@ export function useProfile() {
       profiles: [...s.profiles, newProfile],
     }
     schema.value = next
-    saveProfiles(next)
+    persist(next)
   }
 
   function updateProfile(id: string, updates: Partial<Pick<ProfileData, 'name' | 'avatarId' | 'maatjeId' | 'progress' | 'prefs' | 'telemetryOptOut'>>) {
     const s = schema.value
     if (!s) return
-    const idx = s.profiles.findIndex((p) => p.id === id)
+    const idx = s.profiles.findIndex((p: ProfileData) => p.id === id)
     if (idx < 0) return
     const nextProfiles = [...s.profiles]
     nextProfiles[idx] = { ...nextProfiles[idx], ...updates }
     const next: ProfileSchemaV1 = { version: 1, activeProfileId: s.activeProfileId, profiles: nextProfiles }
     schema.value = next
-    saveProfiles(next)
+    persist(next)
   }
 
   return {
