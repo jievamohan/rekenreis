@@ -5,7 +5,10 @@
 useDefault = true
 
 [allowlist]
-description = "Allow known placeholder values (base64 zeros, secret, root) in config files"
+description = "Allow known placeholder values (base64 zeros, secret, root) in config files; exclude vendor (third-party code)"
+paths = [
+  '''^apps/api/vendor/''',
+]
 # Regexes: known placeholder patterns - only these values are allowed, not whole file paths
 # - base64:0000... (Laravel APP_KEY placeholder)
 # - literal "secret", "root" as standalone values in env vars

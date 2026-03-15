@@ -1,0 +1,5 @@
+# PR ZAP / Playwright: api source volume-mounted. Use GHCR api image (PHP+extensions), vendor in git.
+services:
+  api:
+    volumes:
+      - ./apps/api:/app

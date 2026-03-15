@@ -6,8 +6,9 @@ set -euo pipefail
 mkdir -p artifacts/ci
 
 # Self-contained e2e image has tests + node_modules baked in; just run tests.
+# E2E_QUICKFAIL=0 runs all tests. Use 5/7/11/20/50 for subset during auth debugging.
 START=$(date +%s)
-docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-mount.yml run --rm e2e pnpm test:e2e
+docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-build-api.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml run --rm -e E2E_QUICKFAIL="${E2E_QUICKFAIL:-0}" e2e pnpm test:e2e
 EXIT=$?
 END=$(date +%s)
 DURATION=$((END - START))

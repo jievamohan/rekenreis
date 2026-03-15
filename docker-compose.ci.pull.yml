@@ -9,11 +9,13 @@ services:
     command: pnpm run dev --host 0.0.0.0
     volumes: []
     environment:
-      - NUXT_PUBLIC_API_URL=http://api:8000
+      - NUXT_PUBLIC_API_URL=
+      - NUXT_API_PROXY_TARGET=http://api:8000
 
   api:
     image: ghcr.io/jievamohan/rekenreis/api:latest
     pull_policy: if_not_present
+    volumes: []
 
   mysql:
     pull_policy: if_not_present

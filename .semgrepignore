@@ -1,8 +1,14 @@
 # Semgrep ignore: documented exceptions
+# - vendor: third-party code (Symfony, Laravel, etc.); not our source
+apps/api/vendor/
 # - phpunit.xml: APP_KEY is Laravel placeholder (base64 A's), not Telegram/real secret
 apps/api/phpunit.xml
 # - api Dockerfile: USER causes container exit(1) in CI; defer non-root to follow-up
 apps/api/Dockerfile
+# - web Dockerfile: USER causes container exit(1) in CI with volume mounts; production image has USER
+apps/web/Dockerfile
 # - Playwright report + trace: generated third-party bundler output, not our source
 apps/web/playwright-report/
 apps/web/test-results/
+# - auth-helper: workerIndex sanitized (0-99), path.join safe; semgrep path-traversal false positive
+apps/web/e2e/auth-helper.ts

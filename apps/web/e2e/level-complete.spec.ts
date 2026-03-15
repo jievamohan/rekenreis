@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { E2E_PROFILE } from './fixtures/authenticated'
 
 const ROUNDS_PER_LEVEL = 10
 
@@ -41,6 +42,11 @@ async function answerWrong(page: import('@playwright/test').Page) {
 
 test.describe('level complete modal', () => {
   test.describe.configure({ retries: 2 })
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE))
+  })
   test('modal appears after completing all rounds', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card, [data-testid^="minigame-"]').first()).toBeVisible({ timeout: 10000 })

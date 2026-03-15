@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { E2E_PROFILE } from './fixtures/authenticated'
 
 /**
  * Navigation and UI visibility tests.
@@ -9,6 +10,11 @@ import { test, expect } from '@playwright/test'
  * (inside slot) render correctly and are tested.
  */
 test.describe('navigation and UI visibility', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE))
+  })
   test('map-only elements not on play page', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card')).toBeVisible()

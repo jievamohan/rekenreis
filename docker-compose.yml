@@ -3,23 +3,19 @@ services:
     build:
       context: ./apps/web
       dockerfile: Dockerfile
-    user: "0:0"  # root for dev: pnpm install must write to node_modules volume (root-owned)
     working_dir: /repo/apps/web
-    command: sh -lc "pnpm install && pnpm dev --host 0.0.0.0 --port 3000"
     ports:
       - "3000:3000"
       - "24678:24678"
     volumes:
       - ./:/repo
       - web_node_modules:/repo/apps/web/node_modules
-      - web_pnpm_store:/pnpm-store
     environment:
       - NODE_ENV=development
-      - NUXT_PUBLIC_API_URL=http://api:8000
+      - NUXT_PUBLIC_API_URL=
+      - NUXT_API_PROXY_TARGET=http://api:8000
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_INTERVAL=100
-      - PNPM_HOME=/pnpm
-      - PNPM_STORE_PATH=/pnpm-store
     healthcheck:
       test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/start', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))\""]
       interval: 5s
@@ -34,21 +30,28 @@ services:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
+    working_dir: /repo/apps/api
+    volumes:
+      - ./:/repo
     ports:
       - "8001:8000"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_KEY=base64:0000000000000000000000000000000000000000000000000000
-      - APP_URL=http://api:8000
+      # Match browser origin so Laravel session/CSRF sees correct host (proxy forwards Host: localhost:3000).
+      - APP_URL=http://localhost:3000
       - DB_CONNECTION=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
       - DB_DATABASE=laravel
       - DB_USERNAME=laravel
       - DB_PASSWORD=secret
-      - SESSION_DRIVER=array
+      - SESSION_DRIVER=database
+      # Empty = cookie valid for request host (localhost:3000). Avoids mismatch when proxy forwards Host.
+      - SESSION_DOMAIN=
       - CACHE_STORE=array
+      - SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,web,web:3000
       - QUEUE_CONNECTION=sync
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:8000/api/health"]
@@ -62,6 +65,8 @@ services:
 
   mysql:
     image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
@@ -102,5 +107,5 @@ services:
       - "9323:9323"
 
 volumes:
+  mysql_data:
   web_node_modules:
-  web_pnpm_store:

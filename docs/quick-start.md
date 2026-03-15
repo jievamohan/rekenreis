@@ -22,9 +22,11 @@ Open http://localhost:3000/play
 ### Full stack (web + API)
 
 ```bash
-# From repo root
+# From repo root (node_modules en vendor zitten in git)
 docker compose up --build
 ```
+
+**Eenmalig** bij nieuwe migrations: `docker compose run --rm api php artisan migrate --force`
 
 - Web: http://localhost:3000/start (API health)
 - Game: http://localhost:3000/play

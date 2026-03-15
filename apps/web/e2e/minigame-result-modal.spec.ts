@@ -1,33 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { E2E_PROFILE } from './fixtures/authenticated'
 
-const PROFILE_WITH_TIMERS_DISABLED = {
-  version: 1 as const,
-  activeProfileId: 'p_test_e2e',
-  profiles: [
-    {
-      id: 'p_test_e2e',
-      name: 'E2E Test',
-      avatarId: 'default' as const,
-      maatjeId: 'wolkje' as const,
-      progress: { bestScore: 0, levelProgress: {}, currentLevel: 1 },
-      prefs: {
-        lastMode: 'classic' as const,
-        lastSkin: 'classic' as const,
-        difficultyCeiling: 'upTo10' as const,
-        hintsOn: true,
-        soundOn: true,
-        timersDisabled: true,
-      },
-      telemetryOptOut: true,
-    },
-  ],
-}
-
-function seedTimersDisabledProfile(page: import('@playwright/test').Page) {
-  return page.addInitScript((schema: string) => {
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript((schema: string) => {
     localStorage.setItem('rekenreis_profiles_v1', schema)
-  }, JSON.stringify(PROFILE_WITH_TIMERS_DISABLED))
-}
+  }, JSON.stringify(E2E_PROFILE))
+})
 
 /** Tap correct or wrong answer in bubble-pop (level 1). */
 async function answerBubblePop(
@@ -156,9 +134,6 @@ async function assertModalVisible(page: import('@playwright/test').Page) {
 test.describe('minigame result modal — 100% and 0%', () => {
   test.describe.configure({ retries: 2 })
 
-  test.beforeEach(async ({ page }) => {
-    await seedTimersDisabledProfile(page)
-  })
 
   test('bubble-pop (level 1) 100%: modal visible, 3 stars, stat-items', async ({ page }) => {
     await page.goto('/play?level=1')
@@ -238,9 +213,6 @@ test.describe('minigame result modal — 100% and 0%', () => {
 test.describe('minigame result modal — 40% and 80%', () => {
   test.describe.configure({ retries: 2 })
 
-  test.beforeEach(async ({ page }) => {
-    await seedTimersDisabledProfile(page)
-  })
 
   test('bubble-pop (level 1) 40%: 4/10, score 40%, 1 star', async ({ page }) => {
     await page.goto('/play?level=1')
@@ -389,9 +361,6 @@ async function completeBouwDeToren(
 test.describe('minigame result modal — Bouw de Toren', () => {
   test.describe.configure({ retries: 2 })
 
-  test.beforeEach(async ({ page }) => {
-    await seedTimersDisabledProfile(page)
-  })
 
   async function getBouwDeTorenTotalRounds(puzzle: import('@playwright/test').Locator): Promise<number> {
     const slots = puzzle.locator('.tower-progress-slot')

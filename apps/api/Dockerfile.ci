@@ -1,0 +1,33 @@
+# API runtime image for CI. Source is baked in; no volume mount in PR gate.
+# Same as docker/api.Dockerfile, kept here so pr-build-api context (./apps/api) can find it.
+FROM php:8.4-cli-alpine
+
+RUN apk add --no-cache \
+    git \
+    unzip \
+    libzip-dev \
+    icu-dev \
+    oniguruma-dev \
+    curl \
+    && docker-php-ext-install -j$(nproc) pdo_mysql zip intl mbstring
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --no-scripts
+
+COPY . .
+# Ensure .env exists (composer install --no-scripts skips post-install; Laravel needs .env)
+RUN cp .env.example .env 2>/dev/null || true
+RUN composer dump-autoload
+EXPOSE 8000
+
+RUN adduser -D -g '' appuser && chown -R appuser:appuser /app
+# Laravel/Symfony tempnam() needs writable TMPDIR (avoids "file created in system temp" 500)
+RUN mkdir -p /app/storage/framework/temp && chown appuser:appuser /app/storage/framework/temp
+ENV TMPDIR=/app/storage/framework/temp
+USER appuser
+
+CMD ["sh", "-c", "sleep 5 && php artisan migrate --force && exec php artisan serve --host=0.0.0.0"]

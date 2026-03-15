@@ -11,13 +11,9 @@ RUN apk add --no-cache \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+WORKDIR /repo/apps/api
 
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --no-scripts
-
-COPY . .
-RUN composer dump-autoload
 EXPOSE 8000
 
-CMD ["sh", "-c", "sleep 5 && php artisan migrate --force && exec php artisan serve --host=0.0.0.0"]
+# Source is volume-mounted at runtime. Run composer install + migrate eenmalig.
+CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
