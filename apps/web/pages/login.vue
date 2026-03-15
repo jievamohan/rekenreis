@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { login, error, isAuthenticated, ensureCsrfCookie } = useAuth()
 const router = useRouter()
 
@@ -8,7 +9,7 @@ const submitting = ref(false)
 
 onMounted(async () => {
   if (isAuthenticated.value) {
-    router.replace('/')
+    router.replace('/map')
     return
   }
   await ensureCsrfCookie()
@@ -19,19 +20,19 @@ async function onSubmit() {
   const ok = await login(email.value, password.value)
   submitting.value = false
   if (ok) {
-    router.push('/')
+    router.push('/map')
   }
 }
 </script>
 
 <template>
   <div class="auth-page">
-    <h1>Inloggen</h1>
+    <h1>{{ t('auth.login') }}</h1>
     <form class="auth-form" @submit.prevent="onSubmit">
       <div v-if="error" class="auth-error" role="alert">
         {{ error }}
       </div>
-      <label for="login-email">E-mail</label>
+      <label for="login-email">{{ t('auth.email') }}</label>
       <input
         id="login-email"
         v-model="email"
@@ -40,7 +41,7 @@ async function onSubmit() {
         autocomplete="email"
         class="auth-input"
       />
-      <label for="login-password">Wachtwoord</label>
+      <label for="login-password">{{ t('auth.password') }}</label>
       <input
         id="login-password"
         v-model="password"
@@ -54,12 +55,12 @@ async function onSubmit() {
         class="auth-submit"
         :disabled="submitting"
       >
-        {{ submitting ? 'Bezig...' : 'Inloggen' }}
+        {{ submitting ? t('auth.submitting') : t('auth.loginButton') }}
       </button>
     </form>
     <p class="auth-links">
-      <NuxtLink to="/register">Account aanmaken</NuxtLink>
-      <NuxtLink to="/forgot-password">Wachtwoord vergeten?</NuxtLink>
+      <NuxtLink to="/register">{{ t('auth.createAccount') }}</NuxtLink>
+      <NuxtLink to="/forgot-password">{{ t('auth.forgotLink') }}</NuxtLink>
     </p>
   </div>
 </template>

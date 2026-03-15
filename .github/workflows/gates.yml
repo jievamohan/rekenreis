@@ -164,8 +164,38 @@ jobs:
       - name: Web size
         run: cd apps/web && pnpm run size
 
+  e2e-cache:
+    name: E2E image cache
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache e2e stack images (api, e2e, mysql)
+        uses: actions/cache@v4
+        id: e2e-images-cache
+        with:
+          path: /tmp/docker-cache/e2e-stack
+          key: docker-e2e-stack-${{ github.event.pull_request.base.sha || format('push-{0}', github.sha) }}
+          restore-keys: docker-e2e-stack-
+
+      - name: Pull api, e2e, mysql images
+        if: steps.e2e-images-cache.outputs.cache-hit != 'true'
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull api e2e mysql
+          mkdir -p /tmp/docker-cache/e2e-stack
+          docker save ghcr.io/${{ github.repository }}/api:latest ghcr.io/${{ github.repository }}/e2e:latest mysql:8.0 -o /tmp/docker-cache/e2e-stack/stack.tar
+
   e2e-container:
     name: Playwright
+    needs: e2e-cache
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -192,27 +222,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache e2e stack images (api, e2e, mysql)
+      - name: Restore e2e stack images
         uses: actions/cache@v4
-        id: e2e-images-cache
         with:
           path: /tmp/docker-cache/e2e-stack
           key: docker-e2e-stack-${{ github.event.pull_request.base.sha || format('push-{0}', github.sha) }}
-
-      - name: Pull api, e2e, mysql images
-        if: steps.e2e-images-cache.outputs.cache-hit != 'true'
-        run: |
-          docker compose -f docker-compose.yml -f docker-compose.ci.pull.yml pull api e2e mysql
-          mkdir -p /tmp/docker-cache/e2e-stack
-          docker save ghcr.io/${{ github.repository }}/api:latest ghcr.io/${{ github.repository }}/e2e:latest mysql:8.0 -o /tmp/docker-cache/e2e-stack/stack.tar
+          restore-keys: docker-e2e-stack-
 
       - name: Load cached images
-        if: steps.e2e-images-cache.outputs.cache-hit == 'true'
         run: docker load -i /tmp/docker-cache/e2e-stack/stack.tar
 
       - name: Install web deps (for volume mount)
         run: |
           cd apps/web && pnpm install --frozen-lockfile
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ hashFiles('apps/api/composer.lock') }}
 
       - name: API setup (migrate)
         run: bash scripts/ci/api-setup.sh -f docker-compose.yml -f docker-compose.ci.pull.yml -f docker-compose.ci.pr-build.yml -f docker-compose.ci.pr-build-api.yml -f docker-compose.ci.pr-mount.yml -f docker-compose.ci.e2e.yml

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import './debug-failure-hooks'
 
 test.describe('smoke', () => {
   test('unauthenticated visit to / redirects to /login', async ({ page }) => {

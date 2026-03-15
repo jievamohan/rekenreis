@@ -1,12 +1,12 @@
-import { test, expect } from '@playwright/test'
-import { E2E_PROFILE } from './fixtures/authenticated'
+import { test, expect } from './fixtures/authenticated'
+import './debug-failure-hooks'
 
 test.describe('interaction diversity — E2E proof', () => {
   test.describe.configure({ retries: 2 })
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript((schema: string) => {
-      localStorage.setItem('rekenreis_profiles_v1', schema)
-    }, JSON.stringify(E2E_PROFILE))
+    // Warm up: ensure auth middleware has run (matches app-flow pattern)
+    await page.goto('/map', { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await expect(page).toHaveURL(/\/map/)
   })
   test('drag/drop (TreasureDive): completes round via click + chest', async ({ page }) => {
     await page.goto('/play?level=2')
@@ -66,6 +66,10 @@ test.describe('interaction diversity — E2E proof', () => {
 })
 
 test.describe('Dutch copy assertions', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/map', { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await expect(page).toHaveURL(/\/map/)
+  })
   test('fish-feed timeout advances without feedback overlay', async ({ page }) => {
     test.skip(!!process.env.CI, 'FishFeed timer flaky in CI')
     test.setTimeout(60000) // Timer ~15s; CI can be slower
@@ -102,6 +106,10 @@ test.describe('Dutch copy assertions', () => {
 })
 
 test.describe('a11y smoke checks', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/map', { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await expect(page).toHaveURL(/\/map/)
+  })
   test('play page has proper heading structure', async ({ page }) => {
     await page.goto('/play?level=1')
     await expect(page.locator('.problem-card')).toBeVisible()

@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test'
-import { E2E_PROFILE } from '../fixtures/authenticated'
+import { test, expect, E2E_PROFILE } from '../fixtures/authenticated'
 
 test.describe('play page visual', () => {
   test.beforeEach(async ({ page }) => {

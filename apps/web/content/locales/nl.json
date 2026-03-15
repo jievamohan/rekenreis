@@ -1,4 +1,28 @@
 {
+  "auth": {
+    "login": "Inloggen",
+    "loginButton": "Inloggen",
+    "register": "Account aanmaken",
+    "registerButton": "Registreren",
+    "forgotPassword": "Wachtwoord vergeten",
+    "resetPassword": "Wachtwoord resetten",
+    "resetButton": "Wachtwoord opslaan",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "passwordConfirm": "Wachtwoord bevestigen",
+    "kindnaam": "Kindnaam",
+    "newPassword": "Nieuw wachtwoord",
+    "submitting": "Bezig...",
+    "createAccount": "Account aanmaken",
+    "alreadyHaveAccount": "Al een account? Inloggen",
+    "forgotLink": "Wachtwoord vergeten?",
+    "backToLogin": "Terug naar inloggen",
+    "sendLink": "Verstuur link",
+    "forgotHint": "Vul je e-mailadres in. We sturen je een link om je wachtwoord te resetten.",
+    "forgotSuccess": "Als dit e-mailadres bij ons bekend is, ontvang je een link om je wachtwoord te resetten.",
+    "resetInvalidToken": "Ongeldige of ontbrekende resetlink. Vraag een nieuwe aan.",
+    "resetSuccess": "Wachtwoord opgeslagen. Je wordt doorgestuurd naar de loginpagina."
+  },
   "common": {
     "next": "Volgende",
     "finish": "Afronden",

@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test'
-import { E2E_PROFILE } from './fixtures/authenticated'
+import { test, expect, E2E_PROFILE } from './fixtures/authenticated'
+import './debug-failure-hooks'
 
 const ROUNDS_PER_LEVEL = 10
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { forgotPassword, error, ensureCsrfCookie } = useAuth()
 
 const email = ref('')
@@ -22,15 +23,15 @@ async function onSubmit() {
 
 <template>
   <div class="auth-page">
-    <h1>Wachtwoord vergeten</h1>
+    <h1>{{ t('auth.forgotPassword') }}</h1>
     <form v-if="!success" class="auth-form" @submit.prevent="onSubmit">
       <div v-if="error" class="auth-error" role="alert">
         {{ error }}
       </div>
       <p class="auth-hint">
-        Vul je e-mailadres in. We sturen je een link om je wachtwoord te resetten.
+        {{ t('auth.forgotHint') }}
       </p>
-      <label for="forgot-email">E-mail</label>
+      <label for="forgot-email">{{ t('auth.email') }}</label>
       <input
         id="forgot-email"
         v-model="email"
@@ -44,14 +45,14 @@ async function onSubmit() {
         class="auth-submit"
         :disabled="submitting"
       >
-        {{ submitting ? 'Bezig...' : 'Verstuur link' }}
+        {{ submitting ? t('auth.submitting') : t('auth.sendLink') }}
       </button>
     </form>
     <div v-else class="auth-success">
-      <p>Als dit e-mailadres bij ons bekend is, ontvang je een link om je wachtwoord te resetten.</p>
+      <p>{{ t('auth.forgotSuccess') }}</p>
     </div>
     <p class="auth-links">
-      <NuxtLink to="/login">Terug naar inloggen</NuxtLink>
+      <NuxtLink to="/login">{{ t('auth.backToLogin') }}</NuxtLink>
     </p>
   </div>
 </template>

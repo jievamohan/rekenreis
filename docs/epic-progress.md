@@ -83,3 +83,4 @@
 | Epic 45.1 — API Auth + Sanctum + Progress Schema | done | PR #203 merged |
 | Epic 45.2 — Web Auth Pages + Middleware | done | PR merged |
 | Epic 45.3 — Progress Sync + Protected Routes | done | PR #208 merged |
+| Epic 45.4 — E2E + Polish | done | PR pending |

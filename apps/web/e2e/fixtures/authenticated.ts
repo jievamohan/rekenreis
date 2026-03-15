@@ -32,7 +32,11 @@ export const test = base.extend<
   authenticatedContext: [
     async ({ browser }, use, testInfo) => {
       const baseURL = process.env.BASE_URL || 'http://localhost:3000'
-      const ctx = await browser.newContext({ baseURL })
+      const isVisual = testInfo.project?.name === 'visual'
+      const ctx = await browser.newContext({
+        baseURL,
+        ...(isVisual ? { viewport: { width: 1280, height: 720 } } : {}),
+      })
       const page = await ctx.newPage()
       const csrfPromise = page.waitForResponse(
         (r) => r.url().includes('/sanctum/csrf-cookie'),
@@ -60,7 +64,7 @@ export const test = base.extend<
         await page.getByRole('button', { name: /inloggen/i }).click()
         await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
       }
-      await page.goto(`${baseURL}/map`, { waitUntil: 'networkidle', timeout: 15000 })
+      await page.goto(`${baseURL}/map`, { waitUntil: 'domcontentloaded', timeout: 15000 })
       await page.evaluate((s) => localStorage.setItem('rekenreis_profiles_v1', s), JSON.stringify(E2E_PROFILE))
       await page.close()
       await use(ctx)
