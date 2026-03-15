@@ -82,4 +82,4 @@
 | Epic 39.1 — Remove Fish-Zone + Visibility | done | PR merged |
 | Epic 45.1 — API Auth + Sanctum + Progress Schema | done | PR #203 merged |
 | Epic 45.2 — Web Auth Pages + Middleware | done | PR merged |
-| Epic 45.3 — Progress Sync + Protected Routes | done | PR pending |
+| Epic 45.3 — Progress Sync + Protected Routes | done | PR #208 merged |
