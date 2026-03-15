@@ -1,11 +1,11 @@
-import { watch, type Ref } from 'vue'
+import type { Ref } from 'vue'
 import { fetchProgress, putProgress } from '~/utils/api'
 import { createSchemaForUser, type ProfileSchemaV1 } from '~/utils/profileSchema'
 
 const DEBOUNCE_MS = 500
 
 export function useProgressSync(
-  schemaRef: Ref<ProfileSchemaV1>,
+  schemaRef: Ref<ProfileSchemaV1 | undefined>,
   apiUrl: string,
   isAuthenticated: () => boolean,
   user: () => { name: string } | null
@@ -24,8 +24,8 @@ export function useProgressSync(
     }
   }
 
-  function saveToApi(data: ProfileSchemaV1) {
-    if (!isAuthenticated()) return
+  function saveToApi(data: ProfileSchemaV1 | undefined) {
+    if (!isAuthenticated() || !data) return
     clearTimeout(debounceTimer!)
     debounceTimer = setTimeout(async () => {
       try {
