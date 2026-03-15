@@ -2883,3 +2883,32 @@ Acceptance:
 - Prod build gebruikt correcte API URL (zelfde origin of geconfigureerd)
 - .env.example compleet voor prod
 - Runbook beschrijft volledige deploy flow
+
+---
+
+## Epic 47.1 — Default Page: Map After Login
+- [ ]
+PlanRef:
+- design: docs/design/epic-47.md
+- archive: artifacts/archive/epic-47.0/latest
+- slice: 47.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 47.1: Na inloggen of registratie moet de default pagina de map worden.
+
+Requirements:
+- login.vue: redirect naar /map na succesvolle login (i.p.v. /)
+- login.vue: bij reeds ingelogd, redirect naar /map (i.p.v. /)
+- register.vue: redirect naar /map na succesvolle registratie (i.p.v. /)
+- register.vue: bij reeds ingelogd, redirect naar /map (i.p.v. /)
+- Optioneel: index.vue — bij bezoek aan / als ingelogd, redirect naar /map
+- E2E: verifieer dat post-login en post-register naar /map navigeren
+- Gate C, D, F green
+
+Acceptance:
+- Login success → gebruiker landt op /map
+- Register success → gebruiker landt op /map
+- E2E auth flows green
