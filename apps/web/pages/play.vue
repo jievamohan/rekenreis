@@ -3,7 +3,6 @@ import type { GameMode } from '~/types/game'
 import type { Level } from '~/types/level'
 import type { InteractionModeId } from '~/types/mode'
 import type { SkinId } from '~/utils/skinResolver'
-import { resolveSkinId } from '~/utils/skinResolver'
 import { resolveInteractionMode } from '~/utils/modeResolver'
 import { useApi } from '~/composables/useApi'
 import { usePlayGame } from '~/composables/usePlayGame'
@@ -127,16 +126,11 @@ function pickNextMinigame() {
   currentMinigameParams.value = params
 }
 
-const playSource = computed(() => {
-  if (useKeypadMode.value) return 'pack' as const
-  return (route.query.source === 'pack' || route.query.mode === 'pack' ? 'pack' : 'infinite') as 'pack' | 'infinite'
-})
+const playSource = computed(() =>
+  levelParam.value !== null ? ('pack' as const) : ('infinite' as const)
+)
 
-const effectiveModeParam = computed(() => {
-  const q = route.query.mode as string | undefined
-  if (q && q !== 'pack') return q
-  return lastMode.value
-})
+const effectiveModeParam = computed(() => lastMode.value)
 
 const interactionMode = computed(() =>
   resolveInteractionMode(effectiveModeParam.value)
@@ -359,8 +353,8 @@ watch(unlockedIds, (ids) => {
   prevUnlockedCount.value = n
 }, { immediate: true })
 const effectiveSkinId = computed(() => {
-  const resolved = resolveSkinId(route.query.skin as string | undefined)
-  return isUnlocked(resolved) ? resolved : (unlockedIds.value[0] ?? 'classic')
+  const preferred = lastSkin.value
+  return isUnlocked(preferred) ? preferred : (unlockedIds.value[0] ?? 'classic')
 })
 const skin = computed(() => useSkin(effectiveSkinId.value))
 
@@ -401,19 +395,14 @@ const modeProps = computed(() => ({
 
 function selectSkin(id: SkinId) {
   if (isUnlocked(id)) {
-    router.push({ query: { ...route.query, skin: id } })
+    setPreferences(lastMode.value, id)
   }
 }
 
 function onModeSelectorSelect(mode: InteractionModeId, skin: SkinId) {
   setPreferences(mode, skin)
-  router.push({
-    query: {
-      ...route.query,
-      mode: mode === 'classic' ? undefined : mode,
-      skin: skin === 'classic' ? undefined : skin,
-    },
-  })
+  const query = levelParam.value ? { level: String(levelParam.value) } : {}
+  router.push({ path: '/play', query })
 }
 
 watch(
@@ -448,19 +437,6 @@ onMounted(() => {
   packSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   minigameSessionSeed.value = Math.floor(Math.random() * 1_000_000)
   if (useMinigameMode.value) pickNextMinigame()
-  const qm = route.query.mode as string | undefined
-  if (!qm || qm === 'pack') {
-    const needsSync = lastMode.value !== 'classic' || lastSkin.value !== 'classic'
-    if (needsSync) {
-      router.replace({
-        query: {
-          ...route.query,
-          mode: lastMode.value === 'classic' ? undefined : lastMode.value,
-          skin: lastSkin.value === 'classic' ? undefined : lastSkin.value,
-        },
-      })
-    }
-  }
 })
 
 onUnmounted(() => {

@@ -2912,3 +2912,32 @@ Acceptance:
 - Login success → gebruiker landt op /map
 - Register success → gebruiker landt op /map
 - E2E auth flows green
+
+---
+
+## Epic 48.1 — Play URL: Alleen Level Parameter
+- [x]
+PlanRef:
+- design: docs/design/epic-48.md
+- archive: artifacts/archive/epic-48.0/latest
+- slice: 48.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Vereenvoudig de play-URL: alleen level als queryparameter. Mode, skin en source worden afgeleid uit profiel/preferences; de code haalt deze info al op.
+
+Requirements:
+- play.vue: effectiveModeParam altijd uit lastMode (niet uit route.query.mode)
+- play.vue: effectiveSkinId altijd uit lastSkin (niet uit route.query.skin)
+- play.vue: playSource = levelParam !== null ? 'pack' : 'infinite' (geen query nodig)
+- play.vue: selectSkin → setPreferences, geen URL-update met skin
+- play.vue: onModeSelectorSelect → setPreferences + router.push met alleen level (of leeg)
+- play.vue: verwijder onMounted router.replace die mode/skin naar URL sync
+- E2E: verifieer dat URL na mode/skin wissel alleen level bevat
+
+Acceptance:
+- URL tijdens spel: /play?level=N of /play (infinite)
+- Mode selector en skin switcher werken; preferences opgeslagen; URL blijft clean
+- Bestaande E2E green
