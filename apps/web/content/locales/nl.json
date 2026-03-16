@@ -87,6 +87,14 @@
     "skinLocked": "{id} vergrendeld (score {threshold} om te ontgrendelen)",
     "scoreToUnlock": "Score {threshold} om te ontgrendelen"
   },
+  "lockedLevel": {
+    "ariaLabel": "Dit level is nog vergrendeld",
+    "title": "Dit level heb je nog niet vrijgespeeld!",
+    "subtitle": "Speel eerst de eerdere levels om dit level te ontgrendelen.",
+    "backToMap": "Terug naar de kaart",
+    "backToMapAria": "Terug naar de kaart",
+    "maatjeAlt": "Vriendelijke maatje wijst je de weg"
+  },
   "levelComplete": {
     "ariaLabel": "Level voltooid",
     "mascotAlt": "Mascotte die feest viert",

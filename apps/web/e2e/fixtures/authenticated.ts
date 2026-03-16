@@ -10,7 +10,7 @@ export const E2E_PROFILE = {
       name: 'E2E Test',
       avatarId: 'default' as const,
       maatjeId: 'wolkje' as const,
-      progress: { bestScore: 0, levelProgress: {}, currentLevel: 1 },
+      progress: { bestScore: 0, levelProgress: {}, currentLevel: 200 },
       prefs: {
         lastMode: 'classic' as const,
         lastSkin: 'classic' as const,
@@ -85,6 +85,49 @@ export const test = base.extend<
     }, JSON.stringify(E2E_PROFILE))
     await use(page)
     // On any failure, capture diagnostic for CI (url, hasAuthPage, etc.)
+    if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
+      try {
+        const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+        const diag = await diagnoseOnFailure(page, `fail-${slug}`)
+        console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
+      } catch {
+        // ignore
+      }
+    }
+  },
+})
+
+/** Profile with currentLevel: 1 for visual baselines (map shows start position) and locked-level tests. */
+export const E2E_PROFILE_LEVEL_1: typeof E2E_PROFILE = {
+  ...E2E_PROFILE,
+  profiles: [
+    {
+      ...E2E_PROFILE.profiles[0]!,
+      progress: {
+        ...E2E_PROFILE.profiles[0]!.progress,
+        currentLevel: 1,
+      },
+    },
+  ],
+}
+
+/** Alias for locked-level tests. */
+export const E2E_PROFILE_LOCKED = E2E_PROFILE_LEVEL_1
+
+/** Fixture for tests that need currentLevel: 1 (e.g. locked-level). Uses E2E_PROFILE_LOCKED in addInitScript so it is not overwritten on navigation. */
+export const testLockedLevel = test.extend<{ page: import('@playwright/test').Page }>({
+  page: async ({ authenticatedContext }, use, testInfo) => {
+    const page = await authenticatedContext.newPage()
+    page.on('console', (msg) => {
+      const text = msg.text()
+      if (text.includes('[xsrf-client]')) {
+        process.stderr.write(`[e2e-console] ${text}\n`)
+      }
+    })
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE_LOCKED))
+    await use(page)
     if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
       try {
         const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
