@@ -2973,7 +2973,7 @@ Acceptance:
 ---
 
 ## Epic 50.1 — iPad Browser Usability
-- [ ]
+- [x]
 /feature --ci --max-tasks=5
 Build Epic 50.1: Fix iPad browser usability issues.
 
