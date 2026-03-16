@@ -138,7 +138,7 @@ Then include a `/feature` block (explicit prompt) and acceptance criteria.
 
 10.5) Planning PR: create, wait for CI, merge (mandatory before --run-epics)
 - Create PR for current branch: `gh pr create --base main --head $(git branch --show-current) --title "chore(epicify): add epic <N> micro-epics and archive plan <N>.0" --body "Planning for Epic <N>. ..."`
-- Wait for CI: `SLEEP=25 RETRIES=20 scripts/ci/gh_watch.sh host <PR_NUM>` (use PR number from `gh pr list --head` or create output)
+- Wait for CI: `SLEEP=25 RETRIES=30 scripts/ci/gh_watch.sh host <PR_NUM>` (use PR number from `gh pr list --head` or create output)
   - If CI fails: mark BLOCKED, do not merge, do not run `/run-epics`
 - Merge: `gh pr merge <PR_NUM> --merge`
   - If merge is blocked (e.g. branch protection): mark BLOCKED, output that user must merge manually once CI is green

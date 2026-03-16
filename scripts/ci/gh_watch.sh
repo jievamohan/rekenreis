@@ -4,9 +4,10 @@ set -euo pipefail
 MODE="${1:-host}"   # host|container
 PR="${2:-}"         # PR number optional
 BRANCH="${3:-}"     # branch name optional
-# Tuned for ~4 min CI: poll every 20s, 15 retries = 5 min max
-RETRIES="${RETRIES:-15}"
-SLEEP="${SLEEP:-20}"
+# Tuned for Gates workflow (~6-8 min: E2E cache + Playwright + ZAP)
+# Poll every 25s, 30 retries = 12.5 min max — Playwright alone can take 5+ min
+RETRIES="${RETRIES:-30}"
+SLEEP="${SLEEP:-25}"
 
 ARTIFACTS_DIR="${ARTIFACTS_DIR:-artifacts/current}"
 mkdir -p "$ARTIFACTS_DIR"

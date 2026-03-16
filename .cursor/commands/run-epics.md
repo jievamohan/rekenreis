@@ -62,7 +62,8 @@ Protocol:
       - Epic ID and Epic title (from the `## Epic N — Title` line in docs/epics.md for the current epic)
 
    e) Ensure CI is green for the PR head:
-      - `SLEEP=20 RETRIES=15 scripts/ci/gh_watch.sh host <PR_NUM>`
+      - `SLEEP=25 RETRIES=35 scripts/ci/gh_watch.sh host <PR_NUM>`
+      - (35×25s ≈ 14.5 min — Gates workflow met Playwright/ZAP kan 6–8 min duren)
 
    f) Run strict self-review on the PR using the `code-review-expert` skill.
       Strict mode means:
