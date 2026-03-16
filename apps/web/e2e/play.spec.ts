@@ -53,4 +53,14 @@ test.describe('play page — level minigame mode', () => {
     await expect(page.locator('.problem-card')).toBeVisible()
     await expect(page.locator('.exit-to-map-btn')).toBeVisible()
   })
+
+  test('play URL contains only level parameter (no mode/skin/source)', async ({ page }) => {
+    await page.goto('/play?level=2')
+    await expect(page.locator('.problem-card')).toBeVisible()
+    const url = new URL(page.url())
+    expect(url.searchParams.get('level')).toBe('2')
+    expect(url.searchParams.has('mode')).toBe(false)
+    expect(url.searchParams.has('skin')).toBe(false)
+    expect(url.searchParams.has('source')).toBe(false)
+  })
 })

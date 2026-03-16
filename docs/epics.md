@@ -2916,7 +2916,7 @@ Acceptance:
 ---
 
 ## Epic 48.1 — Play URL: Alleen Level Parameter
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-48.md
 - archive: artifacts/archive/epic-48.0/latest
