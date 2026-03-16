@@ -2862,7 +2862,7 @@ Acceptance:
 ---
 
 ## Epic 46.4 — Production Config + Docs
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-46.md
 - archive: artifacts/archive/epic-46.0/latest

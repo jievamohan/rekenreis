@@ -11,11 +11,14 @@ PUBLIC_DIR="$REPO_ROOT/apps/api/public"
 OUTPUT_PUBLIC="$WEB_DIR/.output/public"
 
 echo "Building Vue frontend..."
+# NUXT_PUBLIC_API_URL: '' or unset = same-origin (relative /api); or set full prod URL
+# For prod same-origin (unified public): NUXT_PUBLIC_API_URL= make build
+export NUXT_PUBLIC_API_URL="${NUXT_PUBLIC_API_URL:-}"
 # Use pnpm in container if available, else host
 if command -v docker >/dev/null 2>&1 && docker compose ps web --format json 2>/dev/null | grep -q running; then
-  docker compose exec -T web pnpm run generate
+  docker compose exec -T web env NUXT_PUBLIC_API_URL="$NUXT_PUBLIC_API_URL" pnpm run generate
 else
-  (cd "$WEB_DIR" && pnpm run generate)
+  (cd "$WEB_DIR" && env NUXT_PUBLIC_API_URL="$NUXT_PUBLIC_API_URL" pnpm run generate)
 fi
 
 if [[ ! -d "$OUTPUT_PUBLIC" ]]; then
