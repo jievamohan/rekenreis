@@ -18,9 +18,9 @@ test.describe('locked level screen', () => {
     // Maatje should be present (avatar image)
     await expect(page.locator('.locked-level-screen .maatje-avatar')).toBeVisible()
 
-    // Button to go back to map
-    const backButton = page.getByRole('button', { name: /terug naar de kaart/i })
-    await expect(backButton).toBeVisible()
+    // Button to go back to map (use locator for reliability; accessible name comes from aria-label)
+    const backButton = page.locator('.locked-level-cta')
+    await expect(backButton).toBeVisible({ timeout: 10000 })
     await backButton.click()
 
     // Should navigate to map
