@@ -2969,3 +2969,21 @@ Acceptance:
 - User sees friendly maatje + message + button when opening locked level URL
 - E2E green
 - Typecheck, build, Gate F pass
+
+---
+
+## Epic 50.1 — iPad Browser Usability
+- [ ]
+/feature --ci --max-tasks=5
+Build Epic 50.1: Fix iPad browser usability issues.
+
+Requirements:
+- **Double-tap zoom:** Disable double-tap zoom on iOS Safari (user-scalable=no or touch-action: manipulation where appropriate)
+- **Minigame scroll:** Remove unwanted scroll in minigames when there is no overflow content (overflow: hidden, touch-action: pan-y or contain)
+- **Login cookie:** Fix login cookie persistence on iPad (SameSite, Secure, SameSite=None for cross-site if needed; verify Sanctum cookie config)
+- Gate C, D, F green
+
+Acceptance:
+- Double-tap does not zoom the page on iPad
+- Minigames have no spurious scroll when content fits
+- Login cookie persists correctly on iPad

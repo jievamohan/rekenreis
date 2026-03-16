@@ -71,6 +71,8 @@ function handleAnswer(choice: number) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  touch-action: manipulation;
 }
 
 .minigame-loading {

@@ -11,6 +11,8 @@ html {
 
 body {
   margin: 0;
+  /* Prevent double-tap zoom on iOS Safari */
+  touch-action: manipulation;
 }
 
 .app-root {

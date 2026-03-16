@@ -744,6 +744,8 @@ onUnmounted(() => {
   max-width: 400px;
   margin: 0 auto;
   padding-top: 0.25rem;
+  overflow: hidden;
+  touch-action: manipulation;
 }
 
 .play-loading {
