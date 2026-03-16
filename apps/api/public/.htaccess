@@ -21,6 +21,9 @@
     # API routes -> Laravel front controller
     RewriteRule ^api(/.*)?$ index.php [L]
 
+    # API + Sanctum routes -> Laravel front controller
+    RewriteRule ^(api|sanctum)(/.*)?$ index.php [L]
+
     # Existing files/dirs -> serve directly (implicit)
 
     # SPA fallback: non-API, non-file -> Vue index.html
