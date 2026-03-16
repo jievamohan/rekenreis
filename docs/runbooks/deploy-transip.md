@@ -64,11 +64,10 @@ Syncs:
 
 For login to persist on iPad Safari, ensure production `.env` has:
 
-- `SESSION_SECURE_COOKIE=true` (required when served over HTTPS)
 - `APP_URL` matches the public URL (e.g. `https://your-domain.com`)
 - `SANCTUM_STATEFUL_DOMAINS` includes your production domain (e.g. `your-domain.com`)
 
-Without `SESSION_SECURE_COOKIE=true`, Safari may not persist the session cookie over HTTPS.
+Laravel auto-sets the Secure flag on HTTPS. If behind a reverse proxy, set `SESSION_SECURE_COOKIE=true` explicitly.
 
 ## Troubleshooting
 
