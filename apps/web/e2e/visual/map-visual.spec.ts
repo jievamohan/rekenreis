@@ -1,10 +1,11 @@
-import { test, expect, E2E_PROFILE } from '../fixtures/authenticated'
+import { test, expect, E2E_PROFILE_LEVEL_1 } from '../fixtures/authenticated'
 
 test.describe('map page visual', () => {
   test.beforeEach(async ({ page }) => {
+    // Use currentLevel: 1 so map shows start position (matches baseline)
     await page.addInitScript((schema: string) => {
       localStorage.setItem('rekenreis_profiles_v1', schema)
-    }, JSON.stringify(E2E_PROFILE))
+    }, JSON.stringify(E2E_PROFILE_LEVEL_1))
   })
   test('map screenshot baseline', async ({ page }) => {
     await page.goto('/map')

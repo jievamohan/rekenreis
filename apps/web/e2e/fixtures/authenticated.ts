@@ -97,8 +97,8 @@ export const test = base.extend<
   },
 })
 
-/** Profile with currentLevel: 1 for testing the locked-level screen (levels 2+ are locked). */
-export const E2E_PROFILE_LOCKED: typeof E2E_PROFILE = {
+/** Profile with currentLevel: 1 for visual baselines (map shows start position) and locked-level tests. */
+export const E2E_PROFILE_LEVEL_1: typeof E2E_PROFILE = {
   ...E2E_PROFILE,
   profiles: [
     {
@@ -110,5 +110,8 @@ export const E2E_PROFILE_LOCKED: typeof E2E_PROFILE = {
     },
   ],
 }
+
+/** Alias for locked-level tests. */
+export const E2E_PROFILE_LOCKED = E2E_PROFILE_LEVEL_1
 
 export { expect } from '@playwright/test'
