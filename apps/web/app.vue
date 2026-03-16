@@ -15,6 +15,12 @@ body {
   touch-action: manipulation;
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
 .app-root {
   min-height: 100vh;
   background: var(--app-bg-fallback);
