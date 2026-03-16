@@ -6,9 +6,17 @@ import MaatjeAvatar from '~/components/characters/MaatjeAvatar.vue'
 
 const { t } = useI18n()
 const { resolve } = useMaatje()
+const { isAuthenticated } = useAuth()
+const router = useRouter()
 
 const maatjeSrc = computed(() => resolve('wolkje', 'blij'))
 const showMaatje = computed(() => !!maatjeSrc.value)
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    router.replace('/map')
+  }
+})
 </script>
 
 <template>

@@ -30,7 +30,6 @@ test.describe('auth', () => {
       await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
     }
 
-    await page.goto(`${baseURL}/map`, { waitUntil: 'domcontentloaded', timeout: 15000 })
     await expect(page).toHaveURL(/\/map/)
   })
 
@@ -49,7 +48,7 @@ test.describe('auth', () => {
     await page.getByRole('button', { name: /registreren/i }).click()
 
     await page.waitForURL((url) => !url.pathname.includes('/register'), { timeout: 15000 })
-    await expect(page).not.toHaveURL(/\/register/)
+    await expect(page).toHaveURL(/\/map/)
   })
 
   test('protected route redirects to login', async ({ page }) => {
