@@ -18,6 +18,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Rekenreis',
+      meta: [
+        {
+          name: 'viewport',
+          content:
+            'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+        },
+      ],
     },
   },
   css: ['~/assets/css/graphics.css', '~/assets/css/tokens.css'],

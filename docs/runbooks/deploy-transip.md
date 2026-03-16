@@ -60,6 +60,16 @@ Syncs:
 2. **.htaccess**: Ensure `apps/api/public/.htaccess` routes `/api/*` to `index.php` and SPA fallback to `index.html`
 3. **PHP**: Laravel requires PHP 8.1+; set via DirectAdmin “Select PHP Version”
 
+## Session / login cookie (iPad Safari)
+
+For login to persist on iPad Safari, ensure production `.env` has:
+
+- `SESSION_SECURE_COOKIE=true` (required when served over HTTPS)
+- `APP_URL` matches the public URL (e.g. `https://your-domain.com`)
+- `SANCTUM_STATEFUL_DOMAINS` includes your production domain (e.g. `your-domain.com`)
+
+Without `SESSION_SECURE_COOKIE=true`, Safari may not persist the session cookie over HTTPS.
+
 ## Troubleshooting
 
 - **Permission denied**: Ensure SSH key is added: `ssh-copy-id user@vps.example.com`
