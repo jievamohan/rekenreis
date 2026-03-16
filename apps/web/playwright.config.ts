@@ -45,8 +45,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? (QUICKFAIL <= 11 ? 1 : 4) : undefined,
-  reporter: process.env.CI ? 'html' : 'list',
+  // Per-worker auth (authenticated fixture) avoids session conflicts; 4 workers safe.
+  workers: process.env.CI ? 4 : undefined,
+  reporter: process.env.CI ? [['list'], ['html']] : 'list',
   globalSetup: './e2e/global-setup.ts',
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
@@ -54,7 +55,7 @@ export default defineConfig({
   },
   projects:
     quickfailConfig ?? [
-      { name: 'smoke', use: { ...devices['Desktop Chrome'] }, testMatch: ['**/e2e/smoke.spec.ts'] },
+      { name: 'smoke', use: { ...devices['Desktop Chrome'] }, testMatch: ['**/e2e/smoke.spec.ts', '**/e2e/auth.spec.ts'] },
       {
         name: 'chromium',
         use: { ...devices['Desktop Chrome'], storageState: AUTH_STATE_PATH },

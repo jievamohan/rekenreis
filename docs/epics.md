@@ -2757,7 +2757,7 @@ Acceptance:
 ---
 
 ## Epic 45.4 — E2E + Polish
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-45.md
 - archive: artifacts/archive/epic-45.0/latest

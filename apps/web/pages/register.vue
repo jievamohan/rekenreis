@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { register, error, isAuthenticated, ensureCsrfCookie } = useAuth()
 const router = useRouter()
 
@@ -10,7 +11,7 @@ const submitting = ref(false)
 
 onMounted(async () => {
   if (isAuthenticated.value) {
-    router.replace('/')
+    router.replace('/map')
     return
   }
   await ensureCsrfCookie()
@@ -26,19 +27,19 @@ async function onSubmit() {
   )
   submitting.value = false
   if (ok) {
-    router.push('/')
+    router.push('/map')
   }
 }
 </script>
 
 <template>
   <div class="auth-page">
-    <h1>Account aanmaken</h1>
+    <h1>{{ t('auth.register') }}</h1>
     <form class="auth-form" @submit.prevent="onSubmit">
       <div v-if="error" class="auth-error" role="alert">
         {{ error }}
       </div>
-      <label for="reg-name">Kindnaam</label>
+      <label for="reg-name">{{ t('auth.kindnaam') }}</label>
       <input
         id="reg-name"
         v-model="name"
@@ -47,7 +48,7 @@ async function onSubmit() {
         autocomplete="name"
         class="auth-input"
       />
-      <label for="reg-email">E-mail</label>
+      <label for="reg-email">{{ t('auth.email') }}</label>
       <input
         id="reg-email"
         v-model="email"
@@ -56,7 +57,7 @@ async function onSubmit() {
         autocomplete="email"
         class="auth-input"
       />
-      <label for="reg-password">Wachtwoord</label>
+      <label for="reg-password">{{ t('auth.password') }}</label>
       <input
         id="reg-password"
         v-model="password"
@@ -66,7 +67,7 @@ async function onSubmit() {
         autocomplete="new-password"
         class="auth-input"
       />
-      <label for="reg-password-confirm">Wachtwoord bevestigen</label>
+      <label for="reg-password-confirm">{{ t('auth.passwordConfirm') }}</label>
       <input
         id="reg-password-confirm"
         v-model="passwordConfirmation"
@@ -81,11 +82,11 @@ async function onSubmit() {
         class="auth-submit"
         :disabled="submitting"
       >
-        {{ submitting ? 'Bezig...' : 'Registreren' }}
+        {{ submitting ? t('auth.submitting') : t('auth.registerButton') }}
       </button>
     </form>
     <p class="auth-links">
-      <NuxtLink to="/login">Al een account? Inloggen</NuxtLink>
+      <NuxtLink to="/login">{{ t('auth.alreadyHaveAccount') }}</NuxtLink>
     </p>
   </div>
 </template>

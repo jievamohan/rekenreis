@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const { resetPassword, error, ensureCsrfCookie } = useAuth()
@@ -32,16 +33,16 @@ async function onSubmit() {
 
 <template>
   <div class="auth-page">
-    <h1>Wachtwoord resetten</h1>
+    <h1>{{ t('auth.resetPassword') }}</h1>
     <form v-if="!success" class="auth-form" @submit.prevent="onSubmit">
       <div v-if="error" class="auth-error" role="alert">
         {{ error }}
       </div>
       <div v-if="!token" class="auth-error" role="alert">
-        Ongeldige of ontbrekende resetlink. Vraag een nieuwe aan.
+        {{ t('auth.resetInvalidToken') }}
       </div>
       <template v-else>
-        <label for="reset-email">E-mail</label>
+        <label for="reset-email">{{ t('auth.email') }}</label>
         <input
           id="reset-email"
           v-model="email"
@@ -50,7 +51,7 @@ async function onSubmit() {
           autocomplete="email"
           class="auth-input"
         />
-        <label for="reset-password">Nieuw wachtwoord</label>
+        <label for="reset-password">{{ t('auth.newPassword') }}</label>
         <input
           id="reset-password"
           v-model="password"
@@ -60,7 +61,7 @@ async function onSubmit() {
           autocomplete="new-password"
           class="auth-input"
         />
-        <label for="reset-password-confirm">Wachtwoord bevestigen</label>
+        <label for="reset-password-confirm">{{ t('auth.passwordConfirm') }}</label>
         <input
           id="reset-password-confirm"
           v-model="passwordConfirmation"
@@ -75,15 +76,15 @@ async function onSubmit() {
           class="auth-submit"
           :disabled="submitting"
         >
-          {{ submitting ? 'Bezig...' : 'Wachtwoord opslaan' }}
+          {{ submitting ? t('auth.submitting') : t('auth.resetButton') }}
         </button>
       </template>
     </form>
     <div v-else class="auth-success">
-      <p>Wachtwoord opgeslagen. Je wordt doorgestuurd naar de loginpagina.</p>
+      <p>{{ t('auth.resetSuccess') }}</p>
     </div>
     <p class="auth-links">
-      <NuxtLink to="/login">Terug naar inloggen</NuxtLink>
+      <NuxtLink to="/login">{{ t('auth.backToLogin') }}</NuxtLink>
     </p>
   </div>
 </template>

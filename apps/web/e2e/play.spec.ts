@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test'
-import { E2E_PROFILE } from './fixtures/authenticated'
+import { test, expect, E2E_PROFILE } from './fixtures/authenticated'
 import { diagnoseOnFailure } from './helpers/diagnose-failure'
+import './debug-failure-hooks'
 
 test.describe('play page — level minigame mode', () => {
   test.beforeEach(async ({ page }) => {
