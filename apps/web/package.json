@@ -6,6 +6,7 @@
     "dev": "nuxt dev",
     "prebuild": "cd ../.. && node scripts/copy-maatjes.mjs",
     "build": "nuxt build",
+    "generate": "nuxt generate",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "pretest": "nuxt prepare",

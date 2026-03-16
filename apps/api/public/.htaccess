@@ -18,8 +18,13 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # API routes -> Laravel front controller
+    RewriteRule ^api(/.*)?$ index.php [L]
+
+    # Existing files/dirs -> serve directly (implicit)
+
+    # SPA fallback: non-API, non-file -> Vue index.html
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteRule ^ index.html [L]
 </IfModule>
