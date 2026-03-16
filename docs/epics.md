@@ -2811,7 +2811,7 @@ Acceptance:
 ---
 
 ## Epic 46.2 — Build Automation + Pre-push
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-46.md
 - archive: artifacts/archive/epic-46.0/latest
