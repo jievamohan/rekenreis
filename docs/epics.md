@@ -2887,7 +2887,7 @@ Acceptance:
 ---
 
 ## Epic 47.1 — Default Page: Map After Login
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-47.md
 - archive: artifacts/archive/epic-47.0/latest
