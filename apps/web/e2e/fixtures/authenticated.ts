@@ -115,11 +115,7 @@ export const E2E_PROFILE_LEVEL_1: typeof E2E_PROFILE = {
 export const E2E_PROFILE_LOCKED = E2E_PROFILE_LEVEL_1
 
 /** Fixture for tests that need currentLevel: 1 (e.g. locked-level). Uses E2E_PROFILE_LOCKED in addInitScript so it is not overwritten on navigation. */
-export const testLockedLevel = base.extend<
-  Record<string, never>,
-  { authenticatedContext: import('@playwright/test').BrowserContext }
->({
-  authenticatedContext: test._extensions.authenticatedContext,
+export const testLockedLevel = test.extend<{ page: import('@playwright/test').Page }>({
   page: async ({ authenticatedContext }, use, testInfo) => {
     const page = await authenticatedContext.newPage()
     page.on('console', (msg) => {
