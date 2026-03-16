@@ -2835,7 +2835,7 @@ Acceptance:
 ---
 
 ## Epic 46.3 — Makefile Deploy Scripts
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-46.md
 - archive: artifacts/archive/epic-46.0/latest
