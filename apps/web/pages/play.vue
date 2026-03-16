@@ -30,6 +30,7 @@ import { useMinigameServing } from '~/composables/useMinigameServing'
 import { useDifficultyProgression } from '~/composables/useDifficultyProgression'
 import type { MinigameId } from '~/types/minigame'
 import ProblemCard from '~/components/play/ProblemCard.vue'
+import LockedLevelScreen from '~/components/play/LockedLevelScreen.vue'
 import MinigameRenderer from '~/components/minigames/MinigameRenderer.vue'
 import LevelCompleteModal from '~/components/modals/LevelCompleteModal.vue'
 import MistakesReview from '~/components/review/MistakesReview.vue'
@@ -39,6 +40,8 @@ import levelsBuildBridge from '~/content/levels.build-bridge.v1.json'
 import levelsBouwDeToren from '~/content/levels.bouw-de-toren.v1.json'
 import MinigameBouwDeToren from '~/components/minigames/MinigameBouwDeToren.vue'
 import type { TowerLevelConfig } from '~/types/tower'
+
+const TOTAL_LEVELS = 200
 
 const PACK_BY_MODE: Record<InteractionModeId, Level[]> = {
   classic: applyPacing(levelsClassic as Level[], 42),
@@ -196,7 +199,15 @@ function resetLevelSession() {
 }
 
 const { mistakes, record: recordMistake, clear: clearMistakes, count: mistakeCount, hasMistakes } = useMistakes()
-const { completeLevel } = useLevelProgress(profile)
+const { completeLevel, isUnlocked: isLevelUnlocked } = useLevelProgress(profile)
+
+const showLockedLevelScreen = computed(() => {
+  const lp = levelParam.value
+  if (lp === null) return false
+  const n = Number(lp)
+  if (!Number.isFinite(n) || n < 1 || n > TOTAL_LEVELS) return true
+  return !isLevelUnlocked(n)
+})
 const showLevelComplete = ref(false)
 const showReview = ref(false)
 const completedStars = ref(0)
@@ -446,6 +457,9 @@ onUnmounted(() => {
 
 <template>
   <div class="play-page">
+    <LockedLevelScreen v-if="showLockedLevelScreen" />
+
+    <template v-else>
     <a href="#game-main" class="skip-link">{{ t('play.skipToGame') }}</a>
 
     <button
@@ -592,6 +606,7 @@ onUnmounted(() => {
       @review-mistakes="onModalReviewMistakes"
       @retry="onModalRetry"
     />
+    </template>
 
   </div>
 </template>
