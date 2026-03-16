@@ -2945,7 +2945,7 @@ Acceptance:
 ---
 
 ## Epic 49.1 — Locked Level Screen
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-49.md
 - archive: artifacts/archive/epic-49.0/latest
