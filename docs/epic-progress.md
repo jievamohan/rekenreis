@@ -86,4 +86,5 @@
 | Epic 45.4 — E2E + Polish | done | PR pending |
 | Epic 46.1 — Unified Public Folder + Routing | done | PR #211 |
 | Epic 46.2 — Build Automation + Pre-push | done | PR #212 |
-| Epic 46.3 — Makefile Deploy Scripts | in progress | PR pending |
+| Epic 46.3 — Makefile Deploy Scripts | done | PR #214 merged |
+| Epic 46.4 — Production Config + Docs | in progress | PR pending |

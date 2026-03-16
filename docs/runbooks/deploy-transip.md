@@ -1,6 +1,6 @@
 # Deploy to TransIP VPS + DirectAdmin
 
-Epic 46.3: Makefile deploy targets for TransIP VPS with DirectAdmin.
+Epic 46.3–46.4: Makefile deploy targets and production configuration.
 
 ## Prerequisites
 
