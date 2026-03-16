@@ -1,10 +1,16 @@
-import { test, expect } from './fixtures/authenticated'
+import { test, expect, E2E_PROFILE_LOCKED } from './fixtures/authenticated'
 
 test.describe('locked level screen', () => {
+  test.beforeEach(async ({ page }) => {
+    // Override profile with currentLevel: 1 so level 50 is locked
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE_LOCKED))
+  })
+
   test('navigating to locked level shows maatje, message, and back-to-map button', async ({
     page,
   }) => {
-    // E2E_PROFILE has currentLevel: 1, so level 50 is locked
     await page.goto('/play?level=50')
 
     // Locked level screen should be visible

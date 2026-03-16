@@ -10,7 +10,7 @@ export const E2E_PROFILE = {
       name: 'E2E Test',
       avatarId: 'default' as const,
       maatjeId: 'wolkje' as const,
-      progress: { bestScore: 0, levelProgress: {}, currentLevel: 1 },
+      progress: { bestScore: 0, levelProgress: {}, currentLevel: 200 },
       prefs: {
         lastMode: 'classic' as const,
         lastSkin: 'classic' as const,
@@ -96,5 +96,19 @@ export const test = base.extend<
     }
   },
 })
+
+/** Profile with currentLevel: 1 for testing the locked-level screen (levels 2+ are locked). */
+export const E2E_PROFILE_LOCKED: typeof E2E_PROFILE = {
+  ...E2E_PROFILE,
+  profiles: [
+    {
+      ...E2E_PROFILE.profiles[0]!,
+      progress: {
+        ...E2E_PROFILE.profiles[0]!.progress,
+        currentLevel: 1,
+      },
+    },
+  ],
+}
 
 export { expect } from '@playwright/test'
