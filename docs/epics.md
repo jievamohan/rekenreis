@@ -2784,7 +2784,7 @@ Acceptance:
 ---
 
 ## Epic 46.1 — Unified Public Folder + Routing
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-46.md
 - archive: artifacts/archive/epic-46.0/latest
