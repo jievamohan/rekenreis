@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Pre-push hook: run make build and verify Vue build artifacts exist.
+# Epic 46.2. Fails with clear instruction if build fails or artifacts missing.
+# Skip with: SKIP_PRE_PUSH_BUILD=1 git push
+set -euo pipefail
+
+if [[ "${SKIP_PRE_PUSH_BUILD:-}" == "1" ]]; then
+  echo "PRE-PUSH: Skipping build (SKIP_PRE_PUSH_BUILD=1)" >&2
+  exit 0
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+echo "PRE-PUSH: Running make build..." >&2
+if ! make build; then
+  echo "" >&2
+  echo "PRE-PUSH FAILED: Build failed. Fix build errors before pushing." >&2
+  echo "  Run: make build" >&2
+  exit 1
+fi
+
+PUBLIC_DIR="$REPO_ROOT/apps/api/public"
+if [[ ! -f "$PUBLIC_DIR/index.html" ]]; then
+  echo "" >&2
+  echo "PRE-PUSH FAILED: index.html not found in apps/api/public." >&2
+  echo "  Build may have failed. Run: make build" >&2
+  exit 1
+fi
+
+if [[ ! -d "$PUBLIC_DIR/_nuxt" ]]; then
+  echo "" >&2
+  echo "PRE-PUSH FAILED: _nuxt/ not found in apps/api/public." >&2
+  echo "  Build may have failed. Run: make build" >&2
+  exit 1
+fi
+
+echo "PRE-PUSH: Build OK. Artifacts verified." >&2
+exit 0

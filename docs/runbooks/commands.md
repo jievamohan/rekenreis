@@ -113,6 +113,16 @@ Used by `/run-epics` and `/epicify` to post to Slack. All scripts load from `.en
 
 Setup: [Slack API Apps](https://api.slack.com/apps) → Incoming Webhooks → Add to Workspace → choose channel.
 
+## Build artifacts (Epic 46)
+
+| Command | Notes |
+|---------|-------|
+| `make build` | Vue generate + copy to apps/api/public (unified prod folder) |
+| `make install-hooks` | Install pre-push hook (runs build, verifies artifacts) |
+| `SKIP_PRE_PUSH_BUILD=1 git push` | Skip pre-push build (emergency only) |
+
+See [build-artifacts.md](build-artifacts.md).
+
 ## Install (prerequisites)
 
 ```bash

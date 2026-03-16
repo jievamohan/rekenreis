@@ -85,3 +85,4 @@
 | Epic 45.3 — Progress Sync + Protected Routes | done | PR #208 merged |
 | Epic 45.4 — E2E + Polish | done | PR pending |
 | Epic 46.1 — Unified Public Folder + Routing | done | PR #211 |
+| Epic 46.2 — Build Automation + Pre-push | done | PR #212 |
