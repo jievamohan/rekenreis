@@ -2941,3 +2941,31 @@ Acceptance:
 - URL tijdens spel: /play?level=N of /play (infinite)
 - Mode selector en skin switcher werken; preferences opgeslagen; URL blijft clean
 - Bestaande E2E green
+
+---
+
+## Epic 49.1 — Locked Level Screen
+- [ ]
+PlanRef:
+- design: docs/design/epic-49.md
+- archive: artifacts/archive/epic-49.0/latest
+- slice: 49.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Als de URL wordt ingevoerd voor een level die nog niet is geunlocked, tonen we een vriendelijk maatje met een melding en een knop terug naar de map.
+
+Requirements:
+- Create LockedLevelScreen.vue (maatje, message, "Terug naar de kaart" button)
+- Add i18n keys: lockedLevel.title, lockedLevel.subtitle, lockedLevel.backToMap
+- play.vue: guard when levelParam && !isUnlocked(levelParam) → render LockedLevelScreen
+- Edge cases: invalid levelParam (NaN, out of range) → treat as locked
+- E2E: e2e/locked-level.spec.ts — navigate to /play?level=50 with currentLevel=1, assert screen, click back to map
+- Gate C, D, F green
+
+Acceptance:
+- User sees friendly maatje + message + button when opening locked level URL
+- E2E green
+- Typecheck, build, Gate F pass
