@@ -46,6 +46,13 @@ Conditionally dispatch:
 - deps-infra if any I-lanes are touched
 - db if any D-lanes are touched
 
+Skill mapping (use these Cursor skills explicitly):
+- principal-architect / architecture.md -> architect
+- implementer-web, implementer-api -> code-guru
+- security validation -> security-reviewer
+- reviewer / PR review -> code-review-expert
+- deps-infra (I-lanes: infra/deps/CI/docker/scripts) -> devops-sre
+
 Playwright policy:
 - Playwright (including screenshot tests) must run only via docker compose e2e service.
 

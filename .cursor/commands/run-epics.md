@@ -7,6 +7,8 @@
 | f | `scripts/ci/slack_post_review.sh --epic ... --pr ... --url ... --verdict ... --merge-allowed ... --blockers ... --majors ... --mediums ... --minors ... --nits ... --branch ... --head-sha ... --pass ...` | After each review pass |
 | i | `scripts/ci/gh_pr_merge_with_notify.sh --pr ... --head-sha ... --epic ... --title ...` | For merge (replaces raw `gh pr merge`; includes post-merge Slack) |
 
+Skills used: architect (planning), code-guru (implementation), security-reviewer (security validation), code-review-expert (PR review). See 70-agent-dispatch for mapping.
+
 Goal: Run all epics from docs/epics.md hands-off:
 - execute each epic via /feature
 - perform housekeeping inside the original feature branch and PR
