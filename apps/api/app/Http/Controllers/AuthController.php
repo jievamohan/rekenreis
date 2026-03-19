@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
 
         if ($request->hasSession()) {
-            if (! Auth::attempt($request->only('email', 'password'))) {
+            if (! Auth::attempt($request->only('email', 'password'), true)) {
                 self::authLog('login FAIL', ['reason' => 'invalid credentials']);
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
@@ -82,7 +82,7 @@ class AuthController extends Controller
 
         $didLogin = false;
         if ($request->hasSession()) {
-            Auth::login($user);
+            Auth::login($user, true);
             $request->session()->regenerate();
             $didLogin = true;
         }

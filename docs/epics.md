@@ -2991,7 +2991,7 @@ Acceptance:
 ---
 
 ## Epic 51.1 — Remember Login By Default
-- [ ]
+- [x]
 PlanRef:
 - design: docs/design/epic-51.md
 - archive: artifacts/archive/epic-51.0/latest
