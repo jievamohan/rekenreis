@@ -4,7 +4,7 @@ set -euo pipefail
 MODE="${1:-host}"   # host|container
 PR="${2:-}"         # PR number optional
 BRANCH="${3:-}"     # branch name optional
-# Tuned for Gates workflow (~6-8 min: E2E cache + Playwright + ZAP)
+# Tuned for Gates workflow (~6-8 min: Playwright + ZAP)
 # Poll every 25s, 30 retries = 12.5 min max — Playwright alone can take 5+ min
 RETRIES="${RETRIES:-30}"
 SLEEP="${SLEEP:-25}"
