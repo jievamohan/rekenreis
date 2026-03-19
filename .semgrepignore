@@ -12,3 +12,5 @@ apps/web/playwright-report/
 apps/web/test-results/
 # - auth-helper: workerIndex sanitized (0-99), path.join safe; semgrep path-traversal false positive
 apps/web/e2e/auth-helper.ts
+# - api public _nuxt: minified Nuxt build output; not source; causes timeouts + false positives
+apps/api/public/_nuxt/
