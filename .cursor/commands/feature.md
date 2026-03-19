@@ -58,10 +58,10 @@ PlanRef override:
 Dispatch planning subagents and produce (write under artifacts/current):
 - artifacts/current/discovery.md
 - artifacts/current/ux.md
-- artifacts/current/architecture.md
+- artifacts/current/architecture.md (use architect skill when producing)
 - artifacts/current/solution.md
 - artifacts/current/qa.md
-- artifacts/current/security-design.md
+- artifacts/current/security-design.md (use security-reviewer skill when producing)
 - Plus any feature-specific planning artifacts if required (e.g. art-direction.md, game-feel.md, motion-audio.md, assets.md)
 
 N/A policy (no empty files):
@@ -121,6 +121,7 @@ Hard stop:
 6) Delivery execution (FORCE/SAFE only, bounded)
 - Select tasks in priority order from artifacts/current/backlog.md.
 - Execute /orchestrate-task for each selected task sequentially, up to MAX_TASKS.
+- Use code-guru skill for implementation work (implementer-web, implementer-api); use security-reviewer skill for security validation (per 70-agent-dispatch).
 
 Critical instruction to /orchestrate-task:
 - Use the CURRENT branch; do not create a new branch for each task.
