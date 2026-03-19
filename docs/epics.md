@@ -2987,3 +2987,31 @@ Acceptance:
 - Double-tap does not zoom the page on iPad
 - Minigames have no spurious scroll when content fits
 - Login cookie persists correctly on iPad
+
+---
+
+## Epic 51.1 — Remember Login By Default
+- [ ]
+PlanRef:
+- design: docs/design/epic-51.md
+- archive: artifacts/archive/epic-51.0/latest
+- slice: 51.1
+Rules:
+- Use PlanRef as source of truth.
+- Do NOT regenerate planning unless a referenced PlanRef file is missing.
+
+/feature --ci --max-tasks=5
+Build Epic 51.1: Login onthouden standaard; geen checkbox. Sessie blijft na browser sluiting.
+
+Requirements:
+- AuthController::login: Auth::attempt($credentials, true) — altijd remember me
+- AuthController::register: Auth::login($user, true) — altijd remember me
+- Geen UI-checkbox; gedrag is altijd onthouden
+- API tests: verifieer dat login/register remember-token of recaller-cookie oplevert
+- E2E: simuleer "remember" — login, save storage state, herlaad context, verifieer nog ingelogd op /map
+- Gate C, D, F green
+
+Acceptance:
+- Elke login en registratie gebruikt remember me
+- API tests slagen (remember token/cookie aanwezig)
+- E2E verifieert sessie persistence via storage state
