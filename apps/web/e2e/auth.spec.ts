@@ -51,7 +51,56 @@ test.describe('auth', () => {
     await expect(page).toHaveURL(/\/map/)
   })
 
+  test('login session persists across context restore (remember-by-default)', async ({
+    page,
+    context,
+  }) => {
+    const baseURL = process.env.BASE_URL || 'http://localhost:3000'
+    const email = `auth-remember-${Date.now()}@test.local`
+    const password = 'e2e-password-123'
+
+    await page.goto(`${baseURL}/register`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await page.waitForResponse((r) => r.url().includes('/sanctum/csrf-cookie'), { timeout: 15000 })
+
+    await page.getByLabel(/kindnaam/i).fill('Remember Test')
+    await page.getByLabel(/e-mail/i).fill(email)
+    await page.getByLabel(/wachtwoord/i).first().fill(password)
+    await page.getByLabel(/wachtwoord bevestigen/i).fill(password)
+    await page.getByRole('button', { name: /registreren/i }).click()
+
+    const registered = await page
+      .waitForURL((url) => !url.pathname.includes('/register'), { timeout: 15000 })
+      .then(() => true)
+      .catch(() => false)
+
+    if (!registered) {
+      await page.goto(`${baseURL}/login`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      await page.waitForResponse((r) => r.url().includes('/sanctum/csrf-cookie'), { timeout: 15000 })
+      await page.getByLabel(/e-mail/i).fill(email)
+      await page.getByLabel(/wachtwoord/i).fill(password)
+      await page.getByRole('button', { name: /inloggen/i }).click()
+      await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
+    }
+
+    await expect(page).toHaveURL(/\/map/)
+
+    const storageState = await context.storageState()
+
+    const browser = context.browser()
+    if (!browser) throw new Error('Browser not available')
+    const newContext = await browser.newContext({ baseURL, storageState })
+    const newPage = await newContext.newPage()
+    await newPage.goto('/map', { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await expect(newPage).toHaveURL(/\/map/, 'Session should persist after context restore (remember-by-default)')
+    await newContext.close()
+  })
+
   test('protected route redirects to login', async ({ page }) => {
+    // Only run when no global auth state (smoke project); chromium/visual use pre-authenticated storage
+    test.skip(
+      test.info().project.name !== 'smoke',
+      'Protected route requires unauthenticated context; smoke project has no storageState'
+    )
     await page.goto('/map')
     await expect(page).toHaveURL(/\/login/)
   })

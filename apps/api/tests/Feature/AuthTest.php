@@ -66,6 +66,43 @@ class AuthTest extends TestCase
             ]);
     }
 
+    public function test_login_sets_remember_token_by_default(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'remember@example.com',
+            'password' => 'password123',
+            'remember_token' => null,
+        ]);
+
+        $this->from('http://localhost');
+        $this->get('/sanctum/csrf-cookie');
+        $this->postJson('/api/login', [
+            'email' => 'remember@example.com',
+            'password' => 'password123',
+        ]);
+
+        $user->refresh();
+        $this->assertNotNull($user->remember_token, 'Login should set remember token by default');
+    }
+
+    public function test_register_sets_remember_token_when_session_present(): void
+    {
+        $this->from('http://localhost');
+        $this->get('/sanctum/csrf-cookie');
+        $response = $this->postJson('/api/register', [
+            'name' => 'Remember Test',
+            'email' => 'remember-register@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertStatus(201);
+
+        $user = User::where('email', 'remember-register@example.com')->first();
+        $this->assertNotNull($user);
+        $this->assertNotNull($user->remember_token, 'Register should set remember token by default when session present');
+    }
+
     public function test_login_returns_401_on_invalid_credentials(): void
     {
         $response = $this->postJson('/api/login', [
