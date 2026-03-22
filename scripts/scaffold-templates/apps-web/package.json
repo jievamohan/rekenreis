@@ -1,0 +1,34 @@
+{
+  "name": "web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck",
+    "pretest": "nuxt prepare",
+    "test": "vitest run",
+    "size": "nuxt build && du -sh .output",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "nuxt": "3.13.2",
+    "ufo": "^1.5.4",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-vue": "^5.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "vue-eslint-parser": "^9.4.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "vue-tsc": "^2.1.0",
+    "@playwright/test": "1.49.0"
+  }
+}
