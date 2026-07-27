@@ -81,4 +81,45 @@ class ProgressTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors']);
     }
+
+    public function test_progress_update_does_not_lower_stars_or_current_level(): void
+    {
+        $user = User::factory()->create();
+        $existing = [
+            'version' => 1,
+            'activeProfileId' => 'p1',
+            'profiles' => [
+                [
+                    'id' => 'p1',
+                    'name' => 'Kid',
+                    'progress' => [
+                        'bestScore' => 0,
+                        'currentLevel' => 5,
+                        'levelProgress' => [
+                            '1' => ['stars' => 3],
+                            '2' => ['stars' => 2],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        UserProgress::create([
+            'user_id' => $user->id,
+            'progress' => $existing,
+        ]);
+
+        $incoming = $existing;
+        $incoming['profiles'][0]['progress']['currentLevel'] = 2;
+        $incoming['profiles'][0]['progress']['levelProgress']['1'] = ['stars' => 1];
+        $incoming['profiles'][0]['progress']['levelProgress']['2'] = ['stars' => 1];
+
+        $response = $this->actingAs($user)->putJson('/api/progress', [
+            'progress' => $incoming,
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('progress.profiles.0.progress.currentLevel', 5)
+            ->assertJsonPath('progress.profiles.0.progress.levelProgress.1.stars', 3)
+            ->assertJsonPath('progress.profiles.0.progress.levelProgress.2.stars', 2);
+    }
 }

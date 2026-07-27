@@ -6,8 +6,8 @@ import { loadProfiles } from '~/utils/profileSchema'
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
+  // Empty apiUrl = same-origin (Docker / unified prod). Auth already uses this.
   const apiUrl = (config.public.apiUrl as string).replace(/\/$/, '')
-  if (!apiUrl) return
 
   const schema = useProfileSchema()
   const { user } = useAuth()

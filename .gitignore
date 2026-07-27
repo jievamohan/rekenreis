@@ -1,5 +1,8 @@
 .pnpm-store
 
+# Cursor IDE / agent config (local)
+.cursor/
+
 # Local env (secrets)
 .env
 
