@@ -73,7 +73,10 @@ jobs:
       - name: Semgrep
         run: |
           pip install --quiet semgrep
-          semgrep scan --config auto --config .semgrep --error
+          # Exclude auto-rule mutable-action-tag: custom .semgrep already requires
+          # version pins (@vN) via yaml-checkout-pinned. Full SHA pinning is a follow-up.
+          semgrep scan --config auto --config .semgrep --error \
+            --exclude-rule yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4

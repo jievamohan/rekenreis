@@ -22,7 +22,7 @@ export function useProgressSync(
   user: () => { name: string } | null
 ) {
   let debounceTimer: ReturnType<typeof setTimeout> | null = null
-  /** Only allow PUT after a successful hydrate (valid or empty bootstrap). */
+  /** Only allow PUT after a successful hydrate (valid, empty bootstrap, or keep-local). */
   let hydrateReady = false
 
   async function fetchAndHydrate() {
@@ -32,7 +32,11 @@ export function useProgressSync(
     try {
       const { progress } = await fetchProgress(apiUrl)
       if (isEmptyProgress(progress)) {
-        schemaRef.value = createSchemaForUser(u.name)
+        // Keep valid in-memory/LS schema (e.g. E2E seed); else bootstrap fresh.
+        // Guests cannot play, so promoting LS here is safe for product + CI.
+        if (!(schemaRef.value && isValidV1(schemaRef.value))) {
+          schemaRef.value = createSchemaForUser(u.name)
+        }
         hydrateReady = true
         return
       }

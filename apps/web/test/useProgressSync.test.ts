@@ -71,6 +71,25 @@ describe('useProgressSync', () => {
     expect(putProgress).toHaveBeenCalledTimes(1)
   })
 
+  it('keeps valid local schema when API progress is empty', async () => {
+    fetchProgress.mockResolvedValue({ progress: [] })
+    const prior = validSchema(7)
+    const schema = ref<ProfileSchemaV1 | undefined>(prior)
+    const { fetchAndHydrate, saveToApi } = useProgressSync(
+      schema,
+      '',
+      () => true,
+      () => ({ name: 'Kid' })
+    )
+
+    await fetchAndHydrate()
+    expect(schema.value?.profiles[0]?.progress.currentLevel).toBe(7)
+
+    saveToApi(schema.value)
+    await vi.advanceTimersByTimeAsync(500)
+    expect(putProgress).toHaveBeenCalledTimes(1)
+  })
+
   it('does not wipe schema or PUT when fetch fails', async () => {
     fetchProgress.mockRejectedValue(new Error('network'))
     const prior = validSchema(7)

@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test'
+import { test as base, type Browser, type BrowserContext, type Page } from '@playwright/test'
 import { diagnoseOnFailure } from '../helpers/diagnose-failure'
 
 export const E2E_PROFILE = {
@@ -24,80 +24,7 @@ export const E2E_PROFILE = {
   ],
 }
 
-export const test = base.extend<
-  Record<string, never>,
-  { authenticatedContext: import('@playwright/test').BrowserContext }
->({
-  // Worker-scoped: run auth in same context (no storage save/load - avoids cookie persistence bugs)
-  authenticatedContext: [
-    async ({ browser }, use, testInfo) => {
-      const baseURL = process.env.BASE_URL || 'http://localhost:3000'
-      const isVisual = testInfo.project?.name === 'visual'
-      const ctx = await browser.newContext({
-        baseURL,
-        ...(isVisual ? { viewport: { width: 1280, height: 720 } } : {}),
-      })
-      const page = await ctx.newPage()
-      const csrfPromise = page.waitForResponse(
-        (r) => r.url().includes('/sanctum/csrf-cookie'),
-        { timeout: 15000 }
-      )
-      await page.goto(`${baseURL}/register`, { waitUntil: 'domcontentloaded', timeout: 15000 })
-      await csrfPromise
-      const user = {
-        email: `e2e-w${testInfo.workerIndex}-${Date.now()}@test.local`,
-        password: 'e2e-password-123',
-        name: `E2E W${testInfo.workerIndex}`,
-      }
-      await page.getByLabel(/kindnaam/i).fill(user.name)
-      await page.getByLabel(/e-mail/i).fill(user.email)
-      await page.getByLabel(/wachtwoord/i).first().fill(user.password)
-      await page.getByLabel(/wachtwoord bevestigen/i).fill(user.password)
-      await page.getByRole('button', { name: /registreren/i }).click()
-      const registered = await page.waitForURL((url) => !url.pathname.includes('/register'), { timeout: 15000 }).then(() => true).catch(() => false)
-      if (!registered) {
-        const loginCsrf = page.waitForResponse((r) => r.url().includes('/sanctum/csrf-cookie'), { timeout: 15000 })
-        await page.goto(`${baseURL}/login`, { waitUntil: 'domcontentloaded', timeout: 15000 })
-        await loginCsrf
-        await page.getByLabel(/e-mail/i).fill(user.email)
-        await page.getByLabel(/wachtwoord/i).fill(user.password)
-        await page.getByRole('button', { name: /inloggen/i }).click()
-        await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
-      }
-      await page.goto(`${baseURL}/map`, { waitUntil: 'domcontentloaded', timeout: 15000 })
-      await page.evaluate((s) => localStorage.setItem('rekenreis_profiles_v1', s), JSON.stringify(E2E_PROFILE))
-      await page.close()
-      await use(ctx)
-    },
-    { scope: 'worker' },
-  ],
-  page: async ({ authenticatedContext }, use, testInfo) => {
-    const page = await authenticatedContext.newPage()
-    // Forward [xsrf-client] console messages to stderr for CI logging
-    page.on('console', (msg) => {
-      const text = msg.text()
-      if (text.includes('[xsrf-client]')) {
-        process.stderr.write(`[e2e-console] ${text}\n`)
-      }
-    })
-    await page.addInitScript((schema: string) => {
-      localStorage.setItem('rekenreis_profiles_v1', schema)
-    }, JSON.stringify(E2E_PROFILE))
-    await use(page)
-    // On any failure, capture diagnostic for CI (url, hasAuthPage, etc.)
-    if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
-      try {
-        const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
-        const diag = await diagnoseOnFailure(page, `fail-${slug}`)
-        console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
-      } catch {
-        // ignore
-      }
-    }
-  },
-})
-
-/** Profile with currentLevel: 1 for visual baselines (map shows start position) and locked-level tests. */
+/** Profile with currentLevel: 1 for visual baselines and locked-level tests. */
 export const E2E_PROFILE_LEVEL_1: typeof E2E_PROFILE = {
   ...E2E_PROFILE,
   profiles: [
@@ -114,55 +41,148 @@ export const E2E_PROFILE_LEVEL_1: typeof E2E_PROFILE = {
 /** Alias for locked-level tests. */
 export const E2E_PROFILE_LOCKED = E2E_PROFILE_LEVEL_1
 
-/** Fixture for tests that need currentLevel: 1 (e.g. locked-level). Uses E2E_PROFILE_LOCKED in addInitScript so it is not overwritten on navigation. */
-export const testLockedLevel = test.extend<{ page: import('@playwright/test').Page }>({
+async function createAuthenticatedContext(
+  browser: Browser,
+  testInfo: { workerIndex: number; project?: { name?: string } },
+  profileForLs: typeof E2E_PROFILE = E2E_PROFILE
+): Promise<BrowserContext> {
+  const baseURL = process.env.BASE_URL || 'http://localhost:3000'
+  const isVisual = testInfo.project?.name === 'visual'
+  const ctx = await browser.newContext({
+    baseURL,
+    ...(isVisual ? { viewport: { width: 1280, height: 720 } } : {}),
+  })
+  const page = await ctx.newPage()
+  const csrfPromise = page.waitForResponse(
+    (r) => r.url().includes('/sanctum/csrf-cookie'),
+    { timeout: 15000 }
+  )
+  await page.goto(`${baseURL}/register`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+  await csrfPromise
+  const user = {
+    email: `e2e-w${testInfo.workerIndex}-${Date.now()}@test.local`,
+    password: 'e2e-password-123',
+    name: `E2E W${testInfo.workerIndex}`,
+  }
+  await page.getByLabel(/kindnaam/i).fill(user.name)
+  await page.getByLabel(/e-mail/i).fill(user.email)
+  await page.getByLabel(/wachtwoord/i).first().fill(user.password)
+  await page.getByLabel(/wachtwoord bevestigen/i).fill(user.password)
+  await page.getByRole('button', { name: /registreren/i }).click()
+  const registered = await page
+    .waitForURL((url) => !url.pathname.includes('/register'), { timeout: 15000 })
+    .then(() => true)
+    .catch(() => false)
+  if (!registered) {
+    const loginCsrf = page.waitForResponse((r) => r.url().includes('/sanctum/csrf-cookie'), {
+      timeout: 15000,
+    })
+    await page.goto(`${baseURL}/login`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await loginCsrf
+    await page.getByLabel(/e-mail/i).fill(user.email)
+    await page.getByLabel(/wachtwoord/i).fill(user.password)
+    await page.getByRole('button', { name: /inloggen/i }).click()
+    await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
+  }
+  await page.goto(`${baseURL}/map`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+  await page.evaluate(
+    (s) => localStorage.setItem('rekenreis_profiles_v1', s),
+    JSON.stringify(profileForLs)
+  )
+  await page.close()
+  return ctx
+}
+
+async function withDiagnoseOnFail(
+  page: Page,
+  testInfo: { status?: string; title: string },
+  use: (page: Page) => Promise<void>
+): Promise<void> {
+  await use(page)
+  if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
+    try {
+      const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+      const diag = await diagnoseOnFailure(page, `fail-${slug}`)
+      console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
+    } catch {
+      // ignore
+    }
+  }
+}
+
+function attachXsrfConsole(page: Page): void {
+  page.on('console', (msg) => {
+    const text = msg.text()
+    if (text.includes('[xsrf-client]')) {
+      process.stderr.write(`[e2e-console] ${text}\n`)
+    }
+  })
+}
+
+export const test = base.extend<
+  Record<string, never>,
+  { authenticatedContext: BrowserContext }
+>({
+  authenticatedContext: [
+    async ({ browser }, use, testInfo) => {
+      const ctx = await createAuthenticatedContext(browser, testInfo, E2E_PROFILE)
+      await use(ctx)
+    },
+    { scope: 'worker' },
+  ],
   page: async ({ authenticatedContext }, use, testInfo) => {
     const page = await authenticatedContext.newPage()
-    page.on('console', (msg) => {
-      const text = msg.text()
-      if (text.includes('[xsrf-client]')) {
-        process.stderr.write(`[e2e-console] ${text}\n`)
-      }
-    })
+    attachXsrfConsole(page)
     await page.addInitScript((schema: string) => {
       localStorage.setItem('rekenreis_profiles_v1', schema)
-    }, JSON.stringify(E2E_PROFILE_LOCKED))
-    await use(page)
-    if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
-      try {
-        const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
-        const diag = await diagnoseOnFailure(page, `fail-${slug}`)
-        console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
-      } catch {
-        // ignore
-      }
-    }
+    }, JSON.stringify(E2E_PROFILE))
+    await withDiagnoseOnFail(page, testInfo, use)
   },
 })
 
 /**
- * Authenticated page without localStorage profile reseed on every document load.
- * Use for progress persistence tests so reload hydrates from the API.
+ * Isolated auth user + LS level 1.
+ * Must not share the default worker user once API has merge-max'd currentLevel 200.
  */
-export const testNoProfileSeed = test.extend<{ page: import('@playwright/test').Page }>({
+export const testLockedLevel = base.extend<
+  Record<string, never>,
+  { authenticatedContext: BrowserContext }
+>({
+  authenticatedContext: [
+    async ({ browser }, use, testInfo) => {
+      const ctx = await createAuthenticatedContext(browser, testInfo, E2E_PROFILE_LOCKED)
+      await use(ctx)
+    },
+    { scope: 'worker' },
+  ],
   page: async ({ authenticatedContext }, use, testInfo) => {
     const page = await authenticatedContext.newPage()
-    page.on('console', (msg) => {
-      const text = msg.text()
-      if (text.includes('[xsrf-client]')) {
-        process.stderr.write(`[e2e-console] ${text}\n`)
-      }
-    })
-    await use(page)
-    if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
-      try {
-        const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
-        const diag = await diagnoseOnFailure(page, `fail-${slug}`)
-        console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
-      } catch {
-        // ignore
-      }
-    }
+    attachXsrfConsole(page)
+    await page.addInitScript((schema: string) => {
+      localStorage.setItem('rekenreis_profiles_v1', schema)
+    }, JSON.stringify(E2E_PROFILE_LOCKED))
+    await withDiagnoseOnFail(page, testInfo, use)
+  },
+})
+
+/**
+ * Isolated user, no LS reseed — progress-persist seeds via API.
+ */
+export const testNoProfileSeed = base.extend<
+  Record<string, never>,
+  { authenticatedContext: BrowserContext }
+>({
+  authenticatedContext: [
+    async ({ browser }, use, testInfo) => {
+      const ctx = await createAuthenticatedContext(browser, testInfo, E2E_PROFILE)
+      await use(ctx)
+    },
+    { scope: 'worker' },
+  ],
+  page: async ({ authenticatedContext }, use, testInfo) => {
+    const page = await authenticatedContext.newPage()
+    attachXsrfConsole(page)
+    await withDiagnoseOnFail(page, testInfo, use)
   },
 })
 
