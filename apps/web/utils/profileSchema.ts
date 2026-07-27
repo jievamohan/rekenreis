@@ -146,7 +146,7 @@ function createFreshSchema(): ProfileSchemaV1 {
   }
 }
 
-function isValidV1(data: unknown): data is ProfileSchemaV1 {
+export function isValidV1(data: unknown): data is ProfileSchemaV1 {
   if (
     !data ||
     typeof data !== 'object' ||

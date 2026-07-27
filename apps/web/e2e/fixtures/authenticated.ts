@@ -140,4 +140,30 @@ export const testLockedLevel = test.extend<{ page: import('@playwright/test').Pa
   },
 })
 
+/**
+ * Authenticated page without localStorage profile reseed on every document load.
+ * Use for progress persistence tests so reload hydrates from the API.
+ */
+export const testNoProfileSeed = test.extend<{ page: import('@playwright/test').Page }>({
+  page: async ({ authenticatedContext }, use, testInfo) => {
+    const page = await authenticatedContext.newPage()
+    page.on('console', (msg) => {
+      const text = msg.text()
+      if (text.includes('[xsrf-client]')) {
+        process.stderr.write(`[e2e-console] ${text}\n`)
+      }
+    })
+    await use(page)
+    if (testInfo.status !== 'passed' && testInfo.status !== 'skipped') {
+      try {
+        const slug = testInfo.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+        const diag = await diagnoseOnFailure(page, `fail-${slug}`)
+        console.error(`E2E DIAGNOSE [${testInfo.title}]: ${JSON.stringify(diag)}`)
+      } catch {
+        // ignore
+      }
+    }
+  },
+})
+
 export { expect } from '@playwright/test'
