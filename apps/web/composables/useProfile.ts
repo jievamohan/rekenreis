@@ -7,11 +7,9 @@ import {
   type ProfileData,
 } from '../utils/profileSchema'
 import { useProfileSchema } from './useProfileSchema'
-import { useAuth } from './useAuth'
 
 export function useProfile() {
   const schema = useProfileSchema()
-  const { user } = useAuth()
 
   const activeProfile = computed<ProfileData | null>(() => {
     const s = schema.value
@@ -21,10 +19,9 @@ export function useProfile() {
   })
 
   function persist(next: ProfileSchemaV1) {
-    if (!user.value) {
-      saveProfiles(next)
-    }
-    // When authenticated, useProgressSync plugin persists to API via watch
+    // Always mirror to localStorage so refresh has a fallback if API PUT lags/fails.
+    // Authenticated users still sync to API via useProgressSync.
+    saveProfiles(next)
   }
 
   function switchProfile(id: string) {

@@ -1,0 +1,1 @@
+import{_ as r}from"./CYtZlNPS.js";import{_ as e,o as n,A as _,w as a,O as c}from"./DBhyV8eQ.js";import"./Dc3CL04p.js";import"./C23WysfY.js";import"./CGDCDcyS.js";import"./C0b2s1q6.js";import"./CSm_qshs.js";const s={};function p(o,m){const t=r;return n(),_(t,{"no-card":!0},{default:a(()=>[c(o.$slots,"default")]),_:3})}const k=e(s,[["render",p]]);export{k as default};

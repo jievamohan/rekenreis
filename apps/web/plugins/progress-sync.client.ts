@@ -39,4 +39,16 @@ export default defineNuxtPlugin(() => {
     },
     { deep: true }
   )
+
+  if (import.meta.client) {
+    const flush = () => {
+      if (user.value && schema.value) {
+        saveToApi(schema.value, true)
+      }
+    }
+    window.addEventListener('pagehide', flush)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') flush()
+    })
+  }
 })

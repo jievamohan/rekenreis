@@ -25,6 +25,25 @@ export function useProgressSync(
   /** Only allow PUT after a successful hydrate (valid, empty bootstrap, or keep-local). */
   let hydrateReady = false
 
+  function saveToApi(data: ProfileSchemaV1 | undefined, immediate = false) {
+    if (!hydrateReady || !isAuthenticated() || !data) return
+    clearTimeout(debounceTimer!)
+    const run = async () => {
+      try {
+        await putProgress(apiUrl, data as unknown as Record<string, unknown>)
+      } catch {
+        // ignore; will retry on next change
+      } finally {
+        debounceTimer = null
+      }
+    }
+    if (immediate) {
+      void run()
+      return
+    }
+    debounceTimer = setTimeout(run, DEBOUNCE_MS)
+  }
+
   async function fetchAndHydrate() {
     const u = user()
     if (!u) return
@@ -32,12 +51,13 @@ export function useProgressSync(
     try {
       const { progress } = await fetchProgress(apiUrl)
       if (isEmptyProgress(progress)) {
-        // Keep valid in-memory/LS schema (e.g. E2E seed); else bootstrap fresh.
-        // Guests cannot play, so promoting LS here is safe for product + CI.
+        // Keep valid in-memory/LS schema (e.g. play progress before hydrate finished); else bootstrap.
         if (!(schemaRef.value && isValidV1(schemaRef.value))) {
           schemaRef.value = createSchemaForUser(u.name)
         }
         hydrateReady = true
+        // Flush: mutations during hydrating were skipped by the gate
+        saveToApi(schemaRef.value, true)
         return
       }
       if (!isValidV1(progress)) {
@@ -49,20 +69,6 @@ export function useProgressSync(
     } catch {
       // Keep last-known schema; do not mark ready (blocks wipe PUT)
     }
-  }
-
-  function saveToApi(data: ProfileSchemaV1 | undefined) {
-    if (!hydrateReady || !isAuthenticated() || !data) return
-    clearTimeout(debounceTimer!)
-    debounceTimer = setTimeout(async () => {
-      try {
-        await putProgress(apiUrl, data as unknown as Record<string, unknown>)
-      } catch {
-        // ignore; will retry on next change
-      } finally {
-        debounceTimer = null
-      }
-    }, DEBOUNCE_MS)
   }
 
   return {

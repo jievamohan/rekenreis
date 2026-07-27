@@ -75,7 +75,7 @@ describe('useProgressSync', () => {
     fetchProgress.mockResolvedValue({ progress: [] })
     const prior = validSchema(7)
     const schema = ref<ProfileSchemaV1 | undefined>(prior)
-    const { fetchAndHydrate, saveToApi } = useProgressSync(
+    const { fetchAndHydrate } = useProgressSync(
       schema,
       '',
       () => true,
@@ -84,9 +84,7 @@ describe('useProgressSync', () => {
 
     await fetchAndHydrate()
     expect(schema.value?.profiles[0]?.progress.currentLevel).toBe(7)
-
-    saveToApi(schema.value)
-    await vi.advanceTimersByTimeAsync(500)
+    // flush immediate PUT after hydrate ready (mutations during hydrate were gated)
     expect(putProgress).toHaveBeenCalledTimes(1)
   })
 

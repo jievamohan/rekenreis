@@ -1,0 +1,1 @@
+import{m as e,c as r,O as a,ab as s,o}from"./DBhyV8eQ.js";const c=e({inheritAttrs:!1,__name:"PrimaryButton",setup(n){return(t,p)=>(o(),r("button",s({type:"button",class:"app-btn-primary"},t.$attrs),[a(t.$slots,"default")],16))}});export{c as _};
